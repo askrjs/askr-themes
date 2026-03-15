@@ -14,11 +14,16 @@
   --ak-color-focus-ring: rgba(121, 181, 63, 0.28);
   --ak-radius-sm: 6px;
   --ak-radius-md: 10px;
+  --ak-radius-lg: 14px;
+  --ak-radius-xl: 22px;
   --ak-space-sm: 0.5rem;
   --ak-space-md: 0.75rem;
   --ak-space-lg: 1rem;
+  --ak-space-xl: 1.5rem;
+  --ak-font-family: "Segoe UI", system-ui, sans-serif;
   --ak-font-size-sm: 0.875rem;
   --ak-font-size-md: 1rem;
+  --ak-font-size-lg: 1.125rem;
   --ak-layout-navbar-height: 56px;
   --ak-layout-sidebar-width: 260px;
   --ak-layout-content-max-width: 1200px;
