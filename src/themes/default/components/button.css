@@ -12,24 +12,8 @@
   cursor: pointer;
 }
 
-[data-slot="button"][data-size="sm"] {
-  font-size: var(--ak-font-size-sm);
-  padding: calc(var(--ak-space-sm) * 0.75) var(--ak-space-sm);
-  border-radius: var(--ak-radius-sm);
-}
-
-[data-slot="button"][data-size="md"] {
-  font-size: var(--ak-font-size-md);
-}
-
-[data-slot="button"][data-variant="primary"] {
-  background: var(--ak-color-primary);
+[data-slot="button"]:hover {
   border-color: var(--ak-color-primary);
-  color: #fffdf7;
-}
-
-[data-slot="button"][data-variant="primary"]:hover {
-  background: var(--ak-color-primary-hover);
 }
 
 [data-slot="button"]:focus-visible {

@@ -19,12 +19,6 @@
   box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
 }
 
-[data-slot="input"][data-size="sm"] {
-  min-height: 2.125rem;
-  font-size: var(--ak-font-size-sm);
-  border-radius: var(--ak-radius-sm);
-}
-
 [data-slot="input"][data-disabled] {
   opacity: 0.65;
   cursor: not-allowed;

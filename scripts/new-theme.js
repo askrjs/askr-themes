@@ -1,5 +1,5 @@
-const { cp, mkdir, readFile, stat, writeFile } = require('node:fs/promises');
-const path = require('node:path');
+import { cp, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 
 const THEME_NAME_RE = /^[a-z0-9-]+$/;
 
