@@ -17,6 +17,11 @@
     "./default": "./src/themes/default/index.css",
     "./default/tokens.css": "./src/themes/default/tokens.css",
     "./default/button.css": "./src/themes/default/components/button.css",
+    "./default/navbar.css": "./src/themes/default/components/navbar.css",
+    "./default/sidebar.css": "./src/themes/default/components/sidebar.css",
+    "./default/app-shell.css": "./src/themes/default/components/app-shell.css",
+    "./default/dashboard-layout.css": "./src/themes/default/components/dashboard-layout.css",
+    "./default/docs-layout.css": "./src/themes/default/components/docs-layout.css",
     "./templates/*": "./templates/*"
   },
   "scripts": {

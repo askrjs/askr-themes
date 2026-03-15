@@ -1,0 +1,13 @@
+[data-slot="topbar-layout"] {
+  min-block-size: 100vh;
+  background: var(--ak-color-bg);
+}
+
+[data-slot="sidebar-layout"] {
+  min-block-size: 100vh;
+  background: var(--ak-color-bg);
+}
+
+[data-slot="main"] {
+  padding: var(--ak-space-lg);
+}
