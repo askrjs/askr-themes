@@ -1,0 +1,25 @@
+{
+  "name": "@askrjs/askr-themes",
+  "version": "0.1.0",
+  "description": "CSS-only official themes for askr-ui.",
+  "license": "MIT",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "src",
+    "templates",
+    "scripts/new-theme.js",
+    "THEMING.md"
+  ],
+  "exports": {
+    ".": "./src/index.css",
+    "./default": "./src/themes/default/index.css",
+    "./default/tokens.css": "./src/themes/default/tokens.css",
+    "./default/button.css": "./src/themes/default/components/button.css",
+    "./templates/*": "./templates/*"
+  },
+  "scripts": {
+    "new:theme": "node ./scripts/new-theme.js"
+  }
+}
