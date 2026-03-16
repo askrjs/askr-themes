@@ -21,6 +21,12 @@
     "./templates/*": "./templates/*"
   },
   "scripts": {
-    "new:theme": "node ./scripts/new-theme.js"
+    "new:theme": "node ./scripts/new-theme.js",
+    "fmt": "prettier --write \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
+    "lint": "prettier --check \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
+    "build": "node -e \"console.log('askr-themes is CSS-only; no build step required')\""
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
   }
 }
