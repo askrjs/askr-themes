@@ -26,3 +26,10 @@ Style override:
 ```
 
 Rules: style only public data-* hooks, never internal DOM, no deep selectors, no !important.
+
+Responsive rules:
+
+- Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
+- Official themes use semantic breakpoints `sm`, `md`, `lg`, and `xl` for `data-collapse-below`.
+- Keep breakpoint values centralized in theme tokens so default and generated themes stay aligned.
+- Responsive behavior must target only public hooks such as `data-collapse-below`, `data-columns`, `data-min-item-width`, `data-gap`, `data-sidebar-position`, and `data-sidebar-width`.

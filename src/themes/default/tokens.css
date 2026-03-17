@@ -24,7 +24,15 @@
   --ak-font-size-sm: 0.875rem;
   --ak-font-size-md: 1rem;
   --ak-font-size-lg: 1.125rem;
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
   --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
   --ak-layout-sidebar-width: 260px;
   --ak-layout-content-max-width: 1200px;
 }
@@ -43,7 +51,15 @@
   --ak-color-danger: #b45a5a;
   --ak-color-danger-soft: rgba(180, 90, 90, 0.18);
   --ak-color-focus-ring: rgba(121, 181, 63, 0.28);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
   --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
   --ak-layout-sidebar-width: 260px;
   --ak-layout-content-max-width: 1200px;
 }
@@ -62,7 +78,15 @@
   --ak-color-danger: #df8d8d;
   --ak-color-danger-soft: rgba(223, 141, 141, 0.18);
   --ak-color-focus-ring: rgba(155, 212, 95, 0.3);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
   --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
   --ak-layout-sidebar-width: 260px;
   --ak-layout-content-max-width: 1200px;
 }
