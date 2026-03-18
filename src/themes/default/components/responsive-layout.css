@@ -175,13 +175,17 @@
     align-items: stretch;
   }
 
-  [data-slot="sidebar-layout"][data-sidebar-position="end"]:not([data-collapse-below]),
+  [data-slot="sidebar-layout"][data-sidebar-position="end"]:not(
+      [data-collapse-below]
+    ),
   [data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="sm"] {
     flex-direction: row-reverse;
   }
 
-  [data-slot="sidebar-layout"]:not([data-collapse-below]) > [data-slot="sidebar"],
-  [data-slot="sidebar-layout"][data-collapse-below="sm"] > [data-slot="sidebar"] {
+  [data-slot="sidebar-layout"]:not([data-collapse-below])
+    > [data-slot="sidebar"],
+  [data-slot="sidebar-layout"][data-collapse-below="sm"]
+    > [data-slot="sidebar"] {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -216,7 +220,8 @@
     flex-direction: row-reverse;
   }
 
-  [data-slot="sidebar-layout"][data-collapse-below="md"] > [data-slot="sidebar"] {
+  [data-slot="sidebar-layout"][data-collapse-below="md"]
+    > [data-slot="sidebar"] {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -247,7 +252,8 @@
     flex-direction: row-reverse;
   }
 
-  [data-slot="sidebar-layout"][data-collapse-below="lg"] > [data-slot="sidebar"] {
+  [data-slot="sidebar-layout"][data-collapse-below="lg"]
+    > [data-slot="sidebar"] {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -270,7 +276,8 @@
     flex-direction: row-reverse;
   }
 
-  [data-slot="sidebar-layout"][data-collapse-below="xl"] > [data-slot="sidebar"] {
+  [data-slot="sidebar-layout"][data-collapse-below="xl"]
+    > [data-slot="sidebar"] {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;

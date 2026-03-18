@@ -1,0 +1,93 @@
+/* ginger theme: rich burnt orange with warm golden tones */
+:root {
+  --ak-color-primary: #d47832;
+  --ak-color-primary-hover: #b86428;
+  --ak-color-bg: #fdf6f0;
+  --ak-color-fg: #33241c;
+  --ak-color-surface: #fffaf5;
+  --ak-color-surface-muted: #f4e8dc;
+  --ak-color-border: #dbc4ab;
+  --ak-color-muted: #80614e;
+  --ak-color-primary-soft: #fae4d0;
+  --ak-color-primary-ink: #5a3015;
+  --ak-color-danger: #c45050;
+  --ak-color-danger-soft: rgba(196, 80, 80, 0.16);
+  --ak-color-focus-ring: rgba(212, 120, 50, 0.3);
+  --ak-radius-sm: 8px;
+  --ak-radius-md: 12px;
+  --ak-radius-lg: 16px;
+  --ak-radius-xl: 24px;
+  --ak-space-sm: 0.5rem;
+  --ak-space-md: 0.75rem;
+  --ak-space-lg: 1rem;
+  --ak-space-xl: 1.5rem;
+  --ak-font-family: "Segoe UI", system-ui, sans-serif;
+  --ak-font-size-sm: 0.875rem;
+  --ak-font-size-md: 1rem;
+  --ak-font-size-lg: 1.125rem;
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}
+
+[data-theme="light"] {
+  --ak-color-primary: #d47832;
+  --ak-color-primary-hover: #b86428;
+  --ak-color-bg: #fdf6f0;
+  --ak-color-fg: #33241c;
+  --ak-color-surface: #fffaf5;
+  --ak-color-surface-muted: #f4e8dc;
+  --ak-color-border: #dbc4ab;
+  --ak-color-muted: #80614e;
+  --ak-color-primary-soft: #fae4d0;
+  --ak-color-primary-ink: #5a3015;
+  --ak-color-danger: #c45050;
+  --ak-color-danger-soft: rgba(196, 80, 80, 0.16);
+  --ak-color-focus-ring: rgba(212, 120, 50, 0.3);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}
+
+[data-theme="dark"] {
+  --ak-color-primary: #e8944e;
+  --ak-color-primary-hover: #d4803c;
+  --ak-color-bg: #1e1714;
+  --ak-color-fg: #f0e4d8;
+  --ak-color-surface: #2a211c;
+  --ak-color-surface-muted: #382d26;
+  --ak-color-border: #5c4a3a;
+  --ak-color-muted: #bca48e;
+  --ak-color-primary-soft: rgba(232, 148, 78, 0.16);
+  --ak-color-primary-ink: #f4d4b4;
+  --ak-color-danger: #e48a8a;
+  --ak-color-danger-soft: rgba(228, 138, 138, 0.16);
+  --ak-color-focus-ring: rgba(232, 148, 78, 0.32);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}

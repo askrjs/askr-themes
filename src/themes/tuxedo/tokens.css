@@ -1,0 +1,93 @@
+/* tuxedo theme: crisp black & white with cool blue-gray accent */
+:root {
+  --ak-color-primary: #5b7a99;
+  --ak-color-primary-hover: #486280;
+  --ak-color-bg: #f7f7f8;
+  --ak-color-fg: #1a1a1e;
+  --ak-color-surface: #ffffff;
+  --ak-color-surface-muted: #ededf0;
+  --ak-color-border: #c8c8ce;
+  --ak-color-muted: #6b6b75;
+  --ak-color-primary-soft: #dfe7ef;
+  --ak-color-primary-ink: #2a3d50;
+  --ak-color-danger: #c0504d;
+  --ak-color-danger-soft: rgba(192, 80, 77, 0.16);
+  --ak-color-focus-ring: rgba(91, 122, 153, 0.32);
+  --ak-radius-sm: 4px;
+  --ak-radius-md: 8px;
+  --ak-radius-lg: 12px;
+  --ak-radius-xl: 20px;
+  --ak-space-sm: 0.5rem;
+  --ak-space-md: 0.75rem;
+  --ak-space-lg: 1rem;
+  --ak-space-xl: 1.5rem;
+  --ak-font-family: "Segoe UI", system-ui, sans-serif;
+  --ak-font-size-sm: 0.875rem;
+  --ak-font-size-md: 1rem;
+  --ak-font-size-lg: 1.125rem;
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}
+
+[data-theme="light"] {
+  --ak-color-primary: #5b7a99;
+  --ak-color-primary-hover: #486280;
+  --ak-color-bg: #f7f7f8;
+  --ak-color-fg: #1a1a1e;
+  --ak-color-surface: #ffffff;
+  --ak-color-surface-muted: #ededf0;
+  --ak-color-border: #c8c8ce;
+  --ak-color-muted: #6b6b75;
+  --ak-color-primary-soft: #dfe7ef;
+  --ak-color-primary-ink: #2a3d50;
+  --ak-color-danger: #c0504d;
+  --ak-color-danger-soft: rgba(192, 80, 77, 0.16);
+  --ak-color-focus-ring: rgba(91, 122, 153, 0.32);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}
+
+[data-theme="dark"] {
+  --ak-color-primary: #8daec8;
+  --ak-color-primary-hover: #7498b5;
+  --ak-color-bg: #141416;
+  --ak-color-fg: #e8e8ec;
+  --ak-color-surface: #1e1e22;
+  --ak-color-surface-muted: #2a2a2f;
+  --ak-color-border: #404048;
+  --ak-color-muted: #9e9ea8;
+  --ak-color-primary-soft: rgba(141, 174, 200, 0.16);
+  --ak-color-primary-ink: #c4dae8;
+  --ak-color-danger: #e08886;
+  --ak-color-danger-soft: rgba(224, 136, 134, 0.16);
+  --ak-color-focus-ring: rgba(141, 174, 200, 0.35);
+  --ak-breakpoint-sm: 40rem;
+  --ak-breakpoint-md: 48rem;
+  --ak-breakpoint-lg: 64rem;
+  --ak-breakpoint-xl: 80rem;
+  --ak-layout-navbar-height: 56px;
+  --ak-layout-sidebar-width-sm: 14rem;
+  --ak-layout-sidebar-width-md: 16rem;
+  --ak-layout-sidebar-width-lg: 20rem;
+  --ak-layout-sidebar-width-xl: 24rem;
+  --ak-layout-sidebar-width: 260px;
+  --ak-layout-content-max-width: 1200px;
+}

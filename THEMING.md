@@ -16,16 +16,21 @@ Pick a mode on an ancestor:
 Token override:
 
 ```css
-:root { --ak-color-primary: purple; --ak-radius-md: 12px; }
+:root {
+  --ak-color-primary: purple;
+  --ak-radius-md: 12px;
+}
 ```
 
 Style override:
 
 ```css
-[data-slot="button"][data-variant="primary"] { background: black; }
+[data-slot="button"][data-variant="primary"] {
+  background: black;
+}
 ```
 
-Rules: style only public data-* hooks, never internal DOM, no deep selectors, no !important.
+Rules: style only public data-\* hooks, never internal DOM, no deep selectors, no !important.
 
 Responsive rules:
 
