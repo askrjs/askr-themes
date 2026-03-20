@@ -72,7 +72,7 @@ function extractSelectors(css: string): string[] {
 /**
  * Allowed selector patterns:
  * - Attribute selectors: [data-*], [data-slot="..."], [data-state="..."], etc.
- * - Pseudo-classes: :hover, :focus-visible, :root, :first-child, etc.
+ * - Pseudo-classes: :hover, :focus-visible, :root, :first-child, :where(...), etc.
  * - Pseudo-elements: ::before, ::after, ::placeholder, etc.
  * - Combinators between allowed parts: >, +, ~, space
  *
@@ -82,9 +82,10 @@ function extractSelectors(css: string): string[] {
  * - Bare element/type selectors: div, button, span, etc.
  */
 function validateSelector(selector: string): { valid: boolean; reason?: string } {
+  const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
   // Split on combinators but keep the parts
   // A selector like `[data-slot="a"] [data-slot="b"]` has two parts
-  const parts = selector
+  const parts = normalized
     .split(/(?<=\])[\s>+~]+(?=\[)|(?<=\))[\s>+~]+(?=\[)/)
     .map((s) => s.trim())
     .filter(Boolean);
@@ -151,6 +152,31 @@ describe('CSS selector contract', () => {
       }
 
       expect(violations).toEqual([]);
+    });
+  }
+});
+
+describe('layout selector scoping', () => {
+  const files = getComponentCssFiles();
+  const broadLayoutSlotPattern = /\[data-slot="(main|sidebar|navbar)"\]/;
+
+  for (const file of files) {
+    const filename = file.split(/[/\\]/).pop()!;
+
+    it(`${filename}: anchors broad layout slots to a public layout root`, () => {
+      const css = readFileSync(file, 'utf-8');
+      const selectors = extractSelectors(css);
+
+      const violations = selectors.filter((selector) => {
+        const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
+        if (!broadLayoutSlotPattern.test(normalized)) return false;
+        return !/\[data-slot="(topbar-layout|sidebar-layout)"\]/.test(normalized);
+      });
+
+      expect(
+        violations,
+        `Broad layout slots must be scoped by a public layout root: ${violations.join(', ')}`
+      ).toEqual([]);
     });
   }
 });

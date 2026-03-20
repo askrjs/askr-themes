@@ -3,7 +3,7 @@
  * has corresponding CSS coverage in the default theme.
  *
  * Expects askr-ui to be a sibling directory (../askr-ui).
- * Exit code 1 if uncovered slots are found.
+ * Exit code 1 if uncovered or stale slots are found.
  */
 
 import fs from 'node:fs';
@@ -23,6 +23,7 @@ const THEMES_COMPONENTS_DIR = path.join(
   'default',
   'components'
 );
+const ALLOWED_THEME_ONLY_SLOTS = new Set(['icon']);
 
 function walkFiles(dirPath, ext) {
   const results = [];
@@ -51,11 +52,16 @@ function extractUiSlots() {
 
   for (const file of files) {
     const content = fs.readFileSync(file, 'utf-8');
-    // Match data-slot assignments: 'data-slot': 'value' or "data-slot": "value"
-    const pattern = /['"]data-slot['"]\s*:\s*['"]([^'"]+)['"]/g;
-    let match;
-    while ((match = pattern.exec(content))) {
-      slots.add(match[1]);
+    const patterns = [
+      /['"]data-slot['"]\s*:\s*['"]([^'"]+)['"]/g,
+      /data-slot="([^"]+)"/g,
+    ];
+
+    for (const pattern of patterns) {
+      let match;
+      while ((match = pattern.exec(content))) {
+        slots.add(match[1]);
+      }
     }
   }
 
@@ -83,7 +89,9 @@ function run() {
   const themeSlots = extractThemeSlots();
 
   const uncovered = [...uiSlots].filter((s) => !themeSlots.has(s)).sort();
-  const themeOnly = [...themeSlots].filter((s) => !uiSlots.has(s)).sort();
+  const themeOnly = [...themeSlots]
+    .filter((s) => !uiSlots.has(s) && !ALLOWED_THEME_ONLY_SLOTS.has(s))
+    .sort();
 
   console.log(`UI slots:    ${uiSlots.size}`);
   console.log(`Theme slots: ${themeSlots.size}`);
@@ -104,7 +112,7 @@ function run() {
     }
   }
 
-  if (uncovered.length > 0) {
+  if (uncovered.length > 0 || themeOnly.length > 0) {
     process.exitCode = 1;
   }
 }

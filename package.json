@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/askr-themes",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "CSS-only official themes for askr-ui.",
   "type": "module",
   "license": "Apache-2.0",

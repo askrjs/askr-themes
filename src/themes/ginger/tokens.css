@@ -25,6 +25,14 @@
   --ak-font-size-sm: 0.875rem;
   --ak-font-size-md: 1rem;
   --ak-font-size-lg: 1.125rem;
+  --ak-icon-size-sm: 1rem;
+  --ak-icon-size-md: 1.25rem;
+  --ak-icon-size-lg: 1.5rem;
+  --ak-icon-size-xl: 1.75rem;
+  --ak-icon-stroke-width-sm: 1.75;
+  --ak-icon-stroke-width-md: 2;
+  --ak-icon-stroke-width-lg: 2;
+  --ak-icon-stroke-width-xl: 2.25;
   --ak-breakpoint-sm: 40rem;
   --ak-breakpoint-md: 48rem;
   --ak-breakpoint-lg: 64rem;

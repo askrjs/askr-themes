@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readdirSync, existsSync } from 'node:fs';
+import { readdirSync, existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DEFAULT_COMPONENTS = join(
@@ -17,6 +17,7 @@ const TEMPLATE_COMPONENTS = join(
   'theme',
   'components'
 );
+const THEMES_DIR = join(__dirname, '..', 'src', 'themes');
 
 function listCssFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
@@ -55,5 +56,29 @@ describe('template parity', () => {
       extraInTemplate,
       `Template has extra components not in default theme: ${extraInTemplate.join(', ')}`
     ).toEqual([]);
+  });
+
+  it('official theme entrypoints use the same canonical layout imports', () => {
+    const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
+      existsSync(join(THEMES_DIR, entry, 'index.css'))
+    );
+
+    const importsByTheme = new Map<string, string[]>();
+    for (const theme of themeNames) {
+      const css = readFileSync(join(THEMES_DIR, theme, 'index.css'), 'utf-8');
+      const imports = css
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.startsWith('@import '));
+      importsByTheme.set(theme, imports);
+    }
+
+    const defaultImports = importsByTheme.get('default') ?? [];
+    for (const [theme, imports] of importsByTheme) {
+      expect(
+        imports,
+        `${theme} theme imports drift from default`
+      ).toEqual(defaultImports);
+    }
   });
 });
