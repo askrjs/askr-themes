@@ -8,7 +8,7 @@
   font-size: var(--ak-font-size-md);
   border: 1px solid var(--ak-color-border);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 

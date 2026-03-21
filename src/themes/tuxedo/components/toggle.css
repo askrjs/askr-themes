@@ -8,7 +8,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 

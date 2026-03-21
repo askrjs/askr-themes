@@ -13,7 +13,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-sm);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 
@@ -31,7 +31,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   box-shadow: 0 10px 30px rgba(47, 43, 42, 0.12);
 }
 
@@ -44,7 +44,7 @@
   border: 0;
   border-radius: var(--ak-radius-sm);
   background: transparent;
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }
 
 [data-slot="menubar-item"][data-disabled],
@@ -55,7 +55,7 @@
 
 [data-slot="menubar-label"] {
   padding: 0 var(--ak-space-sm);
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   font-weight: 600;
 }

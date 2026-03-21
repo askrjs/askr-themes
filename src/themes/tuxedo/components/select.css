@@ -9,7 +9,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 
@@ -29,7 +29,7 @@
 }
 
 [data-slot="select-value"][data-placeholder] {
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
 }
 
 [data-slot="select-content"] {
@@ -49,7 +49,7 @@
   min-height: 2.25rem;
   padding: 0 var(--ak-space-sm);
   border-radius: var(--ak-radius-sm);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 
@@ -70,7 +70,7 @@
 
 [data-slot="select-label"] {
   padding: 0 var(--ak-space-sm);
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   font-weight: 600;
 }

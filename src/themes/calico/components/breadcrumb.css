@@ -1,5 +1,5 @@
 [data-slot="breadcrumb"] {
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
 }
 
 [data-slot="breadcrumb-list"] {
@@ -12,16 +12,16 @@
 }
 
 [data-slot="breadcrumb-link"] {
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
   text-decoration: none;
 }
 
 [data-slot="breadcrumb-link"]:hover {
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }
 
 [data-slot="breadcrumb-current"] {
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   font-weight: 600;
 }
 

@@ -4,13 +4,13 @@
 }
 
 [data-slot="field-label"] {
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   font-weight: 600;
 }
 
 [data-slot="field-description"] {
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
 }
 

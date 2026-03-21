@@ -6,7 +6,7 @@
   overflow: hidden;
   border-radius: 999px;
   background: var(--ak-color-surface-muted);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }
 
 [data-slot="avatar-image"] {

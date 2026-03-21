@@ -17,12 +17,21 @@ const TEMPLATE_COMPONENTS = join(
   'theme',
   'components'
 );
+const DEFAULT_TOKENS = join(__dirname, '..', 'src', 'themes', 'default', 'tokens.css');
+const TEMPLATE_TOKENS = join(__dirname, '..', 'templates', 'theme', 'tokens.css');
 const THEMES_DIR = join(__dirname, '..', 'src', 'themes');
 
 function listCssFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f) => f.endsWith('.css'))
+    .sort();
+}
+
+function extractTokenNames(css: string): string[] {
+  return [...css.matchAll(/(--ak-[a-z0-9-]+)/g)]
+    .map((match) => match[1])
+    .filter((token, index, all) => all.indexOf(token) === index)
     .sort();
 }
 
@@ -58,6 +67,13 @@ describe('template parity', () => {
     ).toEqual([]);
   });
 
+  it('template tokens expose the same canonical token names as the default theme', () => {
+    const defaultTokens = extractTokenNames(readFileSync(DEFAULT_TOKENS, 'utf-8'));
+    const templateTokens = extractTokenNames(readFileSync(TEMPLATE_TOKENS, 'utf-8'));
+
+    expect(templateTokens).toEqual(defaultTokens);
+  });
+
   it('official theme entrypoints use the same canonical layout imports', () => {
     const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
       existsSync(join(THEMES_DIR, entry, 'index.css'))
@@ -79,6 +95,24 @@ describe('template parity', () => {
         imports,
         `${theme} theme imports drift from default`
       ).toEqual(defaultImports);
+    }
+  });
+
+  it('official theme token files keep the same canonical token names as default', () => {
+    const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
+      existsSync(join(THEMES_DIR, entry, 'tokens.css'))
+    );
+    const defaultTokens = extractTokenNames(readFileSync(DEFAULT_TOKENS, 'utf-8'));
+
+    for (const theme of themeNames) {
+      const themeTokens = extractTokenNames(
+        readFileSync(join(THEMES_DIR, theme, 'tokens.css'), 'utf-8')
+      );
+
+      expect(
+        themeTokens,
+        `${theme} theme token definitions drift from default`
+      ).toEqual(defaultTokens);
     }
   });
 });

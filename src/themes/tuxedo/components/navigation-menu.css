@@ -17,7 +17,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-sm);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 
@@ -35,7 +35,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   box-shadow: 0 10px 30px rgba(47, 43, 42, 0.12);
 }
 
@@ -46,7 +46,7 @@
   min-height: 2.25rem;
   padding: 0 var(--ak-space-sm);
   border-radius: var(--ak-radius-sm);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   text-decoration: none;
 }
 

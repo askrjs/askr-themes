@@ -27,13 +27,13 @@
   border: 0;
   border-radius: var(--ak-radius-sm);
   background: transparent;
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
   cursor: pointer;
 }
 
 [data-slot="tabs-trigger"][data-state="active"] {
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   box-shadow: 0 1px 2px rgba(31, 34, 37, 0.08);
 }
 
@@ -52,5 +52,5 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }

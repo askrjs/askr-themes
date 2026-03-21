@@ -27,7 +27,7 @@
   padding: 0 var(--ak-space-md);
   border: 0;
   background: transparent;
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   cursor: pointer;
 }
 
@@ -43,5 +43,5 @@
 
 [data-slot="accordion-content"] {
   padding: 0 var(--ak-space-md) var(--ak-space-md);
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
 }

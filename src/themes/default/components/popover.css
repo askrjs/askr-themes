@@ -4,7 +4,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   box-shadow: 0 16px 40px rgba(31, 34, 37, 0.18);
 }
 
@@ -21,7 +21,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-muted);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }
 
 [data-slot="popover-close"][data-disabled] {

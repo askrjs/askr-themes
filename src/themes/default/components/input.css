@@ -5,12 +5,12 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   font-size: var(--ak-font-size-md);
 }
 
 [data-slot="input"]::placeholder {
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
 }
 
 [data-slot="input"]:focus-visible {

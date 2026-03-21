@@ -2,7 +2,7 @@
   max-width: 18rem;
   padding: 0.45rem 0.65rem;
   border-radius: var(--ak-radius-sm);
-  background: var(--ak-color-fg);
+  background: var(--ak-color-text);
   color: var(--ak-color-bg);
   font-size: var(--ak-font-size-sm);
   box-shadow: 0 10px 24px rgba(31, 34, 37, 0.2);

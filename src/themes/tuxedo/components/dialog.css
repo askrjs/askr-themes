@@ -11,20 +11,20 @@
   border: 1px solid var(--ak-color-border);
   border-radius: calc(var(--ak-radius-md) + 4px);
   background: var(--ak-color-surface);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   box-shadow: 0 24px 60px rgba(31, 34, 37, 0.24);
 }
 
 [data-slot="dialog-title"] {
   margin: 0;
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
   font-size: 1.125rem;
   font-weight: 700;
 }
 
 [data-slot="dialog-description"] {
   margin: var(--ak-space-sm) 0 0;
-  color: var(--ak-color-muted);
+  color: var(--ak-color-text-muted);
 }
 
 [data-slot="dialog-close"] {
@@ -36,7 +36,7 @@
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-muted);
-  color: var(--ak-color-fg);
+  color: var(--ak-color-text);
 }
 
 [data-slot="dialog-close"][data-disabled] {
