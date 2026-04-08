@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -20,7 +20,14 @@ const TEMPLATE_ICON_CSS = join(
   'icon.css'
 );
 const THEMING_FILE = join(__dirname, '..', 'THEMING.md');
-const TOKENS_FILE = join(__dirname, '..', 'src', 'themes', 'default', 'tokens.css');
+const TOKENS_FILE = join(
+  __dirname,
+  '..',
+  'src',
+  'themes',
+  'default',
+  'tokens.css'
+);
 
 describe('icon theme contract', () => {
   it('ships the same icon baseline in default and template themes', () => {

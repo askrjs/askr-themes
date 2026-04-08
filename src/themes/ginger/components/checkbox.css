@@ -1,18 +1,24 @@
-[data-slot="checkbox"] {
+[data-slot='checkbox'] {
   inline-size: 1.1rem;
   block-size: 1.1rem;
   margin: 0;
   border-radius: var(--ak-radius-sm);
   accent-color: var(--ak-color-primary);
   cursor: pointer;
+  transition: box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot="checkbox"]:focus-visible {
+[data-slot='checkbox']:hover {
+  box-shadow: 0 0 0 2px var(--ak-color-hover);
+}
+
+[data-slot='checkbox']:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
 }
 
-[data-slot="checkbox"][data-disabled] {
-  opacity: 0.65;
+[data-slot='checkbox'][data-disabled] {
+  opacity: 0.5;
+  pointer-events: none;
   cursor: not-allowed;
 }

@@ -1,4 +1,4 @@
-[data-slot="avatar"] {
+[data-slot='avatar'] {
   display: inline-grid;
   place-items: center;
   inline-size: 2.5rem;
@@ -9,17 +9,17 @@
   color: var(--ak-color-text);
 }
 
-[data-slot="avatar-image"] {
+[data-slot='avatar-image'] {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
 }
 
-[data-slot="avatar-fallback"] {
+[data-slot='avatar-fallback'] {
   display: inline-grid;
   place-items: center;
   inline-size: 100%;
   block-size: 100%;
   font-size: var(--ak-font-size-sm);
-  font-weight: 600;
+  font-weight: var(--ak-font-weight-semibold);
 }

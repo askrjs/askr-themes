@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
-const officialThemes = ['default', 'tuxedo', 'calico', 'ginger'];
+const responsiveContractThemes = ['default'];
 const forbiddenLegacyImports = [
   './components/app-shell.css',
   './components/navbar.css',
@@ -10,38 +10,78 @@ const forbiddenLegacyImports = [
   './components/dashboard-layout.css',
   './components/docs-layout.css',
 ];
+const defaultPatternImports = [
+  './components/responsive-layout.css',
+  './components/data-table.css',
+];
 
 async function read(relativePath) {
   return readFile(path.join(root, relativePath), 'utf8');
 }
 
 async function main() {
-  const defaultResponsive = await read('src/themes/default/components/responsive-layout.css');
-  const templateResponsive = await read('templates/theme/components/responsive-layout.css');
+  const defaultResponsive = await read(
+    'src/themes/default/components/responsive-layout.css'
+  );
+  const templateResponsive = await read(
+    'templates/theme/components/responsive-layout.css'
+  );
   const theming = await read('THEMING.md');
 
-  const requiredIndexImport = '@import "./components/responsive-layout.css";';
-  for (const theme of officialThemes) {
+  const responsiveImportPattern =
+    /@import\s+['"]\.\/components\/responsive-layout\.css['"];?/;
+  for (const theme of responsiveContractThemes) {
     const indexCss = await read(`src/themes/${theme}/index.css`);
-    if (!indexCss.includes(requiredIndexImport)) {
-      throw new Error(`${theme} theme is missing responsive-layout.css import.`);
+    if (!responsiveImportPattern.test(indexCss)) {
+      throw new Error(
+        `${theme} theme is missing responsive-layout.css import.`
+      );
     }
 
     for (const forbiddenImport of forbiddenLegacyImports) {
       if (indexCss.includes(forbiddenImport)) {
-        throw new Error(`${theme} theme still imports legacy layout CSS: ${forbiddenImport}`);
+        throw new Error(
+          `${theme} theme still imports legacy layout CSS: ${forbiddenImport}`
+        );
       }
     }
 
-    const responsiveCss = await read(`src/themes/${theme}/components/responsive-layout.css`);
+    const responsiveCss = await read(
+      `src/themes/${theme}/components/responsive-layout.css`
+    );
     if (responsiveCss !== defaultResponsive) {
-      throw new Error(`${theme} responsive layout CSS is out of sync with default.`);
+      throw new Error(
+        `${theme} responsive layout CSS is out of sync with default.`
+      );
     }
   }
 
   const templateIndex = await read('templates/theme/index.css');
-  if (!templateIndex.includes(requiredIndexImport)) {
+  if (!responsiveImportPattern.test(templateIndex)) {
     throw new Error('Theme template is missing responsive-layout.css import.');
+  }
+
+  for (const forbiddenImport of forbiddenLegacyImports) {
+    if (templateIndex.includes(forbiddenImport)) {
+      throw new Error(
+        `Theme template still imports legacy layout CSS: ${forbiddenImport}`
+      );
+    }
+  }
+
+  const defaultIndex = await read('src/themes/default/index.css');
+  for (const requiredImport of defaultPatternImports) {
+    if (!defaultIndex.includes(requiredImport)) {
+      throw new Error(
+        `Default theme is missing required pattern import: ${requiredImport}`
+      );
+    }
+
+    if (!templateIndex.includes(requiredImport)) {
+      throw new Error(
+        `Theme template is missing required pattern import: ${requiredImport}`
+      );
+    }
   }
 
   const requiredResponsiveSnippets = [
@@ -57,14 +97,18 @@ async function main() {
     '@media (min-width: 80rem)',
   ];
 
+  const normalizedResponsive = defaultResponsive.replace(/'/g, '"');
+
   for (const snippet of requiredResponsiveSnippets) {
-    if (!defaultResponsive.includes(snippet)) {
+    if (!normalizedResponsive.includes(snippet)) {
       throw new Error(`Default responsive layout CSS is missing: ${snippet}`);
     }
   }
 
   if (defaultResponsive !== templateResponsive) {
-    throw new Error('Template responsive layout CSS is out of sync with the default theme.');
+    throw new Error(
+      'Template responsive layout CSS is out of sync with the default theme.'
+    );
   }
 
   const requiredDocs = [

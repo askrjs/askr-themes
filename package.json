@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/askrjs/askr-themes"
+    "url": "https://github.com/askrjs/askr-themes.git"
   },
   "homepage": "https://github.com/askrjs/askr-themes#readme",
   "bugs": {
@@ -52,6 +52,7 @@
     "./default/checkbox.css": "./src/themes/default/components/checkbox.css",
     "./default/collapsible.css": "./src/themes/default/components/collapsible.css",
     "./default/coverage.css": "./src/themes/default/components/coverage.css",
+    "./default/data-table.css": "./src/themes/default/components/data-table.css",
     "./default/dashboard-layout.css": "./src/themes/default/components/dashboard-layout.css",
     "./default/dialog.css": "./src/themes/default/components/dialog.css",
     "./default/docs-layout.css": "./src/themes/default/components/docs-layout.css",
@@ -67,6 +68,7 @@
     "./default/popover.css": "./src/themes/default/components/popover.css",
     "./default/progress.css": "./src/themes/default/components/progress.css",
     "./default/progress-circle.css": "./src/themes/default/components/progress-circle.css",
+    "./default/product-shell.css": "./src/themes/default/components/product-shell.css",
     "./default/radio-group.css": "./src/themes/default/components/radio-group.css",
     "./default/responsive-layout.css": "./src/themes/default/components/responsive-layout.css",
     "./default/select.css": "./src/themes/default/components/select.css",
@@ -92,15 +94,15 @@
   },
   "scripts": {
     "new:theme": "node ./scripts/new-theme.js",
+    "verify:token-contract": "node ./scripts/verify-token-contract.js",
     "verify:responsive": "node ./scripts/verify-responsive-theme.js",
     "verify:slots": "node ./scripts/verify-slot-coverage.js",
-    "test": "vitest run",
-    "fmt": "prettier --write \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
-    "lint": "prettier --check \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
-    "build": "node -e \"console.log('askr-themes is CSS-only; no build step required')\""
+    "test": "vp test run",
+    "fmt": "vp fmt \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
+    "lint": "vp fmt --check \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
+    "build": "npm run verify:token-contract && npm run verify:responsive && npm run verify:slots"
   },
   "devDependencies": {
-    "prettier": "^3.8.1",
-    "vitest": "^4.1.0"
+    "vite-plus": "latest"
   }
 }
