@@ -3,6 +3,6 @@
   Styling is intentionally shared through dialog slots.
 */
 
-[data-slot="dialog-content"] {
+[data-slot='dialog-content'] {
   border-width: 2px;
 }
