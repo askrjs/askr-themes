@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# Build outputs
+dist/
+build/
+
 # Logs
 logs
 *.log
@@ -9,17 +13,29 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build outputs
-dist/
-build/
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# Package artifacts
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+
+# Build artifacts
 *.tgz
 
 # Caches
 .cache/
 .parcel-cache/
 .npm
+.eslintcache
+.stylelintcache
 
 # IDE
 .vscode/
@@ -31,3 +47,8 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Environment
+.env
+.env.*
+!.env.example

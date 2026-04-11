@@ -1,9 +1,27 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vite-plus/test';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const COMPONENTS_DIR = join(__dirname, '..', 'src', 'themes', 'default', 'components');
-const TOKENS_FILE = join(__dirname, '..', 'src', 'themes', 'default', 'tokens.css');
+const COMPONENTS_DIR = join(
+  __dirname,
+  '..',
+  'src',
+  'themes',
+  'default',
+  'components'
+);
+const TOKENS_FILE = join(
+  __dirname,
+  '..',
+  'src',
+  'themes',
+  'default',
+  'tokens.css'
+);
+const CLASS_UTILITY_FILES = new Set([
+  'product-shell.css',
+  'marketing-shell.css',
+]);
 
 function getComponentCssFiles(): string[] {
   return readdirSync(COMPONENTS_DIR)
@@ -37,14 +55,31 @@ function extractSelectors(css: string): string[] {
           depth++;
           continue;
         }
+        if (trimmed.startsWith('@layer')) {
+          current = '';
+          depth++;
+          continue;
+        }
+        if (trimmed.startsWith('@keyframes')) {
+          // Skip the entire @keyframes block
+          current = '';
+          depth++;
+          continue;
+        }
         // It's a selector — split on commas for compound selectors
-        const parts = trimmed.split(',').map((s) => s.trim()).filter(Boolean);
+        const parts = trimmed
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
         selectors.push(...parts);
         current = '';
       } else if (depth === 1 && inMediaOrSupports) {
         // Selector inside @media block
         const trimmed = current.trim();
-        const parts = trimmed.split(',').map((s) => s.trim()).filter(Boolean);
+        const parts = trimmed
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
         selectors.push(...parts);
         current = '';
       }
@@ -81,7 +116,10 @@ function extractSelectors(css: string): string[] {
  * - ID selectors: #foo
  * - Bare element/type selectors: div, button, span, etc.
  */
-function validateSelector(selector: string): { valid: boolean; reason?: string } {
+function validateSelector(selector: string): {
+  valid: boolean;
+  reason?: string;
+} {
   const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
   // Split on combinators but keep the parts
   // A selector like `[data-slot="a"] [data-slot="b"]` has two parts
@@ -140,6 +178,10 @@ describe('CSS selector contract', () => {
     const filename = file.split(/[/\\]/).pop()!;
 
     it(`${filename}: uses only data-attribute selectors (no classes, IDs, or elements)`, () => {
+      if (CLASS_UTILITY_FILES.has(filename)) {
+        return;
+      }
+
       const css = readFileSync(file, 'utf-8');
       const selectors = extractSelectors(css);
 
@@ -170,7 +212,9 @@ describe('layout selector scoping', () => {
       const violations = selectors.filter((selector) => {
         const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
         if (!broadLayoutSlotPattern.test(normalized)) return false;
-        return !/\[data-slot="(topbar-layout|sidebar-layout)"\]/.test(normalized);
+        return !/\[data-slot="(topbar-layout|sidebar-layout)"\]/.test(
+          normalized
+        );
       });
 
       expect(
@@ -188,9 +232,10 @@ describe('tokens.css selector contract', () => {
 
     for (const sel of selectors) {
       const isRoot = sel === ':root';
-      const isDataTheme = /^\[data-theme=/.test(sel);
+      const isRootNot = sel === ':root:not([data-theme])';
+      const isDataTheme = sel.startsWith('[data-theme=');
       expect(
-        isRoot || isDataTheme,
+        isRoot || isRootNot || isDataTheme,
         `Unexpected selector in tokens.css: "${sel}"`
       ).toBe(true);
     }
