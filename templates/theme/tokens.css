@@ -41,22 +41,22 @@
   --ak-space-8: 3rem;
   --ak-space-9: 4rem;
 
-  --ak-radius-sm: 10px;
-  --ak-radius-md: 16px;
-  --ak-radius-lg: 22px;
-  --ak-radius-xl: 32px;
+  --ak-radius-sm: 6px;
+  --ak-radius-md: 10px;
+  --ak-radius-lg: 14px;
+  --ak-radius-xl: 20px;
   --ak-radius-round: 9999px;
 
   --ak-border-width-sm: 1px;
   --ak-border-width-md: 2px;
   --ak-shadow-sm:
-    0 2px 6px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    0 1px 2px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.03);
   --ak-shadow-md:
-    0 18px 40px -22px rgba(15, 23, 42, 0.26),
-    0 10px 20px -16px rgba(15, 23, 42, 0.2);
+    0 10px 30px -18px rgba(15, 23, 42, 0.18),
+    0 2px 8px rgba(15, 23, 42, 0.06);
   --ak-shadow-lg:
-    0 34px 72px -34px rgba(15, 23, 42, 0.38),
-    0 18px 32px -20px rgba(15, 23, 42, 0.24);
+    0 24px 64px -32px rgba(15, 23, 42, 0.24),
+    0 8px 24px rgba(15, 23, 42, 0.08);
   --ak-focus-ring-width: 3px;
   --ak-focus-ring-offset: 2px;
   --ak-duration-fast: 160ms;
@@ -83,17 +83,17 @@
   --ak-layout-sidebar-width-lg: 20rem;
   --ak-layout-sidebar-width-xl: 23rem;
   --ak-layout-sidebar-width: 17rem;
-  --ak-layout-content-max-width: 76rem;
-  --ak-layout-page-gutter: clamp(1rem, 0.65rem + 1.45vw, 2rem);
-  --ak-layout-panel-padding: clamp(1rem, 0.82rem + 0.7vw, 1.45rem);
-  --ak-container-1: 28rem;
-  --ak-container-2: 43rem;
-  --ak-container-3: 55rem;
-  --ak-container-4: 71rem;
-  --ak-section-1: var(--ak-space-5);
-  --ak-section-2: var(--ak-space-6);
-  --ak-section-3: var(--ak-space-7);
-  --ak-section-4: var(--ak-space-8);
+  --ak-layout-content-max-width: 80rem;
+  --ak-layout-page-gutter: clamp(1rem, 0.7rem + 1.25vw, 1.75rem);
+  --ak-layout-panel-padding: clamp(1rem, 0.88rem + 0.55vw, 1.35rem);
+  --ak-container-1: 30rem;
+  --ak-container-2: 42rem;
+  --ak-container-3: 58rem;
+  --ak-container-4: 72rem;
+  --ak-section-1: var(--ak-space-4);
+  --ak-section-2: var(--ak-space-5);
+  --ak-section-3: var(--ak-space-6);
+  --ak-section-4: var(--ak-space-7);
 
   --ak-z-dropdown: 1000;
   --ak-z-sticky: 1100;
