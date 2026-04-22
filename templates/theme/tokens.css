@@ -31,6 +31,15 @@
   --ak-space-xl: 1.5rem;
   --ak-space-2xl: 2.25rem;
   --ak-space-3xl: 3.5rem;
+  --ak-space-1: 0.25rem;
+  --ak-space-2: 0.5rem;
+  --ak-space-3: 0.75rem;
+  --ak-space-4: 1rem;
+  --ak-space-5: 1.5rem;
+  --ak-space-6: 2rem;
+  --ak-space-7: 2.5rem;
+  --ak-space-8: 3rem;
+  --ak-space-9: 4rem;
 
   --ak-radius-sm: 10px;
   --ak-radius-md: 16px;
@@ -77,6 +86,14 @@
   --ak-layout-content-max-width: 76rem;
   --ak-layout-page-gutter: clamp(1rem, 0.65rem + 1.45vw, 2rem);
   --ak-layout-panel-padding: clamp(1rem, 0.82rem + 0.7vw, 1.45rem);
+  --ak-container-1: 28rem;
+  --ak-container-2: 43rem;
+  --ak-container-3: 55rem;
+  --ak-container-4: 71rem;
+  --ak-section-1: var(--ak-space-5);
+  --ak-section-2: var(--ak-space-6);
+  --ak-section-3: var(--ak-space-7);
+  --ak-section-4: var(--ak-space-8);
 
   --ak-z-dropdown: 1000;
   --ak-z-sticky: 1100;

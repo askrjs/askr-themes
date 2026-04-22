@@ -5,7 +5,7 @@ import { join } from 'node:path';
 const DEFAULT_THEME_DIR = join(__dirname, '..', 'src', 'themes', 'default');
 const COMPONENTS_DIR = join(DEFAULT_THEME_DIR, 'components');
 const THEMES_DIR = join(__dirname, '..', 'src', 'themes');
-const OFFICIAL_THEMES = ['default', 'tuxedo', 'calico', 'ginger'] as const;
+const OFFICIAL_THEMES = ['default'] as const;
 const TEMPLATE_COMPONENTS_DIR = join(
   __dirname,
   '..',
@@ -305,11 +305,45 @@ describe('token completeness', () => {
       '--ak-state-unchecked',
     ]);
 
+    const isLayoutRuntimeVar = (token: string) =>
+      /^--ak-(display|m|mx|my|mt|mr|mb|ml|p|px|py|pt|pr|pb|pl|width|min-width|max-width|height|min-height|max-height|position|inset|top|right|bottom|left|overflow|overflow-x|overflow-y|flex-basis|flex-grow|flex-shrink|grid-area|grid-column|grid-column-start|grid-column-end|grid-row|grid-row-start|grid-row-end|gap|column-gap|row-gap|flex-direction|align-items|justify-content|flex-wrap|grid-template-areas|grid-template-columns|grid-template-rows|grid-auto-flow)-(initial|sm|md|lg|xl)$/.test(
+        token
+      );
+
     const missing = [...referencedTokens].filter(
       (token) =>
         !defaultSets.allDefinedTokens.has(token) &&
-        !componentScopedVars.has(token)
+        !componentScopedVars.has(token) &&
+        !isLayoutRuntimeVar(token)
     );
+    expect(missing).toEqual([]);
+  });
+
+  it('should define the canonical layout sizing tokens for containers and sections', () => {
+    const requiredLayoutTokens = [
+      '--ak-container-1',
+      '--ak-container-2',
+      '--ak-container-3',
+      '--ak-container-4',
+      '--ak-section-1',
+      '--ak-section-2',
+      '--ak-section-3',
+      '--ak-section-4',
+      '--ak-space-1',
+      '--ak-space-2',
+      '--ak-space-3',
+      '--ak-space-4',
+      '--ak-space-5',
+      '--ak-space-6',
+      '--ak-space-7',
+      '--ak-space-8',
+      '--ak-space-9',
+    ] as const;
+
+    const missing = requiredLayoutTokens.filter(
+      (token) => !defaultSets.allDefinedTokens.has(token)
+    );
+
     expect(missing).toEqual([]);
   });
 

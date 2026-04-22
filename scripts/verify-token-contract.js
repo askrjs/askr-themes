@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.cwd();
-const officialThemes = ['default', 'tuxedo', 'calico', 'ginger'];
+const officialThemes = ['default'];
 
 const requiredRootTokens = [
   '--ak-font-family-body',

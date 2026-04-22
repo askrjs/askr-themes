@@ -1,0 +1,201 @@
+:where(html) {
+  font-family: var(--ak-font-family-body);
+}
+
+:where(body) {
+  font-family: var(--ak-font-family-body);
+  font-size: var(--ak-type-3-size);
+  line-height: var(--ak-type-3-line-height);
+  letter-spacing: var(--ak-type-3-letter-spacing);
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  color: var(--ak-color-text);
+  font-family: var(--ak-font-family-body);
+  font-weight: var(--ak-font-weight-bold);
+  margin: 0;
+}
+
+:where(h1) {
+  font-size: var(--ak-type-9-size);
+  line-height: var(--ak-type-9-line-height);
+  letter-spacing: var(--ak-type-9-letter-spacing);
+}
+
+:where(h2) {
+  font-size: var(--ak-type-8-size);
+  line-height: var(--ak-type-8-line-height);
+  letter-spacing: var(--ak-type-8-letter-spacing);
+}
+
+:where(h3) {
+  font-size: var(--ak-type-7-size);
+  line-height: var(--ak-type-7-line-height);
+  letter-spacing: var(--ak-type-7-letter-spacing);
+}
+
+:where(h4) {
+  font-size: var(--ak-type-6-size);
+  line-height: var(--ak-type-6-line-height);
+  letter-spacing: var(--ak-type-6-letter-spacing);
+}
+
+:where(h5) {
+  font-size: var(--ak-type-5-size);
+  line-height: var(--ak-type-5-line-height);
+  letter-spacing: var(--ak-type-5-letter-spacing);
+}
+
+:where(h6) {
+  font-size: var(--ak-type-4-size);
+  line-height: var(--ak-type-4-line-height);
+  letter-spacing: var(--ak-type-4-letter-spacing);
+}
+
+:where(p, li, dd, dt) {
+  color: var(--ak-color-text);
+}
+
+:where(p, li) {
+  font-size: var(--ak-type-3-size);
+  line-height: var(--ak-type-3-line-height);
+  letter-spacing: var(--ak-type-3-letter-spacing);
+}
+
+:where(small) {
+  font-size: var(--ak-type-1-size);
+  line-height: var(--ak-type-1-line-height);
+  letter-spacing: var(--ak-type-1-letter-spacing);
+}
+
+:where(strong) {
+  font-weight: var(--ak-font-weight-bold);
+}
+
+:where(em) {
+  font-family: var(--ak-font-family-emphasis);
+  font-style: italic;
+}
+
+:where(blockquote) {
+  margin: 0;
+  padding-inline-start: 1rem;
+  border-inline-start: 1px solid var(--ak-color-border);
+  color: var(--ak-color-text-muted);
+  font-family: var(--ak-font-family-quote);
+  font-size: var(--ak-type-5-size);
+  line-height: var(--ak-type-5-line-height);
+  letter-spacing: var(--ak-type-5-letter-spacing);
+}
+
+:where(code, kbd, samp, pre) {
+  font-family: var(--ak-font-family-mono);
+}
+
+:where(code, kbd) {
+  font-size: 0.925em;
+}
+
+:where(pre) {
+  margin: 0;
+  overflow: auto;
+  font-size: var(--ak-type-2-size);
+  line-height: var(--ak-type-2-line-height);
+}
+
+.ak-prose {
+  display: grid;
+  gap: 1rem;
+  max-inline-size: 42rem;
+}
+
+.ak-prose > * {
+  margin: 0;
+}
+
+.ak-prose > h1,
+.ak-prose > h2,
+.ak-prose > h3,
+.ak-prose > h4,
+.ak-prose > h5,
+.ak-prose > h6 {
+  max-inline-size: 22ch;
+}
+
+.ak-prose > p,
+.ak-prose > ul,
+.ak-prose > ol,
+.ak-prose > blockquote {
+  max-inline-size: 66ch;
+}
+
+.ak-prose > ul,
+.ak-prose > ol {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+}
+
+.ak-type-scale {
+  display: grid;
+  gap: 0.75rem;
+  inline-size: 100%;
+}
+
+.ak-type-scale__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  gap: 1rem;
+  align-items: baseline;
+  padding-block: 0.625rem;
+  border-bottom: 1px solid var(--ak-color-border-subtle);
+}
+
+.ak-type-scale__row:last-child {
+  border-bottom: none;
+}
+
+.ak-type-scale__sample {
+  color: var(--ak-color-text);
+  font-weight: var(--ak-font-weight-medium);
+}
+
+.ak-type-scale__meta {
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-type-2-size);
+  line-height: var(--ak-type-2-line-height);
+  white-space: nowrap;
+}
+
+.ak-type-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.ak-type-card {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 0.75rem;
+  background: var(--ak-color-surface);
+}
+
+.ak-type-card > p {
+  color: var(--ak-color-text-muted);
+}
+
+.ak-type-card__eyebrow {
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-type-1-size);
+  line-height: var(--ak-type-1-line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .ak-type-scale__row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}

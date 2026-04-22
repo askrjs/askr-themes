@@ -1,6 +1,6 @@
 # Styling: askr-themes
 
-`@askrjs/askr-themes` provides visual defaults for Askr applications.
+`@askrjs/askr-themes` provides the canonical default visual theme for Askr applications.
 
 ## What askr-themes is
 

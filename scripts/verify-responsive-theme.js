@@ -11,6 +11,7 @@ const forbiddenLegacyImports = [
   './components/docs-layout.css',
 ];
 const defaultPatternImports = [
+  './components/layout.css',
   './components/responsive-layout.css',
   './components/data-table.css',
 ];
@@ -23,9 +24,11 @@ async function main() {
   const defaultResponsive = await read(
     'src/themes/default/components/responsive-layout.css'
   );
+  const defaultLayout = await read('src/themes/default/components/layout.css');
   const templateResponsive = await read(
     'templates/theme/components/responsive-layout.css'
   );
+  const templateLayout = await read('templates/theme/components/layout.css');
   const theming = await read('THEMING.md');
 
   const responsiveImportPattern =
@@ -89,8 +92,18 @@ async function main() {
     ':where([data-slot="sidebar-layout"])',
     ':where([data-slot="topbar-layout"]) > :where([data-slot="navbar"])',
     ':where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"])',
-    ':where([data-slot="container"][data-size="lg"])',
-    ':where([data-slot="container"][data-max-width="xl"])',
+    '@media (min-width: 40rem)',
+    '@media (min-width: 48rem)',
+    '@media (min-width: 64rem)',
+    '@media (min-width: 80rem)',
+  ];
+
+  const requiredLayoutSnippets = [
+    ':where([data-ak-layout="true"])',
+    ':where([data-slot="container"])',
+    '--ak-grid-template-columns-initial',
+    '--ak-flex-direction-initial',
+    '--ak-max-width-initial',
     '@media (min-width: 40rem)',
     '@media (min-width: 48rem)',
     '@media (min-width: 64rem)',
@@ -98,6 +111,7 @@ async function main() {
   ];
 
   const normalizedResponsive = defaultResponsive.replace(/'/g, '"');
+  const normalizedLayout = defaultLayout.replace(/'/g, '"');
 
   for (const snippet of requiredResponsiveSnippets) {
     if (!normalizedResponsive.includes(snippet)) {
@@ -105,10 +119,20 @@ async function main() {
     }
   }
 
+  for (const snippet of requiredLayoutSnippets) {
+    if (!normalizedLayout.includes(snippet)) {
+      throw new Error(`Default layout primitive CSS is missing: ${snippet}`);
+    }
+  }
+
   if (defaultResponsive !== templateResponsive) {
     throw new Error(
       'Template responsive layout CSS is out of sync with the default theme.'
     );
+  }
+
+  if (!templateLayout.includes('Layout primitive contract placeholders')) {
+    throw new Error('Theme template is missing the layout.css placeholder.');
   }
 
   const requiredDocs = [

@@ -1,6 +1,6 @@
 # @askrjs/askr-themes
 
-CSS-only official themes for askr-ui.
+CSS-only default theme for askr-ui.
 
 ## Contents
 

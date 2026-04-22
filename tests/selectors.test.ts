@@ -21,6 +21,7 @@ const TOKENS_FILE = join(
 const CLASS_UTILITY_FILES = new Set([
   'product-shell.css',
   'marketing-shell.css',
+  'typography.css',
 ]);
 
 function getComponentCssFiles(): string[] {

@@ -2,8 +2,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --ak-font-family-body:
-    'Aptos', 'Segoe UI Variable Text', 'Segoe UI', ui-sans-serif, sans-serif;
-  --ak-font-family-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --ak-font-family-mono:
+    'Menlo', 'Consolas', 'Bitstream Vera Sans Mono', ui-monospace, monospace,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --ak-font-family-emphasis: 'Times New Roman', Times, serif;
+  --ak-font-family-quote: 'Times New Roman', Times, serif;
   --ak-font-family: var(--ak-font-family-body);
 
   --ak-font-size-xs: 0.75rem;
@@ -12,17 +18,47 @@
   --ak-font-size-lg: 1.125rem;
   --ak-font-size-xl: 1.25rem;
   --ak-font-size-2xl: 1.5rem;
-  --ak-font-size-heading: clamp(1.2rem, 1.05rem + 0.72vw, 1.75rem);
-  --ak-font-size-display: clamp(2.2rem, 1.55rem + 2.35vw, 3.55rem);
+  --ak-font-size-3xl: 1.75rem;
+  --ak-font-size-heading: 2.1875rem;
+  --ak-font-size-display: 3.75rem;
 
+  --ak-font-weight-light: 300;
   --ak-font-weight-regular: 400;
   --ak-font-weight-medium: 500;
   --ak-font-weight-semibold: 600;
   --ak-font-weight-bold: 700;
 
-  --ak-line-height-tight: 1.15;
-  --ak-line-height-normal: 1.55;
-  --ak-line-height-relaxed: 1.7;
+  --ak-line-height-tight: 1.1;
+  --ak-line-height-normal: 1.5;
+  --ak-line-height-relaxed: 1.65;
+
+  --ak-type-1-size: 0.75rem;
+  --ak-type-1-line-height: 1rem;
+  --ak-type-1-letter-spacing: 0.0025em;
+  --ak-type-2-size: 0.875rem;
+  --ak-type-2-line-height: 1.25rem;
+  --ak-type-2-letter-spacing: 0em;
+  --ak-type-3-size: 1rem;
+  --ak-type-3-line-height: 1.5rem;
+  --ak-type-3-letter-spacing: 0em;
+  --ak-type-4-size: 1.125rem;
+  --ak-type-4-line-height: 1.625rem;
+  --ak-type-4-letter-spacing: -0.0025em;
+  --ak-type-5-size: 1.25rem;
+  --ak-type-5-line-height: 1.75rem;
+  --ak-type-5-letter-spacing: -0.005em;
+  --ak-type-6-size: 1.5rem;
+  --ak-type-6-line-height: 1.875rem;
+  --ak-type-6-letter-spacing: -0.00625em;
+  --ak-type-7-size: 1.75rem;
+  --ak-type-7-line-height: 2.25rem;
+  --ak-type-7-letter-spacing: -0.0075em;
+  --ak-type-8-size: 2.1875rem;
+  --ak-type-8-line-height: 2.5rem;
+  --ak-type-8-letter-spacing: -0.01em;
+  --ak-type-9-size: 3.75rem;
+  --ak-type-9-line-height: 3.75rem;
+  --ak-type-9-letter-spacing: -0.025em;
 
   --ak-space-xs: 0.25rem;
   --ak-space-sm: 0.5rem;
@@ -31,6 +67,15 @@
   --ak-space-xl: 1.5rem;
   --ak-space-2xl: 2.25rem;
   --ak-space-3xl: 3.5rem;
+  --ak-space-1: 0.25rem;
+  --ak-space-2: 0.5rem;
+  --ak-space-3: 0.75rem;
+  --ak-space-4: 1rem;
+  --ak-space-5: 1.5rem;
+  --ak-space-6: 2rem;
+  --ak-space-7: 2.5rem;
+  --ak-space-8: 3rem;
+  --ak-space-9: 4rem;
 
   --ak-radius-sm: 10px;
   --ak-radius-md: 16px;
@@ -77,6 +122,14 @@
   --ak-layout-content-max-width: 76rem;
   --ak-layout-page-gutter: clamp(1rem, 0.65rem + 1.45vw, 2rem);
   --ak-layout-panel-padding: clamp(1rem, 0.82rem + 0.7vw, 1.45rem);
+  --ak-container-1: 28rem;
+  --ak-container-2: 43rem;
+  --ak-container-3: 55rem;
+  --ak-container-4: 71rem;
+  --ak-section-1: var(--ak-space-5);
+  --ak-section-2: var(--ak-space-6);
+  --ak-section-3: var(--ak-space-7);
+  --ak-section-4: var(--ak-space-8);
 
   --ak-z-dropdown: 1000;
   --ak-z-sticky: 1100;

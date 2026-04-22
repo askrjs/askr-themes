@@ -1,0 +1,335 @@
+:where([data-ak-layout='true']) {
+  display: var(--ak-display-initial);
+  margin: var(--ak-m-initial);
+  margin-block: var(--ak-my-initial);
+  margin-inline: var(--ak-mx-initial);
+  margin-top: var(--ak-mt-initial);
+  margin-right: var(--ak-mr-initial);
+  margin-bottom: var(--ak-mb-initial);
+  margin-left: var(--ak-ml-initial);
+  padding: var(--ak-p-initial);
+  padding-block: var(--ak-py-initial);
+  padding-inline: var(--ak-px-initial);
+  padding-top: var(--ak-pt-initial);
+  padding-right: var(--ak-pr-initial);
+  padding-bottom: var(--ak-pb-initial);
+  padding-left: var(--ak-pl-initial);
+  width: var(--ak-width-initial);
+  min-width: var(--ak-min-width-initial);
+  max-width: var(--ak-max-width-initial);
+  height: var(--ak-height-initial);
+  min-height: var(--ak-min-height-initial);
+  max-height: var(--ak-max-height-initial);
+  position: var(--ak-position-initial);
+  inset: var(--ak-inset-initial);
+  top: var(--ak-top-initial);
+  right: var(--ak-right-initial);
+  bottom: var(--ak-bottom-initial);
+  left: var(--ak-left-initial);
+  overflow: var(--ak-overflow-initial);
+  overflow-x: var(--ak-overflow-x-initial);
+  overflow-y: var(--ak-overflow-y-initial);
+  flex-basis: var(--ak-flex-basis-initial);
+  flex-grow: var(--ak-flex-grow-initial);
+  flex-shrink: var(--ak-flex-shrink-initial);
+  grid-area: var(--ak-grid-area-initial);
+  grid-column: var(--ak-grid-column-initial);
+  grid-column-start: var(--ak-grid-column-start-initial);
+  grid-column-end: var(--ak-grid-column-end-initial);
+  grid-row: var(--ak-grid-row-initial);
+  grid-row-start: var(--ak-grid-row-start-initial);
+  grid-row-end: var(--ak-grid-row-end-initial);
+  gap: var(--ak-gap-initial);
+  column-gap: var(--ak-column-gap-initial);
+  row-gap: var(--ak-row-gap-initial);
+  flex-direction: var(--ak-flex-direction-initial);
+  align-items: var(--ak-align-items-initial);
+  justify-content: var(--ak-justify-content-initial);
+  flex-wrap: var(--ak-flex-wrap-initial);
+  grid-template-areas: var(--ak-grid-template-areas-initial);
+  grid-template-columns: var(--ak-grid-template-columns-initial);
+  grid-template-rows: var(--ak-grid-template-rows-initial);
+  grid-auto-flow: var(--ak-grid-auto-flow-initial);
+}
+
+:where([data-slot='container']) {
+  box-sizing: border-box;
+  width: var(--ak-width-initial, 100%);
+  max-width: min(100%, var(--ak-max-width-initial, var(--ak-container-4)));
+  margin-left: var(--ak-ml-initial, auto);
+  margin-right: var(--ak-mr-initial, auto);
+  padding-left: var(--ak-pl-initial, var(--ak-px-initial, var(--ak-layout-page-gutter)));
+  padding-right: var(--ak-pr-initial, var(--ak-px-initial, var(--ak-layout-page-gutter)));
+}
+
+@media (min-width: 40rem) {
+  :where([data-ak-layout='true']) {
+    display: var(--ak-display-sm, var(--ak-display-initial));
+    margin: var(--ak-m-sm, var(--ak-m-initial));
+    margin-block: var(--ak-my-sm, var(--ak-my-initial));
+    margin-inline: var(--ak-mx-sm, var(--ak-mx-initial));
+    margin-top: var(--ak-mt-sm, var(--ak-mt-initial));
+    margin-right: var(--ak-mr-sm, var(--ak-mr-initial));
+    margin-bottom: var(--ak-mb-sm, var(--ak-mb-initial));
+    margin-left: var(--ak-ml-sm, var(--ak-ml-initial));
+    padding: var(--ak-p-sm, var(--ak-p-initial));
+    padding-block: var(--ak-py-sm, var(--ak-py-initial));
+    padding-inline: var(--ak-px-sm, var(--ak-px-initial));
+    padding-top: var(--ak-pt-sm, var(--ak-pt-initial));
+    padding-right: var(--ak-pr-sm, var(--ak-pr-initial));
+    padding-bottom: var(--ak-pb-sm, var(--ak-pb-initial));
+    padding-left: var(--ak-pl-sm, var(--ak-pl-initial));
+    width: var(--ak-width-sm, var(--ak-width-initial));
+    min-width: var(--ak-min-width-sm, var(--ak-min-width-initial));
+    max-width: var(--ak-max-width-sm, var(--ak-max-width-initial));
+    height: var(--ak-height-sm, var(--ak-height-initial));
+    min-height: var(--ak-min-height-sm, var(--ak-min-height-initial));
+    max-height: var(--ak-max-height-sm, var(--ak-max-height-initial));
+    position: var(--ak-position-sm, var(--ak-position-initial));
+    inset: var(--ak-inset-sm, var(--ak-inset-initial));
+    top: var(--ak-top-sm, var(--ak-top-initial));
+    right: var(--ak-right-sm, var(--ak-right-initial));
+    bottom: var(--ak-bottom-sm, var(--ak-bottom-initial));
+    left: var(--ak-left-sm, var(--ak-left-initial));
+    overflow: var(--ak-overflow-sm, var(--ak-overflow-initial));
+    overflow-x: var(--ak-overflow-x-sm, var(--ak-overflow-x-initial));
+    overflow-y: var(--ak-overflow-y-sm, var(--ak-overflow-y-initial));
+    flex-basis: var(--ak-flex-basis-sm, var(--ak-flex-basis-initial));
+    flex-grow: var(--ak-flex-grow-sm, var(--ak-flex-grow-initial));
+    flex-shrink: var(--ak-flex-shrink-sm, var(--ak-flex-shrink-initial));
+    grid-area: var(--ak-grid-area-sm, var(--ak-grid-area-initial));
+    grid-column: var(--ak-grid-column-sm, var(--ak-grid-column-initial));
+    grid-column-start: var(--ak-grid-column-start-sm, var(--ak-grid-column-start-initial));
+    grid-column-end: var(--ak-grid-column-end-sm, var(--ak-grid-column-end-initial));
+    grid-row: var(--ak-grid-row-sm, var(--ak-grid-row-initial));
+    grid-row-start: var(--ak-grid-row-start-sm, var(--ak-grid-row-start-initial));
+    grid-row-end: var(--ak-grid-row-end-sm, var(--ak-grid-row-end-initial));
+    gap: var(--ak-gap-sm, var(--ak-gap-initial));
+    column-gap: var(--ak-column-gap-sm, var(--ak-column-gap-initial));
+    row-gap: var(--ak-row-gap-sm, var(--ak-row-gap-initial));
+    flex-direction: var(--ak-flex-direction-sm, var(--ak-flex-direction-initial));
+    align-items: var(--ak-align-items-sm, var(--ak-align-items-initial));
+    justify-content: var(--ak-justify-content-sm, var(--ak-justify-content-initial));
+    flex-wrap: var(--ak-flex-wrap-sm, var(--ak-flex-wrap-initial));
+    grid-template-areas: var(--ak-grid-template-areas-sm, var(--ak-grid-template-areas-initial));
+    grid-template-columns: var(--ak-grid-template-columns-sm, var(--ak-grid-template-columns-initial));
+    grid-template-rows: var(--ak-grid-template-rows-sm, var(--ak-grid-template-rows-initial));
+    grid-auto-flow: var(--ak-grid-auto-flow-sm, var(--ak-grid-auto-flow-initial));
+  }
+
+  :where([data-slot='container']) {
+    width: var(--ak-width-sm, var(--ak-width-initial, 100%));
+    max-width: min(
+      100%,
+      var(--ak-max-width-sm, var(--ak-max-width-initial, var(--ak-container-4)))
+    );
+    margin-left: var(--ak-ml-sm, var(--ak-ml-initial, auto));
+    margin-right: var(--ak-mr-sm, var(--ak-mr-initial, auto));
+    padding-left: var(--ak-pl-sm, var(--ak-pl-initial, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))));
+    padding-right: var(--ak-pr-sm, var(--ak-pr-initial, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))));
+  }
+}
+
+@media (min-width: 48rem) {
+  :where([data-ak-layout='true']) {
+    display: var(--ak-display-md, var(--ak-display-sm, var(--ak-display-initial)));
+    margin: var(--ak-m-md, var(--ak-m-sm, var(--ak-m-initial)));
+    margin-block: var(--ak-my-md, var(--ak-my-sm, var(--ak-my-initial)));
+    margin-inline: var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-initial)));
+    margin-top: var(--ak-mt-md, var(--ak-mt-sm, var(--ak-mt-initial)));
+    margin-right: var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial)));
+    margin-bottom: var(--ak-mb-md, var(--ak-mb-sm, var(--ak-mb-initial)));
+    margin-left: var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial)));
+    padding: var(--ak-p-md, var(--ak-p-sm, var(--ak-p-initial)));
+    padding-block: var(--ak-py-md, var(--ak-py-sm, var(--ak-py-initial)));
+    padding-inline: var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial)));
+    padding-top: var(--ak-pt-md, var(--ak-pt-sm, var(--ak-pt-initial)));
+    padding-right: var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial)));
+    padding-bottom: var(--ak-pb-md, var(--ak-pb-sm, var(--ak-pb-initial)));
+    padding-left: var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial)));
+    width: var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial)));
+    min-width: var(--ak-min-width-md, var(--ak-min-width-sm, var(--ak-min-width-initial)));
+    max-width: var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial)));
+    height: var(--ak-height-md, var(--ak-height-sm, var(--ak-height-initial)));
+    min-height: var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-initial)));
+    max-height: var(--ak-max-height-md, var(--ak-max-height-sm, var(--ak-max-height-initial)));
+    position: var(--ak-position-md, var(--ak-position-sm, var(--ak-position-initial)));
+    inset: var(--ak-inset-md, var(--ak-inset-sm, var(--ak-inset-initial)));
+    top: var(--ak-top-md, var(--ak-top-sm, var(--ak-top-initial)));
+    right: var(--ak-right-md, var(--ak-right-sm, var(--ak-right-initial)));
+    bottom: var(--ak-bottom-md, var(--ak-bottom-sm, var(--ak-bottom-initial)));
+    left: var(--ak-left-md, var(--ak-left-sm, var(--ak-left-initial)));
+    overflow: var(--ak-overflow-md, var(--ak-overflow-sm, var(--ak-overflow-initial)));
+    overflow-x: var(--ak-overflow-x-md, var(--ak-overflow-x-sm, var(--ak-overflow-x-initial)));
+    overflow-y: var(--ak-overflow-y-md, var(--ak-overflow-y-sm, var(--ak-overflow-y-initial)));
+    flex-basis: var(--ak-flex-basis-md, var(--ak-flex-basis-sm, var(--ak-flex-basis-initial)));
+    flex-grow: var(--ak-flex-grow-md, var(--ak-flex-grow-sm, var(--ak-flex-grow-initial)));
+    flex-shrink: var(--ak-flex-shrink-md, var(--ak-flex-shrink-sm, var(--ak-flex-shrink-initial)));
+    grid-area: var(--ak-grid-area-md, var(--ak-grid-area-sm, var(--ak-grid-area-initial)));
+    grid-column: var(--ak-grid-column-md, var(--ak-grid-column-sm, var(--ak-grid-column-initial)));
+    grid-column-start: var(--ak-grid-column-start-md, var(--ak-grid-column-start-sm, var(--ak-grid-column-start-initial)));
+    grid-column-end: var(--ak-grid-column-end-md, var(--ak-grid-column-end-sm, var(--ak-grid-column-end-initial)));
+    grid-row: var(--ak-grid-row-md, var(--ak-grid-row-sm, var(--ak-grid-row-initial)));
+    grid-row-start: var(--ak-grid-row-start-md, var(--ak-grid-row-start-sm, var(--ak-grid-row-start-initial)));
+    grid-row-end: var(--ak-grid-row-end-md, var(--ak-grid-row-end-sm, var(--ak-grid-row-end-initial)));
+    gap: var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-initial)));
+    column-gap: var(--ak-column-gap-md, var(--ak-column-gap-sm, var(--ak-column-gap-initial)));
+    row-gap: var(--ak-row-gap-md, var(--ak-row-gap-sm, var(--ak-row-gap-initial)));
+    flex-direction: var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-initial)));
+    align-items: var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-initial)));
+    justify-content: var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-initial)));
+    flex-wrap: var(--ak-flex-wrap-md, var(--ak-flex-wrap-sm, var(--ak-flex-wrap-initial)));
+    grid-template-areas: var(--ak-grid-template-areas-md, var(--ak-grid-template-areas-sm, var(--ak-grid-template-areas-initial)));
+    grid-template-columns: var(--ak-grid-template-columns-md, var(--ak-grid-template-columns-sm, var(--ak-grid-template-columns-initial)));
+    grid-template-rows: var(--ak-grid-template-rows-md, var(--ak-grid-template-rows-sm, var(--ak-grid-template-rows-initial)));
+    grid-auto-flow: var(--ak-grid-auto-flow-md, var(--ak-grid-auto-flow-sm, var(--ak-grid-auto-flow-initial)));
+  }
+
+  :where([data-slot='container']) {
+    width: var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%)));
+    max-width: min(
+      100%,
+      var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial, var(--ak-container-4))))
+    );
+    margin-left: var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial, auto)));
+    margin-right: var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial, auto)));
+    padding-left: var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))));
+    padding-right: var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))));
+  }
+}
+
+@media (min-width: 64rem) {
+  :where([data-ak-layout='true']) {
+    display: var(--ak-display-lg, var(--ak-display-md, var(--ak-display-sm, var(--ak-display-initial))));
+    margin: var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-initial))));
+    margin-block: var(--ak-my-lg, var(--ak-my-md, var(--ak-my-sm, var(--ak-my-initial))));
+    margin-inline: var(--ak-mx-lg, var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-initial))));
+    margin-top: var(--ak-mt-lg, var(--ak-mt-md, var(--ak-mt-sm, var(--ak-mt-initial))));
+    margin-right: var(--ak-mr-lg, var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial))));
+    margin-bottom: var(--ak-mb-lg, var(--ak-mb-md, var(--ak-mb-sm, var(--ak-mb-initial))));
+    margin-left: var(--ak-ml-lg, var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial))));
+    padding: var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-initial))));
+    padding-block: var(--ak-py-lg, var(--ak-py-md, var(--ak-py-sm, var(--ak-py-initial))));
+    padding-inline: var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial))));
+    padding-top: var(--ak-pt-lg, var(--ak-pt-md, var(--ak-pt-sm, var(--ak-pt-initial))));
+    padding-right: var(--ak-pr-lg, var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial))));
+    padding-bottom: var(--ak-pb-lg, var(--ak-pb-md, var(--ak-pb-sm, var(--ak-pb-initial))));
+    padding-left: var(--ak-pl-lg, var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial))));
+    width: var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial))));
+    min-width: var(--ak-min-width-lg, var(--ak-min-width-md, var(--ak-min-width-sm, var(--ak-min-width-initial))));
+    max-width: var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial))));
+    height: var(--ak-height-lg, var(--ak-height-md, var(--ak-height-sm, var(--ak-height-initial))));
+    min-height: var(--ak-min-height-lg, var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-initial))));
+    max-height: var(--ak-max-height-lg, var(--ak-max-height-md, var(--ak-max-height-sm, var(--ak-max-height-initial))));
+    position: var(--ak-position-lg, var(--ak-position-md, var(--ak-position-sm, var(--ak-position-initial))));
+    inset: var(--ak-inset-lg, var(--ak-inset-md, var(--ak-inset-sm, var(--ak-inset-initial))));
+    top: var(--ak-top-lg, var(--ak-top-md, var(--ak-top-sm, var(--ak-top-initial))));
+    right: var(--ak-right-lg, var(--ak-right-md, var(--ak-right-sm, var(--ak-right-initial))));
+    bottom: var(--ak-bottom-lg, var(--ak-bottom-md, var(--ak-bottom-sm, var(--ak-bottom-initial))));
+    left: var(--ak-left-lg, var(--ak-left-md, var(--ak-left-sm, var(--ak-left-initial))));
+    overflow: var(--ak-overflow-lg, var(--ak-overflow-md, var(--ak-overflow-sm, var(--ak-overflow-initial))));
+    overflow-x: var(--ak-overflow-x-lg, var(--ak-overflow-x-md, var(--ak-overflow-x-sm, var(--ak-overflow-x-initial))));
+    overflow-y: var(--ak-overflow-y-lg, var(--ak-overflow-y-md, var(--ak-overflow-y-sm, var(--ak-overflow-y-initial))));
+    flex-basis: var(--ak-flex-basis-lg, var(--ak-flex-basis-md, var(--ak-flex-basis-sm, var(--ak-flex-basis-initial))));
+    flex-grow: var(--ak-flex-grow-lg, var(--ak-flex-grow-md, var(--ak-flex-grow-sm, var(--ak-flex-grow-initial))));
+    flex-shrink: var(--ak-flex-shrink-lg, var(--ak-flex-shrink-md, var(--ak-flex-shrink-sm, var(--ak-flex-shrink-initial))));
+    grid-area: var(--ak-grid-area-lg, var(--ak-grid-area-md, var(--ak-grid-area-sm, var(--ak-grid-area-initial))));
+    grid-column: var(--ak-grid-column-lg, var(--ak-grid-column-md, var(--ak-grid-column-sm, var(--ak-grid-column-initial))));
+    grid-column-start: var(--ak-grid-column-start-lg, var(--ak-grid-column-start-md, var(--ak-grid-column-start-sm, var(--ak-grid-column-start-initial))));
+    grid-column-end: var(--ak-grid-column-end-lg, var(--ak-grid-column-end-md, var(--ak-grid-column-end-sm, var(--ak-grid-column-end-initial))));
+    grid-row: var(--ak-grid-row-lg, var(--ak-grid-row-md, var(--ak-grid-row-sm, var(--ak-grid-row-initial))));
+    grid-row-start: var(--ak-grid-row-start-lg, var(--ak-grid-row-start-md, var(--ak-grid-row-start-sm, var(--ak-grid-row-start-initial))));
+    grid-row-end: var(--ak-grid-row-end-lg, var(--ak-grid-row-end-md, var(--ak-grid-row-end-sm, var(--ak-grid-row-end-initial))));
+    gap: var(--ak-gap-lg, var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-initial))));
+    column-gap: var(--ak-column-gap-lg, var(--ak-column-gap-md, var(--ak-column-gap-sm, var(--ak-column-gap-initial))));
+    row-gap: var(--ak-row-gap-lg, var(--ak-row-gap-md, var(--ak-row-gap-sm, var(--ak-row-gap-initial))));
+    flex-direction: var(--ak-flex-direction-lg, var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-initial))));
+    align-items: var(--ak-align-items-lg, var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-initial))));
+    justify-content: var(--ak-justify-content-lg, var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-initial))));
+    flex-wrap: var(--ak-flex-wrap-lg, var(--ak-flex-wrap-md, var(--ak-flex-wrap-sm, var(--ak-flex-wrap-initial))));
+    grid-template-areas: var(--ak-grid-template-areas-lg, var(--ak-grid-template-areas-md, var(--ak-grid-template-areas-sm, var(--ak-grid-template-areas-initial))));
+    grid-template-columns: var(--ak-grid-template-columns-lg, var(--ak-grid-template-columns-md, var(--ak-grid-template-columns-sm, var(--ak-grid-template-columns-initial))));
+    grid-template-rows: var(--ak-grid-template-rows-lg, var(--ak-grid-template-rows-md, var(--ak-grid-template-rows-sm, var(--ak-grid-template-rows-initial))));
+    grid-auto-flow: var(--ak-grid-auto-flow-lg, var(--ak-grid-auto-flow-md, var(--ak-grid-auto-flow-sm, var(--ak-grid-auto-flow-initial))));
+  }
+
+  :where([data-slot='container']) {
+    width: var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%))));
+    max-width: min(
+      100%,
+      var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial, var(--ak-container-4)))))
+    );
+    margin-left: var(--ak-ml-lg, var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial, auto))));
+    margin-right: var(--ak-mr-lg, var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial, auto))));
+    padding-left: var(--ak-pl-lg, var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))))));
+    padding-right: var(--ak-pr-lg, var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))))));
+  }
+}
+
+@media (min-width: 80rem) {
+  :where([data-ak-layout='true']) {
+    display: var(--ak-display-xl, var(--ak-display-lg, var(--ak-display-md, var(--ak-display-sm, var(--ak-display-initial)))));
+    margin: var(--ak-m-xl, var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-initial)))));
+    margin-block: var(--ak-my-xl, var(--ak-my-lg, var(--ak-my-md, var(--ak-my-sm, var(--ak-my-initial)))));
+    margin-inline: var(--ak-mx-xl, var(--ak-mx-lg, var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-initial)))));
+    margin-top: var(--ak-mt-xl, var(--ak-mt-lg, var(--ak-mt-md, var(--ak-mt-sm, var(--ak-mt-initial)))));
+    margin-right: var(--ak-mr-xl, var(--ak-mr-lg, var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial)))));
+    margin-bottom: var(--ak-mb-xl, var(--ak-mb-lg, var(--ak-mb-md, var(--ak-mb-sm, var(--ak-mb-initial)))));
+    margin-left: var(--ak-ml-xl, var(--ak-ml-lg, var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial)))));
+    padding: var(--ak-p-xl, var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-initial)))));
+    padding-block: var(--ak-py-xl, var(--ak-py-lg, var(--ak-py-md, var(--ak-py-sm, var(--ak-py-initial)))));
+    padding-inline: var(--ak-px-xl, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial)))));
+    padding-top: var(--ak-pt-xl, var(--ak-pt-lg, var(--ak-pt-md, var(--ak-pt-sm, var(--ak-pt-initial)))));
+    padding-right: var(--ak-pr-xl, var(--ak-pr-lg, var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial)))));
+    padding-bottom: var(--ak-pb-xl, var(--ak-pb-lg, var(--ak-pb-md, var(--ak-pb-sm, var(--ak-pb-initial)))));
+    padding-left: var(--ak-pl-xl, var(--ak-pl-lg, var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial)))));
+    width: var(--ak-width-xl, var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial)))));
+    min-width: var(--ak-min-width-xl, var(--ak-min-width-lg, var(--ak-min-width-md, var(--ak-min-width-sm, var(--ak-min-width-initial)))));
+    max-width: var(--ak-max-width-xl, var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial)))));
+    height: var(--ak-height-xl, var(--ak-height-lg, var(--ak-height-md, var(--ak-height-sm, var(--ak-height-initial)))));
+    min-height: var(--ak-min-height-xl, var(--ak-min-height-lg, var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-initial)))));
+    max-height: var(--ak-max-height-xl, var(--ak-max-height-lg, var(--ak-max-height-md, var(--ak-max-height-sm, var(--ak-max-height-initial)))));
+    position: var(--ak-position-xl, var(--ak-position-lg, var(--ak-position-md, var(--ak-position-sm, var(--ak-position-initial)))));
+    inset: var(--ak-inset-xl, var(--ak-inset-lg, var(--ak-inset-md, var(--ak-inset-sm, var(--ak-inset-initial)))));
+    top: var(--ak-top-xl, var(--ak-top-lg, var(--ak-top-md, var(--ak-top-sm, var(--ak-top-initial)))));
+    right: var(--ak-right-xl, var(--ak-right-lg, var(--ak-right-md, var(--ak-right-sm, var(--ak-right-initial)))));
+    bottom: var(--ak-bottom-xl, var(--ak-bottom-lg, var(--ak-bottom-md, var(--ak-bottom-sm, var(--ak-bottom-initial)))));
+    left: var(--ak-left-xl, var(--ak-left-lg, var(--ak-left-md, var(--ak-left-sm, var(--ak-left-initial)))));
+    overflow: var(--ak-overflow-xl, var(--ak-overflow-lg, var(--ak-overflow-md, var(--ak-overflow-sm, var(--ak-overflow-initial)))));
+    overflow-x: var(--ak-overflow-x-xl, var(--ak-overflow-x-lg, var(--ak-overflow-x-md, var(--ak-overflow-x-sm, var(--ak-overflow-x-initial)))));
+    overflow-y: var(--ak-overflow-y-xl, var(--ak-overflow-y-lg, var(--ak-overflow-y-md, var(--ak-overflow-y-sm, var(--ak-overflow-y-initial)))));
+    flex-basis: var(--ak-flex-basis-xl, var(--ak-flex-basis-lg, var(--ak-flex-basis-md, var(--ak-flex-basis-sm, var(--ak-flex-basis-initial)))));
+    flex-grow: var(--ak-flex-grow-xl, var(--ak-flex-grow-lg, var(--ak-flex-grow-md, var(--ak-flex-grow-sm, var(--ak-flex-grow-initial)))));
+    flex-shrink: var(--ak-flex-shrink-xl, var(--ak-flex-shrink-lg, var(--ak-flex-shrink-md, var(--ak-flex-shrink-sm, var(--ak-flex-shrink-initial)))));
+    grid-area: var(--ak-grid-area-xl, var(--ak-grid-area-lg, var(--ak-grid-area-md, var(--ak-grid-area-sm, var(--ak-grid-area-initial)))));
+    grid-column: var(--ak-grid-column-xl, var(--ak-grid-column-lg, var(--ak-grid-column-md, var(--ak-grid-column-sm, var(--ak-grid-column-initial)))));
+    grid-column-start: var(--ak-grid-column-start-xl, var(--ak-grid-column-start-lg, var(--ak-grid-column-start-md, var(--ak-grid-column-start-sm, var(--ak-grid-column-start-initial)))));
+    grid-column-end: var(--ak-grid-column-end-xl, var(--ak-grid-column-end-lg, var(--ak-grid-column-end-md, var(--ak-grid-column-end-sm, var(--ak-grid-column-end-initial)))));
+    grid-row: var(--ak-grid-row-xl, var(--ak-grid-row-lg, var(--ak-grid-row-md, var(--ak-grid-row-sm, var(--ak-grid-row-initial)))));
+    grid-row-start: var(--ak-grid-row-start-xl, var(--ak-grid-row-start-lg, var(--ak-grid-row-start-md, var(--ak-grid-row-start-sm, var(--ak-grid-row-start-initial)))));
+    grid-row-end: var(--ak-grid-row-end-xl, var(--ak-grid-row-end-lg, var(--ak-grid-row-end-md, var(--ak-grid-row-end-sm, var(--ak-grid-row-end-initial)))));
+    gap: var(--ak-gap-xl, var(--ak-gap-lg, var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-initial)))));
+    column-gap: var(--ak-column-gap-xl, var(--ak-column-gap-lg, var(--ak-column-gap-md, var(--ak-column-gap-sm, var(--ak-column-gap-initial)))));
+    row-gap: var(--ak-row-gap-xl, var(--ak-row-gap-lg, var(--ak-row-gap-md, var(--ak-row-gap-sm, var(--ak-row-gap-initial)))));
+    flex-direction: var(--ak-flex-direction-xl, var(--ak-flex-direction-lg, var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-initial)))));
+    align-items: var(--ak-align-items-xl, var(--ak-align-items-lg, var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-initial)))));
+    justify-content: var(--ak-justify-content-xl, var(--ak-justify-content-lg, var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-initial)))));
+    flex-wrap: var(--ak-flex-wrap-xl, var(--ak-flex-wrap-lg, var(--ak-flex-wrap-md, var(--ak-flex-wrap-sm, var(--ak-flex-wrap-initial)))));
+    grid-template-areas: var(--ak-grid-template-areas-xl, var(--ak-grid-template-areas-lg, var(--ak-grid-template-areas-md, var(--ak-grid-template-areas-sm, var(--ak-grid-template-areas-initial)))));
+    grid-template-columns: var(--ak-grid-template-columns-xl, var(--ak-grid-template-columns-lg, var(--ak-grid-template-columns-md, var(--ak-grid-template-columns-sm, var(--ak-grid-template-columns-initial)))));
+    grid-template-rows: var(--ak-grid-template-rows-xl, var(--ak-grid-template-rows-lg, var(--ak-grid-template-rows-md, var(--ak-grid-template-rows-sm, var(--ak-grid-template-rows-initial)))));
+    grid-auto-flow: var(--ak-grid-auto-flow-xl, var(--ak-grid-auto-flow-lg, var(--ak-grid-auto-flow-md, var(--ak-grid-auto-flow-sm, var(--ak-grid-auto-flow-initial)))));
+  }
+
+  :where([data-slot='container']) {
+    width: var(--ak-width-xl, var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%)))));
+    max-width: min(
+      100%,
+      var(--ak-max-width-xl, var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-initial, var(--ak-container-4))))))
+    );
+    margin-left: var(--ak-ml-xl, var(--ak-ml-lg, var(--ak-ml-md, var(--ak-ml-sm, var(--ak-ml-initial, auto)))));
+    margin-right: var(--ak-mr-xl, var(--ak-mr-lg, var(--ak-mr-md, var(--ak-mr-sm, var(--ak-mr-initial, auto)))));
+    padding-left: var(--ak-pl-xl, var(--ak-pl-lg, var(--ak-pl-md, var(--ak-pl-sm, var(--ak-pl-initial, var(--ak-px-xl, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))))))));
+    padding-right: var(--ak-pr-xl, var(--ak-pr-lg, var(--ak-pr-md, var(--ak-pr-sm, var(--ak-pr-initial, var(--ak-px-xl, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-initial, var(--ak-layout-page-gutter)))))))))));
+  }
+}

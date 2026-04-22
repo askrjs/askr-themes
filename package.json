@@ -1,7 +1,7 @@
 {
   "name": "@askrjs/askr-themes",
   "version": "0.0.1",
-  "description": "CSS-only official themes for askr-ui.",
+  "description": "CSS-only default theme for askr-ui.",
   "type": "module",
   "license": "Apache-2.0",
   "repository": {
@@ -84,12 +84,6 @@
     "./default/toggle.css": "./src/themes/default/components/toggle.css",
     "./default/toggle-group.css": "./src/themes/default/components/toggle-group.css",
     "./default/tooltip.css": "./src/themes/default/components/tooltip.css",
-    "./tuxedo": "./src/themes/tuxedo/index.css",
-    "./tuxedo/tokens.css": "./src/themes/tuxedo/tokens.css",
-    "./calico": "./src/themes/calico/index.css",
-    "./calico/tokens.css": "./src/themes/calico/tokens.css",
-    "./ginger": "./src/themes/ginger/index.css",
-    "./ginger/tokens.css": "./src/themes/ginger/tokens.css",
     "./templates/*": "./templates/*"
   },
   "scripts": {
