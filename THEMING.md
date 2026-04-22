@@ -44,11 +44,11 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 Responsive rules:
 
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
-- Official themes use semantic breakpoints `sm`, `md`, `lg`, and `xl` for `data-collapse-below`.
-- Keep breakpoint values centralized in theme tokens so default and generated themes stay aligned.
+- The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for `data-collapse-below`.
+- Keep breakpoint values centralized in theme tokens so the default theme and generated themes stay aligned.
 - Responsive behavior must target only public hooks such as `data-collapse-below`, `data-columns`, `data-min-item-width`, `data-gap`, `data-sidebar-position`, and `data-sidebar-width`.
 - Prefer token overrides first. Reach for component CSS overrides only when tokens are insufficient.
-- Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for official theme baselines.
+- Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
 - Broad layout slots like `main`, `sidebar`, and `navbar` must always be anchored to a public layout root such as `topbar-layout` or `sidebar-layout`.
 - Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, `data-gap`, and `data-sidebar-width` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
 - Icons are part of the public theme contract. `@askrjs/askr-ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
@@ -58,7 +58,7 @@ Responsive rules:
 
 Version: 1.0 draft
 
-This document defines the official theme token contract for `askr-themes`.
+This document defines the default theme token contract for `askr-themes`.
 
 The purpose of this token set is to provide a stable, reusable semantic theming layer for:
 
@@ -165,7 +165,7 @@ Rules:
 
 ### 1. Color Tokens
 
-These are required for every theme.
+These are required for the default theme and any future theme reintroduced to the package.
 
 #### Brand / Accent
 
@@ -526,7 +526,7 @@ Disabled semantic ladder for background, surface, border, and text.
 
 ## Invariants
 
-All official themes must satisfy these invariants:
+The default theme and any future reintroduced themes must satisfy these invariants:
 
 1. `--ak-color-text` must be readable on `--ak-color-bg`
 2. `--ak-color-text` must be readable on `--ak-color-surface`
@@ -886,19 +886,6 @@ The automated test suite (`tests/contrast.test.ts`) validates these pairs across
 
 ---
 
-## Theme Personalities
-
-Each official theme has a distinct visual personality beyond color:
-
-| Theme              | Radius       | Shadows        | Feel              |
-| ------------------ | ------------ | -------------- | ----------------- |
-| Default (green)    | 6/10/14/22px | Neutral        | Natural, balanced |
-| Tuxedo (blue-gray) | 4/8/12/20px  | Cool blue-gray | Sharp, corporate  |
-| Calico (brown)     | 8/12/16/24px | Warm brown     | Soft, organic     |
-| Ginger (orange)    | 8/12/16/24px | Warm orange    | Bold, energetic   |
-
----
-
 ## Implementation Note
 
-The v1.0 contract above is the official semantic surface. Official theme component CSS now consumes the semantic token names directly. Shipped themes still publish temporary compatibility aliases such as `--ak-color-fg`, `--ak-color-muted`, and `--ak-font-family` for downstream compatibility, but those aliases are not part of the required contract and should not be used for new work.
+The v1.0 contract above is the current semantic surface. Default theme component CSS now consumes the semantic token names directly. Shipped CSS still publishes temporary compatibility aliases such as `--ak-color-fg`, `--ak-color-muted`, and `--ak-font-family` for downstream compatibility, but those aliases are not part of the required contract and should not be used for new work.

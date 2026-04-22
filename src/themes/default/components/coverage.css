@@ -1,4 +1,8 @@
 /* Coverage selectors for askr-ui public slots/states that are intentionally minimal. */
+[data-slot='box'] {
+  display: block;
+}
+
 [data-slot='container'] {
   box-sizing: border-box;
 }
@@ -14,10 +18,14 @@
   gap: var(--ak-space-md);
 }
 
-[data-slot='inline'] {
+[data-slot='flex'] {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ak-space-md);
+}
+
+[data-slot='section'] {
+  display: block;
 }
 
 [data-slot='center'] {

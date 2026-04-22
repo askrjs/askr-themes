@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const THEMES_DIR = join(__dirname, '..', 'src', 'themes');
-const OFFICIAL_THEMES = ['default', 'tuxedo', 'calico', 'ginger'] as const;
+const OFFICIAL_THEMES = ['default'] as const;
 
 /**
  * Parse a CSS color value (#hex or rgb/rgba) to [r, g, b, a] (0-255, alpha 0-1).
