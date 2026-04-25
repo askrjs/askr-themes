@@ -13,5 +13,10 @@
       "@askrjs/askr-ui/foundations": ["../askr-ui/dist/foundations/index.d.ts"]
     }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/components/**/*",
+    "src/themes/**/*",
+    "src/*.d.ts"
+  ],
+  "exclude": ["src/default/**/*"]
 }
