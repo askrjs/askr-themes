@@ -3,7 +3,7 @@
 Import a theme:
 
 ```css
-@import '@askrjs/askr-themes/default';
+@import "@askrjs/askr-themes/default";
 ```
 
 Pick a mode on an ancestor:
@@ -25,7 +25,7 @@ Token override:
 Style override:
 
 ```css
-[data-slot='button'][data-variant='primary'] {
+[data-slot="button"][data-variant="primary"] {
   background: black;
 }
 ```
@@ -33,7 +33,7 @@ Style override:
 Icon override:
 
 ```css
-[data-slot='icon'][data-size='sm'] {
+[data-slot="icon"][data-size="sm"] {
   --ak-icon-size-sm: 0.875rem;
   --ak-icon-stroke-width-sm: 1.5;
 }
@@ -657,7 +657,7 @@ These are recommended implementation defaults for component authors:
 }
 
 :root,
-[data-theme='light'] {
+[data-theme="light"] {
   --ak-color-primary: #79b53f;
   --ak-color-primary-hover: #5f9132;
   --ak-color-primary-active: #4f792b;
@@ -708,7 +708,7 @@ These are recommended implementation defaults for component authors:
   color-scheme: light;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ak-color-primary: #9bd45f;
   --ak-color-primary-hover: #7eb448;
   --ak-color-primary-active: #6a983d;
@@ -810,12 +810,8 @@ Components support variant styling through `data-variant` and `data-size` attrib
 Override variant styles using the same selector pattern:
 
 ```css
-[data-slot='button'][data-variant='primary'] {
-  background: linear-gradient(
-    135deg,
-    var(--ak-color-primary),
-    var(--ak-color-primary-hover)
-  );
+[data-slot="button"][data-variant="primary"] {
+  background: linear-gradient(135deg, var(--ak-color-primary), var(--ak-color-primary-hover));
 }
 ```
 

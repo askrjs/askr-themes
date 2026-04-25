@@ -1,14 +1,14 @@
-[data-slot='navigation-menu'] {
+[data-slot="navigation-menu"] {
   position: relative;
 }
 
-[data-slot='navigation-menu-list'] {
+[data-slot="navigation-menu-list"] {
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
 
-[data-slot='navigation-menu-trigger'] {
+[data-slot="navigation-menu-trigger"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -26,18 +26,18 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='navigation-menu-trigger'][data-state='open'] {
+[data-slot="navigation-menu-trigger"][data-state="open"] {
   border-color: var(--ak-color-primary);
   background: var(--ak-color-primary-soft);
   color: var(--ak-color-primary-ink);
 }
 
-[data-slot='navigation-menu-trigger']:hover {
+[data-slot="navigation-menu-trigger"]:hover {
   background: var(--ak-color-hover);
   border-color: var(--ak-color-border-strong);
 }
 
-[data-slot='navigation-menu-content'] {
+[data-slot="navigation-menu-content"] {
   display: grid;
   gap: 0.25rem;
   min-width: 14rem;
@@ -51,8 +51,8 @@
   box-shadow: var(--ak-shadow-md);
 }
 
-[data-slot='navigation-menu-link'],
-[data-slot='navigation-menu-sub-trigger'] {
+[data-slot="navigation-menu-link"],
+[data-slot="navigation-menu-sub-trigger"] {
   display: flex;
   align-items: center;
   min-height: 2.25rem;
@@ -66,22 +66,22 @@
     color var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='navigation-menu-link']:hover,
-[data-slot='navigation-menu-sub-trigger']:hover {
+[data-slot="navigation-menu-link"]:hover,
+[data-slot="navigation-menu-sub-trigger"]:hover {
   background: var(--ak-color-surface-muted);
 }
 
-[data-slot='navigation-menu-sub-trigger'][data-disabled] {
+[data-slot="navigation-menu-sub-trigger"][data-disabled] {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
 
-[data-slot='navigation-menu-viewport'] {
+[data-slot="navigation-menu-viewport"] {
   margin-top: var(--ak-space-sm);
 }
 
-[data-slot='navigation-menu-indicator'] {
+[data-slot="navigation-menu-indicator"] {
   block-size: 2px;
   inline-size: 2rem;
   margin-top: 0.125rem;

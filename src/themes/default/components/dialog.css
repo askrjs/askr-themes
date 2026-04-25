@@ -38,7 +38,7 @@
   }
 }
 
-:where([data-slot='dialog-overlay']) {
+:where([data-slot="dialog-overlay"]) {
   position: fixed;
   inset: 0;
   background: var(--ak-color-backdrop);
@@ -46,11 +46,11 @@
   animation: ak-fade-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='dialog-overlay'][data-state='closed']) {
+:where([data-slot="dialog-overlay"][data-state="closed"]) {
   animation: ak-fade-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='dialog-content']) {
+:where([data-slot="dialog-content"]) {
   display: grid;
   gap: var(--ak-space-sm);
   min-width: min(34rem, calc(100vw - 1.5rem));
@@ -60,11 +60,7 @@
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
   border: 1px solid var(--ak-color-border-subtle);
   border-radius: var(--ak-radius-xl);
-  background: color-mix(
-    in srgb,
-    var(--ak-color-surface-overlay) 92%,
-    var(--ak-color-surface)
-  );
+  background: color-mix(in srgb, var(--ak-color-surface-overlay) 92%, var(--ak-color-surface));
   color: var(--ak-color-text);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.58) inset,
@@ -73,11 +69,11 @@
   animation: ak-scale-in var(--ak-duration-normal) var(--ak-ease-standard);
 }
 
-:where([data-slot='dialog-content'][data-state='closed']) {
+:where([data-slot="dialog-content"][data-state="closed"]) {
   animation: ak-scale-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='dialog-title']) {
+:where([data-slot="dialog-title"]) {
   margin: 0;
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
@@ -85,13 +81,13 @@
   line-height: var(--ak-line-height-tight);
 }
 
-:where([data-slot='dialog-description']) {
+:where([data-slot="dialog-description"]) {
   margin: var(--ak-space-sm) 0 0;
   color: var(--ak-color-text-muted);
   line-height: var(--ak-line-height-normal);
 }
 
-:where([data-slot='dialog-close']) {
+:where([data-slot="dialog-close"]) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -99,11 +95,7 @@
   padding: 0 calc(var(--ak-space-md) + 0.125rem);
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white);
   border-radius: var(--ak-radius-lg);
-  background: color-mix(
-    in srgb,
-    var(--ak-color-primary-soft) 24%,
-    var(--ak-color-surface-muted)
-  );
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 24%, var(--ak-color-surface-muted));
   color: var(--ak-color-text);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
   cursor: pointer;
@@ -113,17 +105,13 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='dialog-close']:hover) {
-  background: color-mix(
-    in srgb,
-    var(--ak-color-primary-soft) 42%,
-    var(--ak-color-surface)
-  );
+:where([data-slot="dialog-close"]:hover) {
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 42%, var(--ak-color-surface));
   border-color: var(--ak-color-border-strong);
   box-shadow: var(--ak-shadow-sm);
 }
 
-:where([data-slot='dialog-close'][data-disabled]) {
+:where([data-slot="dialog-close"][data-disabled]) {
   background: var(--ak-color-disabled-surface);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);

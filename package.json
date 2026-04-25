@@ -1,46 +1,54 @@
 {
   "name": "@askrjs/askr-themes",
   "version": "0.0.1",
-  "description": "CSS-only default theme for askr-ui.",
-  "type": "module",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/askrjs/askr-themes.git"
-  },
+  "description": "Default theme tokens, styles, and themed layout wrappers for askr-ui.",
+  "keywords": [
+    "askr",
+    "css",
+    "design-tokens",
+    "themes"
+  ],
   "homepage": "https://github.com/askrjs/askr-themes#readme",
   "bugs": {
     "url": "https://github.com/askrjs/askr-themes/issues"
   },
+  "license": "Apache-2.0",
   "author": {
     "name": "askrjs",
     "url": "https://github.com/askrjs"
   },
-  "keywords": [
-    "askr",
-    "themes",
-    "css",
-    "design-tokens"
-  ],
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/askrjs/askr-themes.git"
   },
-  "engines": {
-    "node": ">=18"
-  },
-  "sideEffects": [
-    "**/*.css"
-  ],
   "files": [
+    "dist",
     "src",
     "templates",
     "scripts/new-theme.js",
     "THEMING.md",
     "LICENSE"
   ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": "./src/index.css",
     "./default": "./src/themes/default/index.css",
+    "./default/card": {
+      "types": "./dist/default/card.d.ts",
+      "import": "./dist/default/card.js"
+    },
+    "./default/card.css": "./src/themes/default/components/card.css",
+    "./default/sidebar-layout": {
+      "types": "./dist/default/sidebar-layout.d.ts",
+      "import": "./dist/default/sidebar-layout.js"
+    },
+    "./default/topbar-layout": {
+      "types": "./dist/default/topbar-layout.d.ts",
+      "import": "./dist/default/topbar-layout.js"
+    },
     "./default/tokens.css": "./src/themes/default/tokens.css",
     "./default/accordion.css": "./src/themes/default/components/accordion.css",
     "./default/alert-dialog.css": "./src/themes/default/components/alert-dialog.css",
@@ -86,17 +94,32 @@
     "./default/tooltip.css": "./src/themes/default/components/tooltip.css",
     "./templates/*": "./templates/*"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "new:theme": "node ./scripts/new-theme.js",
     "verify:token-contract": "node ./scripts/verify-token-contract.js",
     "verify:responsive": "node ./scripts/verify-responsive-theme.js",
     "verify:slots": "node ./scripts/verify-slot-coverage.js",
     "test": "vp test run",
-    "fmt": "vp fmt \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
-    "lint": "vp fmt --check \"src/**/*.css\" \"templates/**/*.css\" \"THEMING.md\" \"package.json\"",
-    "build": "npm run verify:token-contract && npm run verify:responsive && npm run verify:slots"
+    "fmt": "vp fmt .",
+    "lint": "vp fmt --check .",
+    "build": "vp pack && npm run verify:token-contract && npm run verify:responsive && npm run verify:slots"
   },
   "devDependencies": {
+    "@askrjs/askr": "file:../askr",
+    "@askrjs/askr-ui": "file:../askr-ui",
+    "@types/node": "^25.6.0",
+    "@tsdown/css": "0.21.7",
+    "typescript": "^6.0.3",
     "vite-plus": "latest"
+  },
+  "peerDependencies": {
+    "@askrjs/askr": "0.0.1",
+    "@askrjs/askr-ui": "0.0.1"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
