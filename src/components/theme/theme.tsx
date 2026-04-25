@@ -144,24 +144,35 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   const nextTheme = getNextTheme(currentTheme, toggleThemes);
   const renderContext = { theme: currentTheme, nextTheme };
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"];
+  const themedIcon = resolveThemeToggleIcon(currentTheme, nextTheme, {
+    lightIcon,
+    darkIcon,
+    systemIcon,
+  });
   const content =
     typeof children === "function"
       ? children(renderContext)
-      : children ?? getThemeIcon(currentTheme, { lightIcon, darkIcon, systemIcon });
+      : children ?? themedIcon;
 
-  return Button({
-    ...rest,
-    "aria-label":
-      typeof ariaLabel === "string" ? ariaLabel : `Switch to ${nextTheme} theme`,
-    "data-theme-control": "toggle",
-    "data-theme-choice": currentTheme,
-    "data-next-theme": nextTheme,
-    onPress: (event) => {
+  return (
+    <Button
+      {...(rest as ButtonNativeProps)}
+      aria-label={
+        typeof ariaLabel === "string"
+          ? ariaLabel
+          : `Switch to ${nextTheme} theme`
+      }
+      data-theme-control="toggle"
+      data-theme-choice={currentTheme}
+      data-next-theme={nextTheme}
+      onPress={(event) => {
         onPress?.(event);
         if (!event.defaultPrevented) theme.setTheme(nextTheme);
-      },
-    children: content,
-  } as ButtonNativeProps);
+      }}
+    >
+      {content}
+    </Button>
+  );
 }
 
 function getNextTheme(currentTheme: ThemeName, themes: readonly ThemeName[]): ThemeName {
@@ -178,6 +189,14 @@ function getThemeIcon(
   if (theme === "dark") return icons.darkIcon;
   if (theme === "system") return icons.systemIcon;
   return undefined;
+}
+
+export function resolveThemeToggleIcon(
+  theme: ThemeName,
+  nextTheme: ThemeName,
+  icons: Pick<ThemeToggleProps, "lightIcon" | "darkIcon" | "systemIcon">,
+): unknown {
+  return getThemeIcon(theme, icons) ?? getThemeIcon(nextTheme, icons);
 }
 
 function readStoredTheme(storageKey: string): ThemeName | undefined {

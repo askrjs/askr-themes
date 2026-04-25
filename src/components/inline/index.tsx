@@ -2,7 +2,7 @@ import { Flex } from '../flex';
 import type { InlineProps } from '../flex';
 
 export function Inline(props: InlineProps): JSX.Element {
-  return Flex({ ...(props as Record<string, unknown>), 'data-slot': 'inline' } as never);
+  return <Flex {...(props as Record<string, unknown>)} data-slot="inline" />;
 }
 
 export { Flex };
