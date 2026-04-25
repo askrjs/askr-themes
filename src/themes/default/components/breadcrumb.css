@@ -1,9 +1,9 @@
-:where([data-slot='breadcrumb']) {
+:where([data-slot="breadcrumb"]) {
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-xs);
 }
 
-:where([data-slot='breadcrumb-list']) {
+:where([data-slot="breadcrumb-list"]) {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -13,27 +13,27 @@
   padding: 0;
 }
 
-:where([data-slot='breadcrumb-item']) {
+:where([data-slot="breadcrumb-item"]) {
   display: inline-flex;
   align-items: center;
   gap: var(--ak-space-xs);
 }
 
-:where([data-slot='breadcrumb-link']) {
+:where([data-slot="breadcrumb-link"]) {
   color: var(--ak-color-text-muted);
   text-decoration: none;
   transition: color var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='breadcrumb-link']:hover) {
+:where([data-slot="breadcrumb-link"]:hover) {
   color: var(--ak-color-text);
 }
 
-:where([data-slot='breadcrumb-current']) {
+:where([data-slot="breadcrumb-current"]) {
   color: var(--ak-color-text);
   font-weight: var(--ak-font-weight-semibold);
 }
 
-:where([data-slot='breadcrumb-separator']) {
+:where([data-slot="breadcrumb-separator"]) {
   color: var(--ak-color-border);
 }

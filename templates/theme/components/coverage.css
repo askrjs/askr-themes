@@ -1,72 +1,72 @@
 /* Coverage selectors for askr-ui public slots/states that are intentionally minimal. */
-[data-slot='container'] {
+[data-slot="container"] {
   box-sizing: border-box;
 }
 
-[data-slot='grid'] {
+[data-slot="grid"] {
   display: grid;
   gap: var(--ak-space-md);
 }
 
-[data-slot='stack'] {
+[data-slot="stack"] {
   display: flex;
   flex-direction: column;
   gap: var(--ak-space-md);
 }
 
-[data-slot='inline'] {
+[data-slot="inline"] {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ak-space-md);
 }
 
-[data-slot='center'] {
+[data-slot="center"] {
   display: grid;
   place-items: center;
 }
 
-[data-slot='spacer'] {
+[data-slot="spacer"] {
   flex: 1 1 auto;
 }
 
-[data-slot='breadcrumb-item'] {
+[data-slot="breadcrumb-item"] {
   display: inline-flex;
   align-items: center;
   gap: var(--ak-space-sm);
 }
 
-[data-slot='dialog-trigger'] {
+[data-slot="dialog-trigger"] {
   cursor: pointer;
 }
 
-[data-slot='dropdown-menu-group'],
-[data-slot='menu-group'],
-[data-slot='menubar-group'],
-[data-slot='select-group'] {
+[data-slot="dropdown-menu-group"],
+[data-slot="menu-group"],
+[data-slot="menubar-group"],
+[data-slot="select-group"] {
   display: block;
 }
 
-[data-slot='select-item-text'] {
+[data-slot="select-item-text"] {
   display: inline;
 }
 
-[data-state='closed'] {
+[data-state="closed"] {
   --ak-state-closed: 1;
 }
 
-[data-state='determinate'] {
+[data-state="determinate"] {
   --ak-state-determinate: 1;
 }
 
-[data-state='inactive'] {
+[data-state="inactive"] {
   --ak-state-inactive: 1;
 }
 
-[data-state='off'] {
+[data-state="off"] {
   --ak-state-off: 1;
 }
 
-[data-state='unchecked'] {
+[data-state="unchecked"] {
   --ak-state-unchecked: 1;
 }
 

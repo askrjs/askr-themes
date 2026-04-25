@@ -1,4 +1,4 @@
-[data-slot='topbar-layout'] > [data-slot='navbar'] {
+[data-slot="topbar-layout"] > [data-slot="navbar"] {
   display: flex;
   align-items: center;
   justify-content: space-between;

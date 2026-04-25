@@ -1,6 +1,6 @@
 # @askrjs/askr-themes
 
-CSS-only default theme for askr-ui.
+Default theme tokens, styles, and themed layout wrappers for askr-ui.
 
 ## Contents
 
@@ -15,5 +15,25 @@ npm install @askrjs/askr-themes
 ```
 
 ```ts
-import '@askrjs/askr-themes/default';
+import "@askrjs/askr-themes/default";
+```
+
+For visual-only layout wrappers backed by `askr-ui` primitives:
+
+```ts
+import { SidebarLayout } from "@askrjs/askr-themes/default/sidebar-layout";
+import { TopbarLayout } from "@askrjs/askr-themes/default/topbar-layout";
+```
+
+For theme-owned visual components:
+
+```ts
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@askrjs/askr-themes/default/card";
 ```

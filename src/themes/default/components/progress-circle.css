@@ -1,4 +1,4 @@
-[data-slot='progress-circle'] {
+[data-slot="progress-circle"] {
   display: inline-grid;
   place-items: center;
   inline-size: 2.75rem;
@@ -10,7 +10,7 @@
   );
 }
 
-[data-slot='progress-circle-indicator'] {
+[data-slot="progress-circle-indicator"] {
   inline-size: 1.9rem;
   block-size: 1.9rem;
   border-radius: 999px;

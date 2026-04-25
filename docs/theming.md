@@ -35,7 +35,7 @@ Override tokens in `src/styles/tokens.css`:
 Token overrides under a `[data-theme="dark"]` selector:
 
 ```css
-[data-theme='dark'] {
+[data-theme="dark"] {
   --color-bg: #0f172a;
   --color-fg: #f1f5f9;
 }

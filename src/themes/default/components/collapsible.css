@@ -1,4 +1,4 @@
-[data-slot='collapsible-trigger'] {
+[data-slot="collapsible-trigger"] {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -16,31 +16,31 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='collapsible-trigger'][data-state='open'] {
+[data-slot="collapsible-trigger"][data-state="open"] {
   border-color: var(--ak-color-primary);
 }
 
-[data-slot='collapsible-trigger']:hover {
+[data-slot="collapsible-trigger"]:hover {
   background: var(--ak-color-hover);
   border-color: var(--ak-color-border-strong);
 }
 
-[data-slot='collapsible-trigger']:active {
+[data-slot="collapsible-trigger"]:active {
   background: var(--ak-color-active);
 }
 
-[data-slot='collapsible-trigger']:focus-visible {
+[data-slot="collapsible-trigger"]:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
 }
 
-[data-slot='collapsible-trigger'][data-disabled] {
+[data-slot="collapsible-trigger"][data-disabled] {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
 
-[data-slot='collapsible-content'] {
+[data-slot="collapsible-content"] {
   padding: var(--ak-space-md) 0 0;
   color: var(--ak-color-text-muted);
   line-height: var(--ak-line-height-normal);

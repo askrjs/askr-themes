@@ -20,7 +20,7 @@
   }
 }
 
-[data-slot='tooltip-content'] {
+[data-slot="tooltip-content"] {
   max-width: 18rem;
   padding: 0.45rem 0.65rem;
   border-radius: var(--ak-radius-sm);
@@ -31,15 +31,15 @@
   animation: ak-tooltip-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='tooltip-content'][data-state='closed'] {
+[data-slot="tooltip-content"][data-state="closed"] {
   animation: ak-tooltip-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='tooltip-trigger'][data-state='open'] {
+[data-slot="tooltip-trigger"][data-state="open"] {
   box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
 }
 
-[data-slot='tooltip-trigger'][data-disabled] {
+[data-slot="tooltip-trigger"][data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;

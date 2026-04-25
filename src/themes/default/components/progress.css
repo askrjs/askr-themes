@@ -1,4 +1,4 @@
-[data-slot='progress'] {
+[data-slot="progress"] {
   inline-size: 100%;
   block-size: 0.625rem;
   overflow: hidden;
@@ -6,13 +6,13 @@
   background: var(--ak-color-surface-muted);
 }
 
-[data-slot='progress-indicator'] {
+[data-slot="progress-indicator"] {
   block-size: 100%;
   inline-size: var(--ak-progress-percentage);
   border-radius: inherit;
   background: var(--ak-color-primary);
 }
 
-[data-slot='progress-indicator'][data-state='indeterminate'] {
+[data-slot="progress-indicator"][data-state="indeterminate"] {
   inline-size: 35%;
 }

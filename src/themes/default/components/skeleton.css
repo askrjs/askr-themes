@@ -1,4 +1,4 @@
-[data-slot='skeleton'] {
+[data-slot="skeleton"] {
   display: block;
   min-height: 1rem;
   border-radius: var(--ak-radius-sm);

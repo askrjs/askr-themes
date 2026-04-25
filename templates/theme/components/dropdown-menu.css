@@ -1,4 +1,4 @@
-[data-slot='dropdown-menu-trigger'] {
+[data-slot="dropdown-menu-trigger"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -14,11 +14,11 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='dropdown-menu-trigger'][data-state='open'] {
+[data-slot="dropdown-menu-trigger"][data-state="open"] {
   border-color: var(--ak-color-primary);
 }
 
-[data-slot='dropdown-menu-trigger'][data-disabled] {
+[data-slot="dropdown-menu-trigger"][data-disabled] {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
@@ -46,7 +46,7 @@
   }
 }
 
-[data-slot='dropdown-menu-content'] {
+[data-slot="dropdown-menu-content"] {
   display: grid;
   gap: 0.25rem;
   min-width: 12rem;
@@ -61,11 +61,11 @@
   animation: ak-menu-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='dropdown-menu-content'][data-state='closed'] {
+[data-slot="dropdown-menu-content"][data-state="closed"] {
   animation: ak-menu-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='dropdown-menu-item'] {
+[data-slot="dropdown-menu-item"] {
   display: flex;
   align-items: center;
   min-height: 2.25rem;
@@ -80,29 +80,29 @@
     color var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot='dropdown-menu-item']:hover {
+[data-slot="dropdown-menu-item"]:hover {
   background: var(--ak-color-surface-muted);
 }
 
-[data-slot='dropdown-menu-item']:focus-visible {
+[data-slot="dropdown-menu-item"]:focus-visible {
   outline: none;
   background: var(--ak-color-surface-muted);
 }
 
-[data-slot='dropdown-menu-item'][data-disabled] {
+[data-slot="dropdown-menu-item"][data-disabled] {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
 
-[data-slot='dropdown-menu-label'] {
+[data-slot="dropdown-menu-label"] {
   padding: 0 var(--ak-space-sm);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
 }
 
-[data-slot='dropdown-menu-separator'] {
+[data-slot="dropdown-menu-separator"] {
   block-size: 1px;
   margin: 0.25rem 0;
   background: var(--ak-color-border);

@@ -1,4 +1,4 @@
-:where([data-slot='switch']) {
+:where([data-slot="switch"]) {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -25,8 +25,8 @@
     transform var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='switch'])::after {
-  content: '';
+:where([data-slot="switch"])::after {
+  content: "";
   display: block;
   inline-size: 1.45rem;
   block-size: 1.45rem;
@@ -44,12 +44,8 @@
     background var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='switch'][data-state='checked']) {
-  border-color: color-mix(
-    in srgb,
-    var(--ak-color-primary-active) 42%,
-    var(--ak-color-primary)
-  );
+:where([data-slot="switch"][data-state="checked"]) {
+  border-color: color-mix(in srgb, var(--ak-color-primary-active) 42%, var(--ak-color-primary));
   background: linear-gradient(
     135deg,
     color-mix(in srgb, white 22%, var(--ak-color-primary-soft)),
@@ -57,25 +53,25 @@
   );
 }
 
-:where([data-slot='switch'][data-state='checked'])::after {
+:where([data-slot="switch"][data-state="checked"])::after {
   transform: translateX(1.275rem);
 }
 
-:where([data-slot='switch']:hover) {
+:where([data-slot="switch"]:hover) {
   border-color: var(--ak-color-border-strong);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.6) inset,
     0 0 0 4px color-mix(in srgb, var(--ak-color-primary-soft) 68%, transparent);
 }
 
-:where([data-slot='switch']:focus-visible) {
+:where([data-slot="switch"]:focus-visible) {
   outline: none;
   box-shadow:
     0 0 0 4px var(--ak-color-focus-ring),
     var(--ak-shadow-sm);
 }
 
-:where([data-slot='switch'][data-disabled]) {
+:where([data-slot="switch"][data-disabled]) {
   background: var(--ak-color-disabled-surface);
   border-color: var(--ak-color-disabled-border);
   box-shadow: none;
@@ -84,7 +80,7 @@
   cursor: not-allowed;
 }
 
-:where([data-slot='switch'][data-disabled])::after {
+:where([data-slot="switch"][data-disabled])::after {
   background: var(--ak-color-disabled-bg);
   box-shadow: none;
 }

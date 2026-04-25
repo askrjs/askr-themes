@@ -1,21 +1,17 @@
-:where([data-slot='menu-content']) {
+:where([data-slot="menu-content"]) {
   display: grid;
   gap: 0.35rem;
   min-width: 13rem;
   padding: calc(var(--ak-space-sm) + 0.125rem);
   border: 1px solid var(--ak-color-border-subtle);
   border-radius: var(--ak-radius-xl);
-  background: color-mix(
-    in srgb,
-    var(--ak-color-surface-overlay) 94%,
-    var(--ak-color-surface)
-  );
+  background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, var(--ak-color-surface));
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-lg);
   backdrop-filter: blur(18px);
 }
 
-:where([data-slot='menu-item']) {
+:where([data-slot="menu-item"]) {
   display: flex;
   align-items: center;
   gap: var(--ak-space-sm);
@@ -32,32 +28,24 @@
     color var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot='menu-item']:hover) {
-  background: color-mix(
-    in srgb,
-    var(--ak-color-primary-soft) 58%,
-    var(--ak-color-surface-muted)
-  );
+:where([data-slot="menu-item"]:hover) {
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface-muted));
   color: var(--ak-color-primary-ink);
 }
 
-:where([data-slot='menu-item']:focus-visible) {
+:where([data-slot="menu-item"]:focus-visible) {
   outline: none;
-  background: color-mix(
-    in srgb,
-    var(--ak-color-primary-soft) 58%,
-    var(--ak-color-surface-muted)
-  );
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface-muted));
   color: var(--ak-color-primary-ink);
 }
 
-:where([data-slot='menu-item'][data-disabled]) {
+:where([data-slot="menu-item"][data-disabled]) {
   color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
 }
 
-:where([data-slot='menu-label']) {
+:where([data-slot="menu-label"]) {
   padding: 0 calc(var(--ak-space-sm) + 0.25rem);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-xs);
@@ -66,7 +54,7 @@
   text-transform: uppercase;
 }
 
-:where([data-slot='menu-separator']) {
+:where([data-slot="menu-separator"]) {
   block-size: 1px;
   margin: 0.35rem 0;
   background: var(--ak-color-border);

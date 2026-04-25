@@ -1,18 +1,13 @@
 @layer components {
   :where(.marketing-shell) {
     display: grid;
-    gap: clamp(
-      var(--ak-space-2xl),
-      1.2rem + 1.7vw,
-      calc(var(--ak-space-3xl) + 0.5rem)
-    );
+    gap: clamp(var(--ak-space-2xl), 1.2rem + 1.7vw, calc(var(--ak-space-3xl) + 0.5rem));
     inline-size: min(
       calc(var(--ak-layout-content-max-width) + 8rem),
       calc(100% - 2 * var(--ak-layout-page-gutter))
     );
     margin-inline: auto;
-    padding-block: var(--ak-space-xl)
-      calc(var(--ak-space-3xl) + var(--ak-space-xl));
+    padding-block: var(--ak-space-xl) calc(var(--ak-space-3xl) + var(--ak-space-xl));
   }
 
   :where(.marketing-shell > *) {
@@ -28,14 +23,9 @@
     align-items: center;
     gap: var(--ak-space-md);
     padding: 0.85rem 1rem;
-    border: 1px solid
-      color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
     border-radius: calc(var(--ak-radius-lg) + 2px);
-    background: color-mix(
-      in srgb,
-      var(--ak-color-surface-overlay) 92%,
-      var(--ak-color-surface)
-    );
+    background: color-mix(in srgb, var(--ak-color-surface-overlay) 92%, var(--ak-color-surface));
     box-shadow: var(--ak-shadow-sm);
     backdrop-filter: blur(18px);
   }
@@ -80,11 +70,7 @@
 
   :where(.marketing-nav a:hover) {
     border-color: color-mix(in srgb, var(--ak-color-border) 82%, white);
-    background: color-mix(
-      in srgb,
-      var(--ak-color-primary-soft) 28%,
-      var(--ak-color-surface)
-    );
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 28%, var(--ak-color-surface));
     color: var(--ak-color-text);
   }
 
@@ -99,11 +85,7 @@
   :where(.marketing-hero),
   :where(.marketing-section-split) {
     display: grid;
-    gap: clamp(
-      var(--ak-space-xl),
-      0.9rem + 1.75vw,
-      calc(var(--ak-space-3xl) + 0.25rem)
-    );
+    gap: clamp(var(--ak-space-xl), 0.9rem + 1.75vw, calc(var(--ak-space-3xl) + 0.25rem));
     align-items: start;
   }
 
@@ -171,8 +153,7 @@
   }
 
   :where(.marketing-card) {
-    border: 1px solid
-      color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
     border-radius: calc(var(--ak-radius-md) + 2px);
     background: color-mix(in srgb, var(--ak-color-surface) 94%, white 6%);
     box-shadow: var(--ak-shadow-sm);

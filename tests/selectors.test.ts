@@ -1,32 +1,14 @@
-import { describe, it, expect } from 'vite-plus/test';
-import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { describe, it, expect } from "vite-plus/test";
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 
-const COMPONENTS_DIR = join(
-  __dirname,
-  '..',
-  'src',
-  'themes',
-  'default',
-  'components'
-);
-const TOKENS_FILE = join(
-  __dirname,
-  '..',
-  'src',
-  'themes',
-  'default',
-  'tokens.css'
-);
-const CLASS_UTILITY_FILES = new Set([
-  'product-shell.css',
-  'marketing-shell.css',
-  'typography.css',
-]);
+const COMPONENTS_DIR = join(__dirname, "..", "src", "themes", "default", "components");
+const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
+const CLASS_UTILITY_FILES = new Set(["product-shell.css", "marketing-shell.css", "typography.css"]);
 
 function getComponentCssFiles(): string[] {
   return readdirSync(COMPONENTS_DIR)
-    .filter((f) => f.endsWith('.css'))
+    .filter((f) => f.endsWith(".css"))
     .map((f) => join(COMPONENTS_DIR, f));
 }
 
@@ -36,64 +18,64 @@ function getComponentCssFiles(): string[] {
  */
 function extractSelectors(css: string): string[] {
   // Strip comments
-  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "");
 
   const selectors: string[] = [];
   let depth = 0;
-  let current = '';
+  let current = "";
   let inMediaOrSupports = false;
 
   for (let i = 0; i < stripped.length; i++) {
     const ch = stripped[i];
 
-    if (ch === '{') {
+    if (ch === "{") {
       if (depth === 0) {
         // Check if this is a @media / @supports block
         const trimmed = current.trim();
-        if (trimmed.startsWith('@media') || trimmed.startsWith('@supports')) {
+        if (trimmed.startsWith("@media") || trimmed.startsWith("@supports")) {
           inMediaOrSupports = true;
-          current = '';
+          current = "";
           depth++;
           continue;
         }
-        if (trimmed.startsWith('@layer')) {
-          current = '';
+        if (trimmed.startsWith("@layer")) {
+          current = "";
           depth++;
           continue;
         }
-        if (trimmed.startsWith('@keyframes')) {
+        if (trimmed.startsWith("@keyframes")) {
           // Skip the entire @keyframes block
-          current = '';
+          current = "";
           depth++;
           continue;
         }
         // It's a selector — split on commas for compound selectors
         const parts = trimmed
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
           .filter(Boolean);
         selectors.push(...parts);
-        current = '';
+        current = "";
       } else if (depth === 1 && inMediaOrSupports) {
         // Selector inside @media block
         const trimmed = current.trim();
         const parts = trimmed
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
           .filter(Boolean);
         selectors.push(...parts);
-        current = '';
+        current = "";
       }
       depth++;
       continue;
     }
 
-    if (ch === '}') {
+    if (ch === "}") {
       depth--;
       if (depth === 0 && inMediaOrSupports) {
         inMediaOrSupports = false;
       }
-      current = '';
+      current = "";
       continue;
     }
 
@@ -121,7 +103,7 @@ function validateSelector(selector: string): {
   valid: boolean;
   reason?: string;
 } {
-  const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
+  const normalized = selector.replace(/:where\(([^()]*)\)/g, "$1");
   // Split on combinators but keep the parts
   // A selector like `[data-slot="a"] [data-slot="b"]` has two parts
   const parts = normalized
@@ -148,13 +130,13 @@ function validateSelector(selector: string): {
     // Strip attribute selectors, pseudo-elements, pseudo-classes
     let remainder = part;
     // Remove attribute selectors [...]
-    remainder = remainder.replace(/\[[^\]]*\]/g, '');
+    remainder = remainder.replace(/\[[^\]]*\]/g, "");
     // Remove pseudo-elements ::foo(...)
-    remainder = remainder.replace(/::[a-z-]+(\([^)]*\))?/g, '');
+    remainder = remainder.replace(/::[a-z-]+(\([^)]*\))?/g, "");
     // Remove pseudo-classes :foo(...)
-    remainder = remainder.replace(/:[a-z-]+(\([^)]*\))?/g, '');
+    remainder = remainder.replace(/:[a-z-]+(\([^)]*\))?/g, "");
     // Remove combinators and whitespace
-    remainder = remainder.replace(/[\s>+~]+/g, '').trim();
+    remainder = remainder.replace(/[\s>+~]+/g, "").trim();
 
     // After stripping, nothing should remain (no bare element selectors)
     if (remainder.length > 0) {
@@ -168,10 +150,10 @@ function validateSelector(selector: string): {
   return { valid: true };
 }
 
-describe('CSS selector contract', () => {
+describe("CSS selector contract", () => {
   const files = getComponentCssFiles();
 
-  it('should find component CSS files', () => {
+  it("should find component CSS files", () => {
     expect(files.length).toBeGreaterThan(0);
   });
 
@@ -183,7 +165,7 @@ describe('CSS selector contract', () => {
         return;
       }
 
-      const css = readFileSync(file, 'utf-8');
+      const css = readFileSync(file, "utf-8");
       const selectors = extractSelectors(css);
 
       const violations: string[] = [];
@@ -199,7 +181,7 @@ describe('CSS selector contract', () => {
   }
 });
 
-describe('layout selector scoping', () => {
+describe("layout selector scoping", () => {
   const files = getComponentCssFiles();
   const broadLayoutSlotPattern = /\[data-slot="(main|sidebar|navbar)"\]/;
 
@@ -207,37 +189,35 @@ describe('layout selector scoping', () => {
     const filename = file.split(/[/\\]/).pop()!;
 
     it(`${filename}: anchors broad layout slots to a public layout root`, () => {
-      const css = readFileSync(file, 'utf-8');
+      const css = readFileSync(file, "utf-8");
       const selectors = extractSelectors(css);
 
       const violations = selectors.filter((selector) => {
-        const normalized = selector.replace(/:where\(([^()]*)\)/g, '$1');
+        const normalized = selector.replace(/:where\(([^()]*)\)/g, "$1");
         if (!broadLayoutSlotPattern.test(normalized)) return false;
-        return !/\[data-slot="(topbar-layout|sidebar-layout)"\]/.test(
-          normalized
-        );
+        return !/\[data-slot="(topbar-layout|sidebar-layout)"\]/.test(normalized);
       });
 
       expect(
         violations,
-        `Broad layout slots must be scoped by a public layout root: ${violations.join(', ')}`
+        `Broad layout slots must be scoped by a public layout root: ${violations.join(", ")}`,
       ).toEqual([]);
     });
   }
 });
 
-describe('tokens.css selector contract', () => {
-  it('uses only :root and [data-theme] selectors', () => {
-    const css = readFileSync(TOKENS_FILE, 'utf-8');
+describe("tokens.css selector contract", () => {
+  it("uses only :root and [data-theme] selectors", () => {
+    const css = readFileSync(TOKENS_FILE, "utf-8");
     const selectors = extractSelectors(css);
 
     for (const sel of selectors) {
-      const isRoot = sel === ':root';
-      const isRootNot = sel === ':root:not([data-theme])';
-      const isDataTheme = sel.startsWith('[data-theme=');
+      const isRoot = sel === ":root";
+      const isRootNot = sel === ":root:not([data-theme])";
+      const isDataTheme = sel.startsWith("[data-theme=");
       expect(
         isRoot || isRootNot || isDataTheme,
-        `Unexpected selector in tokens.css: "${sel}"`
+        `Unexpected selector in tokens.css: "${sel}"`,
       ).toBe(true);
     }
   });

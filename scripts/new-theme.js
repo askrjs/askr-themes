@@ -1,11 +1,11 @@
-import { cp, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import path from 'node:path';
+import { cp, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 const THEME_NAME_RE = /^[a-z0-9-]+$/;
 
 function printUsage() {
-  console.log('Usage: npm run new:theme -- <theme-name>');
-  console.log('Example: npm run new:theme -- ocean');
+  console.log("Usage: npm run new:theme -- <theme-name>");
+  console.log("Example: npm run new:theme -- ocean");
 }
 
 async function pathExists(targetPath) {
@@ -18,17 +18,13 @@ async function pathExists(targetPath) {
 }
 
 async function replacePlaceholdersInCssFiles(dirPath, themeName) {
-  const files = [
-    'tokens.css',
-    path.join('components', 'button.css'),
-    'index.css',
-  ];
+  const files = ["tokens.css", path.join("components", "button.css"), "index.css"];
 
   for (const file of files) {
     const filePath = path.join(dirPath, file);
-    const content = await readFile(filePath, 'utf8');
-    const updated = content.replaceAll('__THEME_NAME__', themeName);
-    await writeFile(filePath, updated, 'utf8');
+    const content = await readFile(filePath, "utf8");
+    const updated = content.replaceAll("__THEME_NAME__", themeName);
+    await writeFile(filePath, updated, "utf8");
   }
 }
 
@@ -41,16 +37,16 @@ async function main() {
   }
 
   if (!THEME_NAME_RE.test(themeName)) {
-    console.error('Theme name must match /^[a-z0-9-]+$/.');
+    console.error("Theme name must match /^[a-z0-9-]+$/.");
     process.exit(1);
   }
 
   const root = process.cwd();
-  const templateDir = path.join(root, 'templates', 'theme');
-  const outputDir = path.join(root, 'src', 'themes', themeName);
+  const templateDir = path.join(root, "templates", "theme");
+  const outputDir = path.join(root, "src", "themes", themeName);
 
   if (!(await pathExists(templateDir))) {
-    console.error('Missing templates/theme directory.');
+    console.error("Missing templates/theme directory.");
     process.exit(1);
   }
 
@@ -64,9 +60,7 @@ async function main() {
   await replacePlaceholdersInCssFiles(outputDir, themeName);
 
   console.log(`Created theme at src/themes/${themeName}`);
-  console.log(
-    'Next step: add exports in package.json for your new theme entrypoints.'
-  );
+  console.log("Next step: add exports in package.json for your new theme entrypoints.");
 }
 
 main().catch((error) => {

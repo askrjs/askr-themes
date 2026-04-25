@@ -1,11 +1,11 @@
-:where([data-slot='topbar-layout']),
-:where([data-slot='sidebar-layout']) {
+:where([data-slot="topbar-layout"]),
+:where([data-slot="sidebar-layout"]) {
   min-block-size: 100vh;
   background: var(--ak-color-bg);
   color: var(--ak-color-text);
 }
 
-:where([data-slot='topbar-layout']) > :where([data-slot='navbar']) {
+:where([data-slot="topbar-layout"]) > :where([data-slot="navbar"]) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -14,161 +14,142 @@
   padding: 0.875rem var(--ak-layout-page-gutter);
   gap: var(--ak-space-sm) var(--ak-space-md);
   border-bottom: 1px solid var(--ak-color-border);
-  background: color-mix(
-    in srgb,
-    var(--ak-color-surface-overlay) 95%,
-    var(--ak-color-surface)
-  );
+  background: color-mix(in srgb, var(--ak-color-surface-overlay) 95%, var(--ak-color-surface));
   backdrop-filter: blur(12px);
 }
 
-:where([data-slot='sidebar-layout']) {
+:where([data-slot="sidebar-layout"]) {
   display: flex;
   flex-direction: column;
   gap: var(--ak-space-lg);
 }
 
-:where([data-slot='sidebar-layout'][data-gap='sm']),
-:where([data-slot='sidebar-layout'][data-gap='initial:sm']),
-:where([data-slot='topbar-layout'][data-gap='sm']),
-:where([data-slot='topbar-layout'][data-gap='initial:sm']) {
+:where([data-slot="sidebar-layout"][data-gap="sm"]),
+:where([data-slot="sidebar-layout"][data-gap="initial:sm"]),
+:where([data-slot="topbar-layout"][data-gap="sm"]),
+:where([data-slot="topbar-layout"][data-gap="initial:sm"]) {
   gap: var(--ak-space-sm);
 }
 
-:where([data-slot='sidebar-layout'][data-gap='md']),
-:where([data-slot='sidebar-layout'][data-gap='initial:md']),
-:where([data-slot='topbar-layout'][data-gap='md']),
-:where([data-slot='topbar-layout'][data-gap='initial:md']) {
+:where([data-slot="sidebar-layout"][data-gap="md"]),
+:where([data-slot="sidebar-layout"][data-gap="initial:md"]),
+:where([data-slot="topbar-layout"][data-gap="md"]),
+:where([data-slot="topbar-layout"][data-gap="initial:md"]) {
   gap: var(--ak-space-md);
 }
 
-:where([data-slot='sidebar-layout'][data-gap='lg']),
-:where([data-slot='sidebar-layout'][data-gap='initial:lg']),
-:where([data-slot='topbar-layout'][data-gap='lg']),
-:where([data-slot='topbar-layout'][data-gap='initial:lg']) {
+:where([data-slot="sidebar-layout"][data-gap="lg"]),
+:where([data-slot="sidebar-layout"][data-gap="initial:lg"]),
+:where([data-slot="topbar-layout"][data-gap="lg"]),
+:where([data-slot="topbar-layout"][data-gap="initial:lg"]) {
   gap: var(--ak-space-lg);
 }
 
-:where([data-slot='sidebar-layout'][data-gap='xl']),
-:where([data-slot='sidebar-layout'][data-gap='initial:xl']),
-:where([data-slot='topbar-layout'][data-gap='xl']),
-:where([data-slot='topbar-layout'][data-gap='initial:xl']) {
+:where([data-slot="sidebar-layout"][data-gap="xl"]),
+:where([data-slot="sidebar-layout"][data-gap="initial:xl"]),
+:where([data-slot="topbar-layout"][data-gap="xl"]),
+:where([data-slot="topbar-layout"][data-gap="initial:xl"]) {
   gap: var(--ak-space-xl);
 }
 
-:where([data-slot='sidebar-layout'][data-sidebar-position='end']) {
+:where([data-slot="sidebar-layout"][data-sidebar-position="end"]) {
   flex-direction: column;
 }
 
-:where([data-slot='sidebar-layout']) > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"]) {
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
   background: linear-gradient(
     180deg,
-    color-mix(
-      in srgb,
-      var(--ak-color-primary-soft) 22%,
-      var(--ak-color-surface-muted)
-    ),
+    color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface-muted)),
     var(--ak-color-surface)
   );
   border-inline-end: 0;
   border-block-end: 1px solid var(--ak-color-border);
 }
 
-:where([data-slot='topbar-layout']) > :where([data-slot='main']),
-:where([data-slot='sidebar-layout']) > :where([data-slot='main']) {
+:where([data-slot="topbar-layout"]) > :where([data-slot="main"]),
+:where([data-slot="sidebar-layout"]) > :where([data-slot="main"]) {
   min-inline-size: 0;
   inline-size: 100%;
   padding: var(--ak-layout-page-gutter);
 }
 
-:where([data-slot='flex'][data-collapse-below='sm']),
-:where([data-slot='flex'][data-collapse-below='md']),
-:where([data-slot='flex'][data-collapse-below='lg']),
-:where([data-slot='flex'][data-collapse-below='xl']) {
+:where([data-slot="flex"][data-collapse-below="sm"]),
+:where([data-slot="flex"][data-collapse-below="md"]),
+:where([data-slot="flex"][data-collapse-below="lg"]),
+:where([data-slot="flex"][data-collapse-below="xl"]) {
   flex-direction: column;
   align-items: stretch;
 }
 
-:where([data-slot='sidebar-layout'][data-collapse-below='sm']),
-:where([data-slot='sidebar-layout'][data-collapse-below='md']),
-:where([data-slot='sidebar-layout'][data-collapse-below='lg']),
-:where([data-slot='sidebar-layout'][data-collapse-below='xl']) {
+:where([data-slot="sidebar-layout"][data-collapse-below="sm"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="md"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="lg"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
   flex-direction: column;
 }
 
-:where([data-slot='sidebar-layout'][data-collapse-below='sm'])
-  > :where([data-slot='sidebar']),
-:where([data-slot='sidebar-layout'][data-collapse-below='md'])
-  > :where([data-slot='sidebar']),
-:where([data-slot='sidebar-layout'][data-collapse-below='lg'])
-  > :where([data-slot='sidebar']),
-:where([data-slot='sidebar-layout'][data-collapse-below='xl'])
-  > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"][data-collapse-below="sm"]) > :where([data-slot="sidebar"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]),
+:where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
   inline-size: 100%;
   flex-basis: auto;
 }
 
-:where([data-slot='sidebar-layout'][data-sidebar-width='sm'])
-  > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"][data-sidebar-width="sm"]) > :where([data-slot="sidebar"]) {
   inline-size: var(--ak-layout-sidebar-width-sm);
   flex-basis: var(--ak-layout-sidebar-width-sm);
 }
 
-:where([data-slot='sidebar-layout'][data-sidebar-width='md'])
-  > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"][data-sidebar-width="md"]) > :where([data-slot="sidebar"]) {
   inline-size: var(--ak-layout-sidebar-width-md);
   flex-basis: var(--ak-layout-sidebar-width-md);
 }
 
-:where([data-slot='sidebar-layout'][data-sidebar-width='lg'])
-  > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"][data-sidebar-width="lg"]) > :where([data-slot="sidebar"]) {
   inline-size: var(--ak-layout-sidebar-width-lg);
   flex-basis: var(--ak-layout-sidebar-width-lg);
 }
 
-:where([data-slot='sidebar-layout'][data-sidebar-width='xl'])
-  > :where([data-slot='sidebar']) {
+:where([data-slot="sidebar-layout"][data-sidebar-width="xl"]) > :where([data-slot="sidebar"]) {
   inline-size: var(--ak-layout-sidebar-width-xl);
   flex-basis: var(--ak-layout-sidebar-width-xl);
 }
 
 @media (min-width: 40rem) {
-  :where([data-slot='flex'][data-collapse-below='sm']) {
+  :where([data-slot="flex"][data-collapse-below="sm"]) {
     flex-direction: row;
     align-items: center;
   }
 
-  :where([data-slot='sidebar-layout']) {
+  :where([data-slot="sidebar-layout"]) {
     flex-direction: row;
     align-items: stretch;
   }
 
-  :where([data-slot='sidebar-layout'][data-sidebar-position='end']) {
+  :where([data-slot="sidebar-layout"][data-sidebar-position="end"]) {
     flex-direction: row-reverse;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='md']),
-  :where([data-slot='sidebar-layout'][data-collapse-below='lg']),
-  :where([data-slot='sidebar-layout'][data-collapse-below='xl']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="md"]),
+  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]),
+  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
     flex-direction: column;
   }
 
-  :where([data-slot='sidebar-layout']) > :where([data-slot='sidebar']) {
+  :where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='md'])
-    > :where([data-slot='sidebar']),
-  :where([data-slot='sidebar-layout'][data-collapse-below='lg'])
-    > :where([data-slot='sidebar']),
-  :where([data-slot='sidebar-layout'][data-collapse-below='xl'])
-    > :where([data-slot='sidebar']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]),
+  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]),
+  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
     inline-size: 100%;
     flex-basis: auto;
     border-block-end: 1px solid var(--ak-color-border);
@@ -177,33 +158,30 @@
 }
 
 @media (min-width: 48rem) {
-  :where([data-slot='topbar-layout']) > :where([data-slot='navbar']) {
+  :where([data-slot="topbar-layout"]) > :where([data-slot="navbar"]) {
     padding-inline: var(--ak-layout-page-gutter);
   }
 
-  :where([data-slot='topbar-layout']) > :where([data-slot='main']),
-  :where([data-slot='sidebar-layout']) > :where([data-slot='main']) {
+  :where([data-slot="topbar-layout"]) > :where([data-slot="main"]),
+  :where([data-slot="sidebar-layout"]) > :where([data-slot="main"]) {
     padding: var(--ak-layout-page-gutter);
   }
 
-  :where([data-slot='flex'][data-collapse-below='md']) {
+  :where([data-slot="flex"][data-collapse-below="md"]) {
     flex-direction: row;
     align-items: center;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='md']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) {
     flex-direction: row;
     align-items: stretch;
   }
 
-  :where(
-    [data-slot='sidebar-layout'][data-sidebar-position='end'][data-collapse-below='md']
-  ) {
+  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="md"]) {
     flex-direction: row-reverse;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='md'])
-    > :where([data-slot='sidebar']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -212,24 +190,21 @@
 }
 
 @media (min-width: 64rem) {
-  :where([data-slot='flex'][data-collapse-below='lg']) {
+  :where([data-slot="flex"][data-collapse-below="lg"]) {
     flex-direction: row;
     align-items: center;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='lg']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) {
     flex-direction: row;
     align-items: stretch;
   }
 
-  :where(
-    [data-slot='sidebar-layout'][data-sidebar-position='end'][data-collapse-below='lg']
-  ) {
+  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="lg"]) {
     flex-direction: row-reverse;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='lg'])
-    > :where([data-slot='sidebar']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -238,24 +213,21 @@
 }
 
 @media (min-width: 80rem) {
-  :where([data-slot='flex'][data-collapse-below='xl']) {
+  :where([data-slot="flex"][data-collapse-below="xl"]) {
     flex-direction: row;
     align-items: center;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='xl']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
     flex-direction: row;
     align-items: stretch;
   }
 
-  :where(
-    [data-slot='sidebar-layout'][data-sidebar-position='end'][data-collapse-below='xl']
-  ) {
+  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="xl"]) {
     flex-direction: row-reverse;
   }
 
-  :where([data-slot='sidebar-layout'][data-collapse-below='xl'])
-    > :where([data-slot='sidebar']) {
+  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
