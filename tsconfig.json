@@ -21,5 +21,12 @@
       "@askrjs/askr-ui/foundations": ["../askr-ui/src/foundations/index.ts"]
     }
   },
-  "include": ["src/**/*", "tests/**/*", "vite.config.ts", "vitest.config.ts"]
+  "include": [
+    "src/components/**/*",
+    "src/themes/**/*",
+    "src/*.d.ts",
+    "tests/**/*",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }
