@@ -1,0 +1,25 @@
+:where([data-slot="theme-provider"]) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-bg);
+}
+
+:where([data-slot="theme-picker"]) {
+  display: inline-flex;
+  min-height: 2.25rem;
+  min-width: 8rem;
+  padding-inline: 0.75rem 2rem;
+  border: 1px solid var(--ak-color-border);
+  border-radius: 8px;
+  background-color: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  font: inherit;
+  font-size: var(--ak-font-size-sm);
+  line-height: 1;
+}
+
+:where([data-slot="theme-picker"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 4px var(--ak-color-focus-ring);
+}

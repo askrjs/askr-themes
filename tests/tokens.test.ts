@@ -3,10 +3,10 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const DEFAULT_THEME_DIR = join(__dirname, "..", "src", "themes", "default");
-const COMPONENTS_DIR = join(DEFAULT_THEME_DIR, "components");
+const COMPONENTS_DIR = join(DEFAULT_THEME_DIR, "styles");
 const THEMES_DIR = join(__dirname, "..", "src", "themes");
 const OFFICIAL_THEMES = ["default"] as const;
-const TEMPLATE_COMPONENTS_DIR = join(__dirname, "..", "templates", "theme", "components");
+const TEMPLATE_COMPONENTS_DIR = join(__dirname, "..", "templates", "theme", "styles");
 
 const REQUIRED_ROOT_TOKENS = [
   "--ak-font-family-body",

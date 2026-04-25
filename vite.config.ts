@@ -9,9 +9,7 @@ export default defineConfig({
   },
   pack: {
     entry: {
-      "default/card": "src/default/card.ts",
-      "default/sidebar-layout": "src/default/sidebar-layout.tsx",
-      "default/topbar-layout": "src/default/topbar-layout.tsx",
+      "components/index": "src/components/index.ts",
     },
     format: ["esm"],
     outDir: "dist",
@@ -29,9 +27,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        "default/card": "src/default/card.ts",
-        "default/sidebar-layout": "src/default/sidebar-layout.tsx",
-        "default/topbar-layout": "src/default/topbar-layout.tsx",
+        "components/index": "src/components/index.ts",
       },
     },
     rollupOptions: {
