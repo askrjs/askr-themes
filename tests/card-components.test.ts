@@ -12,7 +12,7 @@ import {
   Card as DefaultCard,
   CardContent as DefaultCardContent,
   CardHeader as DefaultCardHeader,
-} from "../src/default/card";
+} from "../src/components";
 
 describe("theme card components", () => {
   it("should expose theme-agnostic card components", () => {

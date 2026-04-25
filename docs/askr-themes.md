@@ -8,7 +8,8 @@ askr-themes is an optional styling layer. It provides:
 
 - Design tokens (CSS custom properties)
 - Base component styles that pair with `askr-ui`
-- Layout utility classes
+- Visual-only composition primitives such as Box, Stack, Inline, Cluster, Grid,
+  Container, Section, and Spacer
 - Theme-scoped wrapper modules for visual-only layouts
 - Theme-owned visual components when no headless primitive is needed
 
@@ -28,18 +29,58 @@ Import once at your app entry point:
 import "@askrjs/askr-themes/default";
 ```
 
-You can also import default themed layout wrappers directly when you want the
-default layout styling and the headless layout primitive together:
+You can also import default themed components from the app-facing component
+barrel:
 
 ```ts
-import { SidebarLayout } from "@askrjs/askr-themes/default/sidebar-layout";
-import { TopbarLayout } from "@askrjs/askr-themes/default/topbar-layout";
+import {
+  Badge,
+  Button,
+  Divider,
+  Grid,
+  Stack,
+} from "@askrjs/askr-themes/components";
+```
+
+Layout wrappers also live here because they are visual composition, not
+behavior:
+
+```ts
+import {
+  SidebarLayout,
+  TopbarLayout,
+} from "@askrjs/askr-themes/components";
 ```
 
 Or import a theme-owned visual component directly:
 
 ```ts
-import { Card, CardContent, CardHeader, CardTitle } from "@askrjs/askr-themes/default/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@askrjs/askr-themes/components";
+```
+
+Theme controls are also available from the same entrypoint. `ThemeToggle`
+does not ship icons; pass your own visual content:
+
+```tsx
+import {
+  ThemePicker,
+  ThemeProvider,
+  ThemeToggle,
+} from "@askrjs/askr-themes/components";
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <ThemePicker />
+      <ThemeToggle lightIcon={<SunIcon />} darkIcon={<MoonIcon />} />
+    </ThemeProvider>
+  );
+}
 ```
 
 Or in CSS:

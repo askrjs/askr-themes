@@ -1,6 +1,6 @@
 # @askrjs/askr-themes
 
-Default theme tokens, styles, and themed layout wrappers for askr-ui.
+Default theme tokens, styles, and visual components for askr-ui.
 
 ## Contents
 
@@ -18,11 +18,24 @@ npm install @askrjs/askr-themes
 import "@askrjs/askr-themes/default";
 ```
 
-For visual-only layout wrappers backed by `askr-ui` primitives:
+For visual-only composition and display components:
 
 ```ts
-import { SidebarLayout } from "@askrjs/askr-themes/default/sidebar-layout";
-import { TopbarLayout } from "@askrjs/askr-themes/default/topbar-layout";
+import {
+  Badge,
+  Cluster,
+  Skeleton,
+  Stack,
+} from "@askrjs/askr-themes/components";
+```
+
+For visual-only layout wrappers:
+
+```ts
+import {
+  SidebarLayout,
+  TopbarLayout,
+} from "@askrjs/askr-themes/components";
 ```
 
 For theme-owned visual components:
@@ -35,5 +48,24 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@askrjs/askr-themes/default/card";
+} from "@askrjs/askr-themes/components";
+```
+
+For app theme controls:
+
+```tsx
+import {
+  ThemePicker,
+  ThemeProvider,
+  ThemeToggle,
+} from "@askrjs/askr-themes/components";
+
+export function App() {
+  return (
+    <ThemeProvider>
+      <ThemePicker />
+      <ThemeToggle lightIcon={<SunIcon />} darkIcon={<MoonIcon />} />
+    </ThemeProvider>
+  );
+}
 ```

@@ -18,7 +18,7 @@ async function pathExists(targetPath) {
 }
 
 async function replacePlaceholdersInCssFiles(dirPath, themeName) {
-  const files = ["tokens.css", path.join("components", "button.css"), "index.css"];
+  const files = ["tokens.css", path.join("styles", "button.css"), "index.css"];
 
   for (const file of files) {
     const filePath = path.join(dirPath, file);

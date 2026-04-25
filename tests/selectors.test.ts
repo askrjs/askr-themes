@@ -2,7 +2,7 @@ import { describe, it, expect } from "vite-plus/test";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const COMPONENTS_DIR = join(__dirname, "..", "src", "themes", "default", "components");
+const COMPONENTS_DIR = join(__dirname, "..", "src", "themes", "default", "styles");
 const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
 const CLASS_UTILITY_FILES = new Set(["product-shell.css", "marketing-shell.css", "typography.css"]);
 

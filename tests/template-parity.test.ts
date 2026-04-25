@@ -2,8 +2,8 @@ import { describe, it, expect } from "vite-plus/test";
 import { readdirSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const DEFAULT_COMPONENTS = join(__dirname, "..", "src", "themes", "default", "components");
-const TEMPLATE_COMPONENTS = join(__dirname, "..", "templates", "theme", "components");
+const DEFAULT_COMPONENTS = join(__dirname, "..", "src", "themes", "default", "styles");
+const TEMPLATE_COMPONENTS = join(__dirname, "..", "templates", "theme", "styles");
 const DEFAULT_TOKENS = join(__dirname, "..", "src", "themes", "default", "tokens.css");
 const TEMPLATE_TOKENS = join(__dirname, "..", "templates", "theme", "tokens.css");
 const THEMES_DIR = join(__dirname, "..", "src", "themes");

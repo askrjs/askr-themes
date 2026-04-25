@@ -17,7 +17,7 @@ const uiRoot = path.resolve(themesRoot, "..", "askr-ui");
 
 const UI_COMPONENTS_DIR = path.join(uiRoot, "src", "components");
 const THEME_SOURCE_COMPONENTS_DIR = path.join(themesRoot, "src", "components");
-const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", "components");
+const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", "styles");
 const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "center",
   "field-checkbox",
@@ -25,6 +25,7 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "field-radio-group",
   "field-select-trigger",
   "field-switch",
+  "flex",
   "icon",
 ]);
 

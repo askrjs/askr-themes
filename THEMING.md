@@ -41,6 +41,21 @@ Icon override:
 
 Rules: style only public data-\* hooks, never internal DOM, no deep selectors, no !important.
 
+Package boundaries:
+
+- `@askrjs/askr` owns what exists and when.
+- `@askrjs/askr-ui` owns behavior, state, focus, and ARIA coordination.
+- `@askrjs/askr-themes` owns visual-only components, layout composition, and
+  default styling.
+
+Use `@askrjs/askr-themes/components` for styled components such as Button, Box,
+Stack, Inline, Cluster, Grid, Container, Section, Spacer, Badge, Skeleton,
+Separator/Divider, SidebarLayout, and TopbarLayout.
+
+Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
+`ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
+icons; applications pass their own icon/content props.
+
 Responsive rules:
 
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
