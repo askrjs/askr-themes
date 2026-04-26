@@ -74,6 +74,8 @@ describe("theme route persistence", () => {
     }
     clearRoutes();
     clearStoredTheme();
+    document.documentElement.removeAttribute("data-theme");
+    document.documentElement.removeAttribute("data-theme-choice");
     restoreLocalStorage?.();
     restoreLocalStorage = undefined;
   });
@@ -102,9 +104,13 @@ describe("theme route persistence", () => {
     const provider = container.querySelector(
       '[data-slot="theme-provider"]'
     ) as HTMLDivElement | null;
+    const html = document.documentElement;
 
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
-    expect(provider?.getAttribute("data-theme")).toBe("light");
+    expect(provider?.getAttribute("data-theme")).toBeNull();
+    expect(provider?.getAttribute("data-theme-choice")).toBe("light");
+    expect(html.getAttribute("data-theme")).toBe("light");
+    expect(html.getAttribute("data-theme-choice")).toBe("light");
 
     toggle?.click();
     await settle();
@@ -118,8 +124,10 @@ describe("theme route persistence", () => {
 
     expect(toggleAfterPress?.getAttribute("data-theme-choice")).toBe("dark");
     expect(toggleAfterPress?.getAttribute("data-next-theme")).toBe("light");
-    expect(providerAfterPress?.getAttribute("data-theme")).toBe("dark");
+    expect(providerAfterPress?.getAttribute("data-theme")).toBeNull();
     expect(providerAfterPress?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(html.getAttribute("data-theme")).toBe("dark");
+    expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
 
     navigate("/about");
@@ -136,8 +144,10 @@ describe("theme route persistence", () => {
     expect(pageAfter?.textContent).toBe("About");
     expect(toggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(toggleAfter?.getAttribute("data-next-theme")).toBe("light");
-    expect(providerAfter?.getAttribute("data-theme")).toBe("dark");
+    expect(providerAfter?.getAttribute("data-theme")).toBeNull();
     expect(providerAfter?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(html.getAttribute("data-theme")).toBe("dark");
+    expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
