@@ -1,14 +1,15 @@
 [data-slot="topbar-layout"] {
   min-block-size: 100vh;
-  background: var(--ak-color-bg);
+  background: transparent;
 }
 
 [data-slot="sidebar-layout"] {
   min-block-size: 100vh;
-  background: var(--ak-color-bg);
+  background: transparent;
 }
 
 [data-slot="topbar-layout"] > [data-slot="main"],
 [data-slot="sidebar-layout"] > [data-slot="main"] {
-  padding: var(--ak-layout-page-gutter);
+  padding: calc(var(--ak-layout-page-gutter) + 0.4rem) var(--ak-layout-page-gutter)
+    calc(var(--ak-layout-page-gutter) + var(--ak-space-3xl));
 }

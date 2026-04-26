@@ -1,10 +1,15 @@
 [data-slot="topbar-layout"] > [data-slot="navbar"] {
+  position: sticky;
+  top: 0;
+  z-index: var(--ak-z-sticky);
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-height: var(--ak-layout-navbar-height);
-  padding-inline: var(--ak-space-md);
+  padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
   gap: var(--ak-space-md);
-  border-bottom: 1px solid var(--ak-color-border);
-  background: var(--ak-color-bg);
+  border-bottom: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
+  background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
+  box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
+  backdrop-filter: blur(18px) saturate(150%);
 }

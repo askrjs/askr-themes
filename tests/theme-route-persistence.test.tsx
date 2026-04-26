@@ -140,4 +140,42 @@ describe("theme route persistence", () => {
     expect(providerAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
+
+  it("should replace the icon instead of accumulating icons on repeated toggles", async () => {
+    const AppLayout = () => (
+      <ThemeProvider class="app-shell" defaultTheme="light">
+        <ThemeToggle
+          toggleThemes={["light", "dark"]}
+          lightIcon={<svg aria-hidden="true" data-icon="sun" viewBox="0 0 16 16" />}
+          darkIcon={<svg aria-hidden="true" data-icon="moon" viewBox="0 0 16 16" />}
+        />
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggle = () =>
+      container?.querySelector('[data-theme-control="toggle"]') as
+        | HTMLButtonElement
+        | null;
+
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+
+    getToggle()?.click();
+    await settle();
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+
+    getToggle()?.click();
+    await settle();
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+  });
 });
