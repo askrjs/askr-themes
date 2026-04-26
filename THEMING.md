@@ -120,6 +120,7 @@ The token system must:
 
 - support both light and dark themes
 - theme headless UI primitives consistently
+- optimize for admin and internal tools by default
 - avoid hardcoded component styling
 - provide enough semantic coverage for real apps
 - remain small enough to be maintainable
@@ -135,6 +136,7 @@ This spec does not:
 - mandate one visual style
 - require every theme to look the same
 - require all apps to use every token directly
+- optimize the default theme for highly branded marketing sites
 
 ---
 
@@ -142,10 +144,11 @@ This spec does not:
 
 1. Prefer semantic tokens over raw visual tokens.
 2. Prefer a restrained, reusable token set over many one-off tokens.
-3. Tokens must be usable across admin UI, docs UI, and marketing-adjacent app surfaces.
+3. The default theme should favor admin UI, docs UI, dashboards, CRUD flows, and settings surfaces.
 4. `askr-ui` components should consume semantic tokens, not hardcoded values.
 5. Theme blocks should only override theme-dependent values.
 6. Layout, spacing, typography scale, icon scale, and breakpoints belong in the global root unless intentionally themed.
+7. Default visual choices should reduce end-user design decisions: one accent, subtle borders, compact density, restrained radius, and minimal decorative styling.
 
 ---
 

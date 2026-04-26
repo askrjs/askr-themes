@@ -19,12 +19,26 @@ styles/navigation/ — menus, tabs, breadcrumbs, and pagination
 styles/disclosure/ — accordion and collapsible patterns
 styles/overlays/  — dialogs, popovers, toasts, and tooltips
 styles/data/      — data-heavy views such as tables
-styles/shell/     — global shell theme values and product/marketing shells
+styles/shell/     — global shell theme values and app-level shell patterns
 styles/layout/    — layout primitives and responsive page structure
 components.css    — component-level overrides
 ```
 
 Each layer can be replaced or extended independently.
+
+## Default theme baseline
+
+The default theme is optimized for admin and internal tools.
+
+- neutral grayscale foundation with one accent color
+- subtle borders before heavy elevation
+- compact controls and layout density
+- small, consistent radius values
+- tight spacing and disciplined typography
+- production-ready defaults over broad stylistic flexibility
+
+If you are building a highly branded marketing site, expect to override the
+theme aggressively or supply a custom one.
 
 ## Token overrides
 

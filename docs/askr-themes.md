@@ -1,6 +1,6 @@
 # Styling: askr-themes
 
-`@askrjs/askr-themes` provides the canonical default visual theme for Askr applications.
+`@askrjs/askr-themes` provides the canonical default visual theme for Askr admin and internal-tool applications.
 
 ## What askr-themes is
 
@@ -10,7 +10,7 @@ askr-themes is an optional styling layer. It provides:
 - Base component styles that pair with `askr-ui`
 - Visual-only composition primitives such as Box, Stack, Inline, Cluster, Grid,
   Container, Section, and Spacer
-- Product SaaS scaffold primitives such as AppShell, PageHeader, EmptyState,
+- Admin scaffold primitives such as AppShell, PageHeader, EmptyState,
   FormSection, and SettingsSection
 - Theme-scoped wrapper modules for visual-only layouts
 - Theme-owned visual components when no headless primitive is needed
@@ -96,11 +96,11 @@ Or in CSS:
 @import "@askrjs/askr-themes/default";
 ```
 
-The default theme is designed to scaffold product SaaS screens without app CSS:
+The default theme is designed to scaffold admin and internal-tool screens without app CSS:
 pair `AppShell` with `PageHeader`, `Grid`, `Card`, `FormSection`, and
 `EmptyState`, then customize the result by overriding semantic `--ak-*` tokens.
 
-## Product app scaffold
+## Admin app scaffold
 
 ```tsx
 import "@askrjs/askr-themes/default";
@@ -122,22 +122,22 @@ export function App() {
       sidebar={<Stack gap="2">Navigation</Stack>}
       topbar={
         <PageHeader
-          title="Acme Console"
-          description="Operational overview"
-          actions={<Button variant="primary">New project</Button>}
+          title="Operations Console"
+          description="Team activity, records, and configuration"
+          actions={<Button variant="primary">Create record</Button>}
         />
       }
     >
       <Stack gap="5">
-        <PageHeader eyebrow="Dashboard" title="Good morning" />
+        <PageHeader eyebrow="Overview" title="Workspace status" />
         <Card>
-          <CardContent>Metrics, tables, or charts go here.</CardContent>
+          <CardContent>Metrics, tables, or approval queues go here.</CardContent>
         </Card>
-        <FormSection title="Profile" description="Workspace defaults.">
+        <FormSection title="Record defaults" description="Settings applied to new entries.">
           Form fields go here.
         </FormSection>
-        <SettingsSection title="Danger zone" description="Protected actions.">
-          <EmptyState title="No destructive actions configured" />
+        <SettingsSection title="Access controls" description="Protected admin actions.">
+          <EmptyState title="No elevated actions configured" />
         </SettingsSection>
       </Stack>
     </AppShell>
@@ -145,10 +145,10 @@ export function App() {
 }
 ```
 
-Keep narrow recipes as composition: an auth screen is `Card` plus `FormSection`;
-a table page is `PageHeader` plus the `askr-ui` data table pattern inside a
-`Card` or surface. Those recipes do not need first-class wrappers until they
-prove reusable across several apps.
+Keep narrow recipes as composition: a record-detail page is `Card` plus
+`FormSection`; a CRUD index page is `PageHeader` plus the `askr-ui` data table
+pattern inside a `Card` or surface. Those recipes do not need first-class
+wrappers until they prove reusable across several admin apps.
 
 `data-slot` is the canonical styling contract from `askr-ui`, and
 `askr-themes` layers optional unprefixed aliases over it for ergonomic raw HTML:
@@ -158,18 +158,19 @@ prove reusable across several apps.
 <button class="btn btn-primary">Save</button>
 ```
 
-Scaffold components use plain classes for styling (`.app-shell`,
-`.page-header`, `.form-section`) while global design tokens keep the `--ak-*`
-prefix. Class aliases are intentionally selective; prefer tokens and canonical
-data hooks for deeper customization.
+Scaffold components keep their plain classes for raw HTML ergonomics
+(`.app-shell`, `.page-header`, `.form-section`) and also emit matching
+canonical `data-slot` hooks. Global design tokens keep the `--ak-*` prefix.
+Class aliases are intentionally selective; prefer tokens and canonical data
+hooks for deeper customization.
 
 ## When to use askr-themes
 
-Use `askr-themes` when you want the standard Askr visual language without writing your own
-design token layer.
+Use `askr-themes` when you want the standard Askr admin visual language without
+writing your own design token layer.
 
-Skip `askr-themes` when you have your own design system. `askr-ui` components work without
-`askr-themes` — supply your own CSS.
+Skip `askr-themes` when you have your own design system. `askr-ui` components
+work without `askr-themes` — supply your own CSS.
 
 ## See also
 

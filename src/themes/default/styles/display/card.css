@@ -1,17 +1,18 @@
 :where(.card, [data-slot="card"]) {
   display: grid;
-  gap: var(--ak-space-md);
-  padding: var(--ak-space-lg);
-  border: 1px solid var(--ak-color-border);
-  border-radius: var(--ak-radius-lg);
+  gap: var(--ak-space-sm);
+  padding: var(--ak-layout-panel-padding);
+  border: 1px solid var(--ak-color-border-subtle);
+  border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: none;
 }
 
 :where(.card-raised, [data-slot="card"][data-variant="raised"]) {
   background: var(--ak-color-surface-raised);
-  box-shadow: var(--ak-shadow-md);
+  border-color: var(--ak-color-border);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.card-sm, [data-slot="card"][data-padding="sm"]) {
@@ -29,9 +30,10 @@
 
 :where(.card-title, [data-slot="card-title"]) {
   margin: 0;
-  font-size: var(--ak-type-5-size);
-  line-height: var(--ak-type-5-line-height);
-  letter-spacing: var(--ak-type-5-letter-spacing);
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-lg);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: var(--ak-line-height-tight);
 }
 
 :where(.card-description, [data-slot="card-description"]) {

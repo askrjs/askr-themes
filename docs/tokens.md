@@ -16,15 +16,19 @@ Askr application.
 | Density    | `--ak-density-control-height-md`, `--ak-density-control-padding-x-md` |
 | Shadow     | `--ak-shadow-sm`, `--ak-shadow-lg`                            |
 
+The default token set is tuned for admin and internal tools: neutral surfaces,
+one accent color, compact density, restrained radius values, and subtle border-led
+separation.
+
 ## Override tokens per-application
 
 In `src/styles/tokens.css`:
 
 ```css
 :root {
-  --ak-color-primary: #4f46e5;
+  --ak-color-primary: #1d4ed8;
   --ak-radius-md: 6px;
-  --ak-layout-page-gutter: clamp(1rem, 2vw, 2.25rem);
+  --ak-layout-page-gutter: clamp(1rem, 1.5vw, 1.75rem);
 }
 ```
 

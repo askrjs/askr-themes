@@ -1,26 +1,19 @@
 :where(.input, [data-slot="input"]) {
   appearance: none;
-  min-height: 2.875rem;
+  min-height: var(--ak-density-control-height-md);
   width: 100%;
-  padding: 0 calc(var(--ak-space-lg) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 82%, white);
-  border-radius: var(--ak-radius-lg);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 78%, var(--ak-color-primary-soft)),
-    color-mix(in srgb, var(--ak-color-surface) 86%, var(--ak-color-surface-muted))
-  );
+  padding: 0 var(--ak-density-control-padding-x-md);
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  font-size: var(--ak-font-size-md);
+  font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.72) inset,
-    0 0 0 1px transparent;
+  box-shadow: none;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
-    box-shadow var(--ak-duration-fast) var(--ak-ease-standard),
-    transform var(--ak-duration-fast) var(--ak-ease-standard);
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where(.input, [data-slot="input"])::placeholder {
@@ -28,21 +21,19 @@
 }
 
 :where(.input:hover, [data-slot="input"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 18%, var(--ak-color-surface));
+  background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
 }
 
 :where(.input:focus-visible, [data-slot="input"]:focus-visible) {
   outline: none;
   border-color: var(--ak-color-primary);
-  box-shadow:
-    0 0 0 4px var(--ak-color-focus-ring),
-    var(--ak-shadow-sm);
+  box-shadow: 0 0 0 4px var(--ak-color-focus-ring);
 }
 
 :where(.input[aria-invalid="true"], [data-slot="input"][aria-invalid="true"]) {
   border-color: var(--ak-color-danger);
-  background: color-mix(in srgb, var(--ak-color-danger-soft) 28%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-danger-soft) 18%, var(--ak-color-surface));
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 
