@@ -1,3 +1,7 @@
+// Temporary local type shim for sibling `file:` dependencies.
+// Remove this once `../askr` and `../askr-ui` reliably emit the dist .d.ts
+// files referenced by this package's tsconfig path mappings.
+
 declare module '@askrjs/askr/foundations' {
   export type Props = Record<string, unknown> & {
     children?: unknown;
