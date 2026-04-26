@@ -1,10 +1,11 @@
 :where([data-slot="button"]) {
-  --_button-height: 2.25rem;
-  --_button-padding-x: 0.875rem;
-  --_button-radius: 8px;
-  --_button-border: color-mix(in srgb, var(--ak-color-border) 88%, transparent);
+  --_button-height: 2.5rem;
+  --_button-padding-x: 1rem;
+  --_button-radius: var(--ak-radius-round);
+  --_button-border: color-mix(in srgb, var(--ak-color-border) 84%, transparent);
   --_button-shadow:
-    inset 0 0 0 1px color-mix(in srgb, white 72%, transparent), 0 1px 2px rgba(15, 23, 42, 0.04);
+    inset 0 1px 0 color-mix(in srgb, white 88%, transparent),
+    0 1px 2px rgba(17, 17, 19, 0.04);
 
   display: inline-flex;
   align-items: center;
@@ -14,13 +15,13 @@
   padding-inline: var(--_button-padding-x);
   border: 1px solid var(--_button-border);
   border-radius: var(--_button-radius);
-  background: var(--ak-color-surface);
+  background: color-mix(in srgb, var(--ak-color-surface) 92%, white 8%);
   color: var(--ak-color-text);
   box-shadow: var(--_button-shadow);
   font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-medium);
+  font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
@@ -34,23 +35,23 @@
     opacity var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot="button"]) > :where([data-slot="icon"]) {
+:where([data-slot="button"]) > :where([data-slot="icon"], svg) {
   flex: none;
   color: currentColor;
 }
 
 :where([data-slot="button"]:hover) {
-  background: var(--ak-color-surface-muted);
-  border-color: color-mix(in srgb, var(--ak-color-border-strong) 72%, var(--ak-color-border));
+  background: color-mix(in srgb, white 70%, var(--ak-color-surface-muted));
+  border-color: color-mix(in srgb, var(--ak-color-border-strong) 64%, var(--ak-color-border));
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, white 72%, transparent),
-    0 1px 2px rgba(15, 23, 42, 0.06);
+    inset 0 1px 0 color-mix(in srgb, white 92%, transparent),
+    0 4px 12px rgba(17, 17, 19, 0.08);
 }
 
 :where([data-slot="button"]:active) {
-  background: color-mix(in srgb, var(--ak-color-active) 72%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-active) 76%, var(--ak-color-surface));
   box-shadow:
-    inset 0 1px 2px rgba(15, 23, 42, 0.08),
+    inset 0 1px 2px rgba(17, 17, 19, 0.08),
     inset 0 0 0 1px color-mix(in srgb, black 8%, transparent);
 }
 
@@ -73,12 +74,16 @@
 }
 
 :where([data-slot="button"][data-variant="primary"]) {
-  background: var(--ak-color-primary);
-  border-color: color-mix(in srgb, var(--ak-color-primary-active) 48%, var(--ak-color-primary));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, white 16%, var(--ak-color-primary)) 0%,
+    var(--ak-color-primary) 100%
+  );
+  border-color: color-mix(in srgb, var(--ak-color-primary-active) 52%, var(--ak-color-primary));
   color: var(--ak-color-text-inverse);
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, white 18%, transparent),
-    0 1px 2px rgba(37, 99, 235, 0.22);
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent),
+    0 8px 18px -12px color-mix(in srgb, var(--ak-color-primary) 75%, transparent);
 }
 
 :where([data-slot="button"][data-variant="primary"]:hover) {
@@ -94,31 +99,31 @@
   background: var(--ak-color-primary-active);
   border-color: var(--ak-color-primary-active);
   box-shadow:
-    inset 0 1px 2px rgba(8, 19, 52, 0.2),
+    inset 0 1px 2px rgba(17, 17, 19, 0.18),
     inset 0 0 0 1px color-mix(in srgb, black 10%, transparent);
 }
 
 :where([data-slot="button"][data-variant="secondary"]) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 84%, var(--ak-color-surface));
-  border-color: transparent;
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 76%, var(--ak-color-surface));
+  border-color: color-mix(in srgb, var(--ak-color-primary-soft) 68%, var(--ak-color-border));
   color: var(--ak-color-primary-ink);
-  box-shadow: none;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 80%, transparent);
 }
 
 :where([data-slot="button"][data-variant="secondary"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 92%, var(--ak-color-surface));
-  border-color: transparent;
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 88%, var(--ak-color-surface));
+  border-color: color-mix(in srgb, var(--ak-color-primary-soft) 82%, var(--ak-color-border));
 }
 
 :where([data-slot="button"][data-variant="secondary"]:active) {
   background: color-mix(in srgb, var(--ak-color-primary-soft) 72%, var(--ak-color-active));
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--ak-color-primary-soft) 70%, var(--ak-color-border));
   box-shadow: none;
 }
 
 :where([data-slot="button"][data-variant="outline"]) {
-  background: transparent;
-  border-color: var(--ak-color-border);
+  background: color-mix(in srgb, var(--ak-color-surface) 58%, transparent);
+  border-color: color-mix(in srgb, var(--ak-color-border) 92%, white 8%);
   color: var(--ak-color-text);
   box-shadow: none;
 }
@@ -138,12 +143,11 @@
   background: transparent;
   border-color: transparent;
   box-shadow: none;
-  margin-inline: -0.25rem;
   color: var(--ak-color-text);
 }
 
 :where([data-slot="button"][data-variant="ghost"]:hover) {
-  background: var(--ak-color-hover);
+  background: color-mix(in srgb, var(--ak-color-hover) 92%, var(--ak-color-surface));
   border-color: transparent;
   box-shadow: none;
 }
@@ -203,14 +207,14 @@
 }
 
 :where([data-slot="button"][data-size="sm"]) {
-  --_button-height: 1.875rem;
-  --_button-padding-x: 0.75rem;
+  --_button-height: 2rem;
+  --_button-padding-x: 0.8rem;
   font-size: 0.8125rem;
 }
 
 :where([data-slot="button"][data-size="lg"]) {
-  --_button-height: 2.625rem;
-  --_button-padding-x: 1rem;
+  --_button-height: 2.9rem;
+  --_button-padding-x: 1.15rem;
   font-size: 0.9375rem;
 }
 

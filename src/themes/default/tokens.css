@@ -2,13 +2,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --ak-font-family-body:
-    -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    "Aptos", "Segoe UI Variable Text", "Segoe UI", "SF Pro Text", Inter,
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --ak-font-family-mono:
-    "Menlo", "Consolas", "Bitstream Vera Sans Mono", ui-monospace, monospace, "Apple Color Emoji",
-    "Segoe UI Emoji";
-  --ak-font-family-emphasis: "Times New Roman", Times, serif;
-  --ak-font-family-quote: "Times New Roman", Times, serif;
+    "IBM Plex Mono", "SFMono-Regular", "Menlo", "Consolas", ui-monospace,
+    monospace, "Apple Color Emoji", "Segoe UI Emoji";
+  --ak-font-family-emphasis: var(--ak-font-family-body);
+  --ak-font-family-quote: "Iowan Old Style", "Palatino Linotype", ui-serif, serif;
   --ak-font-family: var(--ak-font-family-body);
 
   --ak-font-size-xs: 0.75rem;
@@ -18,8 +18,8 @@
   --ak-font-size-xl: 1.25rem;
   --ak-font-size-2xl: 1.5rem;
   --ak-font-size-3xl: 1.75rem;
-  --ak-font-size-heading: 2.1875rem;
-  --ak-font-size-display: 3.75rem;
+  --ak-font-size-heading: 2.5rem;
+  --ak-font-size-display: 4.75rem;
 
   --ak-font-weight-light: 300;
   --ak-font-weight-regular: 400;
@@ -46,18 +46,18 @@
   --ak-type-5-size: 1.25rem;
   --ak-type-5-line-height: 1.75rem;
   --ak-type-5-letter-spacing: -0.005em;
-  --ak-type-6-size: 1.5rem;
-  --ak-type-6-line-height: 1.875rem;
-  --ak-type-6-letter-spacing: -0.00625em;
-  --ak-type-7-size: 1.75rem;
-  --ak-type-7-line-height: 2.25rem;
-  --ak-type-7-letter-spacing: -0.0075em;
-  --ak-type-8-size: 2.1875rem;
-  --ak-type-8-line-height: 2.5rem;
-  --ak-type-8-letter-spacing: -0.01em;
-  --ak-type-9-size: 3.75rem;
-  --ak-type-9-line-height: 3.75rem;
-  --ak-type-9-letter-spacing: -0.025em;
+  --ak-type-6-size: 1.625rem;
+  --ak-type-6-line-height: 2rem;
+  --ak-type-6-letter-spacing: -0.02em;
+  --ak-type-7-size: 2rem;
+  --ak-type-7-line-height: 2.35rem;
+  --ak-type-7-letter-spacing: -0.03em;
+  --ak-type-8-size: 2.75rem;
+  --ak-type-8-line-height: 2.95rem;
+  --ak-type-8-letter-spacing: -0.04em;
+  --ak-type-9-size: 4.75rem;
+  --ak-type-9-line-height: 4.65rem;
+  --ak-type-9-letter-spacing: -0.055em;
 
   --ak-space-xs: 0.25rem;
   --ak-space-sm: 0.5rem;
@@ -76,18 +76,18 @@
   --ak-space-8: 3rem;
   --ak-space-9: 4rem;
 
-  --ak-radius-sm: 6px;
-  --ak-radius-md: 10px;
-  --ak-radius-lg: 14px;
-  --ak-radius-xl: 20px;
+  --ak-radius-sm: 8px;
+  --ak-radius-md: 12px;
+  --ak-radius-lg: 18px;
+  --ak-radius-xl: 24px;
   --ak-radius-round: 9999px;
 
   --ak-border-width-sm: 1px;
   --ak-border-width-md: 2px;
-  --ak-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.03);
-  --ak-shadow-md: 0 10px 30px -18px rgba(15, 23, 42, 0.18), 0 2px 8px rgba(15, 23, 42, 0.06);
-  --ak-shadow-lg: 0 24px 64px -32px rgba(15, 23, 42, 0.24), 0 8px 24px rgba(15, 23, 42, 0.08);
-  --ak-focus-ring-width: 3px;
+  --ak-shadow-sm: 0 1px 2px rgba(17, 17, 19, 0.04), 0 0 0 1px rgba(17, 17, 19, 0.03);
+  --ak-shadow-md: 0 16px 36px -24px rgba(17, 17, 19, 0.22), 0 4px 12px rgba(17, 17, 19, 0.06);
+  --ak-shadow-lg: 0 28px 72px -32px rgba(17, 17, 19, 0.28), 0 10px 26px rgba(17, 17, 19, 0.08);
+  --ak-focus-ring-width: 2px;
   --ak-focus-ring-offset: 2px;
   --ak-duration-fast: 160ms;
   --ak-duration-normal: 220ms;
@@ -113,9 +113,9 @@
   --ak-layout-sidebar-width-lg: 20rem;
   --ak-layout-sidebar-width-xl: 23rem;
   --ak-layout-sidebar-width: 17rem;
-  --ak-layout-content-max-width: 80rem;
-  --ak-layout-page-gutter: clamp(1rem, 0.7rem + 1.25vw, 1.75rem);
-  --ak-layout-panel-padding: clamp(1rem, 0.88rem + 0.55vw, 1.35rem);
+  --ak-layout-content-max-width: 88rem;
+  --ak-layout-page-gutter: clamp(1.1rem, 0.78rem + 1.35vw, 2rem);
+  --ak-layout-panel-padding: clamp(1rem, 0.82rem + 0.7vw, 1.5rem);
   --ak-container-1: 30rem;
   --ak-container-2: 42rem;
   --ak-container-3: 58rem;
@@ -137,26 +137,26 @@
 
 :root,
 [data-theme="light"] {
-  --ak-color-primary: #2563eb;
-  --ak-color-primary-hover: #1d4ed8;
-  --ak-color-primary-active: #1e40af;
-  --ak-color-primary-soft: #dbeafe;
-  --ak-color-primary-ink: #163b8a;
+  --ak-color-primary: #5b5bd6;
+  --ak-color-primary-hover: #5151cd;
+  --ak-color-primary-active: #4949bf;
+  --ak-color-primary-soft: rgba(91, 91, 214, 0.12);
+  --ak-color-primary-ink: #3e3a93;
 
-  --ak-color-text: #1b2434;
-  --ak-color-text-muted: #5d6b85;
-  --ak-color-text-subtle: #8b96ab;
-  --ak-color-text-inverse: #ffffff;
+  --ak-color-text: #111113;
+  --ak-color-text-muted: #5f606a;
+  --ak-color-text-subtle: #8b8d98;
+  --ak-color-text-inverse: #fcfcfd;
 
-  --ak-color-bg: #f6f7fb;
+  --ak-color-bg: #fcfcfd;
   --ak-color-surface: #ffffff;
-  --ak-color-surface-muted: #f1f4fa;
+  --ak-color-surface-muted: #f8f8fa;
   --ak-color-surface-raised: #ffffff;
-  --ak-color-surface-overlay: rgba(255, 255, 255, 0.86);
+  --ak-color-surface-overlay: rgba(255, 255, 255, 0.82);
 
-  --ak-color-border-subtle: #e6ebf5;
-  --ak-color-border: #d7deec;
-  --ak-color-border-strong: #b7c2d8;
+  --ak-color-border-subtle: #ececef;
+  --ak-color-border: #e6e7eb;
+  --ak-color-border-strong: #d8d9e0;
 
   --ak-color-success: #16a34a;
   --ak-color-success-soft: rgba(22, 163, 74, 0.14);
@@ -173,16 +173,16 @@
 
   --ak-color-link: var(--ak-color-primary);
   --ak-color-link-hover: var(--ak-color-primary-hover);
-  --ak-color-focus-ring: rgba(37, 99, 235, 0.18);
-  --ak-color-disabled-bg: #ecf0f7;
-  --ak-color-disabled-surface: #f7f9fc;
-  --ak-color-disabled-border: #d9e0ec;
-  --ak-color-disabled-text: #9aa6bc;
-  --ak-color-selected: #e4edff;
-  --ak-color-selected-border: #93c5fd;
-  --ak-color-hover: rgba(37, 99, 235, 0.06);
-  --ak-color-active: rgba(37, 99, 235, 0.11);
-  --ak-color-backdrop: rgba(10, 17, 33, 0.42);
+  --ak-color-focus-ring: rgba(91, 91, 214, 0.16);
+  --ak-color-disabled-bg: #f1f1f3;
+  --ak-color-disabled-surface: #f8f8fa;
+  --ak-color-disabled-border: #e0e1e6;
+  --ak-color-disabled-text: #9b9ea6;
+  --ak-color-selected: #eef0ff;
+  --ak-color-selected-border: #b8bcff;
+  --ak-color-hover: rgba(17, 17, 19, 0.04);
+  --ak-color-active: rgba(17, 17, 19, 0.08);
+  --ak-color-backdrop: rgba(10, 10, 15, 0.42);
 
   --ak-color-fg: var(--ak-color-text);
   --ak-color-muted: var(--ak-color-text-muted);
@@ -191,26 +191,26 @@
 }
 
 [data-theme="dark"] {
-  --ak-color-primary: #60a5fa;
-  --ak-color-primary-hover: #7ab8ff;
-  --ak-color-primary-active: #4d92ef;
-  --ak-color-primary-soft: rgba(96, 165, 250, 0.2);
-  --ak-color-primary-ink: #dcedff;
+  --ak-color-primary: #9b8cff;
+  --ak-color-primary-hover: #a89cff;
+  --ak-color-primary-active: #8f80f8;
+  --ak-color-primary-soft: rgba(155, 140, 255, 0.18);
+  --ak-color-primary-ink: #f3efff;
 
-  --ak-color-text: #edf3ff;
-  --ak-color-text-muted: #a9b7cc;
-  --ak-color-text-subtle: #8090a8;
-  --ak-color-text-inverse: #0e1320;
+  --ak-color-text: #eceef0;
+  --ak-color-text-muted: #b4b8c0;
+  --ak-color-text-subtle: #8a909b;
+  --ak-color-text-inverse: #111113;
 
-  --ak-color-bg: #0f1420;
-  --ak-color-surface: #171d2b;
-  --ak-color-surface-muted: #20283a;
-  --ak-color-surface-raised: #263249;
-  --ak-color-surface-overlay: rgba(23, 29, 43, 0.88);
+  --ak-color-bg: #0f1013;
+  --ak-color-surface: #18191b;
+  --ak-color-surface-muted: #202126;
+  --ak-color-surface-raised: #25262b;
+  --ak-color-surface-overlay: rgba(24, 25, 27, 0.84);
 
-  --ak-color-border-subtle: #2a3449;
-  --ak-color-border: #38445c;
-  --ak-color-border-strong: #59698a;
+  --ak-color-border-subtle: #2a2b31;
+  --ak-color-border: #34353d;
+  --ak-color-border-strong: #4a4c56;
 
   --ak-color-success: #4ade80;
   --ak-color-success-soft: rgba(74, 222, 128, 0.18);
@@ -227,16 +227,16 @@
 
   --ak-color-link: var(--ak-color-primary);
   --ak-color-link-hover: var(--ak-color-primary-hover);
-  --ak-color-focus-ring: rgba(96, 165, 250, 0.22);
-  --ak-color-disabled-bg: #1e2737;
-  --ak-color-disabled-surface: #171d2b;
-  --ak-color-disabled-border: #2f3b50;
-  --ak-color-disabled-text: #74849d;
-  --ak-color-selected: rgba(110, 168, 254, 0.15);
-  --ak-color-selected-border: #60a5fa;
-  --ak-color-hover: rgba(237, 243, 255, 0.06);
-  --ak-color-active: rgba(237, 243, 255, 0.12);
-  --ak-color-backdrop: rgba(2, 6, 12, 0.66);
+  --ak-color-focus-ring: rgba(155, 140, 255, 0.24);
+  --ak-color-disabled-bg: #1c1d22;
+  --ak-color-disabled-surface: #18191b;
+  --ak-color-disabled-border: #2e3038;
+  --ak-color-disabled-text: #757983;
+  --ak-color-selected: rgba(155, 140, 255, 0.18);
+  --ak-color-selected-border: #9b8cff;
+  --ak-color-hover: rgba(236, 238, 240, 0.06);
+  --ak-color-active: rgba(236, 238, 240, 0.1);
+  --ak-color-backdrop: rgba(3, 4, 7, 0.72);
 
   --ak-color-fg: var(--ak-color-text);
   --ak-color-muted: var(--ak-color-text-muted);
@@ -254,26 +254,26 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --ak-color-primary: #60a5fa;
-    --ak-color-primary-hover: #7ab8ff;
-    --ak-color-primary-active: #4d92ef;
-    --ak-color-primary-soft: rgba(96, 165, 250, 0.2);
-    --ak-color-primary-ink: #dcedff;
+    --ak-color-primary: #9b8cff;
+    --ak-color-primary-hover: #a89cff;
+    --ak-color-primary-active: #8f80f8;
+    --ak-color-primary-soft: rgba(155, 140, 255, 0.18);
+    --ak-color-primary-ink: #f3efff;
 
-    --ak-color-text: #edf3ff;
-    --ak-color-text-muted: #a9b7cc;
-    --ak-color-text-subtle: #8090a8;
-    --ak-color-text-inverse: #0e1320;
+    --ak-color-text: #eceef0;
+    --ak-color-text-muted: #b4b8c0;
+    --ak-color-text-subtle: #8a909b;
+    --ak-color-text-inverse: #111113;
 
-    --ak-color-bg: #0f1420;
-    --ak-color-surface: #171d2b;
-    --ak-color-surface-muted: #20283a;
-    --ak-color-surface-raised: #263249;
-    --ak-color-surface-overlay: rgba(23, 29, 43, 0.88);
+    --ak-color-bg: #0f1013;
+    --ak-color-surface: #18191b;
+    --ak-color-surface-muted: #202126;
+    --ak-color-surface-raised: #25262b;
+    --ak-color-surface-overlay: rgba(24, 25, 27, 0.84);
 
-    --ak-color-border-subtle: #2a3449;
-    --ak-color-border: #38445c;
-    --ak-color-border-strong: #59698a;
+    --ak-color-border-subtle: #2a2b31;
+    --ak-color-border: #34353d;
+    --ak-color-border-strong: #4a4c56;
 
     --ak-color-success: #4ade80;
     --ak-color-success-soft: rgba(74, 222, 128, 0.18);
@@ -290,16 +290,16 @@
 
     --ak-color-link: var(--ak-color-primary);
     --ak-color-link-hover: var(--ak-color-primary-hover);
-    --ak-color-focus-ring: rgba(96, 165, 250, 0.22);
-    --ak-color-disabled-bg: #1e2737;
-    --ak-color-disabled-surface: #171d2b;
-    --ak-color-disabled-border: #2f3b50;
-    --ak-color-disabled-text: #74849d;
-    --ak-color-selected: rgba(110, 168, 254, 0.15);
-    --ak-color-selected-border: #60a5fa;
-    --ak-color-hover: rgba(237, 243, 255, 0.06);
-    --ak-color-active: rgba(237, 243, 255, 0.12);
-    --ak-color-backdrop: rgba(2, 6, 12, 0.66);
+    --ak-color-focus-ring: rgba(155, 140, 255, 0.24);
+    --ak-color-disabled-bg: #1c1d22;
+    --ak-color-disabled-surface: #18191b;
+    --ak-color-disabled-border: #2e3038;
+    --ak-color-disabled-text: #757983;
+    --ak-color-selected: rgba(155, 140, 255, 0.18);
+    --ak-color-selected-border: #9b8cff;
+    --ak-color-hover: rgba(236, 238, 240, 0.06);
+    --ak-color-active: rgba(236, 238, 240, 0.1);
+    --ak-color-backdrop: rgba(3, 4, 7, 0.72);
 
     --ak-color-fg: var(--ak-color-text);
     --ak-color-muted: var(--ak-color-text-muted);
