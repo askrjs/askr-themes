@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, type Dirent } from "node:fs";
 import { join } from "node:path";
 
 const DEFAULT_THEME_DIR = join(__dirname, "..", "src", "themes", "default");
@@ -70,6 +70,12 @@ const REQUIRED_ROOT_TOKENS = [
   "--ak-layout-content-max-width",
   "--ak-layout-page-gutter",
   "--ak-layout-panel-padding",
+  "--ak-density-control-height-sm",
+  "--ak-density-control-height-md",
+  "--ak-density-control-height-lg",
+  "--ak-density-control-padding-x-sm",
+  "--ak-density-control-padding-x-md",
+  "--ak-density-control-padding-x-lg",
   "--ak-z-dropdown",
   "--ak-z-sticky",
   "--ak-z-fixed",
@@ -192,9 +198,28 @@ function extractReferencedTokens(css: string): Set<string> {
   return tokens;
 }
 
+function listCssFiles(dir: string): string[] {
+  if (!existsSync(dir)) return [];
+
+  function collect(currentDir: string): string[] {
+    return readdirSync(currentDir, { withFileTypes: true }).flatMap((entry: Dirent) => {
+      const entryPath = join(currentDir, entry.name);
+
+      if (entry.isDirectory()) {
+        return collect(entryPath);
+      }
+
+      return entry.name.endsWith(".css") ? [entryPath] : [];
+    });
+  }
+
+  return collect(dir).sort();
+}
+
 function getComponentCss(): string {
-  const files = readdirSync(COMPONENTS_DIR).filter((f) => f.endsWith(".css"));
-  return files.map((f) => readFileSync(join(COMPONENTS_DIR, f), "utf-8")).join("\n");
+  return listCssFiles(COMPONENTS_DIR)
+    .map((file) => readFileSync(file, "utf-8"))
+    .join("\n");
 }
 
 function getAllThemeComponentCss(): string {
@@ -209,9 +234,8 @@ function getAllThemeComponentCss(): string {
   }
 
   for (const componentDir of componentDirs) {
-    const files = readdirSync(componentDir).filter((f) => f.endsWith(".css"));
-    for (const file of files) {
-      cssParts.push(readFileSync(join(componentDir, file), "utf-8"));
+    for (const file of listCssFiles(componentDir)) {
+      cssParts.push(readFileSync(file, "utf-8"));
     }
   }
 

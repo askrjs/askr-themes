@@ -18,15 +18,27 @@ npm install @askrjs/askr-themes
 import "@askrjs/askr-themes/default";
 ```
 
-For visual-only composition and display components:
+For app scaffolds, visual-only composition, and display components:
 
 ```ts
 import {
+  AppShell,
   Badge,
   Cluster,
+  EmptyState,
+  FormSection,
+  PageHeader,
+  SettingsSection,
   Skeleton,
   Stack,
 } from "@askrjs/askr-themes/components";
+```
+
+The theme supports both canonical `askr-ui` hooks and convenient class aliases:
+
+```html
+<button data-slot="button" data-variant="primary">Save</button>
+<button class="btn btn-primary">Save</button>
 ```
 
 For visual-only layout wrappers:

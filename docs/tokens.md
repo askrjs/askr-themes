@@ -9,11 +9,12 @@ Askr application.
 
 | Category   | Examples                                           |
 | ---------- | -------------------------------------------------- |
-| Color      | `--color-brand`, `--color-neutral-*`, `--color-fg` |
-| Spacing    | `--spacing-xs`, `--spacing-md`, `--spacing-xl`     |
-| Typography | `--font-size-sm`, `--font-weight-medium`           |
-| Radius     | `--radius-sm`, `--radius-md`, `--radius-pill`      |
-| Shadow     | `--shadow-sm`, `--shadow-lg`                       |
+| Color      | `--ak-color-primary`, `--ak-color-surface`, `--ak-color-text` |
+| Spacing    | `--ak-space-1`, `--ak-space-md`, `--ak-layout-page-gutter`    |
+| Typography | `--ak-font-size-sm`, `--ak-type-7-size`, `--ak-font-weight-medium` |
+| Radius     | `--ak-radius-sm`, `--ak-radius-md`, `--ak-radius-round`       |
+| Density    | `--ak-density-control-height-md`, `--ak-density-control-padding-x-md` |
+| Shadow     | `--ak-shadow-sm`, `--ak-shadow-lg`                            |
 
 ## Override tokens per-application
 
@@ -21,8 +22,9 @@ In `src/styles/tokens.css`:
 
 ```css
 :root {
-  --color-brand: #4f46e5;
-  --radius-md: 6px;
+  --ak-color-primary: #4f46e5;
+  --ak-radius-md: 6px;
+  --ak-layout-page-gutter: clamp(1rem, 2vw, 2.25rem);
 }
 ```
 

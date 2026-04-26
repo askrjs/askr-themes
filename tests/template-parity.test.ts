@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vite-plus/test";
-import { readdirSync, existsSync, readFileSync } from "node:fs";
+import { readdirSync, existsSync, readFileSync, type Dirent } from "node:fs";
 import { join } from "node:path";
 
 const DEFAULT_COMPONENTS = join(__dirname, "..", "src", "themes", "default", "styles");
@@ -10,13 +10,25 @@ const THEMES_DIR = join(__dirname, "..", "src", "themes");
 
 function listCssFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((f) => f.endsWith(".css"))
-    .sort();
+
+  function collect(currentDir: string, relativeDir = ""): string[] {
+    return readdirSync(currentDir, { withFileTypes: true }).flatMap((entry: Dirent) => {
+      const entryPath = join(currentDir, entry.name);
+      const relativePath = relativeDir ? join(relativeDir, entry.name) : entry.name;
+
+      if (entry.isDirectory()) {
+        return collect(entryPath, relativePath);
+      }
+
+      return entry.name.endsWith(".css") ? [relativePath] : [];
+    });
+  }
+
+  return collect(dir).sort();
 }
 
 function extractTokenNames(css: string): string[] {
-  return [...css.matchAll(/(--ak-[a-z0-9-]+)/g)]
+  return [...css.matchAll(/(--ak-[a-z0-9-]+)\b/g)]
     .map((match) => match[1])
     .filter((token, index, all) => all.indexOf(token) === index)
     .sort();

@@ -9,9 +9,18 @@ const DEFAULT_ICON_CSS = join(
   "themes",
   "default",
   "styles",
+  "base",
   "icon.css",
 );
-const TEMPLATE_ICON_CSS = join(__dirname, "..", "templates", "theme", "styles", "icon.css");
+const TEMPLATE_ICON_CSS = join(
+  __dirname,
+  "..",
+  "templates",
+  "theme",
+  "styles",
+  "base",
+  "icon.css",
+);
 const THEMING_FILE = join(__dirname, "..", "THEMING.md");
 const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
 
