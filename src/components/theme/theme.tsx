@@ -54,7 +54,11 @@ export const DEFAULT_THEME_OPTIONS: readonly ThemeOption[] = [
   { value: "dark", label: "Dark" },
 ];
 
+const THEME_PROVIDER_SELECTOR =
+  '[data-slot="theme-provider"][data-theme-choice]';
 const DEFAULT_STORAGE_KEY = "askr-theme";
+
+let themeSyncObserver: MutationObserver | undefined;
 
 const ThemeContext = defineContext<ThemeContextValue>({
   theme: () => "system",
@@ -91,13 +95,13 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
   };
 
   const currentTheme = themeState();
+  ensureThemeSyncObserver();
 
   return (
     <ThemeContext.Scope value={value}>
       <div
         {...rest}
         data-slot="theme-provider"
-        data-theme={currentTheme === "system" ? undefined : currentTheme}
         data-theme-choice={currentTheme}
       >
         {children}
@@ -197,6 +201,99 @@ export function resolveThemeToggleIcon(
   icons: Pick<ThemeToggleProps, "lightIcon" | "darkIcon" | "systemIcon">,
 ): unknown {
   return getThemeIcon(theme, icons) ?? getThemeIcon(nextTheme, icons);
+}
+
+// Keep the document root in sync so theme tokens cascade globally and the
+// active provider can be restored after unmounts or route changes.
+function ensureThemeSyncObserver(): void {
+  if (
+    typeof document === "undefined" ||
+    typeof MutationObserver === "undefined" ||
+    themeSyncObserver
+  ) {
+    return;
+  }
+
+  themeSyncObserver = new MutationObserver((records) => {
+    if (!records.some(shouldSyncThemeRoot)) {
+      return;
+    }
+
+    syncThemeRootFromProviders();
+  });
+
+  themeSyncObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["data-theme-choice"],
+  });
+}
+
+function shouldSyncThemeRoot(record: MutationRecord): boolean {
+  if (record.type === "attributes") {
+    const target = record.target;
+    return target instanceof Element && target.matches(THEME_PROVIDER_SELECTOR);
+  }
+
+  for (const node of record.addedNodes) {
+    if (nodeContainsThemeProvider(node)) {
+      return true;
+    }
+  }
+
+  for (const node of record.removedNodes) {
+    if (nodeContainsThemeProvider(node)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function nodeContainsThemeProvider(node: Node): boolean {
+  if (!(node instanceof Element)) {
+    return false;
+  }
+
+  return (
+    node.matches(THEME_PROVIDER_SELECTOR) ||
+    node.querySelector(THEME_PROVIDER_SELECTOR) !== null
+  );
+}
+
+function syncThemeRootFromProviders(): void {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const html = document.documentElement;
+  const activeProvider = getActiveThemeProvider();
+  const themeChoice =
+    activeProvider?.getAttribute("data-theme-choice") as ThemeName | null;
+
+  if (themeChoice == null) {
+    html.removeAttribute("data-theme");
+    html.removeAttribute("data-theme-choice");
+    return;
+  }
+
+  html.setAttribute("data-theme-choice", themeChoice);
+
+  if (themeChoice === "system") {
+    html.removeAttribute("data-theme");
+  } else {
+    html.setAttribute("data-theme", themeChoice);
+  }
+}
+
+function getActiveThemeProvider(): Element | null {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  const providers = document.querySelectorAll(THEME_PROVIDER_SELECTOR);
+  return providers.item(providers.length - 1);
 }
 
 function readStoredTheme(storageKey: string): ThemeName | undefined {

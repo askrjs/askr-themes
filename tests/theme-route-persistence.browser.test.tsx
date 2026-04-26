@@ -29,6 +29,8 @@ describe("theme route persistence in the browser", () => {
     }
     clearRoutes();
     window.localStorage.removeItem("askr-theme");
+    document.documentElement.removeAttribute("data-theme");
+    document.documentElement.removeAttribute("data-theme-choice");
   });
 
   it("preserves theme state across navigation and repeated toggles", async () => {
@@ -55,9 +57,13 @@ describe("theme route persistence in the browser", () => {
     const provider = container.querySelector(
       '[data-slot="theme-provider"]'
     ) as HTMLDivElement | null;
+    const html = document.documentElement;
 
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
-    expect(provider?.getAttribute("data-theme")).toBe("light");
+    expect(provider?.getAttribute("data-theme")).toBeNull();
+    expect(provider?.getAttribute("data-theme-choice")).toBe("light");
+    expect(html.getAttribute("data-theme")).toBe("light");
+    expect(html.getAttribute("data-theme-choice")).toBe("light");
 
     toggle?.click();
     await settle();
@@ -71,7 +77,10 @@ describe("theme route persistence in the browser", () => {
 
     expect(darkToggle?.getAttribute("data-theme-choice")).toBe("dark");
     expect(darkToggle?.getAttribute("data-next-theme")).toBe("light");
-    expect(darkProvider?.getAttribute("data-theme")).toBe("dark");
+    expect(darkProvider?.getAttribute("data-theme")).toBeNull();
+    expect(darkProvider?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(html.getAttribute("data-theme")).toBe("dark");
+    expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
 
     navigate("/about");
@@ -86,7 +95,12 @@ describe("theme route persistence in the browser", () => {
 
     expect(container.querySelector("#page")?.textContent).toBe("About");
     expect(afterNavigateToggle?.getAttribute("data-theme-choice")).toBe("dark");
-    expect(afterNavigateProvider?.getAttribute("data-theme")).toBe("dark");
+    expect(afterNavigateProvider?.getAttribute("data-theme")).toBeNull();
+    expect(afterNavigateProvider?.getAttribute("data-theme-choice")).toBe(
+      "dark"
+    );
+    expect(html.getAttribute("data-theme")).toBe("dark");
+    expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
 
     afterNavigateToggle?.click();
@@ -101,7 +115,10 @@ describe("theme route persistence in the browser", () => {
 
     expect(lightToggle?.getAttribute("data-theme-choice")).toBe("light");
     expect(lightToggle?.getAttribute("data-next-theme")).toBe("dark");
-    expect(lightProvider?.getAttribute("data-theme")).toBe("light");
+    expect(lightProvider?.getAttribute("data-theme")).toBeNull();
+    expect(lightProvider?.getAttribute("data-theme-choice")).toBe("light");
+    expect(html.getAttribute("data-theme")).toBe("light");
+    expect(html.getAttribute("data-theme-choice")).toBe("light");
     expect(window.localStorage.getItem("askr-theme")).toBe("light");
   });
 });
