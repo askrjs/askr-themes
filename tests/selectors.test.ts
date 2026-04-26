@@ -1,15 +1,152 @@
 import { describe, it, expect } from "vite-plus/test";
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, type Dirent } from "node:fs";
 import { join } from "node:path";
 
 const COMPONENTS_DIR = join(__dirname, "..", "src", "themes", "default", "styles");
 const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
-const CLASS_UTILITY_FILES = new Set(["product-shell.css", "marketing-shell.css", "typography.css"]);
+const CLASS_UTILITY_FILES = new Set([
+  "app-shell.css",
+  "badge.css",
+  "button.css",
+  "card.css",
+  "field.css",
+  "input.css",
+  "label.css",
+  "marketing-shell.css",
+  "patterns.css",
+  "product-shell.css",
+  "textarea.css",
+  "theme.css",
+  "typography.css",
+]);
+const PLAIN_CLASS_CONTRACT_FILES = new Set([
+  "app-shell.css",
+  "badge.css",
+  "button.css",
+  "card.css",
+  "field.css",
+  "input.css",
+  "label.css",
+  "patterns.css",
+  "textarea.css",
+]);
+const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
+  "app-shell.css": [
+    "app-shell",
+    "app-shell-body",
+    "app-shell-footer",
+    "app-shell-main",
+    "app-shell-sidebar",
+    "app-shell-topbar",
+  ],
+  "badge.css": [
+    "badge",
+    "badge-danger",
+    "badge-info",
+    "badge-outline",
+    "badge-secondary",
+    "badge-success",
+    "badge-warning",
+  ],
+  "button.css": [
+    "btn",
+    "btn-destructive",
+    "btn-ghost",
+    "btn-icon",
+    "btn-lg",
+    "btn-link",
+    "btn-outline",
+    "btn-primary",
+    "btn-secondary",
+    "btn-sm",
+  ],
+  "card.css": [
+    "card",
+    "card-content",
+    "card-description",
+    "card-footer",
+    "card-header",
+    "card-lg",
+    "card-raised",
+    "card-sm",
+    "card-title",
+  ],
+  "field.css": ["field"],
+  "input.css": ["input"],
+  "label.css": ["label"],
+  "patterns.css": [
+    "empty-state",
+    "empty-state-actions",
+    "empty-state-description",
+    "empty-state-icon",
+    "empty-state-title",
+    "form-section",
+    "form-section-actions",
+    "form-section-content",
+    "form-section-description",
+    "form-section-header",
+    "form-section-heading",
+    "form-section-title",
+    "page-header",
+    "page-header-actions",
+    "page-header-content",
+    "page-header-description",
+    "page-header-eyebrow",
+    "page-header-meta",
+    "page-header-title",
+    "settings-section",
+    "settings-section-content",
+    "settings-section-copy",
+    "settings-section-description",
+    "settings-section-title",
+  ],
+  "textarea.css": ["textarea"],
+};
 
 function getComponentCssFiles(): string[] {
-  return readdirSync(COMPONENTS_DIR)
-    .filter((f) => f.endsWith(".css"))
-    .map((f) => join(COMPONENTS_DIR, f));
+  function collect(dir: string): string[] {
+    return readdirSync(dir, { withFileTypes: true }).flatMap((entry: Dirent) => {
+      const entryPath = join(dir, entry.name);
+
+      if (entry.isDirectory()) {
+        return collect(entryPath);
+      }
+
+      return entry.name.endsWith(".css") ? [entryPath] : [];
+    });
+  }
+
+  return collect(COMPONENTS_DIR).sort();
+}
+
+function splitSelectorList(selectorList: string): string[] {
+  const selectors: string[] = [];
+  let current = "";
+  let bracketDepth = 0;
+  let parenDepth = 0;
+
+  for (const ch of selectorList) {
+    if (ch === "[") bracketDepth++;
+    if (ch === "]") bracketDepth--;
+    if (ch === "(") parenDepth++;
+    if (ch === ")") parenDepth--;
+
+    if (ch === "," && bracketDepth === 0 && parenDepth === 0) {
+      if (current.trim()) {
+        selectors.push(current.trim());
+      }
+      current = "";
+      continue;
+    }
+
+    current += ch;
+  }
+
+  if (current.trim()) {
+    selectors.push(current.trim());
+  }
+
+  return selectors;
 }
 
 /**
@@ -50,20 +187,12 @@ function extractSelectors(css: string): string[] {
           continue;
         }
         // It's a selector — split on commas for compound selectors
-        const parts = trimmed
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        selectors.push(...parts);
+        selectors.push(...splitSelectorList(trimmed));
         current = "";
       } else if (depth === 1 && inMediaOrSupports) {
         // Selector inside @media block
         const trimmed = current.trim();
-        const parts = trimmed
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
-        selectors.push(...parts);
+        selectors.push(...splitSelectorList(trimmed));
         current = "";
       }
       depth++;
@@ -92,6 +221,7 @@ function extractSelectors(css: string): string[] {
  * - Attribute selectors: [data-*], [data-slot="..."], [data-state="..."], etc.
  * - Pseudo-classes: :hover, :focus-visible, :root, :first-child, :where(...), etc.
  * - Pseudo-elements: ::before, ::after, ::placeholder, etc.
+ * - Bare svg inside a :where(...) list for icon normalization.
  * - Combinators between allowed parts: >, +, ~, space
  *
  * Forbidden:
@@ -103,11 +233,13 @@ function validateSelector(selector: string): {
   valid: boolean;
   reason?: string;
 } {
-  const normalized = selector.replace(/:where\(([^()]*)\)/g, "$1");
+  const normalized = selector.replace(/:where\(([^()]*)\)/g, (_match, contents: string) =>
+    contents.replace(/,\s*/g, " "),
+  );
   // Split on combinators but keep the parts
   // A selector like `[data-slot="a"] [data-slot="b"]` has two parts
   const parts = normalized
-    .split(/(?<=\])[\s>+~]+(?=\[)|(?<=\))[\s>+~]+(?=\[)/)
+    .split(/(?<=\])[\s>+~]+(?=\[|\bsvg\b)|(?<=\))[\s>+~]+(?=\[|\bsvg\b)|(?<=\bsvg)[\s>+~]+(?=\[)/)
     .map((s) => s.trim())
     .filter(Boolean);
 
@@ -125,6 +257,10 @@ function validateSelector(selector: string): {
     // Check for ID selectors
     if (/#\w/.test(part)) {
       return { valid: false, reason: `ID selector found: "${part}"` };
+    }
+
+    if (part === "svg") {
+      continue;
     }
 
     // Strip attribute selectors, pseudo-elements, pseudo-classes
@@ -175,6 +311,44 @@ describe("CSS selector contract", () => {
           violations.push(`${result.reason} in selector "${sel}"`);
         }
       }
+
+      expect(violations).toEqual([]);
+    });
+  }
+});
+
+describe("plain class contract", () => {
+  const files = getComponentCssFiles().filter((file) =>
+    PLAIN_CLASS_CONTRACT_FILES.has(file.split(/[/\\]/).pop()!),
+  );
+
+  it("should find class-contract CSS files", () => {
+    expect(files.length).toBeGreaterThan(0);
+  });
+
+  for (const file of files) {
+    const filename = file.split(/[/\\]/).pop()!;
+
+    it(`${filename}: uses plain kebab-case classes without an ak class prefix`, () => {
+      const css = readFileSync(file, "utf-8");
+      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map(
+        (match) => match[1],
+      );
+      const violations = classNames.filter(
+        (className) =>
+          className.startsWith("ak-") || !/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(className),
+      );
+
+      expect(violations).toEqual([]);
+    });
+
+    it(`${filename}: only exposes approved public classes`, () => {
+      const css = readFileSync(file, "utf-8");
+      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map(
+        (match) => match[1],
+      );
+      const allowed = new Set(ALLOWED_ALIAS_CLASSES[filename] ?? []);
+      const violations = classNames.filter((className) => !allowed.has(className));
 
       expect(violations).toEqual([]);
     });

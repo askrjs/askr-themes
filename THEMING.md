@@ -25,7 +25,7 @@ Token override:
 Style override:
 
 ```css
-[data-slot="button"][data-variant="primary"] {
+:where(.btn-primary, [data-slot="button"][data-variant="primary"]) {
   background: black;
 }
 ```
@@ -41,6 +41,26 @@ Icon override:
 
 Rules: style only public data-\* hooks, never internal DOM, no deep selectors, no !important.
 
+Selector contract:
+
+- Tokens keep the `--ak-*` prefix because they are global.
+- `askr-ui` public hooks are canonical: `data-slot`, `data-state`, `data-disabled`, `data-orientation`, `data-variant`, and `data-size`.
+- `askr-themes` may expose simple kebab-case class aliases for high-value authoring shortcuts such as `.btn`, `.btn-primary`, `.card`, `.input`, and `.badge-success`.
+- Alias selectors must be grouped with canonical selectors in the same low-specificity rule. Classes are convenience API, not a replacement source of truth.
+- Theme-owned scaffold components use plain kebab-case classes such as `.app-shell`, `.page-header`, and `.form-section`, and public scaffold parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
+
+Example:
+
+```css
+:where(.page-header, [data-slot="page-header"]) {
+  display: flex;
+}
+
+:where(.page-header-title, [data-slot="page-header-title"]) {
+  font-size: var(--ak-type-7-size);
+}
+```
+
 Package boundaries:
 
 - `@askrjs/askr` owns what exists and when.
@@ -50,7 +70,8 @@ Package boundaries:
 
 Use `@askrjs/askr-themes/components` for styled components such as Button, Box,
 Stack, Inline, Cluster, Grid, Container, Section, Spacer, Badge, Skeleton,
-Separator/Divider, SidebarLayout, and TopbarLayout.
+Separator/Divider, SidebarLayout, TopbarLayout, AppShell, PageHeader,
+EmptyState, FormSection, and SettingsSection.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
@@ -68,6 +89,9 @@ Responsive rules:
 - Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, `data-gap`, and `data-sidebar-width` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
 - Icons are part of the public theme contract. `@askrjs/askr-ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
 - Icon size and stroke defaults should resolve through the shared icon tokens: `--ak-icon-size-sm|md|lg|xl` and `--ak-icon-stroke-width-sm|md|lg|xl`.
+- Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps.
+- Comfortable density is tokenized through `--ak-density-control-height-*` and `--ak-density-control-padding-x-*`; apps should tune those before overriding component CSS.
+- Future class aliases must be added selectively with contract tests; do not mirror every internal slot as a class by default.
 
 ## Token Contract
 

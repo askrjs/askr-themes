@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const THEME_NAME_RE = /^[a-z0-9-]+$/;
@@ -17,14 +17,32 @@ async function pathExists(targetPath) {
   }
 }
 
-async function replacePlaceholdersInCssFiles(dirPath, themeName) {
-  const files = ["tokens.css", path.join("styles", "button.css"), "index.css"];
+async function walkFiles(dirPath) {
+  const entries = await readdir(dirPath, { withFileTypes: true });
+  const files = [];
 
-  for (const file of files) {
-    const filePath = path.join(dirPath, file);
+  for (const entry of entries) {
+    const entryPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(entryPath)));
+    } else {
+      files.push(entryPath);
+    }
+  }
+
+  return files;
+}
+
+async function replacePlaceholdersInThemeFiles(dirPath, themeName) {
+  const files = await walkFiles(dirPath);
+
+  for (const filePath of files) {
+    if (!/\.(css|md|json|ts|tsx|js)$/.test(filePath)) continue;
     const content = await readFile(filePath, "utf8");
     const updated = content.replaceAll("__THEME_NAME__", themeName);
-    await writeFile(filePath, updated, "utf8");
+    if (updated !== content) {
+      await writeFile(filePath, updated, "utf8");
+    }
   }
 }
 
@@ -57,7 +75,7 @@ async function main() {
 
   await mkdir(path.dirname(outputDir), { recursive: true });
   await cp(templateDir, outputDir, { recursive: true });
-  await replacePlaceholdersInCssFiles(outputDir, themeName);
+  await replacePlaceholdersInThemeFiles(outputDir, themeName);
 
   console.log(`Created theme at src/themes/${themeName}`);
   console.log("Next step: add exports in package.json for your new theme entrypoints.");

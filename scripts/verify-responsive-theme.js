@@ -4,16 +4,17 @@ import path from "node:path";
 const root = process.cwd();
 const responsiveContractThemes = ["default"];
 const forbiddenLegacyImports = [
-  "./styles/app-shell.css",
-  "./styles/navbar.css",
-  "./styles/sidebar.css",
-  "./styles/dashboard-layout.css",
-  "./styles/docs-layout.css",
+  "./styles/shell/navbar.css",
+  "./styles/layout/sidebar.css",
+  "./styles/layout/dashboard-layout.css",
+  "./styles/layout/docs-layout.css",
 ];
 const defaultPatternImports = [
-  "./styles/layout.css",
-  "./styles/responsive-layout.css",
-  "./styles/data-table.css",
+  "./styles/layout/layout.css",
+  "./styles/layout/responsive-layout.css",
+  "./styles/layout/app-shell.css",
+  "./styles/layout/patterns.css",
+  "./styles/data/data-table.css",
 ];
 
 async function read(relativePath) {
@@ -21,13 +22,13 @@ async function read(relativePath) {
 }
 
 async function main() {
-  const defaultResponsive = await read("src/themes/default/styles/responsive-layout.css");
-  const defaultLayout = await read("src/themes/default/styles/layout.css");
-  const templateResponsive = await read("templates/theme/styles/responsive-layout.css");
-  const templateLayout = await read("templates/theme/styles/layout.css");
+  const defaultResponsive = await read("src/themes/default/styles/layout/responsive-layout.css");
+  const defaultLayout = await read("src/themes/default/styles/layout/layout.css");
+  const templateResponsive = await read("templates/theme/styles/layout/responsive-layout.css");
+  const templateLayout = await read("templates/theme/styles/layout/layout.css");
   const theming = await read("THEMING.md");
 
-  const responsiveImportPattern = /@import\s+['"]\.\/styles\/responsive-layout\.css['"];?/;
+  const responsiveImportPattern = /@import\s+['"]\.\/styles\/layout\/responsive-layout\.css['"];?/;
   for (const theme of responsiveContractThemes) {
     const indexCss = await read(`src/themes/${theme}/index.css`);
     if (!responsiveImportPattern.test(indexCss)) {
@@ -40,7 +41,7 @@ async function main() {
       }
     }
 
-    const responsiveCss = await read(`src/themes/${theme}/styles/responsive-layout.css`);
+    const responsiveCss = await read(`src/themes/${theme}/styles/layout/responsive-layout.css`);
     if (responsiveCss !== defaultResponsive) {
       throw new Error(`${theme} responsive layout CSS is out of sync with default.`);
     }

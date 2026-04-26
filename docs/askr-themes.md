@@ -10,6 +10,8 @@ askr-themes is an optional styling layer. It provides:
 - Base component styles that pair with `askr-ui`
 - Visual-only composition primitives such as Box, Stack, Inline, Cluster, Grid,
   Container, Section, and Spacer
+- Product SaaS scaffold primitives such as AppShell, PageHeader, EmptyState,
+  FormSection, and SettingsSection
 - Theme-scoped wrapper modules for visual-only layouts
 - Theme-owned visual components when no headless primitive is needed
 
@@ -34,10 +36,15 @@ barrel:
 
 ```ts
 import {
+  AppShell,
   Badge,
   Button,
   Divider,
+  EmptyState,
+  FormSection,
   Grid,
+  PageHeader,
+  SettingsSection,
   Stack,
 } from "@askrjs/askr-themes/components";
 ```
@@ -88,6 +95,73 @@ Or in CSS:
 ```css
 @import "@askrjs/askr-themes/default";
 ```
+
+The default theme is designed to scaffold product SaaS screens without app CSS:
+pair `AppShell` with `PageHeader`, `Grid`, `Card`, `FormSection`, and
+`EmptyState`, then customize the result by overriding semantic `--ak-*` tokens.
+
+## Product app scaffold
+
+```tsx
+import "@askrjs/askr-themes/default";
+import {
+  AppShell,
+  Button,
+  Card,
+  CardContent,
+  EmptyState,
+  FormSection,
+  PageHeader,
+  SettingsSection,
+  Stack,
+} from "@askrjs/askr-themes/components";
+
+export function App() {
+  return (
+    <AppShell
+      sidebar={<Stack gap="2">Navigation</Stack>}
+      topbar={
+        <PageHeader
+          title="Acme Console"
+          description="Operational overview"
+          actions={<Button variant="primary">New project</Button>}
+        />
+      }
+    >
+      <Stack gap="5">
+        <PageHeader eyebrow="Dashboard" title="Good morning" />
+        <Card>
+          <CardContent>Metrics, tables, or charts go here.</CardContent>
+        </Card>
+        <FormSection title="Profile" description="Workspace defaults.">
+          Form fields go here.
+        </FormSection>
+        <SettingsSection title="Danger zone" description="Protected actions.">
+          <EmptyState title="No destructive actions configured" />
+        </SettingsSection>
+      </Stack>
+    </AppShell>
+  );
+}
+```
+
+Keep narrow recipes as composition: an auth screen is `Card` plus `FormSection`;
+a table page is `PageHeader` plus the `askr-ui` data table pattern inside a
+`Card` or surface. Those recipes do not need first-class wrappers until they
+prove reusable across several apps.
+
+`data-slot` is the canonical styling contract from `askr-ui`, and
+`askr-themes` layers optional unprefixed aliases over it for ergonomic raw HTML:
+
+```html
+<button data-slot="button" data-variant="primary">Save</button>
+<button class="btn btn-primary">Save</button>
+```
+
+Scaffold components use plain classes for styling (`.app-shell`,
+`.page-header`, `.form-section`) while global design tokens keep the `--ak-*`
+prefix. Class aliases are intentionally selective; prefer tokens and canonical
+data hooks for deeper customization.
 
 ## When to use askr-themes
 
