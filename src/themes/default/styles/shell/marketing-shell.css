@@ -7,7 +7,7 @@
       calc(100% - 2 * var(--ak-layout-page-gutter))
     );
     margin-inline: auto;
-    padding-block: var(--ak-space-xl) calc(var(--ak-space-3xl) + var(--ak-space-xl));
+    padding-block: 0 calc(var(--ak-space-3xl) + var(--ak-space-xl));
   }
 
   :where(.marketing-shell > *) {
@@ -308,7 +308,7 @@
 
   @media (max-width: 48rem) {
     :where(.marketing-shell) {
-      padding-block: var(--ak-space-lg) var(--ak-space-2xl);
+      padding-block: 0 var(--ak-space-2xl);
       gap: var(--ak-space-2xl);
     }
 

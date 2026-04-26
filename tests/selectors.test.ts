@@ -15,6 +15,7 @@ const CLASS_UTILITY_FILES = new Set([
   "marketing-shell.css",
   "patterns.css",
   "product-shell.css",
+  "utilities.css",
   "textarea.css",
   "theme.css",
   "typography.css",
@@ -28,6 +29,7 @@ const PLAIN_CLASS_CONTRACT_FILES = new Set([
   "input.css",
   "label.css",
   "patterns.css",
+  "utilities.css",
   "textarea.css",
 ]);
 const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
@@ -100,6 +102,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "settings-section-description",
     "settings-section-title",
   ],
+  "utilities.css": ["text-bold", "text-muted"],
   "textarea.css": ["textarea"],
 };
 

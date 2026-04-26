@@ -1,6 +1,6 @@
 # @askrjs/askr-themes
 
-Default theme tokens, styles, and visual components for askr-ui.
+Default theme tokens, styles, and visual components for askr-ui admin and internal tools.
 
 ## Contents
 
@@ -40,6 +40,10 @@ The theme supports both canonical `askr-ui` hooks and convenient class aliases:
 <button data-slot="button" data-variant="primary">Save</button>
 <button class="btn btn-primary">Save</button>
 ```
+
+The default path is an admin-ready application shell: tables, settings pages,
+record detail screens, and dashboard layouts should look production-ready
+without custom CSS.
 
 For visual-only layout wrappers:
 

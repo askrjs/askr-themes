@@ -1,8 +1,12 @@
 :root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --ak-font-family-body: "Aptos", "Segoe UI Variable Text", "Segoe UI", ui-sans-serif, sans-serif;
-  --ak-font-family-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ak-font-family-body:
+    "Aptos", "Segoe UI Variable Text", "Segoe UI", "SF Pro Text", Inter,
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --ak-font-family-mono:
+    "IBM Plex Mono", "SFMono-Regular", "Menlo", "Consolas", ui-monospace,
+    monospace, "Apple Color Emoji", "Segoe UI Emoji";
   --ak-font-family-emphasis: var(--ak-font-family-body);
   --ak-font-family-quote: "Iowan Old Style", "Palatino Linotype", ui-serif, serif;
   --ak-font-family: var(--ak-font-family-body);

@@ -1,60 +1,58 @@
 :where(.btn, [data-slot="button"]) {
+  --_button-height: var(--ak-density-control-height-md);
+  --_button-padding-x: var(--ak-density-control-padding-x-md);
+  --_button-radius: var(--ak-radius-md);
+  --_button-border: var(--ak-color-border);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ak-space-sm);
-  padding: 0 calc(var(--ak-space-lg) + 0.25rem);
-  min-height: 2.75rem;
-  border-radius: var(--ak-radius-md);
-  font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-semibold);
-  line-height: 1;
-  border: 1px solid var(--ak-color-border);
+  gap: 0.375rem;
+  min-height: var(--_button-height);
+  padding-inline: var(--_button-padding-x);
+  border: 1px solid var(--_button-border);
+  border-radius: var(--_button-radius);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   box-shadow: none;
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
+  letter-spacing: -0.015em;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
   transition:
-    transform var(--ak-duration-fast) var(--ak-ease-standard),
-    background var(--ak-duration-fast) var(--ak-ease-standard),
+    background-color var(--ak-duration-fast) var(--ak-ease-standard),
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
     color var(--ak-duration-fast) var(--ak-ease-standard),
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard),
-    filter var(--ak-duration-fast) var(--ak-ease-standard),
     opacity var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where(.btn) > :where([data-slot="icon"]),
-:where([data-slot="button"]) > :where([data-slot="icon"]) {
+:where(.btn) > :where([data-slot="icon"], svg),
+:where([data-slot="button"]) > :where([data-slot="icon"], svg) {
   flex: none;
   color: currentColor;
 }
 
 :where(.btn:hover, [data-slot="button"]:hover) {
-  transform: translateY(-1px);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 14%, var(--ak-color-surface));
+  background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.82) inset,
-    var(--ak-shadow-md);
-  filter: saturate(1.03);
 }
 
 :where(.btn:active, [data-slot="button"]:active) {
-  transform: translateY(1px);
   background: color-mix(in srgb, var(--ak-color-active) 100%, var(--ak-color-surface));
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.3) inset,
-    var(--ak-shadow-sm);
+  border-color: var(--ak-color-border-strong);
 }
 
 :where(.btn:focus-visible, [data-slot="button"]:focus-visible) {
   outline: none;
   box-shadow:
-    0 0 0 4px var(--ak-color-focus-ring),
-    var(--ak-shadow-md);
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 4px var(--ak-color-focus-ring);
 }
 
 :where(.btn[data-disabled], .btn:disabled, [data-slot="button"][data-disabled]) {
@@ -64,22 +62,13 @@
   color: var(--ak-color-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
-  filter: none;
-  transform: none;
+  opacity: 1;
 }
 
 :where(.btn-primary, [data-slot="button"][data-variant="primary"]) {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 12%, var(--ak-color-primary)),
-    var(--ak-color-primary)
-  );
-  border-color: color-mix(in srgb, var(--ak-color-primary-active) 55%, var(--ak-color-primary));
+  background: var(--ak-color-primary);
+  border-color: color-mix(in srgb, var(--ak-color-primary-active) 64%, var(--ak-color-primary));
   color: var(--ak-color-text-inverse);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.18) inset,
-    0 16px 30px -20px color-mix(in srgb, var(--ak-color-primary) 50%, transparent),
-    0 8px 18px -14px color-mix(in srgb, var(--ak-color-primary-active) 42%, transparent);
 }
 
 :where(.btn-primary:hover, [data-slot="button"][data-variant="primary"]:hover) {
@@ -93,29 +82,34 @@
 }
 
 :where(.btn-secondary, [data-slot="button"][data-variant="secondary"]) {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 62%, var(--ak-color-primary-soft)),
-    color-mix(in srgb, var(--ak-color-primary-soft) 34%, var(--ak-color-surface))
-  );
-  border-color: color-mix(in srgb, var(--ak-color-primary-soft) 55%, var(--ak-color-border));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface));
+  border-color: color-mix(in srgb, var(--ak-color-primary) 18%, var(--ak-color-border));
   color: var(--ak-color-primary-ink);
 }
 
 :where(.btn-secondary:hover, [data-slot="button"][data-variant="secondary"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 48%, var(--ak-color-surface));
-  border-color: color-mix(in srgb, var(--ak-color-primary) 28%, var(--ak-color-border-strong));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 72%, var(--ak-color-surface));
+  border-color: color-mix(in srgb, var(--ak-color-primary) 26%, var(--ak-color-border-strong));
+}
+
+:where(.btn-secondary:active, [data-slot="button"][data-variant="secondary"]:active) {
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-active));
+  border-color: color-mix(in srgb, var(--ak-color-primary) 22%, var(--ak-color-border));
 }
 
 :where(.btn-outline, [data-slot="button"][data-variant="outline"]) {
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 84%, transparent);
-  border-color: color-mix(in srgb, var(--ak-color-border-strong) 74%, white);
+  background: var(--ak-color-surface);
+  border-color: var(--ak-color-border);
   color: var(--ak-color-text);
-  box-shadow: none;
 }
 
 :where(.btn-outline:hover, [data-slot="button"][data-variant="outline"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 30%, var(--ak-color-surface));
+  background: var(--ak-color-surface-muted);
+  border-color: var(--ak-color-border-strong);
+}
+
+:where(.btn-outline:active, [data-slot="button"][data-variant="outline"]:active) {
+  background: color-mix(in srgb, var(--ak-color-active) 72%, var(--ak-color-surface-muted));
   border-color: var(--ak-color-border-strong);
 }
 
@@ -123,72 +117,73 @@
   background: transparent;
   border-color: transparent;
   color: var(--ak-color-text);
-  box-shadow: none;
 }
 
 :where(.btn-ghost:hover, [data-slot="button"][data-variant="ghost"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 48%, transparent);
+  background: var(--ak-color-hover);
   border-color: transparent;
 }
 
 :where(.btn-ghost:active, [data-slot="button"][data-variant="ghost"]:active) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 62%, transparent);
+  background: var(--ak-color-active);
+  border-color: transparent;
 }
 
 :where(.btn-destructive, [data-slot="button"][data-variant="destructive"]) {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 12%, var(--ak-color-danger)),
-    var(--ak-color-danger)
-  );
-  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 34%, var(--ak-color-danger));
+  background: var(--ak-color-danger);
+  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 40%, var(--ak-color-danger));
   color: var(--ak-color-text-inverse);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.14) inset,
-    0 16px 30px -20px color-mix(in srgb, var(--ak-color-danger) 46%, transparent);
 }
 
 :where(.btn-destructive:hover, [data-slot="button"][data-variant="destructive"]:hover) {
-  background: color-mix(in srgb, white 6%, var(--ak-color-danger));
-  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 44%, var(--ak-color-danger));
+  background: color-mix(in srgb, black 4%, var(--ak-color-danger));
+  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 48%, var(--ak-color-danger));
+}
+
+:where(.btn-destructive:active, [data-slot="button"][data-variant="destructive"]:active) {
+  background: color-mix(in srgb, black 9%, var(--ak-color-danger));
+  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 56%, var(--ak-color-danger));
 }
 
 :where(.btn-link, [data-slot="button"][data-variant="link"]) {
-  background: transparent;
-  border-color: transparent;
-  color: var(--ak-color-link);
-  padding: 0;
   min-height: auto;
-  border-radius: var(--ak-radius-round);
+  padding-inline: 0;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
   box-shadow: none;
-  text-decoration: none;
+  color: var(--ak-color-link);
 }
 
 :where(.btn-link:hover, [data-slot="button"][data-variant="link"]:hover) {
-  color: var(--ak-color-link-hover);
-  border-color: transparent;
   background: transparent;
+  border-color: transparent;
   box-shadow: none;
-  filter: none;
+  color: var(--ak-color-link-hover);
   text-decoration: underline;
-  transform: none;
+  text-underline-offset: 0.14em;
+}
+
+:where(.btn-link:active, [data-slot="button"][data-variant="link"]:active) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--ak-color-link-hover);
 }
 
 :where(.btn-sm, [data-slot="button"][data-size="sm"]) {
-  min-height: 2.5rem;
-  padding: 0 var(--ak-space-lg);
-  border-radius: var(--ak-radius-md);
-  font-size: var(--ak-font-size-sm);
+  --_button-height: var(--ak-density-control-height-sm);
+  --_button-padding-x: var(--ak-density-control-padding-x-sm);
+  font-size: 0.8125rem;
 }
 
 :where(.btn-lg, [data-slot="button"][data-size="lg"]) {
-  min-height: 3.5rem;
-  padding: 0 calc(var(--ak-space-xl) + 0.25rem);
-  font-size: var(--ak-font-size-md);
+  --_button-height: var(--ak-density-control-height-lg);
+  --_button-padding-x: var(--ak-density-control-padding-x-lg);
+  font-size: 0.9375rem;
 }
 
 :where(.btn-icon, [data-slot="button"][data-size="icon"]) {
-  min-height: 2.875rem;
-  min-width: 2.875rem;
-  padding: 0;
+  width: var(--_button-height);
+  padding-inline: 0;
 }

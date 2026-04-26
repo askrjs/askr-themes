@@ -1,0 +1,7 @@
+:where(.text-muted) {
+  color: var(--ak-color-text-muted);
+}
+
+:where(.text-bold) {
+  font-weight: var(--ak-font-weight-bold);
+}

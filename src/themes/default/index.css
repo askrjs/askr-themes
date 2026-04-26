@@ -1,6 +1,7 @@
 @import "./tokens.css";
 @import "./styles/base/typography.css";
 @import "./styles/base/icon.css";
+@import "./styles/base/utilities.css";
 @import "./styles/layout/layout.css";
 @import "./styles/layout/responsive-layout.css";
 @import "./styles/layout/app-shell.css";
