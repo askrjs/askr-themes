@@ -1,7 +1,18 @@
 import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
 import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
 
+export type ContainerVariant =
+  | 'default'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | 'xxl'
+  | 'fluid';
+
 export type ContainerOwnProps = BoxLayoutOwnProps & {
+  /** Bootstrap-like responsive container variant. */
+  variant?: ContainerVariant;
   /** Makes the container span the full available width while preserving gutters. */
   fluid?: boolean;
   /** Radix-style container size token. */

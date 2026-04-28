@@ -54,6 +54,7 @@
 
 :where([data-slot="container"]) {
   --ak-container-inline-size: 100%;
+  display: block;
   box-sizing: border-box;
   width: var(--ak-width-initial, 100%);
   max-width: min(100%, var(--ak-max-width-initial, var(--ak-container-inline-size)));
@@ -64,6 +65,16 @@
 }
 
 :where([data-slot="container"][data-fluid="true"]) {
+  --ak-container-inline-size: 100%;
+}
+
+:where([data-slot="container"][data-variant="default"]),
+:where([data-slot="container"][data-variant="sm"]),
+:where([data-slot="container"][data-variant="md"]),
+:where([data-slot="container"][data-variant="lg"]),
+:where([data-slot="container"][data-variant="xl"]),
+:where([data-slot="container"][data-variant="xxl"]),
+:where([data-slot="container"][data-variant="fluid"]) {
   --ak-container-inline-size: 100%;
 }
 
@@ -105,12 +116,14 @@
   margin-right: var(--ak-mr-initial, 0);
 }
 
-@media (min-width: 40rem) {
-  :where(
-      [data-slot="container"]:not([data-fluid="true"]):not([data-size]):not([data-max-width])
-    ) {
-    --ak-container-inline-size: var(--ak-container-1);
+@media (min-width: 36rem) {
+  :where([data-slot="container"][data-variant="default"]),
+  :where([data-slot="container"][data-variant="sm"]) {
+    --ak-container-inline-size: 540px;
   }
+}
+
+@media (min-width: 40rem) {
 
   :where([data-ak-layout="true"]) {
     display: var(--ak-display-sm, var(--ak-display-initial));
@@ -170,6 +183,7 @@
   }
 
   :where([data-slot="container"]) {
+    display: block;
     width: var(--ak-width-sm, var(--ak-width-initial, 100%));
     max-width: min(
       100%,
@@ -192,10 +206,10 @@
 }
 
 @media (min-width: 48rem) {
-  :where(
-      [data-slot="container"]:not([data-fluid="true"]):not([data-size]):not([data-max-width])
-    ) {
-    --ak-container-inline-size: var(--ak-container-2);
+  :where([data-slot="container"][data-variant="default"]),
+  :where([data-slot="container"][data-variant="sm"]),
+  :where([data-slot="container"][data-variant="md"]) {
+    --ak-container-inline-size: 720px;
   }
 
   :where([data-ak-layout="true"]) {
@@ -283,6 +297,7 @@
   }
 
   :where([data-slot="container"]) {
+    display: block;
     width: var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%)));
     max-width: min(
       100%,
@@ -316,13 +331,16 @@
   }
 }
 
-@media (min-width: 64rem) {
-  :where(
-      [data-slot="container"]:not([data-fluid="true"]):not([data-size]):not([data-max-width])
-    ) {
-    --ak-container-inline-size: var(--ak-container-3);
+@media (min-width: 62rem) {
+  :where([data-slot="container"][data-variant="default"]),
+  :where([data-slot="container"][data-variant="sm"]),
+  :where([data-slot="container"][data-variant="md"]),
+  :where([data-slot="container"][data-variant="lg"]) {
+    --ak-container-inline-size: 960px;
   }
+}
 
+@media (min-width: 64rem) {
   :where([data-ak-layout="true"]) {
     display: var(
       --ak-display-lg,
@@ -477,6 +495,7 @@
   }
 
   :where([data-slot="container"]) {
+    display: block;
     width: var(
       --ak-width-lg,
       var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%)))
@@ -528,13 +547,17 @@
   }
 }
 
-@media (min-width: 80rem) {
-  :where(
-      [data-slot="container"]:not([data-fluid="true"]):not([data-size]):not([data-max-width])
-    ) {
-    --ak-container-inline-size: var(--ak-container-4);
+@media (min-width: 75rem) {
+  :where([data-slot="container"][data-variant="default"]),
+  :where([data-slot="container"][data-variant="sm"]),
+  :where([data-slot="container"][data-variant="md"]),
+  :where([data-slot="container"][data-variant="lg"]),
+  :where([data-slot="container"][data-variant="xl"]) {
+    --ak-container-inline-size: 1140px;
   }
+}
 
+@media (min-width: 80rem) {
   :where([data-ak-layout="true"]) {
     display: var(
       --ak-display-xl,
@@ -836,6 +859,7 @@
   }
 
   :where([data-slot="container"]) {
+    display: block;
     width: var(
       --ak-width-xl,
       var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-initial, 100%))))
@@ -911,5 +935,16 @@
         )
       )
     );
+  }
+}
+
+@media (min-width: 87.5rem) {
+  :where([data-slot="container"][data-variant="default"]),
+  :where([data-slot="container"][data-variant="sm"]),
+  :where([data-slot="container"][data-variant="md"]),
+  :where([data-slot="container"][data-variant="lg"]),
+  :where([data-slot="container"][data-variant="xl"]),
+  :where([data-slot="container"][data-variant="xxl"]) {
+    --ak-container-inline-size: 1320px;
   }
 }

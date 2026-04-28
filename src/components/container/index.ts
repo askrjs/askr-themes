@@ -5,6 +5,7 @@ export {
 } from './container.a11y';
 export type {
   ContainerProps,
+  ContainerVariant,
   ContainerOwnProps,
   ContainerNativeProps,
   ContainerAsChildProps,

@@ -58,12 +58,9 @@ export function Grid(props: GridDivProps | GridSpanProps | GridAsChildProps) {
   const layoutStyle: Record<string, string | number> = {};
   applyBoxLayoutStyles(layoutStyle, boxProps);
 
-  setResponsiveStyleVar(
-    layoutStyle,
-    'display',
-    boxProps.display ?? 'grid',
-    (value) => value
-  );
+  if (boxProps.display !== undefined) {
+    setResponsiveStyleVar(layoutStyle, 'display', boxProps.display, (value) => value);
+  }
   setResponsiveStyleVar(
     layoutStyle,
     'grid-template-areas',

@@ -3,6 +3,7 @@
 }
 
 :where(body) {
+  margin: 0;
   font-family: var(--ak-font-family-body);
   font-size: var(--ak-type-3-size);
   line-height: 1.65;

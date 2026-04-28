@@ -52,18 +52,12 @@ export function Flex(props: FlexDivProps | FlexSpanProps | FlexAsChildProps) {
   const layoutStyle: Record<string, string | number> = {};
   applyBoxLayoutStyles(layoutStyle, boxProps);
 
-  setResponsiveStyleVar(
-    layoutStyle,
-    'display',
-    boxProps.display ?? 'flex',
-    (value) => value
-  );
-  setResponsiveStyleVar(
-    layoutStyle,
-    'flex-direction',
-    direction,
-    (value) => value
-  );
+  if (boxProps.display !== undefined) {
+    setResponsiveStyleVar(layoutStyle, 'display', boxProps.display, (value) => value);
+  }
+  if (direction !== 'row') {
+    setResponsiveStyleVar(layoutStyle, 'flex-direction', direction, (value) => value);
+  }
   setResponsiveStyleVar(layoutStyle, 'gap', gap, resolveSpaceValue);
   setResponsiveStyleVar(layoutStyle, 'column-gap', gapX, resolveSpaceValue);
   setResponsiveStyleVar(layoutStyle, 'row-gap', gapY, resolveSpaceValue);

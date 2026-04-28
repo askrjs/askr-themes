@@ -178,7 +178,7 @@ export function resolveInlineAlignValue(value: 'left' | 'center' | 'right'): {
 export function mergeLayoutStyles(
   layout: Record<string, string | number>,
   user: unknown
-): string {
+): string | undefined {
   const merged: Record<string, unknown> = { ...layout };
 
   if (user !== null && user !== undefined && typeof user === 'object') {
@@ -191,7 +191,7 @@ export function mergeLayoutStyles(
     return mergedString ? `${mergedString};${user.trim()}` : user.trim();
   }
 
-  return mergedString;
+  return mergedString || undefined;
 }
 
 function camelToKebab(s: string): string {
