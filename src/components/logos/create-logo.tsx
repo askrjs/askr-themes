@@ -1,4 +1,4 @@
-import { jsx as createSvgNode, jsxs } from "@askrjs/askr/jsx-runtime";
+import { jsx as createSvgNode, jsxs as createSvgNodes } from "@askrjs/askr/jsx-runtime";
 import type { IconSizeToken, LogoNode, LogoProps, LogoStyleObject } from "./types";
 
 const ICON_SIZE_TOKENS: readonly IconSizeToken[] = ["sm", "md", "lg", "xl"];
@@ -100,7 +100,7 @@ export function createLogo(
       createSvgNode(tag, nodeAttrs as Record<string, unknown>, index),
     );
 
-    return jsxs("svg", {
+    return createSvgNodes("svg", {
       ...rest,
       ...attrs,
       viewBox,
