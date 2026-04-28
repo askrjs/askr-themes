@@ -8,10 +8,9 @@ askr-themes is an optional styling layer. It provides:
 
 - Design tokens (CSS custom properties)
 - Base component styles that pair with `askr-ui`
-- Visual-only composition primitives such as Box, Stack, Inline, Cluster, Grid,
+- Visual-only composition primitives such as Box, Stack, Inline, Flex, Grid,
   Container, Section, and Spacer
-- Admin page primitives such as PageHeader, EmptyState, FormSection, and
-  SettingsSection
+- Admin page primitives such as EmptyState, FormSection, and SettingsSection
 - Theme-scoped wrapper modules for visual-only layouts
 - Theme-owned visual components when no headless primitive is needed
 
@@ -40,9 +39,9 @@ import {
   Button,
   Divider,
   EmptyState,
+  Flex,
   FormSection,
   Grid,
-  PageHeader,
   SettingsSection,
   Stack,
 } from "@askrjs/askr-themes/components";

@@ -3,7 +3,6 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   Badge,
   Box,
-  Cluster,
   Container,
   Divider,
   Flex,
@@ -33,7 +32,7 @@ describe("moved visual components", () => {
     expect(Flex({ children: "flex", gap: "2" })).toBeTruthy();
     expect(Inline({ children: "inline", gap: "2" })).toBeTruthy();
     expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
-    expect(Cluster({ children: "cluster", gap: "2" })).toBeTruthy();
+    expect(Flex({ children: "cluster", gap: "2", wrap: "wrap" })).toBeTruthy();
     expect(typeof Grid).toBe("function");
     expect(Container({ children: "container", size: "2" })).toBeTruthy();
     expect(Section({ children: "section", size: "2" })).toBeTruthy();
@@ -74,20 +73,60 @@ describe("moved visual components", () => {
 
     expect(fixed.props["data-size"]).toBe("initial:lg");
     expect(fixed.props.style).toBeUndefined();
-    expect(custom.props["data-max-width"]).toBe("initial:68rem");
+    expect(custom.props["data-max-width"]).toBeUndefined();
     expect(String(custom.props.style)).toContain("--ak-max-width-initial:68rem");
   });
 
   it("avoids inline styles for CSS-covered layout defaults", () => {
     const box = asElement(Box({ children: "box" }));
+    const paddedBox = asElement(Box({ children: "box", p: "2" }));
     const flex = asElement(Flex({ children: "flex" }));
+    const tokenFlex = asElement(Flex({ children: "flex", gap: "sm", direction: "column" }));
+    const section = asElement(Section({ children: "section" }));
+    const spacer = asElement(Spacer({}));
+    const inlineSpacer = asElement(Spacer({ axis: "inline" }));
     const sidebarLayout = asElement(SidebarLayout({ sidebar: "nav", children: "main" }));
     const topbarLayout = asElement(TopbarLayout({ topbar: "header", children: "main" }));
 
     expect(box.props.style).toBeUndefined();
+  expect(paddedBox.props["data-p"]).toBeUndefined();
+  expect(String(paddedBox.props.style)).toContain("--ak-p-initial:var(--ak-space-2)");
     expect(flex.props.style).toBeUndefined();
+    expect(tokenFlex.props.style).toBeUndefined();
+  expect(tokenFlex.props["data-gap"]).toBe("initial:sm");
+    expect(section.props["data-size"]).toBe("initial:3");
+    expect(section.props.style).toBeUndefined();
+    expect(spacer.props.style).toBeUndefined();
+    expect(inlineSpacer.props.style).toBeUndefined();
     expect(sidebarLayout.props.style).toBeUndefined();
     expect(topbarLayout.props.style).toBeUndefined();
+  });
+
+  it("keeps inline styles for uncovered flex and grid overrides", () => {
+    const responsiveFlex = asElement(
+      Flex({ children: "flex", gap: { initial: "sm", md: "lg" } })
+    );
+    const customFlex = asElement(Flex({ children: "flex", gap: "1.5rem" }));
+    const customSidebarLayout = asElement(
+      SidebarLayout({ sidebar: "nav", children: "main", sidebarWidth: "18rem", gap: "1.5rem" })
+    );
+
+    expect(String(responsiveFlex.props.style)).toContain("--ak-gap-initial:var(--ak-space-sm)");
+    expect(responsiveFlex.props["data-gap"]).toBeUndefined();
+    expect(customFlex.props["data-gap"]).toBeUndefined();
+    expect(String(customFlex.props.style)).toContain("--ak-gap-initial:1.5rem");
+    expect(customSidebarLayout.props["data-sidebar-width"]).toBeUndefined();
+    expect(customSidebarLayout.props["data-gap"]).toBeUndefined();
+  });
+
+  it("keeps inline styles only for explicit spacer overrides", () => {
+    const flexBasisSpacer = asElement(Spacer({ basis: "1rem" }));
+    const widthSpacer = asElement(Spacer({ axis: "inline", basis: "2rem" }));
+    const growSpacer = asElement(Spacer({ grow: 2 }));
+
+    expect(String(flexBasisSpacer.props.style)).toContain("flex-basis:1rem");
+    expect(String(widthSpacer.props.style)).toContain("width:2rem");
+    expect(String(growSpacer.props.style)).toContain("flex-grow:2");
   });
 
   it("exposes visual display primitives and divider aliases", () => {

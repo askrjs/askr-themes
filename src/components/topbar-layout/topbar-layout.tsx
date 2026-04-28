@@ -1,5 +1,9 @@
-import { isCssLength, mergeLayoutStyles } from '../_internal/layout';
+import { isCssLength, mergeLayoutStyles, serializeValueIf } from '../_internal/layout';
 import type { TopbarLayoutProps } from './topbar-layout.types';
+
+function isThemeGapToken(value: unknown): value is string {
+  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+}
 
 export function TopbarLayout(props: TopbarLayoutProps): JSX.Element {
   const {
@@ -23,8 +27,7 @@ export function TopbarLayout(props: TopbarLayoutProps): JSX.Element {
       {...rest}
       ref={ref}
       data-slot="topbar-layout"
-      data-topbar-height={topbarHeight}
-      data-gap={gap}
+      data-gap={serializeValueIf(gap, isThemeGapToken)}
       style={mergeLayoutStyles(wrapperStyle, userStyle)}
     >
       {[

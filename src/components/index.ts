@@ -28,16 +28,14 @@ export type {
   CardProps,
   CardTitleProps,
 } from "./card";
-export { Cluster } from "./cluster";
-export type { ClusterProps } from "./cluster";
 export { Container } from "./container";
 export type { ContainerProps, ContainerVariant } from "./container";
 export { EmptyState } from "./empty-state";
-export type { EmptyStateProps } from "./empty-state";
+export type { EmptyStateHeadingTag, EmptyStateProps } from "./empty-state";
 export { Flex } from "./flex";
 export type { FlexProps } from "./flex";
 export { FormSection } from "./form-section";
-export type { FormSectionProps } from "./form-section";
+export type { FormSectionHeadingTag, FormSectionProps } from "./form-section";
 export { Grid } from "./grid";
 export type { GridProps } from "./grid";
 export { Header } from "./header";
@@ -48,12 +46,10 @@ export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";
 export type { LogoProps } from "./logos";
 export { NavBrand, Navbar, NavGroup } from "./navbar";
 export type { NavBrandProps, NavbarProps, NavGroupProps } from "./navbar";
-export { PageHeader } from "./page-header";
-export type { PageHeaderProps } from "./page-header";
 export { Section } from "./section";
 export type { SectionProps } from "./section";
 export { SettingsSection } from "./settings-section";
-export type { SettingsSectionProps } from "./settings-section";
+export type { SettingsSectionHeadingTag, SettingsSectionProps } from "./settings-section";
 export { Divider, Separator } from "./separator";
 export type { DividerProps, SeparatorProps } from "./separator";
 export { SidebarLayout } from "./sidebar-layout";

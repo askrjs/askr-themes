@@ -1,5 +1,13 @@
-import { isCssLength, mergeLayoutStyles } from '../_internal/layout';
+import { isCssLength, mergeLayoutStyles, serializeValueIf } from '../_internal/layout';
 import type { SidebarLayoutProps } from './sidebar-layout.types';
+
+function isThemeGapToken(value: unknown): value is string {
+  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+}
+
+function isThemeSidebarWidthToken(value: unknown): value is string {
+  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+}
 
 export function SidebarLayout(props: SidebarLayoutProps): JSX.Element {
   const {
@@ -29,8 +37,8 @@ export function SidebarLayout(props: SidebarLayoutProps): JSX.Element {
       ref={ref}
       data-slot="sidebar-layout"
       data-sidebar-position={sidebarPosition}
-      data-sidebar-width={sidebarWidth}
-      data-gap={gap}
+      data-sidebar-width={serializeValueIf(sidebarWidth, isThemeSidebarWidthToken)}
+      data-gap={serializeValueIf(gap, isThemeGapToken)}
       data-collapse-below={collapseBelow}
       style={mergeLayoutStyles(wrapperStyle, userStyle)}
     >

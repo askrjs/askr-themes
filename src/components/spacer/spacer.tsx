@@ -21,26 +21,31 @@ export function Spacer(props: SpacerNativeProps | SpacerAsChildProps) {
   const layoutStyle: Record<string, string | number> = {};
 
   if (axis === 'inline') {
-    layoutStyle.display = 'block';
-    layoutStyle.flexShrink = shrink ?? 0;
+    if (shrink !== undefined && shrink !== 0) {
+      layoutStyle.flexShrink = shrink;
+    }
     if (isCssLength(basis)) layoutStyle.width = basis!;
   } else if (axis === 'block') {
-    layoutStyle.display = 'block';
-    layoutStyle.flexShrink = shrink ?? 0;
+    if (shrink !== undefined && shrink !== 0) {
+      layoutStyle.flexShrink = shrink;
+    }
     if (isCssLength(basis)) layoutStyle.height = basis!;
   } else {
-    layoutStyle.flexGrow = grow ?? 1;
-    layoutStyle.flexShrink = shrink ?? 1;
-    layoutStyle.flexBasis = isCssLength(basis) ? basis! : 'auto';
+    if (grow !== undefined && grow !== 1) {
+      layoutStyle.flexGrow = grow;
+    }
+    if (shrink !== undefined && shrink !== 1) {
+      layoutStyle.flexShrink = shrink;
+    }
+    if (isCssLength(basis)) {
+      layoutStyle.flexBasis = basis!;
+    }
   }
 
   const finalProps = mergeProps(rest, {
     ref,
     'data-slot': 'spacer',
     'data-axis': axis,
-    'data-grow': grow !== undefined ? String(grow) : undefined,
-    'data-shrink': shrink !== undefined ? String(shrink) : undefined,
-    'data-basis': basis,
     style: mergeLayoutStyles(layoutStyle, userStyle),
   });
   const keyedChildren = toChildArray(children).map((child, index) => {

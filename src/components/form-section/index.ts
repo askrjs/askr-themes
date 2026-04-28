@@ -1,2 +1,2 @@
 export { FormSection } from "./form-section";
-export type { FormSectionProps } from "./form-section.types";
+export type { FormSectionHeadingTag, FormSectionProps } from "./form-section.types";

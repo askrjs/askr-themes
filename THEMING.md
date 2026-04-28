@@ -69,9 +69,9 @@ Package boundaries:
   default styling.
 
 Use `@askrjs/askr-themes/components` for styled components such as Button, Box,
-Stack, Inline, Cluster, Grid, Container, Section, Spacer, Badge, Skeleton,
-Separator/Divider, SidebarLayout, TopbarLayout, PageHeader, EmptyState,
-FormSection, and SettingsSection.
+Stack, Inline, Flex, Grid, Container, Section, Spacer, Badge, Skeleton,
+Separator/Divider, SidebarLayout, TopbarLayout, EmptyState, FormSection, and
+SettingsSection.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in

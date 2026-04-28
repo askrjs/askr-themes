@@ -1,7 +1,6 @@
 import {
   mergeLayoutStyles,
   resolveSpaceValue,
-  serializeResponsiveValue,
   setResponsiveStyleVar,
 } from './layout';
 import type { BoxLayoutOwnProps } from '../box/box.types';
@@ -156,22 +155,6 @@ export function applyBoxLayoutStyles(
       (input) => input as string | number
     );
   }
-}
-
-export function extractBoxDataAttributes(
-  boxProps: Partial<BoxLayoutOwnProps>
-): Record<string, string | undefined> {
-  const attributes: Record<string, string | undefined> = {};
-
-  for (const key of BOX_PROP_KEYS) {
-    const value = boxProps[key];
-    if (value === undefined) continue;
-    attributes[`data-${variableNameForProp(key)}`] = serializeResponsiveValue(
-      value as string | number
-    );
-  }
-
-  return attributes;
 }
 
 export function withBoxLayoutStyle(

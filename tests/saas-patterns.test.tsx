@@ -6,7 +6,6 @@ import {
   CardContent,
   EmptyState,
   FormSection,
-  PageHeader,
   SettingsSection,
   Stack,
 } from "../src/components";
@@ -19,15 +18,23 @@ describe("product SaaS scaffold patterns", () => {
           {Stack({ children: ["Overview", "Customers", "Settings"], gap: "2", p: "4" })}
         </aside>
         <main class="ops-app-shell-main">
-          {PageHeader({
-            title: "Acme Console",
-            description: "Operational overview",
-            actions: Button({ children: "New project", variant: "primary" }),
-          })}
+          <section class="page-header">
+            <div class="page-header-copy">
+              <h1>Acme Console</h1>
+              <p>Operational overview</p>
+            </div>
+            {Button({ children: "New project", variant: "primary" })}
+          </section>
           {Stack({
             gap: "5",
             children: [
-              PageHeader({ eyebrow: "Dashboard", title: "Good morning", actions: "Last 30 days" }),
+              <section class="page-header">
+                <div class="page-header-copy">
+                  <p>Dashboard</p>
+                  <h2>Good morning</h2>
+                </div>
+                <div>Last 30 days</div>
+              </section>,
               Stack({
                 gap: "4",
                 children: [

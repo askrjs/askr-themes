@@ -3,11 +3,7 @@ import type {
   NavGroupProps,
   NavbarProps,
 } from "./navbar.types";
-
-function classes(...values: Array<unknown>): string | undefined {
-  const value = values.filter((item) => typeof item === "string" && item.trim()).join(" ");
-  return value || undefined;
-}
+import { classes } from '../_internal/classes';
 
 export function Navbar(props: NavbarProps): JSX.Element {
   const { children, ref, class: className, ...rest } = props;
