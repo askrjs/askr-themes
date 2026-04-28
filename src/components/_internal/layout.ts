@@ -98,6 +98,30 @@ export function serializeResponsiveValue<T>(
     .join('|');
 }
 
+export function serializeResponsiveValueIf<T>(
+  value: ResponsiveValue<T> | undefined,
+  predicate: (value: T) => boolean
+): string | undefined {
+  const normalized = normalizeResponsiveValue(value);
+  if (!normalized) return undefined;
+
+  for (const breakpoint of BREAKPOINTS) {
+    const breakpointValue = normalized[breakpoint];
+    if (breakpointValue === undefined) continue;
+    if (!predicate(breakpointValue)) return undefined;
+  }
+
+  return serializeResponsiveValue(value);
+}
+
+export function serializeValueIf<T>(
+  value: T | undefined,
+  predicate: (value: T) => boolean
+): string | undefined {
+  if (value === undefined || !predicate(value)) return undefined;
+  return String(value);
+}
+
 export function setResponsiveStyleVar<T>(
   styles: Record<string, string | number>,
   variable: string,

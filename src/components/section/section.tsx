@@ -1,16 +1,15 @@
 import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
 import {
   applyBoxLayoutStyles,
-  extractBoxDataAttributes,
   splitBoxLayoutProps,
   withBoxLayoutStyle,
 } from '../_internal/box-layout';
-import {
-  resolveSectionSizeValue,
-  serializeResponsiveValue,
-  setResponsiveStyleVar,
-} from '../_internal/layout';
+import { serializeResponsiveValueIf } from '../_internal/layout';
 import type { SectionAsChildProps, SectionElementProps } from './section.types';
+
+function isSectionSizeToken(value: unknown): value is string {
+  return typeof value === 'string' && ['1', '2', '3', '4'].includes(value.trim());
+}
 
 export function Section(props: SectionElementProps): JSX.Element;
 export function Section(props: SectionAsChildProps): JSX.Element;
@@ -28,20 +27,11 @@ export function Section(props: SectionElementProps | SectionAsChildProps) {
   const layoutStyle: Record<string, string | number> = {};
   applyBoxLayoutStyles(layoutStyle, boxProps);
 
-  if (
-    boxProps.py === undefined &&
-    boxProps.pt === undefined &&
-    boxProps.pb === undefined
-  ) {
-    setResponsiveStyleVar(layoutStyle, 'py', size, resolveSectionSizeValue);
-  }
-
   const finalProps = mergeProps(passthroughProps, {
     ref,
     'data-slot': 'section',
     'data-ak-layout': 'true',
-    'data-size': serializeResponsiveValue(size),
-    ...extractBoxDataAttributes(boxProps),
+    'data-size': serializeResponsiveValueIf(size, isSectionSizeToken),
     style: withBoxLayoutStyle(layoutStyle, userStyle),
   });
 

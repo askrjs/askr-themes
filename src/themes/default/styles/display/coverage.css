@@ -28,6 +28,22 @@
   display: block;
 }
 
+[data-slot="section"][data-size="initial:1"] {
+  padding-block: var(--ak-section-1);
+}
+
+[data-slot="section"][data-size="initial:2"] {
+  padding-block: var(--ak-section-2);
+}
+
+[data-slot="section"][data-size="initial:3"] {
+  padding-block: var(--ak-section-3);
+}
+
+[data-slot="section"][data-size="initial:4"] {
+  padding-block: var(--ak-section-4);
+}
+
 [data-slot="center"] {
   display: grid;
   place-items: center;
@@ -35,6 +51,84 @@
 
 [data-slot="spacer"] {
   flex: 1 1 auto;
+}
+
+[data-slot="spacer"][data-axis="inline"],
+[data-slot="spacer"][data-axis="block"] {
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (min-width: 40rem) {
+  [data-slot="section"][data-size="sm:1"] {
+    padding-block: var(--ak-section-1);
+  }
+
+  [data-slot="section"][data-size="sm:2"] {
+    padding-block: var(--ak-section-2);
+  }
+
+  [data-slot="section"][data-size="sm:3"] {
+    padding-block: var(--ak-section-3);
+  }
+
+  [data-slot="section"][data-size="sm:4"] {
+    padding-block: var(--ak-section-4);
+  }
+}
+
+@media (min-width: 48rem) {
+  [data-slot="section"][data-size="md:1"] {
+    padding-block: var(--ak-section-1);
+  }
+
+  [data-slot="section"][data-size="md:2"] {
+    padding-block: var(--ak-section-2);
+  }
+
+  [data-slot="section"][data-size="md:3"] {
+    padding-block: var(--ak-section-3);
+  }
+
+  [data-slot="section"][data-size="md:4"] {
+    padding-block: var(--ak-section-4);
+  }
+}
+
+@media (min-width: 64rem) {
+  [data-slot="section"][data-size="lg:1"] {
+    padding-block: var(--ak-section-1);
+  }
+
+  [data-slot="section"][data-size="lg:2"] {
+    padding-block: var(--ak-section-2);
+  }
+
+  [data-slot="section"][data-size="lg:3"] {
+    padding-block: var(--ak-section-3);
+  }
+
+  [data-slot="section"][data-size="lg:4"] {
+    padding-block: var(--ak-section-4);
+  }
+}
+
+@media (min-width: 80rem) {
+  [data-slot="section"][data-size="xl:1"] {
+    padding-block: var(--ak-section-1);
+  }
+
+  [data-slot="section"][data-size="xl:2"] {
+    padding-block: var(--ak-section-2);
+  }
+
+  [data-slot="section"][data-size="xl:3"] {
+    padding-block: var(--ak-section-3);
+  }
+
+  [data-slot="section"][data-size="xl:4"] {
+    padding-block: var(--ak-section-4);
+  }
 }
 
 [data-slot="breadcrumb-item"] {

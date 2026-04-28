@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { EmptyState, FormSection, PageHeader, SettingsSection } from "../src/components";
+import { EmptyState, FormSection, SettingsSection } from "../src/components";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -35,13 +35,6 @@ describe("scaffold slot contract", () => {
   it("emits canonical data-slot hooks alongside ergonomic classes", async () => {
     route("/example", () => (
       <div class="dashboard-page">
-        <PageHeader
-          eyebrow="Overview"
-          title="Dashboard"
-          description="Operational status"
-          meta="Updated now"
-          actions={<button type="button">Refresh</button>}
-        />
         <EmptyState
           icon={<span>!</span>}
           title="No results"
@@ -64,24 +57,11 @@ describe("scaffold slot contract", () => {
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    const pageHeader = container?.querySelector('[data-slot="page-header"]') as HTMLElement | null;
     const emptyState = container?.querySelector('[data-slot="empty-state"]') as HTMLElement | null;
     const formSection = container?.querySelector('[data-slot="form-section"]') as HTMLElement | null;
     const settingsSection = container?.querySelector(
       '[data-slot="settings-section"]'
     ) as HTMLElement | null;
-
-    expect(pageHeader?.classList.contains("page-header")).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="page-header-content"]')?.classList.contains(
-        "page-header-content"
-      )
-    ).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="page-header-actions"]')?.classList.contains(
-        "page-header-actions"
-      )
-    ).toBe(true);
 
     expect(emptyState?.classList.contains("empty-state")).toBe(true);
     expect(

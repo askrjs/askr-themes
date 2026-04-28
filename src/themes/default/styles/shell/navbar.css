@@ -7,11 +7,22 @@
     padding-block: var(--ak-space-xs);
   }
 
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+  }
+
   :where(.navbar-brand, [data-slot="navbar-brand"]) {
     display: inline-flex;
     align-items: center;
     gap: var(--ak-space-sm);
     min-inline-size: 0;
+  }
+
+  :where(.navbar-brand, [data-slot="navbar-brand"]) :where(a) {
+    color: inherit;
+    text-decoration: none;
   }
 
   :where(.navbar-group, [data-slot="navbar-group"]) {
@@ -20,6 +31,28 @@
     gap: var(--ak-space-md);
     flex-wrap: wrap;
     min-inline-size: 0;
+  }
+
+  :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"]) > :where(.navbar-brand, [data-slot="navbar-brand"]) {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"]) > :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+    grid-column: 2;
+    justify-self: center;
+    margin-inline: 0;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"]) > :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {
+    grid-column: 3;
+    justify-self: end;
+    margin-inline-start: 0;
   }
 
   :where([data-slot="nav-link"]) {
@@ -53,12 +86,18 @@
   }
   @media (max-width: 48rem) {
     :where(.navbar, [data-slot="navbar"]) {
+      display: flex;
       align-items: stretch;
       flex-wrap: wrap;
     }
 
     :where(.navbar-group, [data-slot="navbar-group"]) {
       inline-size: 100%;
+    }
+
+    :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+      justify-content: flex-start;
+      margin-inline: 0;
     }
 
     :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {

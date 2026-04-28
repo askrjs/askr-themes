@@ -2,17 +2,18 @@ import { For } from '@askrjs/askr';
 import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
 import {
   applyBoxLayoutStyles,
-  extractBoxDataAttributes,
   splitBoxLayoutProps,
   withBoxLayoutStyle,
 } from '../_internal/box-layout';
 import { isJsxElement, toChildArray } from '../_internal/jsx';
 import {
+  isResponsiveValue,
   resolveAlignValue,
   resolveGridTrackValue,
   resolveJustifyValue,
   resolveSpaceValue,
-  serializeResponsiveValue,
+  serializeResponsiveValueIf,
+  serializeValueIf,
   setResponsiveStyleVar,
 } from '../_internal/layout';
 import type {
@@ -20,6 +21,63 @@ import type {
   GridDivProps,
   GridSpanProps,
 } from './grid.types';
+
+const SPACE_TOKENS = new Set([
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  '3xl',
+]);
+
+function isResponsiveObject(value: unknown): boolean {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isCssCoveredSpaceValue(value: unknown): value is string {
+  return typeof value === 'string' && SPACE_TOKENS.has(value.trim());
+}
+
+function isCssCoveredAlignValue(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    ['start', 'end', 'center', 'stretch', 'baseline'].includes(value.trim())
+  );
+}
+
+function isCssCoveredJustifyValue(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    ['start', 'end', 'center', 'between'].includes(value.trim())
+  );
+}
+
+function isCssCoveredGridColumnValue(value: unknown): boolean {
+  return typeof value === 'number' || (typeof value === 'string' && /^\d+$/.test(value.trim()));
+}
+
+function isCssCoveredAutoFitValue(value: unknown): value is boolean {
+  return typeof value === 'boolean';
+}
+
+function serializeStaticThemeValue<T>(
+  value: T | Partial<Record<'initial' | 'sm' | 'md' | 'lg' | 'xl', T>> | undefined,
+  predicate: (value: T) => boolean
+): string | undefined {
+  if (isResponsiveValue(value)) return undefined;
+  return serializeResponsiveValueIf(value, predicate);
+}
 
 function resolveCompatibilityGridTemplate(
   minItemWidth: string | undefined,
@@ -80,33 +138,38 @@ export function Grid(props: GridDivProps | GridSpanProps | GridAsChildProps) {
     resolveGridTrackValue
   );
   setResponsiveStyleVar(layoutStyle, 'grid-auto-flow', flow, (value) => value);
-  setResponsiveStyleVar(layoutStyle, 'gap', gap, resolveSpaceValue);
-  setResponsiveStyleVar(layoutStyle, 'column-gap', gapX, resolveSpaceValue);
-  setResponsiveStyleVar(layoutStyle, 'row-gap', gapY, resolveSpaceValue);
-  setResponsiveStyleVar(layoutStyle, 'align-items', align, resolveAlignValue);
-  setResponsiveStyleVar(
-    layoutStyle,
-    'justify-content',
-    justify,
-    resolveJustifyValue
-  );
+  if (!isCssCoveredSpaceValue(gap) || isResponsiveObject(gap)) {
+    setResponsiveStyleVar(layoutStyle, 'gap', gap, resolveSpaceValue);
+  }
+  if (!isCssCoveredSpaceValue(gapX) || isResponsiveObject(gapX)) {
+    setResponsiveStyleVar(layoutStyle, 'column-gap', gapX, resolveSpaceValue);
+  }
+  if (!isCssCoveredSpaceValue(gapY) || isResponsiveObject(gapY)) {
+    setResponsiveStyleVar(layoutStyle, 'row-gap', gapY, resolveSpaceValue);
+  }
+  if (!isCssCoveredAlignValue(align) || isResponsiveObject(align)) {
+    setResponsiveStyleVar(layoutStyle, 'align-items', align, resolveAlignValue);
+  }
+  if (!isCssCoveredJustifyValue(justify) || isResponsiveObject(justify)) {
+    setResponsiveStyleVar(
+      layoutStyle,
+      'justify-content',
+      justify,
+      resolveJustifyValue
+    );
+  }
 
   const finalProps = mergeProps(passthroughProps, {
     ref,
     'data-slot': 'grid',
     'data-ak-layout': 'true',
-    'data-areas': serializeResponsiveValue(areas),
-    'data-columns': serializeResponsiveValue(columns),
-    'data-rows': serializeResponsiveValue(rows),
-    'data-flow': serializeResponsiveValue(flow),
-    'data-gap': serializeResponsiveValue(gap),
-    'data-gap-x': serializeResponsiveValue(gapX),
-    'data-gap-y': serializeResponsiveValue(gapY),
-    'data-align': serializeResponsiveValue(align),
-    'data-justify': serializeResponsiveValue(justify),
-    'data-min-item-width': minItemWidth,
-    'data-auto-fit': autoFit !== undefined ? String(autoFit) : undefined,
-    ...extractBoxDataAttributes(boxProps),
+    'data-columns': serializeStaticThemeValue(columns, isCssCoveredGridColumnValue),
+    'data-gap': serializeStaticThemeValue(gap, isCssCoveredSpaceValue),
+    'data-gap-x': serializeStaticThemeValue(gapX, isCssCoveredSpaceValue),
+    'data-gap-y': serializeStaticThemeValue(gapY, isCssCoveredSpaceValue),
+    'data-align': serializeStaticThemeValue(align, isCssCoveredAlignValue),
+    'data-justify': serializeStaticThemeValue(justify, isCssCoveredJustifyValue),
+    'data-auto-fit': serializeValueIf(autoFit, isCssCoveredAutoFitValue),
     style: withBoxLayoutStyle(layoutStyle, userStyle),
   });
   const keyedChildren = (

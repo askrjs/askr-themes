@@ -24,10 +24,9 @@ For app scaffolds, visual-only composition, and display components:
 import {
   AppShell,
   Badge,
-  Cluster,
   EmptyState,
+  Flex,
   FormSection,
-  PageHeader,
   SettingsSection,
   Skeleton,
   Stack,

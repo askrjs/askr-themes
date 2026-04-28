@@ -1,2 +1,2 @@
 export { SettingsSection } from "./settings-section";
-export type { SettingsSectionProps } from "./settings-section.types";
+export type { SettingsSectionHeadingTag, SettingsSectionProps } from "./settings-section.types";

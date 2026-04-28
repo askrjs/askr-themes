@@ -1,7 +1,6 @@
 import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
 import {
   applyBoxLayoutStyles,
-  extractBoxDataAttributes,
   splitBoxLayoutProps,
   withBoxLayoutStyle,
 } from '../_internal/box-layout';
@@ -11,6 +10,7 @@ import {
   resolveInlineAlignValue,
   resolveSpaceValue,
   serializeResponsiveValue,
+  serializeResponsiveValueIf,
   setResponsiveStyleVar,
 } from '../_internal/layout';
 import type {
@@ -24,6 +24,12 @@ function isContainerWidthToken(value: unknown): value is string {
   return typeof value === 'string' && CONTAINER_WIDTH_TOKENS.has(value.trim());
 }
 
+function isContainerAlignToken(value: unknown): value is 'left' | 'center' | 'right' {
+  return (
+    typeof value === 'string' && ['left', 'center', 'right'].includes(value.trim())
+  );
+}
+
 function hasStyleValue(value: unknown): boolean {
   if (typeof value === 'string') return value.trim().length > 0;
   if (value && typeof value === 'object') {
@@ -31,6 +37,10 @@ function hasStyleValue(value: unknown): boolean {
   }
 
   return false;
+}
+
+function isStaticValue(value: unknown): boolean {
+  return !isResponsiveValue(value as Record<string, unknown> | undefined);
 }
 
 export function Container(props: ContainerNativeProps): JSX.Element;
@@ -126,11 +136,19 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     'data-ak-layout': 'true',
     'data-variant': responsiveVariant,
     'data-fluid': fluid ? 'true' : undefined,
-    'data-size': fluid ? undefined : serializeResponsiveValue(size),
-    'data-align': serializeResponsiveValue(align),
-    'data-max-width': fluid ? undefined : serializeResponsiveValue(maxWidth),
-    'data-padding': serializeResponsiveValue(padding),
-    ...extractBoxDataAttributes(boxProps),
+    'data-size': fluid
+      ? undefined
+      : isStaticValue(size)
+        ? serializeResponsiveValueIf(size, isContainerWidthToken)
+        : undefined,
+    'data-align': isStaticValue(align)
+      ? serializeResponsiveValueIf(align, isContainerAlignToken)
+      : undefined,
+    'data-max-width': fluid
+      ? undefined
+      : isStaticValue(maxWidth)
+        ? serializeResponsiveValueIf(maxWidth, isContainerWidthToken)
+        : undefined,
     style: mergedStyle,
   });
 

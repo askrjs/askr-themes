@@ -19,6 +19,7 @@
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
   letter-spacing: -0.015em;
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;

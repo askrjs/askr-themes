@@ -1,7 +1,6 @@
 import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
 import {
   applyBoxLayoutStyles,
-  extractBoxDataAttributes,
   splitBoxLayoutProps,
   withBoxLayoutStyle,
 } from '../_internal/box-layout';
@@ -22,7 +21,6 @@ export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
     ref,
     'data-slot': 'box',
     'data-ak-layout': 'true',
-    ...extractBoxDataAttributes(boxProps),
     style: withBoxLayoutStyle(layoutStyle, userStyle),
   });
 
