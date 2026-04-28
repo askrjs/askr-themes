@@ -2,6 +2,8 @@ import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
 import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
 
 export type ContainerOwnProps = BoxLayoutOwnProps & {
+  /** Makes the container span the full available width while preserving gutters. */
+  fluid?: boolean;
   /** Radix-style container size token. */
   size?: LayoutResponsive<'1' | '2' | '3' | '4' | 'sm' | 'md' | 'lg' | 'xl'>;
   /** Horizontal alignment of the constrained container. */
