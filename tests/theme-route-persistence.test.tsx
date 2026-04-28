@@ -82,7 +82,7 @@ describe("theme route persistence", () => {
 
   it("preserves the active theme across route navigation", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider class="app-shell" defaultTheme="light">
+      <ThemeProvider defaultTheme="light">
         <header>
           <ThemeToggle />
         </header>
@@ -101,14 +101,10 @@ describe("theme route persistence", () => {
     const toggle = container.querySelector(
       '[data-theme-control="toggle"]'
     ) as HTMLButtonElement | null;
-    const provider = container.querySelector(
-      '[data-slot="theme-provider"]'
-    ) as HTMLDivElement | null;
     const html = document.documentElement;
 
+    expect(container.querySelector('[data-slot="theme-provider"]')).toBeNull();
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
-    expect(provider?.getAttribute("data-theme")).toBeNull();
-    expect(provider?.getAttribute("data-theme-choice")).toBe("light");
     expect(html.getAttribute("data-theme")).toBe("light");
     expect(html.getAttribute("data-theme-choice")).toBe("light");
 
@@ -118,14 +114,9 @@ describe("theme route persistence", () => {
     const toggleAfterPress = container.querySelector(
       '[data-theme-control="toggle"]'
     ) as HTMLButtonElement | null;
-    const providerAfterPress = container.querySelector(
-      '[data-slot="theme-provider"]'
-    ) as HTMLDivElement | null;
 
     expect(toggleAfterPress?.getAttribute("data-theme-choice")).toBe("dark");
     expect(toggleAfterPress?.getAttribute("data-next-theme")).toBe("light");
-    expect(providerAfterPress?.getAttribute("data-theme")).toBeNull();
-    expect(providerAfterPress?.getAttribute("data-theme-choice")).toBe("dark");
     expect(html.getAttribute("data-theme")).toBe("dark");
     expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
@@ -136,16 +127,11 @@ describe("theme route persistence", () => {
     const toggleAfter = container.querySelector(
       '[data-theme-control="toggle"]'
     ) as HTMLButtonElement | null;
-    const providerAfter = container.querySelector(
-      '[data-slot="theme-provider"]'
-    ) as HTMLDivElement | null;
     const pageAfter = container.querySelector("#page");
 
     expect(pageAfter?.textContent).toBe("About");
     expect(toggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(toggleAfter?.getAttribute("data-next-theme")).toBe("light");
-    expect(providerAfter?.getAttribute("data-theme")).toBeNull();
-    expect(providerAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(html.getAttribute("data-theme")).toBe("dark");
     expect(html.getAttribute("data-theme-choice")).toBe("dark");
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
@@ -153,7 +139,7 @@ describe("theme route persistence", () => {
 
   it("should replace the icon instead of accumulating icons on repeated toggles", async () => {
     const AppLayout = () => (
-      <ThemeProvider class="app-shell" defaultTheme="light">
+      <ThemeProvider defaultTheme="light">
         <ThemeToggle
           toggleThemes={["light", "dark"]}
           lightIcon={<svg aria-hidden="true" data-icon="sun" viewBox="0 0 16 16" />}
