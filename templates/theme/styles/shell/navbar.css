@@ -30,7 +30,7 @@
     min-inline-size: 0;
   }
 
-  :where([data-slot="nav-link"]) {
+  :where(.navbar-item, [data-slot="nav-item"], [data-slot="nav-link"]) {
     display: inline-flex;
     align-items: center;
     min-block-size: 2.25rem;
@@ -45,7 +45,7 @@
       background var(--ak-duration-fast) var(--ak-ease-standard);
   }
 
-  :where([data-slot="nav-link"]:hover) {
+  :where(.navbar-item:hover, [data-slot="nav-item"]:hover, [data-slot="nav-link"]:hover) {
     color: var(--ak-color-text);
     background: color-mix(in srgb, var(--ak-color-surface-overlay) 84%, transparent);
   }
@@ -53,6 +53,37 @@
   :where([data-slot="nav-link"][aria-current="page"]) {
     color: var(--ak-color-text);
     background: color-mix(in srgb, var(--ak-color-primary-soft) 35%, var(--ak-color-surface));
+  }
+
+  :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) {
+    justify-content: center;
+    inline-size: var(--ak-density-control-height-md);
+    min-block-size: var(--ak-density-control-height-md);
+    padding-inline: 0;
+    border: 1px solid transparent;
+    color: var(--ak-color-text);
+    line-height: 1;
+  }
+
+  :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) > :where([data-slot="icon"], svg) {
+    flex: none;
+    color: currentColor;
+  }
+
+  :where(.navbar-item-icon:hover, [data-slot="nav-item"][data-variant="icon"]:hover) {
+    border-color: transparent;
+  }
+
+  :where(.navbar-item-icon:active, [data-slot="nav-item"][data-variant="icon"]:active) {
+    background: var(--ak-color-active);
+    border-color: transparent;
+  }
+
+  :where(.navbar-item:focus-visible, [data-slot="nav-item"]:focus-visible) {
+    outline: none;
+    box-shadow:
+      0 0 0 1px var(--ak-color-surface),
+      0 0 0 4px var(--ak-color-focus-ring);
   }
 
   :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {

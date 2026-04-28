@@ -68,7 +68,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
   "field.css": ["field"],
   "input.css": ["input"],
   "label.css": ["label"],
-  "navbar.css": ["navbar", "navbar-brand", "navbar-group"],
+  "navbar.css": ["navbar", "navbar-brand", "navbar-group", "navbar-item", "navbar-item-icon"],
   "patterns.css": [
     "empty-state",
     "empty-state-actions",

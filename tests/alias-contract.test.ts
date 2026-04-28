@@ -58,6 +58,8 @@ const ALIAS_CONTRACTS = [
   ["shell/navbar.css", ".navbar", '[data-slot="navbar"]'],
   ["shell/navbar.css", ".navbar-brand", '[data-slot="navbar-brand"]'],
   ["shell/navbar.css", ".navbar-group", '[data-slot="navbar-group"]'],
+  ["shell/navbar.css", ".navbar-item", '[data-slot="nav-item"]'],
+  ["shell/navbar.css", ".navbar-item-icon", '[data-slot="nav-item"][data-variant="icon"]'],
 ] as const;
 
 function selectorBlocks(css: string): string[] {
