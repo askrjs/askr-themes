@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { EmptyState, FormSection, SettingsSection } from "../src/components";
+import { EmptyState, FormSection, NavItem, SettingsSection } from "../src/components";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -51,6 +51,11 @@ describe("scaffold slot contract", () => {
         <SettingsSection title="Notifications" description="Delivery preferences.">
           <input type="checkbox" checked />
         </SettingsSection>
+        <nav>
+          <NavItem href="https://github.com/askrjs" aria-label="GitHub repository" variant="icon">
+            <span data-slot="icon">GH</span>
+          </NavItem>
+        </nav>
       </div>
     ));
 
@@ -61,6 +66,9 @@ describe("scaffold slot contract", () => {
     const formSection = container?.querySelector('[data-slot="form-section"]') as HTMLElement | null;
     const settingsSection = container?.querySelector(
       '[data-slot="settings-section"]'
+    ) as HTMLElement | null;
+    const navItem = container?.querySelector(
+      '[data-slot="nav-item"]'
     ) as HTMLElement | null;
 
     expect(emptyState?.classList.contains("empty-state")).toBe(true);
@@ -83,5 +91,8 @@ describe("scaffold slot contract", () => {
         "settings-section-copy"
       )
     ).toBe(true);
+
+    expect(navItem?.classList.contains("navbar-item")).toBe(true);
+    expect(navItem?.classList.contains("navbar-item-icon")).toBe(true);
   });
 });

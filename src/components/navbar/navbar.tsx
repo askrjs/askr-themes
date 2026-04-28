@@ -1,6 +1,9 @@
+import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
 import type {
   NavBrandProps,
   NavGroupProps,
+  NavItemAsChildProps,
+  NavItemProps,
   NavbarProps,
 } from "./navbar.types";
 import { classes } from '../_internal/classes';
@@ -32,5 +35,35 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
     <div {...rest} ref={ref} class={classes("navbar-group", className)} data-slot="navbar-group">
       {children}
     </div>
+  );
+}
+
+export function NavItem(props: NavItemProps): JSX.Element;
+export function NavItem(props: NavItemAsChildProps): JSX.Element;
+export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element {
+  const {
+    asChild,
+    children,
+    ref,
+    class: className,
+    variant = 'default',
+    ...rest
+  } = props;
+
+  const finalProps = mergeProps(rest, {
+    ref,
+    class: classes('navbar-item', variant === 'icon' && 'navbar-item-icon', className),
+    'data-slot': 'nav-item',
+    'data-variant': variant,
+  });
+
+  if (asChild) {
+    return <Slot asChild {...finalProps} children={children} />;
+  }
+
+  return (
+    <a {...finalProps}>
+      {children}
+    </a>
   );
 }

@@ -11,8 +11,9 @@ import {
   Header,
   MicrosoftLogo,
   NavBrand,
-  Navbar,
   NavGroup,
+  NavItem,
+  Navbar,
   SettingsSection,
   Stack,
   ThemePicker,
@@ -43,6 +44,7 @@ describe("components entrypoint", () => {
     expect(Navbar({ children: "nav" })).toBeTruthy();
     expect(NavBrand({ children: "brand" })).toBeTruthy();
     expect(NavGroup({ children: "group" })).toBeTruthy();
+    expect(NavItem({ href: "https://github.com/askrjs", children: "item" })).toBeTruthy();
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
     expect(FormSection({ title: "Profile", children: "fields" })).toBeTruthy();
     expect(SettingsSection({ title: "Team", children: "settings" })).toBeTruthy();
