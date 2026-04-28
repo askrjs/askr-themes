@@ -44,7 +44,6 @@
     "./default/tokens.css": "./src/themes/default/tokens.css",
     "./default/accordion.css": "./src/themes/default/styles/disclosure/accordion.css",
     "./default/alert-dialog.css": "./src/themes/default/styles/overlays/alert-dialog.css",
-    "./default/app-shell.css": "./src/themes/default/styles/layout/app-shell.css",
     "./default/avatar.css": "./src/themes/default/styles/display/avatar.css",
     "./default/badge.css": "./src/themes/default/styles/display/badge.css",
     "./default/breadcrumb.css": "./src/themes/default/styles/navigation/breadcrumb.css",

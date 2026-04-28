@@ -1,11 +1,82 @@
-/* __THEME_NAME__ theme navbar styles (public data-* contract only) */
-[data-slot="topbar-layout"] > [data-slot="navbar"] {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: var(--ak-layout-navbar-height);
-  padding-inline: var(--ak-space-md);
-  gap: var(--ak-space-md);
-  border-bottom: 1px solid var(--ak-color-border);
-  background: var(--ak-color-bg);
+@layer components {
+  :where(.navbar, [data-slot="navbar"]) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--ak-z-sticky);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: var(--ak-layout-navbar-height);
+    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
+    gap: var(--ak-space-md);
+    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
+    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
+    box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
+    backdrop-filter: blur(18px) saturate(150%);
+  }
+
+  :where(.navbar-brand, [data-slot="navbar-brand"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ak-space-sm);
+    min-inline-size: 0;
+  }
+
+  :where(.navbar-group, [data-slot="navbar-group"]) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ak-space-md);
+    flex-wrap: wrap;
+    min-inline-size: 0;
+  }
+
+  :where([data-slot="nav-link"]) {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.25rem;
+    padding-inline: var(--ak-space-sm);
+    border-radius: var(--ak-radius-md);
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-sm);
+    font-weight: var(--ak-font-weight-medium);
+    text-decoration: none;
+    transition:
+      color var(--ak-duration-fast) var(--ak-ease-standard),
+      background var(--ak-duration-fast) var(--ak-ease-standard);
+  }
+
+  :where([data-slot="nav-link"]:hover) {
+    color: var(--ak-color-text);
+    background: color-mix(in srgb, var(--ak-color-surface-overlay) 84%, transparent);
+  }
+
+  :where([data-slot="nav-link"][aria-current="page"]) {
+    color: var(--ak-color-text);
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 35%, var(--ak-color-surface));
+  }
+
+  :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {
+    margin-inline-start: auto;
+    justify-content: flex-end;
+  }
+
+  :where([data-slot="topbar-layout"]) > :where(.navbar, [data-slot="navbar"]) {
+    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
+  }
+
+  @media (max-width: 48rem) {
+    :where(.navbar, [data-slot="navbar"]) {
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    :where(.navbar-group, [data-slot="navbar-group"]) {
+      inline-size: 100%;
+    }
+
+    :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {
+      justify-content: flex-start;
+      margin-inline-start: 0;
+    }
+  }
 }

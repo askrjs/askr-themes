@@ -5,7 +5,6 @@ import { join } from "node:path";
 const COMPONENTS_DIR = join(__dirname, "..", "src", "themes", "default", "styles");
 const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
 const CLASS_UTILITY_FILES = new Set([
-  "app-shell.css",
   "badge.css",
   "button.css",
   "card.css",
@@ -13,6 +12,7 @@ const CLASS_UTILITY_FILES = new Set([
   "input.css",
   "label.css",
   "marketing-shell.css",
+  "navbar.css",
   "patterns.css",
   "product-shell.css",
   "utilities.css",
@@ -21,26 +21,18 @@ const CLASS_UTILITY_FILES = new Set([
   "typography.css",
 ]);
 const PLAIN_CLASS_CONTRACT_FILES = new Set([
-  "app-shell.css",
   "badge.css",
   "button.css",
   "card.css",
   "field.css",
   "input.css",
   "label.css",
+  "navbar.css",
   "patterns.css",
   "utilities.css",
   "textarea.css",
 ]);
 const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
-  "app-shell.css": [
-    "app-shell",
-    "app-shell-body",
-    "app-shell-footer",
-    "app-shell-main",
-    "app-shell-sidebar",
-    "app-shell-topbar",
-  ],
   "badge.css": [
     "badge",
     "badge-danger",
@@ -76,6 +68,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
   "field.css": ["field"],
   "input.css": ["input"],
   "label.css": ["label"],
+  "navbar.css": ["navbar", "navbar-brand", "navbar-group"],
   "patterns.css": [
     "empty-state",
     "empty-state-actions",

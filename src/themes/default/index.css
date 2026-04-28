@@ -4,9 +4,9 @@
 @import "./styles/base/utilities.css";
 @import "./styles/layout/layout.css";
 @import "./styles/layout/responsive-layout.css";
-@import "./styles/layout/app-shell.css";
 @import "./styles/layout/patterns.css";
 @import "./styles/shell/theme.css";
+@import "./styles/shell/navbar.css";
 @import "./styles/shell/product-shell.css";
 @import "./styles/shell/marketing-shell.css";
 @import "./styles/actions/button.css";

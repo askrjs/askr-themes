@@ -47,7 +47,7 @@ Selector contract:
 - `askr-ui` public hooks are canonical: `data-slot`, `data-state`, `data-disabled`, `data-orientation`, `data-variant`, and `data-size`.
 - `askr-themes` may expose simple kebab-case class aliases for high-value authoring shortcuts such as `.btn`, `.btn-primary`, `.card`, `.input`, and `.badge-success`.
 - Alias selectors must be grouped with canonical selectors in the same low-specificity rule. Classes are convenience API, not a replacement source of truth.
-- Theme-owned scaffold components use plain kebab-case classes such as `.app-shell`, `.page-header`, and `.form-section`, and public scaffold parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
+- Theme-owned pattern components use plain kebab-case classes such as `.page-header` and `.form-section`, and public pattern parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
 
 Example:
 
@@ -70,8 +70,8 @@ Package boundaries:
 
 Use `@askrjs/askr-themes/components` for styled components such as Button, Box,
 Stack, Inline, Cluster, Grid, Container, Section, Spacer, Badge, Skeleton,
-Separator/Divider, SidebarLayout, TopbarLayout, AppShell, PageHeader,
-EmptyState, FormSection, and SettingsSection.
+Separator/Divider, SidebarLayout, TopbarLayout, PageHeader, EmptyState,
+FormSection, and SettingsSection.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
