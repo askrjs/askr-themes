@@ -10,8 +10,6 @@ export type {
 
 export { Badge } from "./badge";
 export type { BadgeProps } from "./badge";
-export { AppShell } from "./app-shell";
-export type { AppShellProps } from "./app-shell";
 export { Box } from "./box";
 export type { BoxProps } from "./box";
 export {
@@ -44,6 +42,10 @@ export { Grid } from "./grid";
 export type { GridProps } from "./grid";
 export { Inline } from "./inline";
 export type { InlineProps } from "./inline";
+export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";
+export type { LogoProps } from "./logos";
+export { NavBrand, Navbar, NavGroup } from "./navbar";
+export type { NavBrandProps, NavbarProps, NavGroupProps } from "./navbar";
 export { PageHeader } from "./page-header";
 export type { PageHeaderProps } from "./page-header";
 export { Section } from "./section";

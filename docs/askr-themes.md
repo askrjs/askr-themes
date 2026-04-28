@@ -10,8 +10,8 @@ askr-themes is an optional styling layer. It provides:
 - Base component styles that pair with `askr-ui`
 - Visual-only composition primitives such as Box, Stack, Inline, Cluster, Grid,
   Container, Section, and Spacer
-- Admin scaffold primitives such as AppShell, PageHeader, EmptyState,
-  FormSection, and SettingsSection
+- Admin page primitives such as PageHeader, EmptyState, FormSection, and
+  SettingsSection
 - Theme-scoped wrapper modules for visual-only layouts
 - Theme-owned visual components when no headless primitive is needed
 
@@ -36,7 +36,6 @@ barrel:
 
 ```ts
 import {
-  AppShell,
   Badge,
   Button,
   Divider,
@@ -96,16 +95,16 @@ Or in CSS:
 @import "@askrjs/askr-themes/default";
 ```
 
-The default theme is designed to scaffold admin and internal-tool screens without app CSS:
-pair `AppShell` with `PageHeader`, `Grid`, `Card`, `FormSection`, and
-`EmptyState`, then customize the result by overriding semantic `--ak-*` tokens.
+The default theme is designed to supply admin and internal-tool surfaces while
+leaving the overall app frame in userland: pair `PageHeader`, `Grid`, `Card`,
+`FormSection`, and `EmptyState`, then customize the result by overriding
+semantic `--ak-*` tokens.
 
-## Admin app scaffold
+## Admin page composition
 
 ```tsx
 import "@askrjs/askr-themes/default";
 import {
-  AppShell,
   Button,
   Card,
   CardContent,
@@ -116,31 +115,32 @@ import {
   Stack,
 } from "@askrjs/askr-themes/components";
 
-export function App() {
+export function OperationsPage() {
   return (
-    <AppShell
-      sidebar={<Stack gap="2">Navigation</Stack>}
-      topbar={
+    <div class="ops-app">
+      <aside class="ops-app-nav">
+        <Stack gap="2">Navigation</Stack>
+      </aside>
+      <main class="ops-app-main">
         <PageHeader
           title="Operations Console"
           description="Team activity, records, and configuration"
           actions={<Button variant="primary">Create record</Button>}
         />
-      }
-    >
-      <Stack gap="5">
-        <PageHeader eyebrow="Overview" title="Workspace status" />
-        <Card>
-          <CardContent>Metrics, tables, or approval queues go here.</CardContent>
-        </Card>
-        <FormSection title="Record defaults" description="Settings applied to new entries.">
-          Form fields go here.
-        </FormSection>
-        <SettingsSection title="Access controls" description="Protected admin actions.">
-          <EmptyState title="No elevated actions configured" />
-        </SettingsSection>
-      </Stack>
-    </AppShell>
+        <Stack gap="5">
+          <PageHeader eyebrow="Overview" title="Workspace status" />
+          <Card>
+            <CardContent>Metrics, tables, or approval queues go here.</CardContent>
+          </Card>
+          <FormSection title="Record defaults" description="Settings applied to new entries.">
+            Form fields go here.
+          </FormSection>
+          <SettingsSection title="Access controls" description="Protected admin actions.">
+            <EmptyState title="No elevated actions configured" />
+          </SettingsSection>
+        </Stack>
+      </main>
+    </div>
   );
 }
 ```
@@ -158,8 +158,8 @@ wrappers until they prove reusable across several admin apps.
 <button class="btn btn-primary">Save</button>
 ```
 
-Scaffold components keep their plain classes for raw HTML ergonomics
-(`.app-shell`, `.page-header`, `.form-section`) and also emit matching
+Pattern primitives keep their plain classes for raw HTML ergonomics
+(`.page-header`, `.form-section`, `.settings-section`) and also emit matching
 canonical `data-slot` hooks. Global design tokens keep the `--ak-*` prefix.
 Class aliases are intentionally selective; prefer tokens and canonical data
 hooks for deeper customization.

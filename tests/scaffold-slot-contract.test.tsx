@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { AppShell, EmptyState, FormSection, PageHeader, SettingsSection } from "../src/components";
+import { EmptyState, FormSection, PageHeader, SettingsSection } from "../src/components";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -34,11 +34,7 @@ describe("scaffold slot contract", () => {
 
   it("emits canonical data-slot hooks alongside ergonomic classes", async () => {
     route("/example", () => (
-      <AppShell
-        sidebar={<nav>Navigation</nav>}
-        topbar={<div>Toolbar</div>}
-        footer={<div>Footer</div>}
-      >
+      <div class="dashboard-page">
         <PageHeader
           eyebrow="Overview"
           title="Dashboard"
@@ -62,36 +58,18 @@ describe("scaffold slot contract", () => {
         <SettingsSection title="Notifications" description="Delivery preferences.">
           <input type="checkbox" checked />
         </SettingsSection>
-      </AppShell>
+      </div>
     ));
 
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    const appShell = container?.querySelector('[data-slot="app-shell"]') as HTMLElement | null;
     const pageHeader = container?.querySelector('[data-slot="page-header"]') as HTMLElement | null;
     const emptyState = container?.querySelector('[data-slot="empty-state"]') as HTMLElement | null;
     const formSection = container?.querySelector('[data-slot="form-section"]') as HTMLElement | null;
     const settingsSection = container?.querySelector(
       '[data-slot="settings-section"]'
     ) as HTMLElement | null;
-
-    expect(appShell?.classList.contains("app-shell")).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="app-shell-body"]')?.classList.contains("app-shell-body")
-    ).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="app-shell-topbar"]')?.classList.contains("app-shell-topbar")
-    ).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="app-shell-main"]')?.classList.contains("app-shell-main")
-    ).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="app-shell-sidebar"]')?.classList.contains("app-shell-sidebar")
-    ).toBe(true);
-    expect(
-      container?.querySelector('[data-slot="app-shell-footer"]')?.classList.contains("app-shell-footer")
-    ).toBe(true);
 
     expect(pageHeader?.classList.contains("page-header")).toBe(true);
     expect(

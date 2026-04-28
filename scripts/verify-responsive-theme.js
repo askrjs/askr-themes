@@ -4,7 +4,6 @@ import path from "node:path";
 const root = process.cwd();
 const responsiveContractThemes = ["default"];
 const forbiddenLegacyImports = [
-  "./styles/shell/navbar.css",
   "./styles/layout/sidebar.css",
   "./styles/layout/dashboard-layout.css",
   "./styles/layout/docs-layout.css",
@@ -12,7 +11,6 @@ const forbiddenLegacyImports = [
 const defaultPatternImports = [
   "./styles/layout/layout.css",
   "./styles/layout/responsive-layout.css",
-  "./styles/layout/app-shell.css",
   "./styles/layout/patterns.css",
   "./styles/data/data-table.css",
 ];

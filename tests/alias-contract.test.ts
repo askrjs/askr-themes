@@ -8,12 +8,6 @@ const THEME_ROOTS = [
 ] as const;
 
 const ALIAS_CONTRACTS = [
-  ["layout/app-shell.css", ".app-shell", '[data-slot="app-shell"]'],
-  ["layout/app-shell.css", ".app-shell-body", '[data-slot="app-shell-body"]'],
-  ["layout/app-shell.css", ".app-shell-footer", '[data-slot="app-shell-footer"]'],
-  ["layout/app-shell.css", ".app-shell-main", '[data-slot="app-shell-main"]'],
-  ["layout/app-shell.css", ".app-shell-sidebar", '[data-slot="app-shell-sidebar"]'],
-  ["layout/app-shell.css", ".app-shell-topbar", '[data-slot="app-shell-topbar"]'],
   ["actions/button.css", ".btn", '[data-slot="button"]'],
   ["actions/button.css", ".btn-primary", '[data-slot="button"][data-variant="primary"]'],
   ["actions/button.css", ".btn-secondary", '[data-slot="button"][data-variant="secondary"]'],
@@ -68,6 +62,9 @@ const ALIAS_CONTRACTS = [
   ["layout/patterns.css", ".settings-section-title", '[data-slot="settings-section-title"]'],
   ["layout/patterns.css", ".settings-section-description", '[data-slot="settings-section-description"]'],
   ["layout/patterns.css", ".settings-section-content", '[data-slot="settings-section-content"]'],
+  ["shell/navbar.css", ".navbar", '[data-slot="navbar"]'],
+  ["shell/navbar.css", ".navbar-brand", '[data-slot="navbar-brand"]'],
+  ["shell/navbar.css", ".navbar-group", '[data-slot="navbar-group"]'],
 ] as const;
 
 function selectorBlocks(css: string): string[] {
