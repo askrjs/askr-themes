@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/askr-themes",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Default theme tokens, styles, and themed layout wrappers for askr-ui.",
   "keywords": [
     "askr",
@@ -100,7 +100,9 @@
     "fmt": "vp fmt .",
     "lint": "vp fmt --check .",
     "build:types": "tsc -p tsconfig.pack.json --emitDeclarationOnly --outDir dist",
-    "build": "vp build && npm run build:types && npm run verify:token-contract && npm run verify:responsive && npm run verify:slots"
+    "build": "vp build && npm run build:types && npm run verify:token-contract && npm run verify:responsive && npm run verify:slots",
+    "pack": "npm run build",
+    "prepublishOnly": "npm run pack"
   },
   "devDependencies": {
     "@askrjs/askr": "file:../askr",
@@ -113,8 +115,8 @@
     "vite-plus": "^0.1.19"
   },
   "peerDependencies": {
-    "@askrjs/askr": "0.0.1",
-    "@askrjs/askr-ui": "0.0.1"
+    "@askrjs/askr": "0.1.0",
+    "@askrjs/askr-ui": "0.1.0"
   },
   "engines": {
     "node": ">=18"
