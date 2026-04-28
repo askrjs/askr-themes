@@ -6,6 +6,7 @@ import {
   withBoxLayoutStyle,
 } from '../_internal/box-layout';
 import {
+  isResponsiveValue,
   resolveContainerSizeValue,
   resolveInlineAlignValue,
   resolveSpaceValue,
@@ -17,15 +18,31 @@ import type {
   ContainerNativeProps,
 } from './container.types';
 
+const CONTAINER_WIDTH_TOKENS = new Set(['1', '2', '3', '4', 'sm', 'md', 'lg', 'xl']);
+
+function isContainerWidthToken(value: unknown): value is string {
+  return typeof value === 'string' && CONTAINER_WIDTH_TOKENS.has(value.trim());
+}
+
+function hasStyleValue(value: unknown): boolean {
+  if (typeof value === 'string') return value.trim().length > 0;
+  if (value && typeof value === 'object') {
+    return Object.keys(value as Record<string, unknown>).length > 0;
+  }
+
+  return false;
+}
+
 export function Container(props: ContainerNativeProps): JSX.Element;
 export function Container(props: ContainerAsChildProps): JSX.Element;
 export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
   const {
     asChild,
     children,
+    fluid = false,
     maxWidth,
     padding,
-    size = '4',
+    size,
     align = 'center',
     ref,
     style: userStyle,
@@ -39,18 +56,21 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
   };
   applyBoxLayoutStyles(layoutStyle, boxProps);
 
-  if (boxProps.maxWidth === undefined) {
+  const widthValue = fluid ? undefined : (maxWidth ?? size);
+  const usesInlineMaxWidth =
+    boxProps.maxWidth === undefined &&
+    widthValue !== undefined &&
+    (isResponsiveValue(widthValue) || !isContainerWidthToken(widthValue));
+
+  if (usesInlineMaxWidth) {
     setResponsiveStyleVar(
       layoutStyle,
       'max-width',
-      maxWidth ?? size,
-      typeof (maxWidth ?? size) === 'string' &&
-        (maxWidth ?? size) !== undefined &&
-        ['1', '2', '3', '4', 'sm', 'md', 'lg', 'xl'].includes(
-          String(maxWidth ?? size)
-        )
-        ? resolveContainerSizeValue
-        : (value) => value
+      widthValue,
+      (value) =>
+        typeof value === 'string' && isContainerWidthToken(value)
+          ? resolveContainerSizeValue(value)
+          : value
     );
   }
 
@@ -78,21 +98,31 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     );
   };
 
-  if (boxProps.ml === undefined && boxProps.mr === undefined) {
+  if (
+    boxProps.ml === undefined &&
+    boxProps.mr === undefined &&
+    isResponsiveValue(align)
+  ) {
     applyAlign('marginLeft', align);
     applyAlign('marginRight', align);
   }
+
+  const mergedStyle =
+    Object.keys(layoutStyle).length > 2 || hasStyleValue(userStyle)
+      ? withBoxLayoutStyle(layoutStyle, userStyle)
+      : undefined;
 
   const finalProps = mergeProps(passthroughProps, {
     ref,
     'data-slot': 'container',
     'data-ak-layout': 'true',
-    'data-size': serializeResponsiveValue(size),
+    'data-fluid': fluid ? 'true' : undefined,
+    'data-size': fluid ? undefined : serializeResponsiveValue(size),
     'data-align': serializeResponsiveValue(align),
-    'data-max-width': serializeResponsiveValue(maxWidth),
+    'data-max-width': fluid ? undefined : serializeResponsiveValue(maxWidth),
     'data-padding': serializeResponsiveValue(padding),
     ...extractBoxDataAttributes(boxProps),
-    style: withBoxLayoutStyle(layoutStyle, userStyle),
+    style: mergedStyle,
   });
 
   if (asChild) {
