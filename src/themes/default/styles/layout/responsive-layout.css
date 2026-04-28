@@ -5,6 +5,11 @@
   color: var(--ak-color-text);
 }
 
+:where([data-slot="topbar-layout"]) {
+  display: flex;
+  flex-direction: column;
+}
+
 :where([data-slot="topbar-layout"]) > :where([data-slot="navbar"]) {
   display: flex;
   flex-wrap: wrap;
@@ -71,6 +76,7 @@
 
 :where([data-slot="topbar-layout"]) > :where([data-slot="main"]),
 :where([data-slot="sidebar-layout"]) > :where([data-slot="main"]) {
+  flex: 1 1 auto;
   min-inline-size: 0;
   inline-size: 100%;
   padding: var(--ak-layout-page-gutter);

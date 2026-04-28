@@ -45,9 +45,27 @@ describe("moved visual components", () => {
     const fluid = asElement(Container({ children: "container", fluid: true }));
 
     expect(constrained.props["data-slot"]).toBe("container");
+    expect(constrained.props["data-variant"]).toBe("default");
     expect(constrained.props.style).toBeUndefined();
+    expect(fluid.props["data-variant"]).toBe("fluid");
     expect(fluid.props["data-fluid"]).toBe("true");
     expect(fluid.props.style).toBeUndefined();
+  });
+
+  it("supports bootstrap-like responsive container variants", () => {
+    const containerSm = asElement(Container({ children: "container", variant: "sm" }));
+    const containerMd = asElement(Container({ children: "container", variant: "md" }));
+    const containerLg = asElement(Container({ children: "container", variant: "lg" }));
+    const containerXl = asElement(Container({ children: "container", variant: "xl" }));
+    const containerXxl = asElement(Container({ children: "container", variant: "xxl" }));
+
+    expect(containerSm.props["data-variant"]).toBe("sm");
+    expect(containerMd.props["data-variant"]).toBe("md");
+    expect(containerLg.props["data-variant"]).toBe("lg");
+    expect(containerXl.props["data-variant"]).toBe("xl");
+    expect(containerXxl.props["data-variant"]).toBe("xxl");
+    expect(containerSm.props.style).toBeUndefined();
+    expect(containerXxl.props.style).toBeUndefined();
   });
 
   it("falls back to inline styles only for explicit width overrides", () => {
@@ -58,6 +76,18 @@ describe("moved visual components", () => {
     expect(fixed.props.style).toBeUndefined();
     expect(custom.props["data-max-width"]).toBe("initial:68rem");
     expect(String(custom.props.style)).toContain("--ak-max-width-initial:68rem");
+  });
+
+  it("avoids inline styles for CSS-covered layout defaults", () => {
+    const box = asElement(Box({ children: "box" }));
+    const flex = asElement(Flex({ children: "flex" }));
+    const sidebarLayout = asElement(SidebarLayout({ sidebar: "nav", children: "main" }));
+    const topbarLayout = asElement(TopbarLayout({ topbar: "header", children: "main" }));
+
+    expect(box.props.style).toBeUndefined();
+    expect(flex.props.style).toBeUndefined();
+    expect(sidebarLayout.props.style).toBeUndefined();
+    expect(topbarLayout.props.style).toBeUndefined();
   });
 
   it("exposes visual display primitives and divider aliases", () => {

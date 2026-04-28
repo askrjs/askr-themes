@@ -14,22 +14,14 @@ export function SidebarLayout(props: SidebarLayoutProps): JSX.Element {
     ...rest
   } = props;
 
-  const wrapperStyle: Record<string, string | number> = {
-    display: 'flex',
-    flexDirection: sidebarPosition === 'end' ? 'row-reverse' : 'row',
-  };
+  const wrapperStyle: Record<string, string | number> = {};
   if (isCssLength(gap)) wrapperStyle.gap = gap!;
 
-  const sidebarStyle: Record<string, string | number> = { flexShrink: 0 };
+  const sidebarStyle: Record<string, string | number> = {};
   if (isCssLength(sidebarWidth)) {
     sidebarStyle.width = sidebarWidth!;
     sidebarStyle.flexBasis = sidebarWidth!;
   }
-
-  const mainStyle: Record<string, string | number> = {
-    flexGrow: 1,
-    minWidth: 0,
-  };
 
   return (
     <div
@@ -50,11 +42,7 @@ export function SidebarLayout(props: SidebarLayoutProps): JSX.Element {
         >
           {sidebar}
         </aside>,
-        <main
-          key="sidebar-layout-main"
-          data-slot="main"
-          style={mergeLayoutStyles(mainStyle, undefined)}
-        >
+        <main key="sidebar-layout-main" data-slot="main">
           {children}
         </main>,
       ]}

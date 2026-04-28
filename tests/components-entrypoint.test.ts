@@ -8,6 +8,7 @@ import {
   FormSection,
   GitHubLogo,
   GoogleLogo,
+  Header,
   MicrosoftLogo,
   NavBrand,
   Navbar,
@@ -30,6 +31,7 @@ describe("components entrypoint", () => {
     expect(GitHubLogo({ title: "GitHub" })).toBeTruthy();
     expect(GoogleLogo({ title: "Google" })).toBeTruthy();
     expect(MicrosoftLogo({ title: "Microsoft" })).toBeTruthy();
+    expect(Header({ children: "header" })).toBeTruthy();
     expect(Navbar({ children: "nav" })).toBeTruthy();
     expect(NavBrand({ children: "brand" })).toBeTruthy();
     expect(NavGroup({ children: "group" })).toBeTruthy();

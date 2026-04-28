@@ -31,7 +31,7 @@ export type {
 export { Cluster } from "./cluster";
 export type { ClusterProps } from "./cluster";
 export { Container } from "./container";
-export type { ContainerProps } from "./container";
+export type { ContainerProps, ContainerVariant } from "./container";
 export { EmptyState } from "./empty-state";
 export type { EmptyStateProps } from "./empty-state";
 export { Flex } from "./flex";
@@ -40,6 +40,8 @@ export { FormSection } from "./form-section";
 export type { FormSectionProps } from "./form-section";
 export { Grid } from "./grid";
 export type { GridProps } from "./grid";
+export { Header } from "./header";
+export type { HeaderPosition, HeaderProps } from "./header";
 export { Inline } from "./inline";
 export type { InlineProps } from "./inline";
 export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";

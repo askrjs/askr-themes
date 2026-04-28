@@ -1,18 +1,10 @@
 @layer components {
   :where(.navbar, [data-slot="navbar"]) {
-    position: sticky;
-    inset-block-start: 0;
-    z-index: var(--ak-z-sticky);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-block-size: var(--ak-layout-navbar-height);
-    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
     gap: var(--ak-space-md);
-    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
-    box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
-    backdrop-filter: blur(18px) saturate(150%);
+    padding-block: var(--ak-space-xs);
   }
 
   :where(.navbar-brand, [data-slot="navbar-brand"]) {
@@ -59,11 +51,6 @@
     margin-inline-start: auto;
     justify-content: flex-end;
   }
-
-  :where([data-slot="topbar-layout"]) > :where(.navbar, [data-slot="navbar"]) {
-    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
-  }
-
   @media (max-width: 48rem) {
     :where(.navbar, [data-slot="navbar"]) {
       align-items: stretch;

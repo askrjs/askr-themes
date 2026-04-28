@@ -177,6 +177,6 @@ export function extractBoxDataAttributes(
 export function withBoxLayoutStyle(
   styles: Record<string, string | number>,
   userStyle: unknown
-): string {
+): string | undefined {
   return mergeLayoutStyles(styles, userStyle);
 }

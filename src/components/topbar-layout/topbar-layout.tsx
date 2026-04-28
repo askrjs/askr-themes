@@ -12,19 +12,11 @@ export function TopbarLayout(props: TopbarLayoutProps): JSX.Element {
     ...rest
   } = props;
 
-  const wrapperStyle: Record<string, string | number> = {
-    display: 'flex',
-    flexDirection: 'column',
-  };
+  const wrapperStyle: Record<string, string | number> = {};
   if (isCssLength(gap)) wrapperStyle.gap = gap!;
 
-  const navbarStyle: Record<string, string | number> = { flexShrink: 0 };
+  const navbarStyle: Record<string, string | number> = {};
   if (isCssLength(topbarHeight)) navbarStyle.height = topbarHeight!;
-
-  const mainStyle: Record<string, string | number> = {
-    flexGrow: 1,
-    minWidth: 0,
-  };
 
   return (
     <div
@@ -43,11 +35,7 @@ export function TopbarLayout(props: TopbarLayoutProps): JSX.Element {
         >
           {topbar}
         </header>,
-        <main
-          key="topbar-layout-main"
-          data-slot="main"
-          style={mergeLayoutStyles(mainStyle, undefined)}
-        >
+        <main key="topbar-layout-main" data-slot="main">
           {children}
         </main>,
       ]}

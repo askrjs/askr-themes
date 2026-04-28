@@ -39,6 +39,7 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
   const {
     asChild,
     children,
+    variant,
     fluid = false,
     maxWidth,
     padding,
@@ -48,6 +49,13 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     style: userStyle,
     ...rest
   } = props;
+
+  const responsiveVariant =
+    fluid || (size === undefined && maxWidth === undefined)
+      ? fluid
+        ? 'fluid'
+        : (variant ?? 'default')
+      : undefined;
 
   const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
   const layoutStyle: Record<string, string | number> = {
@@ -116,6 +124,7 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     ref,
     'data-slot': 'container',
     'data-ak-layout': 'true',
+    'data-variant': responsiveVariant,
     'data-fluid': fluid ? 'true' : undefined,
     'data-size': fluid ? undefined : serializeResponsiveValue(size),
     'data-align': serializeResponsiveValue(align),
