@@ -1,14 +1,11 @@
-﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
-import type { FlexOwnProps } from '../flex/flex.types';
+import type { JSXElement, Ref } from "@askrjs/ui/foundations";
+import type { FlexOwnProps } from "../flex/flex.types";
 
-export type StackOwnProps = Omit<FlexOwnProps, 'direction' | 'as'> & {
+export type StackOwnProps = Omit<FlexOwnProps, "direction" | "as"> & {
   children?: unknown;
 };
 
-export type StackDivProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> &
+export type StackDivProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   StackOwnProps & {
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
@@ -18,8 +15,7 @@ export type StackAsChildProps = StackOwnProps & {
   asChild: true;
   children: JSXElement;
   ref?: Ref<unknown>;
-  style?: JSX.IntrinsicElements['div']['style'];
+  style?: JSX.IntrinsicElements["div"]["style"];
 };
 
 export type StackProps = StackDivProps | StackAsChildProps;
-

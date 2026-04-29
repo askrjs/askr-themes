@@ -1,8 +1,5 @@
-export { Separator, Separator as Divider } from './separator';
-export {
-  SEPARATOR_A11Y_CONTRACT,
-  type SeparatorA11yContract,
-} from './separator.a11y';
+export { Separator, Separator as Divider } from "./separator";
+export { SEPARATOR_A11Y_CONTRACT, type SeparatorA11yContract } from "./separator.a11y";
 export type {
   SeparatorProps,
   SeparatorProps as DividerProps,
@@ -12,4 +9,4 @@ export type {
   SeparatorNativeProps as DividerNativeProps,
   SeparatorAsChildProps,
   SeparatorAsChildProps as DividerAsChildProps,
-} from './separator.types';
+} from "./separator.types";

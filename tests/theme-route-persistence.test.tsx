@@ -99,7 +99,7 @@ describe("theme route persistence", () => {
     await settle();
 
     const toggle = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
     const html = document.documentElement;
 
@@ -112,7 +112,7 @@ describe("theme route persistence", () => {
     await settle();
 
     const toggleAfterPress = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
 
     expect(toggleAfterPress?.getAttribute("data-theme-choice")).toBe("dark");
@@ -125,7 +125,7 @@ describe("theme route persistence", () => {
     await settle();
 
     const toggleAfter = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
     const pageAfter = container.querySelector("#page");
 
@@ -156,9 +156,7 @@ describe("theme route persistence", () => {
     await settle();
 
     const getToggle = () =>
-      container?.querySelector('[data-theme-control="toggle"]') as
-        | HTMLButtonElement
-        | null;
+      container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
 
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
 

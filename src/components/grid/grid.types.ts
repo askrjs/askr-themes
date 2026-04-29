@@ -1,5 +1,5 @@
-﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
-import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
+import type { JSXElement, Ref } from "@askrjs/ui/foundations";
+import type { BoxLayoutOwnProps, LayoutResponsive } from "../box/box.types";
 
 export type GridOwnProps = BoxLayoutOwnProps & {
   areas?: LayoutResponsive<string>;
@@ -15,38 +15,31 @@ export type GridOwnProps = BoxLayoutOwnProps & {
   minItemWidth?: string;
   /** Compatibility helper for auto-fit grids. */
   autoFit?: boolean;
-  as?: 'div' | 'span';
+  as?: "div" | "span";
   children?: unknown;
 };
 
-export type GridNativeProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> &
+export type GridNativeProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   GridOwnProps & {
-    as?: 'div';
+    as?: "div";
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
   };
 
-export type GridSpanProps = Omit<
-  JSX.IntrinsicElements['span'],
-  'children' | 'ref'
-> &
+export type GridSpanProps = Omit<JSX.IntrinsicElements["span"], "children" | "ref"> &
   GridOwnProps & {
-    as: 'span';
+    as: "span";
     asChild?: false;
     ref?: Ref<HTMLSpanElement>;
   };
 
-export type GridAsChildProps = Omit<GridOwnProps, 'as'> & {
+export type GridAsChildProps = Omit<GridOwnProps, "as"> & {
   asChild: true;
   children: JSXElement;
   ref?: Ref<unknown>;
-  style?: JSX.IntrinsicElements['div']['style'];
+  style?: JSX.IntrinsicElements["div"]["style"];
 };
 
 export type GridDivProps = GridNativeProps;
 
 export type GridProps = GridDivProps | GridSpanProps | GridAsChildProps;
-

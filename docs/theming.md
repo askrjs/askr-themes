@@ -26,7 +26,7 @@ components.css     - component-level composition defaults
 Import the full default theme when you want the standard admin UI baseline:
 
 ```ts
-import '@askrjs/themes/default';
+import "@askrjs/themes/default";
 ```
 
 ## Token Overrides
@@ -50,7 +50,7 @@ Theme variants are ordinary CSS scopes. The default components read tokens from
 the active scope:
 
 ```css
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ak-color-bg: #0f172a;
   --ak-color-text: #f1f5f9;
   --ak-color-surface: #111827;
@@ -71,7 +71,7 @@ scaffolds:
 When extending styles, group aliases with their canonical selectors:
 
 ```css
-:where(.btn-primary, [data-slot='button'][data-variant='primary']) {
+:where(.btn-primary, [data-slot="button"][data-variant="primary"]) {
   background: var(--ak-color-primary);
 }
 ```

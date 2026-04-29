@@ -1,11 +1,8 @@
-﻿import type { Ref } from '@askrjs/ui/foundations';
+import type { Ref } from "@askrjs/ui/foundations";
 
-export type SidebarPosition = 'start' | 'end';
+export type SidebarPosition = "start" | "end";
 
-export type SidebarLayoutProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> & {
+export type SidebarLayoutProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> & {
   /** Content rendered into the sidebar slot (aside). */
   sidebar?: unknown;
   /** Content rendered into the main slot. */
@@ -23,4 +20,3 @@ export type SidebarLayoutProps = Omit<
   collapseBelow?: string;
   ref?: Ref<HTMLDivElement>;
 };
-

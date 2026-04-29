@@ -1,6 +1,6 @@
-﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
+import type { JSXElement, Ref } from "@askrjs/ui/foundations";
 
-export type SpacerAxis = 'inline' | 'block';
+export type SpacerAxis = "inline" | "block";
 
 export type SpacerOwnProps = {
   /** flex-grow factor (default 1 when no axis is set). */
@@ -14,10 +14,7 @@ export type SpacerOwnProps = {
   children?: unknown;
 };
 
-export type SpacerNativeProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> &
+export type SpacerNativeProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   SpacerOwnProps & {
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
@@ -27,8 +24,7 @@ export type SpacerAsChildProps = SpacerOwnProps & {
   asChild: true;
   children: JSXElement;
   ref?: Ref<unknown>;
-  style?: JSX.IntrinsicElements['div']['style'];
+  style?: JSX.IntrinsicElements["div"]["style"];
 };
 
 export type SpacerProps = SpacerNativeProps | SpacerAsChildProps;
-

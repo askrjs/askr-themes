@@ -1,116 +1,112 @@
-import {
-  mergeLayoutStyles,
-  resolveSpaceValue,
-  setResponsiveStyleVar,
-} from './layout';
-import type { BoxLayoutOwnProps } from '../box/box.types';
+import { mergeLayoutStyles, resolveSpaceValue, setResponsiveStyleVar } from "./layout";
+import type { BoxLayoutOwnProps } from "../box/box.types";
 
 const SPACE_PROP_KEYS = new Set([
-  'm',
-  'mx',
-  'my',
-  'mt',
-  'mr',
-  'mb',
-  'ml',
-  'p',
-  'px',
-  'py',
-  'pt',
-  'pr',
-  'pb',
-  'pl',
-  'inset',
-  'top',
-  'right',
-  'bottom',
-  'left',
+  "m",
+  "mx",
+  "my",
+  "mt",
+  "mr",
+  "mb",
+  "ml",
+  "p",
+  "px",
+  "py",
+  "pt",
+  "pr",
+  "pb",
+  "pl",
+  "inset",
+  "top",
+  "right",
+  "bottom",
+  "left",
 ]);
 
 const BOX_PROP_KEYS = new Set<keyof BoxLayoutOwnProps>([
-  'display',
-  'm',
-  'mx',
-  'my',
-  'mt',
-  'mr',
-  'mb',
-  'ml',
-  'p',
-  'px',
-  'py',
-  'pt',
-  'pr',
-  'pb',
-  'pl',
-  'width',
-  'minWidth',
-  'maxWidth',
-  'height',
-  'minHeight',
-  'maxHeight',
-  'position',
-  'inset',
-  'top',
-  'right',
-  'bottom',
-  'left',
-  'overflow',
-  'overflowX',
-  'overflowY',
-  'flexBasis',
-  'flexGrow',
-  'flexShrink',
-  'gridArea',
-  'gridColumn',
-  'gridColumnStart',
-  'gridColumnEnd',
-  'gridRow',
-  'gridRowStart',
-  'gridRowEnd',
+  "display",
+  "m",
+  "mx",
+  "my",
+  "mt",
+  "mr",
+  "mb",
+  "ml",
+  "p",
+  "px",
+  "py",
+  "pt",
+  "pr",
+  "pb",
+  "pl",
+  "width",
+  "minWidth",
+  "maxWidth",
+  "height",
+  "minHeight",
+  "maxHeight",
+  "position",
+  "inset",
+  "top",
+  "right",
+  "bottom",
+  "left",
+  "overflow",
+  "overflowX",
+  "overflowY",
+  "flexBasis",
+  "flexGrow",
+  "flexShrink",
+  "gridArea",
+  "gridColumn",
+  "gridColumnStart",
+  "gridColumnEnd",
+  "gridRow",
+  "gridRowStart",
+  "gridRowEnd",
 ]);
 
 function variableNameForProp(prop: keyof BoxLayoutOwnProps): string {
   switch (prop) {
-    case 'overflowX':
-      return 'overflow-x';
-    case 'overflowY':
-      return 'overflow-y';
-    case 'minWidth':
-      return 'min-width';
-    case 'maxWidth':
-      return 'max-width';
-    case 'minHeight':
-      return 'min-height';
-    case 'maxHeight':
-      return 'max-height';
-    case 'flexBasis':
-      return 'flex-basis';
-    case 'flexGrow':
-      return 'flex-grow';
-    case 'flexShrink':
-      return 'flex-shrink';
-    case 'gridArea':
-      return 'grid-area';
-    case 'gridColumn':
-      return 'grid-column';
-    case 'gridColumnStart':
-      return 'grid-column-start';
-    case 'gridColumnEnd':
-      return 'grid-column-end';
-    case 'gridRow':
-      return 'grid-row';
-    case 'gridRowStart':
-      return 'grid-row-start';
-    case 'gridRowEnd':
-      return 'grid-row-end';
+    case "overflowX":
+      return "overflow-x";
+    case "overflowY":
+      return "overflow-y";
+    case "minWidth":
+      return "min-width";
+    case "maxWidth":
+      return "max-width";
+    case "minHeight":
+      return "min-height";
+    case "maxHeight":
+      return "max-height";
+    case "flexBasis":
+      return "flex-basis";
+    case "flexGrow":
+      return "flex-grow";
+    case "flexShrink":
+      return "flex-shrink";
+    case "gridArea":
+      return "grid-area";
+    case "gridColumn":
+      return "grid-column";
+    case "gridColumnStart":
+      return "grid-column-start";
+    case "gridColumnEnd":
+      return "grid-column-end";
+    case "gridRow":
+      return "grid-row";
+    case "gridRowStart":
+      return "grid-row-start";
+    case "gridRowEnd":
+      return "grid-row-end";
     default:
       return prop;
   }
 }
 
 export function splitBoxLayoutProps<T extends Record<string, unknown>>(
-  props: T
+  props: T,
 ): {
   boxProps: Partial<BoxLayoutOwnProps>;
   rest: Omit<T, keyof BoxLayoutOwnProps>;
@@ -131,7 +127,7 @@ export function splitBoxLayoutProps<T extends Record<string, unknown>>(
 
 export function applyBoxLayoutStyles(
   styles: Record<string, string | number>,
-  boxProps: Partial<BoxLayoutOwnProps>
+  boxProps: Partial<BoxLayoutOwnProps>,
 ) {
   for (const key of BOX_PROP_KEYS) {
     const value = boxProps[key];
@@ -139,12 +135,7 @@ export function applyBoxLayoutStyles(
 
     const variable = variableNameForProp(key);
     if (SPACE_PROP_KEYS.has(key)) {
-      setResponsiveStyleVar(
-        styles,
-        variable,
-        value as string | number,
-        resolveSpaceValue
-      );
+      setResponsiveStyleVar(styles, variable, value as string | number, resolveSpaceValue);
       continue;
     }
 
@@ -152,14 +143,14 @@ export function applyBoxLayoutStyles(
       styles,
       variable,
       value as string | number,
-      (input) => input as string | number
+      (input) => input as string | number,
     );
   }
 }
 
 export function withBoxLayoutStyle(
   styles: Record<string, string | number>,
-  userStyle: unknown
+  userStyle: unknown,
 ): string | undefined {
   return mergeLayoutStyles(styles, userStyle);
 }

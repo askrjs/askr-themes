@@ -1,4 +1,4 @@
-﻿import { defineContext, readContext, state } from "@askrjs/askr";
+import { defineContext, readContext, state } from "@askrjs/askr";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
@@ -90,11 +90,7 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
   const currentTheme = themeState();
   syncThemeRoot(currentTheme);
 
-  return (
-    <ThemeContext.Scope value={value}>
-      {children}
-    </ThemeContext.Scope>
-  );
+  return <ThemeContext.Scope value={value}>{children}</ThemeContext.Scope>;
 }
 
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
@@ -141,18 +137,12 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
     systemIcon,
   });
   const content =
-    typeof children === "function"
-      ? children(renderContext)
-      : children ?? themedIcon;
+    typeof children === "function" ? children(renderContext) : (children ?? themedIcon);
 
   return (
     <Button
       {...(rest as ButtonNativeProps)}
-      aria-label={
-        typeof ariaLabel === "string"
-          ? ariaLabel
-          : `Switch to ${nextTheme} theme`
-      }
+      aria-label={typeof ariaLabel === "string" ? ariaLabel : `Switch to ${nextTheme} theme`}
       data-theme-control="toggle"
       data-theme-choice={currentTheme}
       data-next-theme={nextTheme}
@@ -215,7 +205,7 @@ function syncThemeRoot(themeChoice: ThemeName | null | undefined): void {
 function readStoredTheme(storageKey: string): ThemeName | undefined {
   if (typeof window === "undefined") return undefined;
   try {
-    return window.localStorage.getItem(storageKey) as ThemeName | null ?? undefined;
+    return (window.localStorage.getItem(storageKey) as ThemeName | null) ?? undefined;
   } catch {
     return undefined;
   }
@@ -229,4 +219,3 @@ function writeStoredTheme(storageKey: string, theme: ThemeName): void {
     // Storage can be unavailable in private or locked-down browser contexts.
   }
 }
-

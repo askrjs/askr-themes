@@ -352,9 +352,7 @@ describe("plain class contract", () => {
 
     it(`${filename}: uses plain kebab-case classes without an ak class prefix`, () => {
       const css = readFileSync(file, "utf-8");
-      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map(
-        (match) => match[1],
-      );
+      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map((match) => match[1]);
       const violations = classNames.filter(
         (className) =>
           className.startsWith("ak-") || !/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(className),
@@ -365,9 +363,7 @@ describe("plain class contract", () => {
 
     it(`${filename}: only exposes approved public classes`, () => {
       const css = readFileSync(file, "utf-8");
-      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map(
-        (match) => match[1],
-      );
+      const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map((match) => match[1]);
       const allowed = new Set(ALLOWED_ALIAS_CLASSES[filename] ?? []);
       const violations = classNames.filter((className) => !allowed.has(className));
 

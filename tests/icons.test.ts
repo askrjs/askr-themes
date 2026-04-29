@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from "vite-plus/test";
+import { describe, expect, it } from "vite-plus/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -12,15 +12,7 @@ const DEFAULT_ICON_CSS = join(
   "base",
   "icon.css",
 );
-const TEMPLATE_ICON_CSS = join(
-  __dirname,
-  "..",
-  "templates",
-  "theme",
-  "styles",
-  "base",
-  "icon.css",
-);
+const TEMPLATE_ICON_CSS = join(__dirname, "..", "templates", "theme", "styles", "base", "icon.css");
 const THEMING_FILE = join(__dirname, "..", "THEMING.md");
 const TOKENS_FILE = join(__dirname, "..", "src", "themes", "default", "tokens.css");
 
@@ -52,4 +44,3 @@ describe("icon theme contract", () => {
     expect(tokens).toContain("--ak-icon-stroke-width-xl");
   });
 });
-

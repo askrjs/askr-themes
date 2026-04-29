@@ -1,5 +1,5 @@
-﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
-import type { ResponsiveValue } from '../_internal/layout';
+import type { JSXElement, Ref } from "@askrjs/ui/foundations";
+import type { ResponsiveValue } from "../_internal/layout";
 
 export type LayoutResponsive<T> = ResponsiveValue<T>;
 
@@ -48,35 +48,28 @@ export type BoxLayoutOwnProps = {
 };
 
 export type BoxOwnProps = BoxLayoutOwnProps & {
-  as?: 'div' | 'span';
+  as?: "div" | "span";
 };
 
-export type BoxDivProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> &
+export type BoxDivProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   BoxOwnProps & {
-    as?: 'div';
+    as?: "div";
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
   };
 
-export type BoxSpanProps = Omit<
-  JSX.IntrinsicElements['span'],
-  'children' | 'ref'
-> &
+export type BoxSpanProps = Omit<JSX.IntrinsicElements["span"], "children" | "ref"> &
   BoxOwnProps & {
-    as: 'span';
+    as: "span";
     asChild?: false;
     ref?: Ref<HTMLSpanElement>;
   };
 
-export type BoxAsChildProps = Omit<BoxOwnProps, 'as'> & {
+export type BoxAsChildProps = Omit<BoxOwnProps, "as"> & {
   asChild: true;
   children: JSXElement;
   ref?: Ref<unknown>;
-  style?: JSX.IntrinsicElements['div']['style'];
+  style?: JSX.IntrinsicElements["div"]["style"];
 };
 
 export type BoxProps = BoxDivProps | BoxSpanProps | BoxAsChildProps;
-

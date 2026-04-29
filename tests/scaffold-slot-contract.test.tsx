@@ -63,33 +63,33 @@ describe("scaffold slot contract", () => {
     await settle();
 
     const emptyState = container?.querySelector('[data-slot="empty-state"]') as HTMLElement | null;
-    const formSection = container?.querySelector('[data-slot="form-section"]') as HTMLElement | null;
+    const formSection = container?.querySelector(
+      '[data-slot="form-section"]',
+    ) as HTMLElement | null;
     const settingsSection = container?.querySelector(
-      '[data-slot="settings-section"]'
+      '[data-slot="settings-section"]',
     ) as HTMLElement | null;
-    const navItem = container?.querySelector(
-      '[data-slot="nav-item"]'
-    ) as HTMLElement | null;
+    const navItem = container?.querySelector('[data-slot="nav-item"]') as HTMLElement | null;
 
     expect(emptyState?.classList.contains("empty-state")).toBe(true);
     expect(
-      container?.querySelector('[data-slot="empty-state-description"]')?.classList.contains(
-        "empty-state-description"
-      )
+      container
+        ?.querySelector('[data-slot="empty-state-description"]')
+        ?.classList.contains("empty-state-description"),
     ).toBe(true);
 
     expect(formSection?.classList.contains("form-section")).toBe(true);
     expect(
-      container?.querySelector('[data-slot="form-section-content"]')?.classList.contains(
-        "form-section-content"
-      )
+      container
+        ?.querySelector('[data-slot="form-section-content"]')
+        ?.classList.contains("form-section-content"),
     ).toBe(true);
 
     expect(settingsSection?.classList.contains("settings-section")).toBe(true);
     expect(
-      container?.querySelector('[data-slot="settings-section-copy"]')?.classList.contains(
-        "settings-section-copy"
-      )
+      container
+        ?.querySelector('[data-slot="settings-section-copy"]')
+        ?.classList.contains("settings-section-copy"),
     ).toBe(true);
 
     expect(navItem?.classList.contains("navbar-item")).toBe(true);

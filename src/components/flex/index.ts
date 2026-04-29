@@ -1,5 +1,5 @@
-export { Flex } from './flex';
-export { FLEX_A11Y_CONTRACT, type FlexA11yContract } from './flex.a11y';
+export { Flex } from "./flex";
+export { FLEX_A11Y_CONTRACT, type FlexA11yContract } from "./flex.a11y";
 export type {
   FlexProps,
   FlexOwnProps,
@@ -13,4 +13,4 @@ export type {
   InlineDivProps,
   InlineSpanProps,
   InlineAsChildProps,
-} from './flex.types';
+} from "./flex.types";

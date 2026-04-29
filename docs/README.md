@@ -47,10 +47,7 @@ without custom CSS.
 For visual-only layout wrappers:
 
 ```ts
-import {
-  SidebarLayout,
-  TopbarLayout,
-} from "@askrjs/themes/components";
+import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
 ```
 
 For theme-owned visual components:
@@ -69,11 +66,7 @@ import {
 For app theme controls:
 
 ```tsx
-import {
-  ThemePicker,
-  ThemeProvider,
-  ThemeToggle,
-} from "@askrjs/themes/components";
+import { ThemePicker, ThemeProvider, ThemeToggle } from "@askrjs/themes/components";
 
 export function App() {
   return (
@@ -84,4 +77,3 @@ export function App() {
   );
 }
 ```
-

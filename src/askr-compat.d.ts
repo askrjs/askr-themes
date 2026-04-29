@@ -2,7 +2,7 @@
 // Remove this once `../askr` and `../askr-ui` reliably emit the dist .d.ts
 // files referenced by this package's tsconfig path mappings.
 
-declare module '@askrjs/askr/foundations' {
+declare module "@askrjs/askr/foundations" {
   export type Props = Record<string, unknown> & {
     children?: unknown;
     ref?: unknown;
@@ -28,14 +28,14 @@ declare module '@askrjs/askr/foundations' {
   export function Presence(props: PresenceProps): JSXElement | null;
 }
 
-declare module '@askrjs/askr' {
-  import type { JSXElement } from '@askrjs/askr/foundations';
+declare module "@askrjs/askr" {
+  import type { JSXElement } from "@askrjs/askr/foundations";
 
   export interface State<T> {
     (): T;
     set(value: T): void;
     set(updater: (prev: T) => T): void;
-    [Symbol.iterator](): Iterator<State<T> | State<T>['set']>;
+    [Symbol.iterator](): Iterator<State<T> | State<T>["set"]>;
   }
 
   export interface Context<T> {
@@ -70,24 +70,24 @@ declare module '@askrjs/askr' {
   export function defineContext<T>(defaultValue: T): Context<T>;
   export function readContext<T>(context: Context<T>): T;
   export const For: <T, K extends string | number = string | number>(
-    props: ForProps<T, K>
+    props: ForProps<T, K>,
   ) => JSXElement;
 }
 
-declare module '@askrjs/askr/jsx-runtime' {
-  import type { JSXElement } from '@askrjs/askr/foundations';
+declare module "@askrjs/askr/jsx-runtime" {
+  import type { JSXElement } from "@askrjs/askr/foundations";
 
   export const Fragment: symbol;
   export function jsx(
     type: unknown,
     props: Record<string, unknown>,
-    key?: string | number
+    key?: string | number,
   ): JSXElement;
   export const jsxs: typeof jsx;
 }
 
-declare module '@askrjs/askr/jsx-dev-runtime' {
-  import type { JSXElement } from '@askrjs/askr/foundations';
+declare module "@askrjs/askr/jsx-dev-runtime" {
+  import type { JSXElement } from "@askrjs/askr/foundations";
 
   export const Fragment: symbol;
   export function jsxDEV(
@@ -96,6 +96,6 @@ declare module '@askrjs/askr/jsx-dev-runtime' {
     key?: string | number,
     isStaticChildren?: boolean,
     source?: unknown,
-    self?: unknown
+    self?: unknown,
   ): JSXElement;
 }

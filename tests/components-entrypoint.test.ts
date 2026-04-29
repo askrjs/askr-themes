@@ -59,11 +59,23 @@ describe("components entrypoint", () => {
 
   it("lets high-level pattern components override heading level", () => {
     const emptyState = asElement(EmptyState({ title: "No projects", titleAs: "h3" }));
-    const formSection = asElement(FormSection({ title: "Profile", titleAs: "h4", children: "fields" }));
-    const settingsSection = asElement(SettingsSection({ title: "Team", titleAs: "h5", children: "settings" }));
+    const formSection = asElement(
+      FormSection({ title: "Profile", titleAs: "h4", children: "fields" }),
+    );
+    const settingsSection = asElement(
+      SettingsSection({ title: "Team", titleAs: "h5", children: "settings" }),
+    );
 
     expect((emptyState.props.children as ElementLike[])[1].type).toBe("h3");
-    expect(((((formSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0].props.children as ElementLike[])[0]).type).toBe("h4");
-    expect(((((settingsSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0]).type)).toBe("h5");
+    expect(
+      (
+        ((formSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0].props
+          .children as ElementLike[]
+      )[0].type,
+    ).toBe("h4");
+    expect(
+      ((settingsSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0]
+        .type,
+    ).toBe("h5");
   });
 });

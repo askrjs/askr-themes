@@ -1,4 +1,4 @@
-﻿import { askr } from "@askrjs/vite";
+import { askr } from "@askrjs/vite";
 import { playwright } from "vite-plus/test/browser-playwright";
 import { defineConfig } from "vite-plus";
 
@@ -19,8 +19,7 @@ export default defineConfig({
       runtime: "automatic",
       importSource: "@askrjs/askr",
     },
-    jsxInject:
-      "import { jsx, jsxs, Fragment } from '@askrjs/askr/jsx-runtime';",
+    jsxInject: "import { jsx, jsxs, Fragment } from '@askrjs/askr/jsx-runtime';",
   },
   resolve: {
     preserveSymlinks: true,

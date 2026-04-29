@@ -4,10 +4,7 @@ import type { IconSizeToken, LogoNode, LogoProps, LogoStyleObject } from "./type
 const ICON_SIZE_TOKENS: readonly IconSizeToken[] = ["sm", "md", "lg", "xl"];
 
 function isIconSizeToken(value: unknown): value is IconSizeToken {
-  return (
-    typeof value === "string" &&
-    ICON_SIZE_TOKENS.includes(value as IconSizeToken)
-  );
+  return typeof value === "string" && ICON_SIZE_TOKENS.includes(value as IconSizeToken);
 }
 
 function normalizeIconSizeValue(size: number | string): string {
@@ -76,19 +73,8 @@ function getLogoContractProps({
   };
 }
 
-export function createLogo(
-  displayName: string,
-  viewBox: string,
-  logoNode: LogoNode,
-) {
-  function Logo({
-    size = 20,
-    title,
-    class: className,
-    style,
-    ref,
-    ...rest
-  }: LogoProps) {
+export function createLogo(displayName: string, viewBox: string, logoNode: LogoNode) {
+  function Logo({ size = 20, title, class: className, style, ref, ...rest }: LogoProps) {
     const { attrs } = getLogoContractProps({
       size,
       title,
@@ -108,9 +94,7 @@ export function createLogo(
       stroke: "none",
       class: className,
       ref,
-      children: title
-        ? [createSvgNode("title", { children: title }), ...children]
-        : children,
+      children: title ? [createSvgNode("title", { children: title }), ...children] : children,
     });
   }
 

@@ -89,11 +89,11 @@ describe("moved visual components", () => {
     const topbarLayout = asElement(TopbarLayout({ topbar: "header", children: "main" }));
 
     expect(box.props.style).toBeUndefined();
-  expect(paddedBox.props["data-p"]).toBeUndefined();
-  expect(String(paddedBox.props.style)).toContain("--ak-p-initial:var(--ak-space-2)");
+    expect(paddedBox.props["data-p"]).toBeUndefined();
+    expect(String(paddedBox.props.style)).toContain("--ak-p-initial:var(--ak-space-2)");
     expect(flex.props.style).toBeUndefined();
     expect(tokenFlex.props.style).toBeUndefined();
-  expect(tokenFlex.props["data-gap"]).toBe("initial:sm");
+    expect(tokenFlex.props["data-gap"]).toBe("initial:sm");
     expect(section.props["data-size"]).toBe("initial:3");
     expect(section.props.style).toBeUndefined();
     expect(spacer.props.style).toBeUndefined();
@@ -103,12 +103,10 @@ describe("moved visual components", () => {
   });
 
   it("keeps inline styles for uncovered flex and grid overrides", () => {
-    const responsiveFlex = asElement(
-      Flex({ children: "flex", gap: { initial: "sm", md: "lg" } })
-    );
+    const responsiveFlex = asElement(Flex({ children: "flex", gap: { initial: "sm", md: "lg" } }));
     const customFlex = asElement(Flex({ children: "flex", gap: "1.5rem" }));
     const customSidebarLayout = asElement(
-      SidebarLayout({ sidebar: "nav", children: "main", sidebarWidth: "18rem", gap: "1.5rem" })
+      SidebarLayout({ sidebar: "nav", children: "main", sidebarWidth: "18rem", gap: "1.5rem" }),
     );
 
     expect(String(responsiveFlex.props.style)).toContain("--ak-gap-initial:var(--ak-space-sm)");

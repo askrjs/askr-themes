@@ -22,7 +22,11 @@
   gap: var(--ak-space-4);
 }
 
-:where(.gap-xs, [data-slot="grid"][data-gap="initial:xs"], [data-slot="flex"][data-gap="initial:xs"]) {
+:where(
+  .gap-xs,
+  [data-slot="grid"][data-gap="initial:xs"],
+  [data-slot="flex"][data-gap="initial:xs"]
+) {
   gap: var(--ak-space-xs);
 }
 
@@ -66,27 +70,51 @@
   gap: var(--ak-space-xl);
 }
 
-:where(.gap-x-sm, [data-slot="grid"][data-gap-x="initial:sm"], [data-slot="flex"][data-gap-x="initial:sm"]) {
+:where(
+  .gap-x-sm,
+  [data-slot="grid"][data-gap-x="initial:sm"],
+  [data-slot="flex"][data-gap-x="initial:sm"]
+) {
   column-gap: var(--ak-space-sm);
 }
 
-:where(.gap-x-md, [data-slot="grid"][data-gap-x="initial:md"], [data-slot="flex"][data-gap-x="initial:md"]) {
+:where(
+  .gap-x-md,
+  [data-slot="grid"][data-gap-x="initial:md"],
+  [data-slot="flex"][data-gap-x="initial:md"]
+) {
   column-gap: var(--ak-space-md);
 }
 
-:where(.gap-x-lg, [data-slot="grid"][data-gap-x="initial:lg"], [data-slot="flex"][data-gap-x="initial:lg"]) {
+:where(
+  .gap-x-lg,
+  [data-slot="grid"][data-gap-x="initial:lg"],
+  [data-slot="flex"][data-gap-x="initial:lg"]
+) {
   column-gap: var(--ak-space-lg);
 }
 
-:where(.gap-y-sm, [data-slot="grid"][data-gap-y="initial:sm"], [data-slot="flex"][data-gap-y="initial:sm"]) {
+:where(
+  .gap-y-sm,
+  [data-slot="grid"][data-gap-y="initial:sm"],
+  [data-slot="flex"][data-gap-y="initial:sm"]
+) {
   row-gap: var(--ak-space-sm);
 }
 
-:where(.gap-y-md, [data-slot="grid"][data-gap-y="initial:md"], [data-slot="flex"][data-gap-y="initial:md"]) {
+:where(
+  .gap-y-md,
+  [data-slot="grid"][data-gap-y="initial:md"],
+  [data-slot="flex"][data-gap-y="initial:md"]
+) {
   row-gap: var(--ak-space-md);
 }
 
-:where(.gap-y-lg, [data-slot="grid"][data-gap-y="initial:lg"], [data-slot="flex"][data-gap-y="initial:lg"]) {
+:where(
+  .gap-y-lg,
+  [data-slot="grid"][data-gap-y="initial:lg"],
+  [data-slot="flex"][data-gap-y="initial:lg"]
+) {
   row-gap: var(--ak-space-lg);
 }
 
@@ -102,39 +130,75 @@
   flex-direction: column-reverse;
 }
 
-:where(.items-start, [data-slot="flex"][data-align="initial:start"], [data-slot="grid"][data-align="initial:start"]) {
+:where(
+  .items-start,
+  [data-slot="flex"][data-align="initial:start"],
+  [data-slot="grid"][data-align="initial:start"]
+) {
   align-items: flex-start;
 }
 
-:where(.items-end, [data-slot="flex"][data-align="initial:end"], [data-slot="grid"][data-align="initial:end"]) {
+:where(
+  .items-end,
+  [data-slot="flex"][data-align="initial:end"],
+  [data-slot="grid"][data-align="initial:end"]
+) {
   align-items: flex-end;
 }
 
-:where(.items-center, [data-slot="flex"][data-align="initial:center"], [data-slot="grid"][data-align="initial:center"]) {
+:where(
+  .items-center,
+  [data-slot="flex"][data-align="initial:center"],
+  [data-slot="grid"][data-align="initial:center"]
+) {
   align-items: center;
 }
 
-:where(.items-stretch, [data-slot="flex"][data-align="initial:stretch"], [data-slot="grid"][data-align="initial:stretch"]) {
+:where(
+  .items-stretch,
+  [data-slot="flex"][data-align="initial:stretch"],
+  [data-slot="grid"][data-align="initial:stretch"]
+) {
   align-items: stretch;
 }
 
-:where(.items-baseline, [data-slot="flex"][data-align="initial:baseline"], [data-slot="grid"][data-align="initial:baseline"]) {
+:where(
+  .items-baseline,
+  [data-slot="flex"][data-align="initial:baseline"],
+  [data-slot="grid"][data-align="initial:baseline"]
+) {
   align-items: baseline;
 }
 
-:where(.justify-start, [data-slot="flex"][data-justify="initial:start"], [data-slot="grid"][data-justify="initial:start"]) {
+:where(
+  .justify-start,
+  [data-slot="flex"][data-justify="initial:start"],
+  [data-slot="grid"][data-justify="initial:start"]
+) {
   justify-content: flex-start;
 }
 
-:where(.justify-end, [data-slot="flex"][data-justify="initial:end"], [data-slot="grid"][data-justify="initial:end"]) {
+:where(
+  .justify-end,
+  [data-slot="flex"][data-justify="initial:end"],
+  [data-slot="grid"][data-justify="initial:end"]
+) {
   justify-content: flex-end;
 }
 
-:where(.justify-center, [data-slot="flex"][data-justify="initial:center"], [data-slot="grid"][data-justify="initial:center"]) {
+:where(
+  .justify-center,
+  [data-slot="flex"][data-justify="initial:center"],
+  [data-slot="grid"][data-justify="initial:center"]
+) {
   justify-content: center;
 }
 
-:where(.justify-between, [data-slot="flex"][data-justify="initial:between"], [data-slot="grid"][data-justify="initial:between"]) {
+:where(
+  .justify-between,
+  [data-slot="flex"][data-justify="initial:between"],
+  [data-slot="grid"][data-justify="initial:between"]
+) {
   justify-content: space-between;
 }
 

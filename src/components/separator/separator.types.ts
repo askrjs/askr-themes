@@ -1,15 +1,12 @@
-﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
+import type { JSXElement, Ref } from "@askrjs/ui/foundations";
 
 export type SeparatorOwnProps = {
   decorative?: boolean;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   children?: unknown;
 };
 
-export type SeparatorNativeProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> &
+export type SeparatorNativeProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   SeparatorOwnProps & {
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
@@ -22,4 +19,3 @@ export type SeparatorAsChildProps = SeparatorOwnProps & {
 };
 
 export type SeparatorProps = SeparatorNativeProps | SeparatorAsChildProps;
-

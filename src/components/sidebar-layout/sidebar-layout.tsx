@@ -1,19 +1,19 @@
-import { isCssLength, mergeLayoutStyles, serializeValueIf } from '../_internal/layout';
-import type { SidebarLayoutProps } from './sidebar-layout.types';
+import { isCssLength, mergeLayoutStyles, serializeValueIf } from "../_internal/layout";
+import type { SidebarLayoutProps } from "./sidebar-layout.types";
 
 function isThemeGapToken(value: unknown): value is string {
-  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+  return typeof value === "string" && ["sm", "md", "lg", "xl"].includes(value.trim());
 }
 
 function isThemeSidebarWidthToken(value: unknown): value is string {
-  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+  return typeof value === "string" && ["sm", "md", "lg", "xl"].includes(value.trim());
 }
 
 export function SidebarLayout(props: SidebarLayoutProps): JSX.Element {
   const {
     sidebar,
     children,
-    sidebarPosition = 'start',
+    sidebarPosition = "start",
     sidebarWidth,
     gap,
     collapseBelow,

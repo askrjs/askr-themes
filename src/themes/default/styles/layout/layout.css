@@ -124,7 +124,6 @@
 }
 
 @media (min-width: 40rem) {
-
   :where([data-ak-layout="true"]) {
     display: var(--ak-display-sm, var(--ak-display-initial));
     margin: var(--ak-m-sm, var(--ak-m-initial));
@@ -187,10 +186,7 @@
     width: var(--ak-width-sm, var(--ak-width-initial, 100%));
     max-width: min(
       100%,
-      var(
-        --ak-max-width-sm,
-        var(--ak-max-width-initial, var(--ak-container-inline-size))
-      )
+      var(--ak-max-width-sm, var(--ak-max-width-initial, var(--ak-container-inline-size)))
     );
     margin-left: var(--ak-ml-sm, var(--ak-ml-initial, auto));
     margin-right: var(--ak-mr-sm, var(--ak-mr-initial, auto));
