@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vite-plus/test";
+﻿import { describe, expect, it } from "vite-plus/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -33,7 +33,7 @@ describe("icon theme contract", () => {
 
   it("documents the icon public hooks", () => {
     const docs = readFileSync(THEMING_FILE, "utf-8");
-    expect(docs).toContain("`@askrjs/askr-ui` owns the canonical icon hooks");
+    expect(docs).toContain("`@askrjs/ui` owns the canonical icon hooks");
     expect(docs).toContain('`data-slot="icon"`');
     expect(docs).toContain("`data-icon`");
     expect(docs).toContain("`data-decorative`");
@@ -52,3 +52,4 @@ describe("icon theme contract", () => {
     expect(tokens).toContain("--ak-icon-stroke-width-xl");
   });
 });
+

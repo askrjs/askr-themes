@@ -1,21 +1,21 @@
-# @askrjs/askr-themes
+﻿# @askrjs/themes
 
 Default theme tokens, styles, and visual components for askr-ui admin and internal tools.
 
 ## Contents
 
-- [Overview](./askr-themes.md) — What askr-themes is and when to use it
-- [Tokens](./tokens.md) — Design token reference and overrides
-- [Theming](./theming.md) — Layered CSS architecture and dark mode
+- [Overview](./askr-themes.md) â€” What askr-themes is and when to use it
+- [Tokens](./tokens.md) â€” Design token reference and overrides
+- [Theming](./theming.md) â€” Layered CSS architecture and dark mode
 
 ## Quick start
 
 ```bash
-npm install @askrjs/askr-themes
+npm install @askrjs/themes
 ```
 
 ```ts
-import "@askrjs/askr-themes/default";
+import "@askrjs/themes/default";
 ```
 
 For app scaffolds, visual-only composition, and display components:
@@ -30,7 +30,7 @@ import {
   SettingsSection,
   Skeleton,
   Stack,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 The theme supports both canonical `askr-ui` hooks and convenient class aliases:
@@ -50,7 +50,7 @@ For visual-only layout wrappers:
 import {
   SidebarLayout,
   TopbarLayout,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 For theme-owned visual components:
@@ -63,7 +63,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 For app theme controls:
@@ -73,7 +73,7 @@ import {
   ThemePicker,
   ThemeProvider,
   ThemeToggle,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 
 export function App() {
   return (
@@ -84,3 +84,4 @@ export function App() {
   );
 }
 ```
+

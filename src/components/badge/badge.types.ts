@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 
 export type BadgeVariant =
   | 'default'
@@ -28,3 +28,4 @@ export type BadgeAsChildProps = BadgeOwnProps & {
   children: JSXElement;
   ref?: Ref<unknown>;
 };
+

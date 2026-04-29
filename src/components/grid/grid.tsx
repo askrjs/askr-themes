@@ -1,5 +1,5 @@
-import { For } from '@askrjs/askr';
-import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
+﻿import { For } from '@askrjs/askr';
+import { Slot, mergeProps } from '@askrjs/ui/foundations';
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
@@ -193,3 +193,4 @@ export function Grid(props: GridDivProps | GridSpanProps | GridAsChildProps) {
 
   return <div {...finalProps}>{keyedChildren}</div>;
 }
+

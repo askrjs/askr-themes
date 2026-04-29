@@ -1,4 +1,4 @@
-export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
+﻿export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
 };
 
@@ -10,7 +10,7 @@ export type NavGroupProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
   children?: unknown;
 };
 
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 
 export type NavItemVariant = 'default' | 'icon';
 

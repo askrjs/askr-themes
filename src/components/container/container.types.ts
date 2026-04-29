@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
 
 export type ContainerVariant =
@@ -43,3 +43,4 @@ export type ContainerAsChildProps = ContainerOwnProps & {
 };
 
 export type ContainerProps = ContainerNativeProps | ContainerAsChildProps;
+

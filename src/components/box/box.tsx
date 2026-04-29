@@ -1,4 +1,4 @@
-import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
+﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
@@ -34,3 +34,4 @@ export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
 
   return <div {...finalProps}>{children}</div>;
 }
+

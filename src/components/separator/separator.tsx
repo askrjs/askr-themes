@@ -1,4 +1,4 @@
-import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
+﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
 import type {
   SeparatorAsChildProps,
   SeparatorNativeProps,
@@ -30,3 +30,4 @@ export function Separator(props: SeparatorNativeProps | SeparatorAsChildProps) {
 
   return <div {...finalProps}>{children}</div>;
 }
+

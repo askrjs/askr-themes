@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
 
 export type GridOwnProps = BoxLayoutOwnProps & {
@@ -49,3 +49,4 @@ export type GridAsChildProps = Omit<GridOwnProps, 'as'> & {
 export type GridDivProps = GridNativeProps;
 
 export type GridProps = GridDivProps | GridSpanProps | GridAsChildProps;
+

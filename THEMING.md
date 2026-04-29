@@ -1,9 +1,9 @@
-# Theming
+﻿# Theming
 
 Import a theme:
 
 ```css
-@import "@askrjs/askr-themes/default";
+@import "@askrjs/themes/default";
 ```
 
 Pick a mode on an ancestor:
@@ -64,11 +64,11 @@ Example:
 Package boundaries:
 
 - `@askrjs/askr` owns what exists and when.
-- `@askrjs/askr-ui` owns behavior, state, focus, and ARIA coordination.
-- `@askrjs/askr-themes` owns visual-only components, layout composition, and
+- `@askrjs/ui` owns behavior, state, focus, and ARIA coordination.
+- `@askrjs/themes` owns visual-only components, layout composition, and
   default styling.
 
-Use `@askrjs/askr-themes/components` for styled components such as Button, Box,
+Use `@askrjs/themes/components` for styled components such as Button, Box,
 Stack, Inline, Flex, Grid, Container, Section, Spacer, Badge, Skeleton,
 Separator/Divider, SidebarLayout, TopbarLayout, EmptyState, FormSection, and
 SettingsSection.
@@ -87,7 +87,7 @@ Responsive rules:
 - Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
 - Broad layout slots like `main`, `sidebar`, and `navbar` must always be anchored to a public layout root such as `topbar-layout` or `sidebar-layout`.
 - Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, `data-gap`, and `data-sidebar-width` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
-- Icons are part of the public theme contract. `@askrjs/askr-ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
+- Icons are part of the public theme contract. `@askrjs/ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
 - Icon size and stroke defaults should resolve through the shared icon tokens: `--ak-icon-size-sm|md|lg|xl` and `--ak-icon-stroke-width-sm|md|lg|xl`.
 - Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps.
 - Comfortable density is tokenized through `--ak-density-control-height-*` and `--ak-density-control-padding-x-*`; apps should tune those before overriding component CSS.
@@ -927,3 +927,4 @@ The automated test suite (`tests/contrast.test.ts`) validates these pairs across
 ## Implementation Note
 
 The v1.0 contract above is the current semantic surface. Default theme component CSS now consumes the semantic token names directly. Shipped CSS still publishes temporary compatibility aliases such as `--ak-color-fg`, `--ak-color-muted`, and `--ak-font-family` for downstream compatibility, but those aliases are not part of the required contract and should not be used for new work.
+

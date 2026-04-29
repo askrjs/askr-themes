@@ -1,4 +1,4 @@
-import type { Ref } from "@askrjs/askr-ui/foundations";
+﻿import type { Ref } from "@askrjs/ui/foundations";
 
 export type CardVariant = "default" | "raised";
 export type CardPadding = "sm" | "md" | "lg";
@@ -38,3 +38,4 @@ export type CardDescriptionProps = ParagraphProps & {
   children?: unknown;
   ref?: Ref<HTMLParagraphElement>;
 };
+
