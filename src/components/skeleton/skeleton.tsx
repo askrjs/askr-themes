@@ -1,4 +1,4 @@
-import { Slot, mergeProps } from '@askrjs/askr-ui/foundations';
+﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
 import type { SkeletonAsChildProps, SkeletonProps } from './skeleton.types';
 
 export function Skeleton(props: SkeletonProps): JSX.Element;
@@ -18,3 +18,4 @@ export function Skeleton(props: SkeletonProps | SkeletonAsChildProps) {
 
   return <div {...finalProps}>{children}</div>;
 }
+

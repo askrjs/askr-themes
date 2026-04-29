@@ -1,4 +1,4 @@
-{
+﻿{
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
@@ -10,7 +10,7 @@
       "@askrjs/askr/jsx-runtime": ["../askr/dist/jsx-runtime.d.ts"],
       "@askrjs/askr/jsx-dev-runtime": ["../askr/dist/jsx-dev-runtime.d.ts"],
       "@askrjs/askr/foundations": ["../askr/dist/foundations/index.d.ts"],
-      "@askrjs/askr-ui/foundations": ["../askr-ui/dist/foundations/index.d.ts"]
+      "@askrjs/ui/foundations": ["../askr-ui/dist/foundations/index.d.ts"]
     }
   },
   "include": [
@@ -20,3 +20,4 @@
   ],
   "exclude": ["src/default/**/*"]
 }
+

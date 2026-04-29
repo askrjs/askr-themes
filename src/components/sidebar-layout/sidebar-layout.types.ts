@@ -1,4 +1,4 @@
-import type { Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { Ref } from '@askrjs/ui/foundations';
 
 export type SidebarPosition = 'start' | 'end';
 
@@ -23,3 +23,4 @@ export type SidebarLayoutProps = Omit<
   collapseBelow?: string;
   ref?: Ref<HTMLDivElement>;
 };
+

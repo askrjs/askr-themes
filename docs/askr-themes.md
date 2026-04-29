@@ -1,6 +1,6 @@
-# Styling: askr-themes
+﻿# Styling: askr-themes
 
-`@askrjs/askr-themes` provides the canonical default visual theme for Askr admin and internal-tool applications.
+`@askrjs/themes` provides the canonical default visual theme for Askr admin and internal-tool applications.
 
 ## What askr-themes is
 
@@ -21,13 +21,13 @@ applies the default theme styles for that visual contract.
 ## Installation
 
 ```bash
-npm install @askrjs/askr-themes
+npm install @askrjs/themes
 ```
 
 Import once at your app entry point:
 
 ```ts
-import "@askrjs/askr-themes/default";
+import "@askrjs/themes/default";
 ```
 
 You can also import default themed components from the app-facing component
@@ -44,7 +44,7 @@ import {
   Grid,
   SettingsSection,
   Stack,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 Layout wrappers also live here because they are visual composition, not
@@ -54,7 +54,7 @@ behavior:
 import {
   SidebarLayout,
   TopbarLayout,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 Or import a theme-owned visual component directly:
@@ -65,7 +65,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 ```
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`
@@ -76,7 +76,7 @@ import {
   ThemePicker,
   ThemeProvider,
   ThemeToggle,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 
 export function App() {
   return (
@@ -91,7 +91,7 @@ export function App() {
 Or in CSS:
 
 ```css
-@import "@askrjs/askr-themes/default";
+@import "@askrjs/themes/default";
 ```
 
 The default theme is designed to supply admin and internal-tool surfaces while
@@ -102,7 +102,7 @@ semantic `--ak-*` tokens.
 ## Admin page composition
 
 ```tsx
-import "@askrjs/askr-themes/default";
+import "@askrjs/themes/default";
 import {
   Button,
   Card,
@@ -112,7 +112,7 @@ import {
   PageHeader,
   SettingsSection,
   Stack,
-} from "@askrjs/askr-themes/components";
+} from "@askrjs/themes/components";
 
 export function OperationsPage() {
   return (
@@ -169,10 +169,11 @@ Use `askr-themes` when you want the standard Askr admin visual language without
 writing your own design token layer.
 
 Skip `askr-themes` when you have your own design system. `askr-ui` components
-work without `askr-themes` — supply your own CSS.
+work without `askr-themes` â€” supply your own CSS.
 
 ## See also
 
 - [Tokens](./tokens.md)
 - [Theming](./theming.md)
 - [UI: askr-ui](../ui/askr-ui.md)
+

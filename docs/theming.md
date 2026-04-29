@@ -1,4 +1,4 @@
-# Styling: Theming
+﻿# Styling: Theming
 
 Theming in Askr means overriding design tokens and, optionally, base component styles.
 
@@ -9,19 +9,19 @@ Theming in Askr means overriding design tokens and, optionally, base component s
 Askr applications use a layered CSS architecture:
 
 ```
-reset.css         — baseline resets
-tokens.css        — design tokens (from askr-themes or custom)
-styles/base/      — typography and foundational primitives
-styles/actions/   — button and toggle controls
-styles/forms/     — inputs, labels, fields, and form controls
-styles/display/   — cards, badges, progress, separators, and status display
-styles/navigation/ — menus, tabs, breadcrumbs, and pagination
-styles/disclosure/ — accordion and collapsible patterns
-styles/overlays/  — dialogs, popovers, toasts, and tooltips
-styles/data/      — data-heavy views such as tables
-styles/shell/     — global shell theme values and app-level shell patterns
-styles/layout/    — layout primitives and responsive page structure
-components.css    — component-level overrides
+reset.css         â€” baseline resets
+tokens.css        â€” design tokens (from askr-themes or custom)
+styles/base/      â€” typography and foundational primitives
+styles/actions/   â€” button and toggle controls
+styles/forms/     â€” inputs, labels, fields, and form controls
+styles/display/   â€” cards, badges, progress, separators, and status display
+styles/navigation/ â€” menus, tabs, breadcrumbs, and pagination
+styles/disclosure/ â€” accordion and collapsible patterns
+styles/overlays/  â€” dialogs, popovers, toasts, and tooltips
+styles/data/      â€” data-heavy views such as tables
+styles/shell/     â€” global shell theme values and app-level shell patterns
+styles/layout/    â€” layout primitives and responsive page structure
+components.css    â€” component-level overrides
 ```
 
 Each layer can be replaced or extended independently.
@@ -67,7 +67,7 @@ Token overrides under a `[data-theme="dark"]` selector:
 ## App scaffolds
 
 The default theme includes low-level app patterns through
-`@askrjs/askr-themes/components`: `AppShell`, `PageHeader`, `EmptyState`,
+`@askrjs/themes/components`: `AppShell`, `PageHeader`, `EmptyState`,
 `FormSection`, and `SettingsSection`. They are visual composition only; behavior
 still belongs to `askr-ui`.
 
@@ -119,3 +119,4 @@ the semantic tokens are not expressive enough.
 
 - [Tokens](./tokens.md)
 - [askr-themes](./askr-themes.md)
+

@@ -1,4 +1,4 @@
-import { askr } from "@askrjs/askr-vite";
+﻿import { askr } from "@askrjs/vite";
 import { playwright } from "vite-plus/test/browser-playwright";
 import { defineConfig } from "vite-plus";
 

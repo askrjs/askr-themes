@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 import type { BoxLayoutOwnProps, LayoutResponsive } from '../box/box.types';
 
 export type FlexOwnProps = BoxLayoutOwnProps & {
@@ -56,3 +56,4 @@ export type InlineDivProps = FlexDivProps;
 export type InlineSpanProps = FlexSpanProps;
 export type InlineAsChildProps = FlexAsChildProps;
 export type InlineProps = FlexProps;
+

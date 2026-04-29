@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from '@askrjs/askr-ui/foundations';
+﻿import type { JSXElement, Ref } from '@askrjs/ui/foundations';
 
 export type SpacerAxis = 'inline' | 'block';
 
@@ -31,3 +31,4 @@ export type SpacerAsChildProps = SpacerOwnProps & {
 };
 
 export type SpacerProps = SpacerNativeProps | SpacerAsChildProps;
+

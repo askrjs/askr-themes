@@ -1,12 +1,12 @@
-import "../themes/default/index.css";
+﻿import "../themes/default/index.css";
 
-export { Button } from "@askrjs/askr-ui";
+export { Button } from "@askrjs/ui";
 export type {
   ButtonAsChildProps,
   ButtonNativeProps,
   ButtonOwnProps,
   ButtonProps,
-} from "@askrjs/askr-ui";
+} from "@askrjs/ui";
 
 export { Badge } from "./badge";
 export type { BadgeProps } from "./badge";
@@ -81,3 +81,4 @@ export type {
 } from "./theme";
 export { TopbarLayout } from "./topbar-layout";
 export type { TopbarLayoutProps } from "./topbar-layout";
+
