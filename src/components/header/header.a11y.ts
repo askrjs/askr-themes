@@ -1,10 +1,10 @@
 export const HEADER_A11Y_CONTRACT = {
   DATA_ATTRIBUTES: {
-    slot: 'data-slot' as const,
-    position: 'data-position' as const,
+    slot: "data-slot" as const,
+    position: "data-position" as const,
   },
   SLOT_VALUES: {
-    root: 'header' as const,
+    root: "header" as const,
   },
 } as const;
 

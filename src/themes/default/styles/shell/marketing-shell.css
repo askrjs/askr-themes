@@ -90,8 +90,7 @@
     color: var(--ak-color-text-muted);
     font-size: var(--ak-font-size-sm);
     font-weight: var(--ak-font-weight-semibold);
-    transition:
-      color var(--ak-duration-fast) var(--ak-ease-standard);
+    transition: color var(--ak-duration-fast) var(--ak-ease-standard);
   }
 
   :where(.marketing-nav a:hover) {

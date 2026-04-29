@@ -8,7 +8,7 @@ describe("ThemeToggle", () => {
       resolveThemeToggleIcon("system", "light", {
         lightIcon: "sun",
         darkIcon: "moon",
-      })
+      }),
     ).toBe("sun");
   });
 
@@ -18,7 +18,7 @@ describe("ThemeToggle", () => {
         lightIcon: "sun",
         darkIcon: "moon",
         systemIcon: "laptop",
-      })
+      }),
     ).toBe("moon");
   });
 });

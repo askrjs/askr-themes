@@ -1,5 +1,5 @@
-export { Grid } from './grid';
-export { GRID_A11Y_CONTRACT, type GridA11yContract } from './grid.a11y';
+export { Grid } from "./grid";
+export { GRID_A11Y_CONTRACT, type GridA11yContract } from "./grid.a11y";
 export type {
   GridProps,
   GridOwnProps,
@@ -7,4 +7,4 @@ export type {
   GridDivProps,
   GridSpanProps,
   GridAsChildProps,
-} from './grid.types';
+} from "./grid.types";

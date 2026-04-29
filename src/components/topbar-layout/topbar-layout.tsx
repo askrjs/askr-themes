@@ -1,20 +1,12 @@
-import { isCssLength, mergeLayoutStyles, serializeValueIf } from '../_internal/layout';
-import type { TopbarLayoutProps } from './topbar-layout.types';
+import { isCssLength, mergeLayoutStyles, serializeValueIf } from "../_internal/layout";
+import type { TopbarLayoutProps } from "./topbar-layout.types";
 
 function isThemeGapToken(value: unknown): value is string {
-  return typeof value === 'string' && ['sm', 'md', 'lg', 'xl'].includes(value.trim());
+  return typeof value === "string" && ["sm", "md", "lg", "xl"].includes(value.trim());
 }
 
 export function TopbarLayout(props: TopbarLayoutProps): JSX.Element {
-  const {
-    topbar,
-    children,
-    topbarHeight,
-    gap,
-    ref,
-    style: userStyle,
-    ...rest
-  } = props;
+  const { topbar, children, topbarHeight, gap, ref, style: userStyle, ...rest } = props;
 
   const wrapperStyle: Record<string, string | number> = {};
   if (isCssLength(gap)) wrapperStyle.gap = gap!;

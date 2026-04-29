@@ -927,4 +927,3 @@ The automated test suite (`tests/contrast.test.ts`) validates these pairs across
 ## Implementation Note
 
 The v1.0 contract above is the current semantic surface. Default theme component CSS now consumes the semantic token names directly. Shipped CSS still publishes temporary compatibility aliases such as `--ak-color-fg`, `--ak-color-muted`, and `--ak-font-family` for downstream compatibility, but those aliases are not part of the required contract and should not be used for new work.
-

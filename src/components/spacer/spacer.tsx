@@ -1,31 +1,21 @@
-﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
-import { isCssLength, mergeLayoutStyles } from '../_internal/layout';
-import { isJsxElement, toChildArray } from '../_internal/jsx';
-import type { SpacerAsChildProps, SpacerNativeProps } from './spacer.types';
+import { Slot, mergeProps } from "@askrjs/ui/foundations";
+import { isCssLength, mergeLayoutStyles } from "../_internal/layout";
+import { isJsxElement, toChildArray } from "../_internal/jsx";
+import type { SpacerAsChildProps, SpacerNativeProps } from "./spacer.types";
 
 export function Spacer(props: SpacerNativeProps): JSX.Element;
 export function Spacer(props: SpacerAsChildProps): JSX.Element;
 export function Spacer(props: SpacerNativeProps | SpacerAsChildProps) {
-  const {
-    asChild,
-    children,
-    grow,
-    shrink,
-    basis,
-    axis,
-    ref,
-    style: userStyle,
-    ...rest
-  } = props;
+  const { asChild, children, grow, shrink, basis, axis, ref, style: userStyle, ...rest } = props;
 
   const layoutStyle: Record<string, string | number> = {};
 
-  if (axis === 'inline') {
+  if (axis === "inline") {
     if (shrink !== undefined && shrink !== 0) {
       layoutStyle.flexShrink = shrink;
     }
     if (isCssLength(basis)) layoutStyle.width = basis!;
-  } else if (axis === 'block') {
+  } else if (axis === "block") {
     if (shrink !== undefined && shrink !== 0) {
       layoutStyle.flexShrink = shrink;
     }
@@ -44,8 +34,8 @@ export function Spacer(props: SpacerNativeProps | SpacerAsChildProps) {
 
   const finalProps = mergeProps(rest, {
     ref,
-    'data-slot': 'spacer',
-    'data-axis': axis,
+    "data-slot": "spacer",
+    "data-axis": axis,
     style: mergeLayoutStyles(layoutStyle, userStyle),
   });
   const keyedChildren = toChildArray(children).map((child, index) => {
@@ -65,4 +55,3 @@ export function Spacer(props: SpacerNativeProps | SpacerAsChildProps) {
 
   return <div {...finalProps}>{keyedChildren}</div>;
 }
-

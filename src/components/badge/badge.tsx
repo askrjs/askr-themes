@@ -1,5 +1,5 @@
-﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
-import type { BadgeAsChildProps, BadgeProps } from './badge.types';
+import { Slot, mergeProps } from "@askrjs/ui/foundations";
+import type { BadgeAsChildProps, BadgeProps } from "./badge.types";
 
 export function Badge(props: BadgeProps): JSX.Element;
 export function Badge(props: BadgeAsChildProps): JSX.Element;
@@ -7,9 +7,9 @@ export function Badge(props: BadgeProps | BadgeAsChildProps) {
   const { asChild, children, variant, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
-    'data-slot': 'badge',
-    'data-badge': 'true',
-    'data-variant': variant && variant !== 'default' ? variant : undefined,
+    "data-slot": "badge",
+    "data-badge": "true",
+    "data-variant": variant && variant !== "default" ? variant : undefined,
   });
 
   if (asChild) {
@@ -18,4 +18,3 @@ export function Badge(props: BadgeProps | BadgeAsChildProps) {
 
   return <span {...finalProps}>{children}</span>;
 }
-

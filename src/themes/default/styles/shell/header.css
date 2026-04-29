@@ -1,5 +1,5 @@
 @layer components {
-  :where(.header, [data-slot='header']) {
+  :where(.header, [data-slot="header"]) {
     position: relative;
     z-index: var(--ak-z-sticky);
     border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
@@ -8,30 +8,30 @@
     backdrop-filter: blur(18px) saturate(150%);
   }
 
-  :where(.header, [data-slot='header'])[data-position='static'] {
+  :where(.header, [data-slot="header"])[data-position="static"] {
     position: static;
   }
 
-  :where(.header, [data-slot='header'])[data-position='relative'] {
+  :where(.header, [data-slot="header"])[data-position="relative"] {
     position: relative;
   }
 
-  :where(.header, [data-slot='header'])[data-position='sticky'] {
+  :where(.header, [data-slot="header"])[data-position="sticky"] {
     position: sticky;
     inset-block-start: 0;
   }
 
-  :where(.header, [data-slot='header'])[data-position='absolute'],
-  :where(.header, [data-slot='header'])[data-position='fixed'] {
+  :where(.header, [data-slot="header"])[data-position="absolute"],
+  :where(.header, [data-slot="header"])[data-position="fixed"] {
     inset-block-start: 0;
     inset-inline: 0;
   }
 
-  :where(.header, [data-slot='header'])[data-position='absolute'] {
+  :where(.header, [data-slot="header"])[data-position="absolute"] {
     position: absolute;
   }
 
-  :where(.header, [data-slot='header'])[data-position='fixed'] {
+  :where(.header, [data-slot="header"])[data-position="fixed"] {
     position: fixed;
   }
 }

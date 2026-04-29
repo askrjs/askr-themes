@@ -51,32 +51,20 @@ Layout wrappers also live here because they are visual composition, not
 behavior:
 
 ```ts
-import {
-  SidebarLayout,
-  TopbarLayout,
-} from "@askrjs/themes/components";
+import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
 ```
 
 Or import a theme-owned visual component directly:
 
 ```ts
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@askrjs/themes/components";
+import { Card, CardContent, CardHeader, CardTitle } from "@askrjs/themes/components";
 ```
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`
 does not ship icons; pass your own visual content:
 
 ```tsx
-import {
-  ThemePicker,
-  ThemeProvider,
-  ThemeToggle,
-} from "@askrjs/themes/components";
+import { ThemePicker, ThemeProvider, ThemeToggle } from "@askrjs/themes/components";
 
 export function App() {
   return (
@@ -176,4 +164,3 @@ work without `askr-themes` - supply your own CSS.
 - [Tokens](./tokens.md)
 - [Theming](./theming.md)
 - [UI: askr-ui](https://github.com/askrjs/askr-ui/tree/main/docs/askr-ui.md)
-

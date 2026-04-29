@@ -1,9 +1,6 @@
-﻿import type { Ref } from '@askrjs/ui/foundations';
+import type { Ref } from "@askrjs/ui/foundations";
 
-export type TopbarLayoutProps = Omit<
-  JSX.IntrinsicElements['div'],
-  'children' | 'ref'
-> & {
+export type TopbarLayoutProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> & {
   /** Content rendered into the topbar/navbar slot (header). */
   topbar?: unknown;
   /** Content rendered into the main slot. */
@@ -14,4 +11,3 @@ export type TopbarLayoutProps = Omit<
   gap?: string;
   ref?: Ref<HTMLDivElement>;
 };
-

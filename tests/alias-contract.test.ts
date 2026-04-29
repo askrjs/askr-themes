@@ -53,7 +53,11 @@ const ALIAS_CONTRACTS = [
   ["layout/patterns.css", ".settings-section", '[data-slot="settings-section"]'],
   ["layout/patterns.css", ".settings-section-copy", '[data-slot="settings-section-copy"]'],
   ["layout/patterns.css", ".settings-section-title", '[data-slot="settings-section-title"]'],
-  ["layout/patterns.css", ".settings-section-description", '[data-slot="settings-section-description"]'],
+  [
+    "layout/patterns.css",
+    ".settings-section-description",
+    '[data-slot="settings-section-description"]',
+  ],
   ["layout/patterns.css", ".settings-section-content", '[data-slot="settings-section-content"]'],
   ["shell/navbar.css", ".navbar", '[data-slot="navbar"]'],
   ["shell/navbar.css", ".navbar-brand", '[data-slot="navbar-brand"]'],

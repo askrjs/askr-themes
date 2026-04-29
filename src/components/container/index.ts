@@ -1,12 +1,9 @@
-export { Container } from './container';
-export {
-  CONTAINER_A11Y_CONTRACT,
-  type ContainerA11yContract,
-} from './container.a11y';
+export { Container } from "./container";
+export { CONTAINER_A11Y_CONTRACT, type ContainerA11yContract } from "./container.a11y";
 export type {
   ContainerProps,
   ContainerVariant,
   ContainerOwnProps,
   ContainerNativeProps,
   ContainerAsChildProps,
-} from './container.types';
+} from "./container.types";

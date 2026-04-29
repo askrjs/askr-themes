@@ -52,7 +52,7 @@ describe("theme route persistence in the browser", () => {
     await settle();
 
     const toggle = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
     const html = document.documentElement;
 
@@ -65,7 +65,7 @@ describe("theme route persistence in the browser", () => {
     await settle();
 
     const darkToggle = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
 
     expect(darkToggle?.getAttribute("data-theme-choice")).toBe("dark");
@@ -78,7 +78,7 @@ describe("theme route persistence in the browser", () => {
     await settle();
 
     const afterNavigateToggle = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
 
     expect(container.querySelector("#page")?.textContent).toBe("About");
@@ -91,7 +91,7 @@ describe("theme route persistence in the browser", () => {
     await settle();
 
     const lightToggle = container.querySelector(
-      '[data-theme-control="toggle"]'
+      '[data-theme-control="toggle"]',
     ) as HTMLButtonElement | null;
 
     expect(lightToggle?.getAttribute("data-theme-choice")).toBe("light");

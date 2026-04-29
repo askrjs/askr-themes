@@ -1,18 +1,10 @@
-﻿import type { JSXElement } from '@askrjs/ui/foundations';
+import type { JSXElement } from "@askrjs/ui/foundations";
 
 export function isJsxElement(value: unknown): value is JSXElement {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    '$$typeof' in value &&
-    'props' in value
-  );
+  return typeof value === "object" && value !== null && "$$typeof" in value && "props" in value;
 }
 
-export function hasJsxIntrinsicType(
-  value: unknown,
-  expectedType: string
-): value is JSXElement {
+export function hasJsxIntrinsicType(value: unknown, expectedType: string): value is JSXElement {
   return isJsxElement(value) && value.type === expectedType;
 }
 
@@ -24,10 +16,7 @@ export function toChildArray(children: unknown): unknown[] {
   return children === undefined || children === null ? [] : [children];
 }
 
-export function mapJsxTree(
-  children: unknown,
-  mapper: (element: JSXElement) => unknown
-): unknown {
+export function mapJsxTree(children: unknown, mapper: (element: JSXElement) => unknown): unknown {
   if (Array.isArray(children)) {
     return children.map((child) => mapJsxTree(child, mapper));
   }
@@ -60,7 +49,7 @@ export function mapJsxTree(
 
 export function collectJsxElements(
   children: unknown,
-  predicate?: (element: JSXElement) => boolean
+  predicate?: (element: JSXElement) => boolean,
 ): JSXElement[] {
   const result: JSXElement[] = [];
 
@@ -88,19 +77,19 @@ export function collectJsxElements(
 
 export function extractTextContent(value: unknown): string {
   if (Array.isArray(value)) {
-    return value.map((entry) => extractTextContent(entry)).join('');
+    return value.map((entry) => extractTextContent(entry)).join("");
   }
 
   if (
     value === undefined ||
     value === null ||
-    typeof value === 'boolean' ||
-    typeof value === 'function'
+    typeof value === "boolean" ||
+    typeof value === "function"
   ) {
-    return '';
+    return "";
   }
 
-  if (typeof value === 'string' || typeof value === 'number') {
+  if (typeof value === "string" || typeof value === "number") {
     return String(value);
   }
 
@@ -108,46 +97,45 @@ export function extractTextContent(value: unknown): string {
     return extractTextContent(value.props?.children);
   }
 
-  return '';
+  return "";
 }
 
 export function serializeForId(value: unknown): string {
   if (Array.isArray(value)) {
-    return value.map((item) => serializeForId(item)).join('|');
+    return value.map((item) => serializeForId(item)).join("|");
   }
 
-  if (value === undefined || value === null || typeof value === 'boolean') {
-    return '';
+  if (value === undefined || value === null || typeof value === "boolean") {
+    return "";
   }
 
-  if (typeof value === 'string' || typeof value === 'number') {
+  if (typeof value === "string" || typeof value === "number") {
     return String(value);
   }
 
   if (isJsxElement(value)) {
     const typeName =
-      typeof value.type === 'string'
+      typeof value.type === "string"
         ? value.type
-        : typeof value.type === 'function'
-          ? value.type.name || 'component'
-          : 'component';
+        : typeof value.type === "function"
+          ? value.type.name || "component"
+          : "component";
     const propEntries = Object.entries(value.props ?? {})
       .filter(
         ([key, entryValue]) =>
-          key !== 'children' &&
-          key !== 'ref' &&
-          !key.startsWith('on') &&
-          (typeof entryValue === 'string' ||
-            typeof entryValue === 'number' ||
-            typeof entryValue === 'boolean')
+          key !== "children" &&
+          key !== "ref" &&
+          !key.startsWith("on") &&
+          (typeof entryValue === "string" ||
+            typeof entryValue === "number" ||
+            typeof entryValue === "boolean"),
       )
       .sort(([left], [right]) => left.localeCompare(right))
       .map(([key, entryValue]) => `${key}:${String(entryValue)}`)
-      .join(',');
+      .join(",");
 
     return `${typeName}[${propEntries}](${serializeForId(value.props?.children)})`;
   }
 
   return typeof value;
 }
-

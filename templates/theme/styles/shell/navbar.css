@@ -65,7 +65,8 @@
     line-height: 1;
   }
 
-  :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) > :where([data-slot="icon"], svg) {
+  :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"])
+    > :where([data-slot="icon"], svg) {
     flex: none;
     color: currentColor;
   }

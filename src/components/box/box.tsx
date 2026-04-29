@@ -1,16 +1,16 @@
-﻿import { Slot, mergeProps } from '@askrjs/ui/foundations';
+import { Slot, mergeProps } from "@askrjs/ui/foundations";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
   withBoxLayoutStyle,
-} from '../_internal/box-layout';
-import type { BoxAsChildProps, BoxDivProps, BoxSpanProps } from './box.types';
+} from "../_internal/box-layout";
+import type { BoxAsChildProps, BoxDivProps, BoxSpanProps } from "./box.types";
 
 export function Box(props: BoxDivProps): JSX.Element;
 export function Box(props: BoxSpanProps): JSX.Element;
 export function Box(props: BoxAsChildProps): JSX.Element;
 export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
-  const as = 'as' in props ? props.as : 'div';
+  const as = "as" in props ? props.as : "div";
   const { asChild, children, ref, style: userStyle, ...rest } = props;
 
   const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
@@ -19,8 +19,8 @@ export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
 
   const finalProps = mergeProps(passthroughProps, {
     ref,
-    'data-slot': 'box',
-    'data-ak-layout': 'true',
+    "data-slot": "box",
+    "data-ak-layout": "true",
     style: withBoxLayoutStyle(layoutStyle, userStyle),
   });
 
@@ -28,10 +28,9 @@ export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  if (as === 'span') {
+  if (as === "span") {
     return <span {...finalProps}>{children}</span>;
   }
 
   return <div {...finalProps}>{children}</div>;
 }
-
