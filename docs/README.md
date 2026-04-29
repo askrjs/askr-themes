@@ -4,9 +4,9 @@ Default theme tokens, styles, and visual components for askr-ui admin and intern
 
 ## Contents
 
-- [Overview](./askr-themes.md) â€” What askr-themes is and when to use it
-- [Tokens](./tokens.md) â€” Design token reference and overrides
-- [Theming](./theming.md) â€” Layered CSS architecture and dark mode
+- [Overview](./askr-themes.md) - What askr-themes is and when to use it
+- [Tokens](./tokens.md) - Design token reference and overrides
+- [Theming](./theming.md) - Layered CSS architecture and dark mode
 
 ## Quick start
 

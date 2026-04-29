@@ -169,7 +169,7 @@ Use `askr-themes` when you want the standard Askr admin visual language without
 writing your own design token layer.
 
 Skip `askr-themes` when you have your own design system. `askr-ui` components
-work without `askr-themes` â€” supply your own CSS.
+work without `askr-themes` - supply your own CSS.
 
 ## See also
 
