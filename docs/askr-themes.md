@@ -175,5 +175,5 @@ work without `askr-themes` â€” supply your own CSS.
 
 - [Tokens](./tokens.md)
 - [Theming](./theming.md)
-- [UI: askr-ui](../ui/askr-ui.md)
+- [UI: askr-ui](https://github.com/askrjs/askr-ui/tree/main/docs/askr-ui.md)
 
