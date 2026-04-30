@@ -1,4 +1,4 @@
-import { Slot, mergeProps } from "@askrjs/ui/foundations";
+﻿import { Slot, mergeProps } from "@askrjs/askr/foundations";
 import type { BadgeAsChildProps, BadgeProps } from "./badge.types";
 
 export function Badge(props: BadgeProps): JSX.Element;

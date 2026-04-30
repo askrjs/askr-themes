@@ -13,11 +13,10 @@ tokens.css         - design tokens
 styles/base/       - typography and foundational primitives
 styles/actions/    - buttons and toggle controls
 styles/forms/      - inputs, labels, fields, and form controls
-styles/display/    - cards, badges, progress, separators, and status display
-styles/navigation/ - menus, tabs, breadcrumbs, and pagination
+styles/display/    - cards, badges, progress, separators, tables, and status display
+styles/navigation/ - menus, tabs, and breadcrumbs
 styles/disclosure/ - accordion and collapsible patterns
 styles/overlays/   - dialogs, popovers, toasts, and tooltips
-styles/data/       - data-heavy views such as tables
 styles/shell/      - app shell theme values
 styles/layout/     - layout primitives and responsive page structure
 components.css     - component-level composition defaults
@@ -61,7 +60,8 @@ the active scope:
 
 `data-slot` is the canonical selector contract for package components. The
 default theme also provides a small set of class aliases for raw HTML and app
-scaffolds:
+scaffolds, plus theme-owned wrappers such as `Breadcrumb` and `Spinner` when a
+headless core primitive is unnecessary:
 
 ```html
 <button data-slot="button" data-variant="primary">Save</button>

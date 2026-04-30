@@ -1,4 +1,4 @@
-import { Slot, mergeProps } from "@askrjs/ui/foundations";
+﻿import { Slot, mergeProps } from "@askrjs/askr/foundations";
 import type { SeparatorAsChildProps, SeparatorNativeProps } from "./separator.types";
 
 export function Separator(props: SeparatorNativeProps): JSX.Element;

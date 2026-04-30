@@ -116,6 +116,7 @@
   --ak-layout-content-max-width: 80rem;
   --ak-layout-page-gutter: clamp(1rem, 0.7rem + 1.25vw, 1.75rem);
   --ak-layout-panel-padding: clamp(1rem, 0.88rem + 0.55vw, 1.35rem);
+  --ak-container-inline-size: 100%;
   --ak-density-control-height-sm: 2rem;
   --ak-density-control-height-md: 2.5rem;
   --ak-density-control-height-lg: 2.9rem;

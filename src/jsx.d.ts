@@ -1,4 +1,4 @@
-import type { JSXElement } from "@askrjs/ui/foundations";
+﻿import type { JSXElement } from "@askrjs/askr/foundations";
 
 declare global {
   namespace JSX {

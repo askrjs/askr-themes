@@ -1,0 +1,37 @@
+@layer components {
+  :where(.header, [data-slot="header"]) {
+    position: relative;
+    z-index: var(--ak-z-sticky);
+    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
+    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
+    box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
+    backdrop-filter: blur(18px) saturate(150%);
+  }
+
+  :where(.header, [data-slot="header"])[data-position="static"] {
+    position: static;
+  }
+
+  :where(.header, [data-slot="header"])[data-position="relative"] {
+    position: relative;
+  }
+
+  :where(.header, [data-slot="header"])[data-position="sticky"] {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  :where(.header, [data-slot="header"])[data-position="absolute"],
+  :where(.header, [data-slot="header"])[data-position="fixed"] {
+    inset-block-start: 0;
+    inset-inline: 0;
+  }
+
+  :where(.header, [data-slot="header"])[data-position="absolute"] {
+    position: absolute;
+  }
+
+  :where(.header, [data-slot="header"])[data-position="fixed"] {
+    position: fixed;
+  }
+}

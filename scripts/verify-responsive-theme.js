@@ -12,7 +12,6 @@ const defaultPatternImports = [
   "./styles/layout/layout.css",
   "./styles/layout/responsive-layout.css",
   "./styles/layout/patterns.css",
-  "./styles/data/data-table.css",
 ];
 
 async function read(relativePath) {
