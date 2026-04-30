@@ -104,7 +104,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@askrjs/askr": "file:../askr",
+    "@askrjs/askr": "^0.0.29",
     "@askrjs/ui": "file:../askr-ui",
     "@askrjs/vite": "file:../askr-vite",
     "@tsdown/css": "0.21.9",
@@ -115,7 +115,7 @@
     "vite-plus": "^0.1.19"
   },
   "peerDependencies": {
-    "@askrjs/askr": "0.0.1",
+    "@askrjs/askr": "^0.0.29",
     "@askrjs/ui": "0.0.1"
   },
   "engines": {
