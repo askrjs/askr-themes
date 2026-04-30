@@ -1,4 +1,4 @@
-import type { JSXElement, Ref } from "@askrjs/ui/foundations";
+﻿import type { JSXElement, Ref } from "@askrjs/askr/foundations";
 import type { BoxLayoutOwnProps, LayoutResponsive } from "../box/box.types";
 
 export type ContainerVariant = "default" | "sm" | "md" | "lg" | "xl" | "xxl" | "fluid";

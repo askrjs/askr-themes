@@ -44,6 +44,9 @@ The default path is an admin-ready application shell: tables, settings pages,
 record detail screens, and dashboard layouts should look production-ready
 without custom CSS.
 
+Semantic table primitives come from `@askrjs/ui`; the default theme styles the
+`Table` surface through its bundled `table.css` rules.
+
 For visual-only layout wrappers:
 
 ```ts

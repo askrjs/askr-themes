@@ -1,8 +1,10 @@
-// Temporary local type shim for sibling `file:` dependencies.
+﻿// Temporary local type shim for sibling `file:` dependencies.
 // Remove this once `../askr` and `../askr-ui` reliably emit the dist .d.ts
 // files referenced by this package's tsconfig path mappings.
 
 declare module "@askrjs/askr/foundations" {
+  export type Ref<T> = { current: T | null } | ((value: T | null) => void) | null | undefined;
+
   export type Props = Record<string, unknown> & {
     children?: unknown;
     ref?: unknown;
@@ -21,11 +23,18 @@ declare module "@askrjs/askr/foundations" {
 
   export function Slot(props: SlotProps): JSXElement;
 
+  export function mergeProps<
+    TProps extends Record<string, unknown>,
+    TOverrides extends Record<string, unknown>,
+  >(props: TProps, overrides: TOverrides): TProps & TOverrides;
+
   export interface PresenceProps extends Props {
     present?: boolean;
   }
 
   export function Presence(props: PresenceProps): JSXElement | null;
+
+  export function composeRefs<T>(...refs: Array<Ref<T>>): Ref<T>;
 }
 
 declare module "@askrjs/askr" {

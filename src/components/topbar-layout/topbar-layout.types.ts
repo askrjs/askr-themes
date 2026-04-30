@@ -1,4 +1,4 @@
-import type { Ref } from "@askrjs/ui/foundations";
+﻿import type { Ref } from "@askrjs/askr/foundations";
 
 export type TopbarLayoutProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> & {
   /** Content rendered into the topbar/navbar slot (header). */

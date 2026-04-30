@@ -27,6 +27,7 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "field-switch",
   "flex",
   "icon",
+  "theme-provider",
 ]);
 
 function walkFiles(dirPath, extensions) {
@@ -69,6 +70,7 @@ function extractUiSlots() {
     const slotBlockPatterns = [
       /SLOTS\s*:\s*\{([\s\S]*?)\n\s*\}(?:\s*,|\s*as const)?/g,
       /const\s+SLOTS\s*=\s*\{([\s\S]*?)\n\s*\}(?:\s*as const)?/g,
+      /const\s+[A-Z0-9_]*SLOTS\s*=\s*\{([\s\S]*?)\n\s*\}(?:\s*as const)?/g,
     ];
 
     for (const blockPattern of slotBlockPatterns) {

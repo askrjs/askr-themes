@@ -37,12 +37,14 @@ barrel:
 import {
   Badge,
   Button,
+  Breadcrumb,
   Divider,
   EmptyState,
   Flex,
   FormSection,
   Grid,
   SettingsSection,
+  Spinner,
   Stack,
 } from "@askrjs/themes/components";
 ```
@@ -57,7 +59,14 @@ import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
 Or import a theme-owned visual component directly:
 
 ```ts
-import { Card, CardContent, CardHeader, CardTitle } from "@askrjs/themes/components";
+import {
+  Breadcrumb,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Spinner,
+} from "@askrjs/themes/components";
 ```
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`
@@ -133,9 +142,9 @@ export function OperationsPage() {
 ```
 
 Keep narrow recipes as composition: a record-detail page is `Card` plus
-`FormSection`; a CRUD index page is `PageHeader` plus the `askr-ui` data table
-pattern inside a `Card` or surface. Those recipes do not need first-class
-wrappers until they prove reusable across several admin apps.
+`FormSection`; a CRUD index page is `PageHeader` plus the `askr-ui` `Table`
+inside a `Card` or surface. Those recipes do not need first-class wrappers
+until they prove reusable across several admin apps.
 
 `data-slot` is the canonical styling contract from `askr-ui`, and
 `askr-themes` layers optional unprefixed aliases over it for ergonomic raw HTML:

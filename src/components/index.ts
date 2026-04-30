@@ -10,6 +10,29 @@ export type {
 
 export { Badge } from "./badge";
 export type { BadgeProps } from "./badge";
+export {
+  Breadcrumb,
+  BreadcrumbCurrent,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "./breadcrumb";
+export type {
+  BreadcrumbAsChildProps,
+  BreadcrumbCurrentAsChildProps,
+  BreadcrumbCurrentProps,
+  BreadcrumbItemAsChildProps,
+  BreadcrumbItemProps,
+  BreadcrumbLinkAsChildProps,
+  BreadcrumbLinkProps,
+  BreadcrumbListAsChildProps,
+  BreadcrumbListProps,
+  BreadcrumbOwnProps,
+  BreadcrumbProps,
+  BreadcrumbSeparatorAsChildProps,
+  BreadcrumbSeparatorProps,
+} from "./breadcrumb";
 export { Box } from "./box";
 export type { BoxProps } from "./box";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
@@ -37,6 +60,8 @@ export { Inline } from "./inline";
 export type { InlineProps } from "./inline";
 export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";
 export type { LogoProps } from "./logos";
+export { Spinner } from "./spinner";
+export type { SpinnerOwnProps, SpinnerProps } from "./spinner";
 export { NavBrand, Navbar, NavGroup, NavItem } from "./navbar";
 export type {
   NavBrandProps,

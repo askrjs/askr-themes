@@ -29,11 +29,11 @@
 @import "./styles/display/skeleton.css";
 @import "./styles/display/avatar.css";
 @import "./styles/display/separator.css";
+@import "./styles/display/table.css";
 @import "./styles/display/spinner.css";
 @import "./styles/display/coverage.css";
 @import "./styles/navigation/breadcrumb.css";
 @import "./styles/navigation/tabs.css";
-@import "./styles/navigation/pagination.css";
 @import "./styles/navigation/menu.css";
 @import "./styles/navigation/menubar.css";
 @import "./styles/navigation/navigation-menu.css";
@@ -45,4 +45,3 @@
 @import "./styles/overlays/dialog.css";
 @import "./styles/overlays/popover.css";
 @import "./styles/overlays/tooltip.css";
-@import "./styles/data/data-table.css";

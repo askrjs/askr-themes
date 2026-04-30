@@ -4,6 +4,7 @@ import {
   Badge,
   Button,
   Card,
+  Breadcrumb,
   EmptyState,
   FormSection,
   GitHubLogo,
@@ -15,6 +16,7 @@ import {
   NavItem,
   Navbar,
   SettingsSection,
+  Spinner,
   Stack,
   ThemePicker,
   ThemeProvider,
@@ -40,6 +42,7 @@ describe("components entrypoint", () => {
     expect(GitHubLogo({ title: "GitHub" })).toBeTruthy();
     expect(GoogleLogo({ title: "Google" })).toBeTruthy();
     expect(MicrosoftLogo({ title: "Microsoft" })).toBeTruthy();
+    expect(Breadcrumb({ children: "trail" })).toBeTruthy();
     expect(Header({ children: "header" })).toBeTruthy();
     expect(Navbar({ children: "nav" })).toBeTruthy();
     expect(NavBrand({ children: "brand" })).toBeTruthy();
@@ -48,6 +51,7 @@ describe("components entrypoint", () => {
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
     expect(FormSection({ title: "Profile", children: "fields" })).toBeTruthy();
     expect(SettingsSection({ title: "Team", children: "settings" })).toBeTruthy();
+    expect(Spinner({ label: "Working" })).toBeTruthy();
   });
 
   it("exposes theme management helpers", () => {
