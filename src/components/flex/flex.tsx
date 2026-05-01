@@ -1,4 +1,4 @@
-﻿import { Slot, mergeProps } from "@askrjs/askr/foundations";
+import { Slot, mergeProps } from "@askrjs/askr/foundations";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,

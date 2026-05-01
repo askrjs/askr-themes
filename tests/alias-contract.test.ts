@@ -29,7 +29,6 @@ const ALIAS_CONTRACTS = [
   ["display/card.css", ".card-footer", '[data-slot="card-footer"]'],
   ["forms/input.css", ".input", '[data-slot="input"]'],
   ["forms/textarea.css", ".textarea", '[data-slot="textarea"]'],
-  ["forms/field.css", ".field", '[data-slot="field"]'],
   ["forms/label.css", ".label", '[data-slot="label"]'],
   ["display/badge.css", ".badge", '[data-slot="badge"]'],
   ["display/badge.css", ".badge-secondary", '[data-slot="badge"][data-variant="secondary"]'],

@@ -12,7 +12,7 @@ reset.css          - baseline resets
 tokens.css         - design tokens
 styles/base/       - typography and foundational primitives
 styles/actions/    - buttons and toggle controls
-styles/forms/      - inputs, labels, fields, and form controls
+styles/forms/      - inputs, labels, and form controls
 styles/display/    - cards, badges, progress, separators, tables, and status display
 styles/navigation/ - menus, tabs, and breadcrumbs
 styles/disclosure/ - accordion and collapsible patterns
@@ -60,8 +60,9 @@ the active scope:
 
 `data-slot` is the canonical selector contract for package components. The
 default theme also provides a small set of class aliases for raw HTML and app
-scaffolds, plus theme-owned wrappers such as `Breadcrumb` and `Spinner` when a
-headless core primitive is unnecessary:
+scaffolds. Theme-owned wrappers such as `Breadcrumb` and `Spinner` stay thin,
+while shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
+`TopbarLayout` provide the app frame:
 
 ```html
 <button data-slot="button" data-variant="primary">Save</button>
@@ -78,9 +79,15 @@ When extending styles, group aliases with their canonical selectors:
 
 ## App Scaffolds
 
-Theme-owned scaffold components such as `PageHeader`, `EmptyState`,
-`FormSection`, and `SettingsSection` provide visual composition only. Runtime
-behavior and accessibility state still belong to `@askrjs/ui`.
+Theme-owned scaffold components such as `EmptyState`, `FormSection`, and
+`SettingsSection` provide visual composition only. Runtime behavior and
+accessibility state still belong to `@askrjs/ui`.
+
+Shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
+`TopbarLayout` are part of the same visual system, but they frame the
+application rather than a specific page fragment. The `Header` component is the
+public API; the shell stylesheet uses `.page-header` as its internal selector
+hook.
 
 ## See Also
 

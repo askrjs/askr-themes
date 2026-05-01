@@ -1,4 +1,4 @@
-﻿export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
+export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
 };
 

@@ -1,5 +1,6 @@
 import "../themes/default/index.css";
 
+// Theme controls
 export { Button } from "@askrjs/ui";
 export type {
   ButtonAsChildProps,
@@ -7,9 +8,53 @@ export type {
   ButtonOwnProps,
   ButtonProps,
 } from "@askrjs/ui";
+export { DEFAULT_THEME_OPTIONS, ThemePicker, ThemeProvider, ThemeToggle, useTheme } from "./theme";
+export type {
+  ThemeContextValue,
+  ThemeName,
+  ThemeOption,
+  ThemePickerProps,
+  ThemeProviderProps,
+  ThemeToggleProps,
+  ThemeToggleRenderContext,
+} from "./theme";
 
+// Visual primitives
 export { Badge } from "./badge";
 export type { BadgeProps } from "./badge";
+export { Box } from "./box";
+export type { BoxProps } from "./box";
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
+export type {
+  CardContentProps,
+  CardDescriptionProps,
+  CardFooterProps,
+  CardHeaderProps,
+  CardProps,
+  CardTitleProps,
+} from "./card";
+export { Container } from "./container";
+export type { ContainerProps, ContainerVariant } from "./container";
+export { Flex } from "./flex";
+export type { FlexProps } from "./flex";
+export { Grid } from "./grid";
+export type { GridProps } from "./grid";
+export { Inline } from "./inline";
+export type { InlineProps } from "./inline";
+export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";
+export type { LogoProps } from "./logos";
+export { Section } from "./section";
+export type { SectionProps } from "./section";
+export { Divider, Separator } from "./separator";
+export type { DividerProps, SeparatorProps } from "./separator";
+export { Skeleton } from "./skeleton";
+export type { SkeletonProps } from "./skeleton";
+export { Spacer } from "./spacer";
+export type { SpacerProps } from "./spacer";
+export { Stack } from "./stack";
+export type { StackProps } from "./stack";
+
+// Theme-owned wrappers
 export {
   Breadcrumb,
   BreadcrumbCurrent,
@@ -33,35 +78,20 @@ export type {
   BreadcrumbSeparatorAsChildProps,
   BreadcrumbSeparatorProps,
 } from "./breadcrumb";
-export { Box } from "./box";
-export type { BoxProps } from "./box";
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
-export type {
-  CardContentProps,
-  CardDescriptionProps,
-  CardFooterProps,
-  CardHeaderProps,
-  CardProps,
-  CardTitleProps,
-} from "./card";
-export { Container } from "./container";
-export type { ContainerProps, ContainerVariant } from "./container";
-export { EmptyState } from "./empty-state";
-export type { EmptyStateHeadingTag, EmptyStateProps } from "./empty-state";
-export { Flex } from "./flex";
-export type { FlexProps } from "./flex";
-export { FormSection } from "./form-section";
-export type { FormSectionHeadingTag, FormSectionProps } from "./form-section";
-export { Grid } from "./grid";
-export type { GridProps } from "./grid";
-export { Header } from "./header";
-export type { HeaderPosition, HeaderProps } from "./header";
-export { Inline } from "./inline";
-export type { InlineProps } from "./inline";
-export { GitHubLogo, GoogleLogo, MicrosoftLogo } from "./logos";
-export type { LogoProps } from "./logos";
 export { Spinner } from "./spinner";
 export type { SpinnerOwnProps, SpinnerProps } from "./spinner";
+
+// Scaffolds
+export { EmptyState } from "./empty-state";
+export type { EmptyStateHeadingTag, EmptyStateProps } from "./empty-state";
+export { FormSection } from "./form-section";
+export type { FormSectionHeadingTag, FormSectionProps } from "./form-section";
+export { SettingsSection } from "./settings-section";
+export type { SettingsSectionHeadingTag, SettingsSectionProps } from "./settings-section";
+
+// Shell / chrome
+export { Header } from "./header";
+export type { HeaderPosition, HeaderProps } from "./header";
 export { NavBrand, Navbar, NavGroup, NavItem } from "./navbar";
 export type {
   NavBrandProps,
@@ -71,29 +101,7 @@ export type {
   NavItemProps,
   NavItemVariant,
 } from "./navbar";
-export { Section } from "./section";
-export type { SectionProps } from "./section";
-export { SettingsSection } from "./settings-section";
-export type { SettingsSectionHeadingTag, SettingsSectionProps } from "./settings-section";
-export { Divider, Separator } from "./separator";
-export type { DividerProps, SeparatorProps } from "./separator";
 export { SidebarLayout } from "./sidebar-layout";
 export type { SidebarLayoutProps, SidebarPosition } from "./sidebar-layout";
-export { Skeleton } from "./skeleton";
-export type { SkeletonProps } from "./skeleton";
-export { Spacer } from "./spacer";
-export type { SpacerProps } from "./spacer";
-export { Stack } from "./stack";
-export type { StackProps } from "./stack";
-export { DEFAULT_THEME_OPTIONS, ThemePicker, ThemeProvider, ThemeToggle, useTheme } from "./theme";
-export type {
-  ThemeContextValue,
-  ThemeName,
-  ThemeOption,
-  ThemePickerProps,
-  ThemeProviderProps,
-  ThemeToggleProps,
-  ThemeToggleRenderContext,
-} from "./theme";
 export { TopbarLayout } from "./topbar-layout";
 export type { TopbarLayoutProps } from "./topbar-layout";

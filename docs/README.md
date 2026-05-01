@@ -18,18 +18,22 @@ npm install @askrjs/themes
 import "@askrjs/themes/default";
 ```
 
-For app scaffolds, visual-only composition, and display components:
+For app scaffolds, shell chrome, and visual composition:
 
 ```ts
 import {
-  AppShell,
   Badge,
+  Button,
   EmptyState,
   Flex,
   FormSection,
+  Header,
+  Navbar,
+  SidebarLayout,
   SettingsSection,
   Skeleton,
   Stack,
+  TopbarLayout,
 } from "@askrjs/themes/components";
 ```
 
@@ -47,10 +51,16 @@ without custom CSS.
 Semantic table primitives come from `@askrjs/ui`; the default theme styles the
 `Table` surface through its bundled `table.css` rules.
 
-For visual-only layout wrappers:
+For theme-owned visual wrappers:
 
 ```ts
-import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
+import { Breadcrumb, Spinner } from "@askrjs/themes/components";
+```
+
+For visual-only layout wrappers and shell chrome:
+
+```ts
+import { Header, SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
 ```
 
 For theme-owned visual components:

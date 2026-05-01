@@ -1,4 +1,4 @@
-﻿import { For } from "@askrjs/askr";
+import { For } from "@askrjs/askr";
 import { Slot, mergeProps } from "@askrjs/askr/foundations";
 import {
   applyBoxLayoutStyles,

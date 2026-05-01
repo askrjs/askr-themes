@@ -1,4 +1,4 @@
-﻿import { Slot, mergeProps } from "@askrjs/askr/foundations";
+import { Slot, mergeProps } from "@askrjs/askr/foundations";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
@@ -9,7 +9,6 @@ import {
   resolveContainerSizeValue,
   resolveInlineAlignValue,
   resolveSpaceValue,
-  serializeResponsiveValue,
   serializeResponsiveValueIf,
   setResponsiveStyleVar,
 } from "../_internal/layout";

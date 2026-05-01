@@ -5,10 +5,7 @@ export type BreadcrumbOwnProps = {
   "aria-label"?: string;
 };
 
-export type BreadcrumbProps = Omit<
-  JSX.IntrinsicElements["nav"],
-  "children" | "ref"
-> &
+export type BreadcrumbProps = Omit<JSX.IntrinsicElements["nav"], "children" | "ref"> &
   BreadcrumbOwnProps & {
     asChild?: false;
     ref?: Ref<HTMLElement>;
@@ -20,10 +17,7 @@ export type BreadcrumbAsChildProps = BreadcrumbOwnProps & {
   ref?: Ref<unknown>;
 };
 
-export type BreadcrumbListProps = Omit<
-  JSX.IntrinsicElements["ol"],
-  "children" | "ref"
-> & {
+export type BreadcrumbListProps = Omit<JSX.IntrinsicElements["ol"], "children" | "ref"> & {
   asChild?: false;
   ref?: Ref<HTMLOListElement>;
 };
@@ -34,10 +28,7 @@ export type BreadcrumbListAsChildProps = {
   ref?: Ref<unknown>;
 };
 
-export type BreadcrumbItemProps = Omit<
-  JSX.IntrinsicElements["li"],
-  "children" | "ref"
-> & {
+export type BreadcrumbItemProps = Omit<JSX.IntrinsicElements["li"], "children" | "ref"> & {
   asChild?: false;
   ref?: Ref<HTMLLIElement>;
 };
@@ -48,10 +39,7 @@ export type BreadcrumbItemAsChildProps = {
   ref?: Ref<unknown>;
 };
 
-export type BreadcrumbLinkProps = Omit<
-  JSX.IntrinsicElements["a"],
-  "children" | "ref"
-> & {
+export type BreadcrumbLinkProps = Omit<JSX.IntrinsicElements["a"], "children" | "ref"> & {
   asChild?: false;
   ref?: Ref<HTMLAnchorElement>;
 };
@@ -62,10 +50,7 @@ export type BreadcrumbLinkAsChildProps = {
   ref?: Ref<unknown>;
 };
 
-export type BreadcrumbCurrentProps = Omit<
-  JSX.IntrinsicElements["span"],
-  "children" | "ref"
-> & {
+export type BreadcrumbCurrentProps = Omit<JSX.IntrinsicElements["span"], "children" | "ref"> & {
   asChild?: false;
   ref?: Ref<HTMLSpanElement>;
 };
@@ -76,10 +61,7 @@ export type BreadcrumbCurrentAsChildProps = {
   ref?: Ref<unknown>;
 };
 
-export type BreadcrumbSeparatorProps = Omit<
-  JSX.IntrinsicElements["span"],
-  "children" | "ref"
-> & {
+export type BreadcrumbSeparatorProps = Omit<JSX.IntrinsicElements["span"], "children" | "ref"> & {
   asChild?: false;
   ref?: Ref<HTMLSpanElement>;
 };
