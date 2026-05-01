@@ -34,8 +34,15 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("components entrypoint", () => {
-  it("exposes styled app-facing components from one barrel", () => {
+  it("exposes theme controls and semantic styling helpers", () => {
     expect(typeof Button).toBe("function");
+    expect(typeof ThemeProvider).toBe("function");
+    expect(typeof ThemePicker).toBe("function");
+    expect(typeof ThemeToggle).toBe("function");
+    expect(typeof useTheme).toBe("function");
+  });
+
+  it("exposes visual primitives and theme-owned wrappers", () => {
     expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
     expect(Badge({ children: "new" })).toBeTruthy();
     expect(Card({ children: "body" })).toBeTruthy();
@@ -43,6 +50,10 @@ describe("components entrypoint", () => {
     expect(GoogleLogo({ title: "Google" })).toBeTruthy();
     expect(MicrosoftLogo({ title: "Microsoft" })).toBeTruthy();
     expect(Breadcrumb({ children: "trail" })).toBeTruthy();
+    expect(Spinner({ label: "Working" })).toBeTruthy();
+  });
+
+  it("exposes scaffolds and shell chrome", () => {
     expect(Header({ children: "header" })).toBeTruthy();
     expect(Navbar({ children: "nav" })).toBeTruthy();
     expect(NavBrand({ children: "brand" })).toBeTruthy();
@@ -51,14 +62,6 @@ describe("components entrypoint", () => {
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
     expect(FormSection({ title: "Profile", children: "fields" })).toBeTruthy();
     expect(SettingsSection({ title: "Team", children: "settings" })).toBeTruthy();
-    expect(Spinner({ label: "Working" })).toBeTruthy();
-  });
-
-  it("exposes theme management helpers", () => {
-    expect(typeof ThemeProvider).toBe("function");
-    expect(typeof ThemePicker).toBe("function");
-    expect(typeof ThemeToggle).toBe("function");
-    expect(typeof useTheme).toBe("function");
   });
 
   it("lets high-level pattern components override heading level", () => {

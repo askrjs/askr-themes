@@ -56,7 +56,6 @@
     "./default/dialog.css": "./src/themes/default/styles/overlays/dialog.css",
     "./default/docs-layout.css": "./src/themes/default/styles/layout/docs-layout.css",
     "./default/dropdown-menu.css": "./src/themes/default/styles/overlays/dropdown-menu.css",
-    "./default/field.css": "./src/themes/default/styles/forms/field.css",
     "./default/input.css": "./src/themes/default/styles/forms/input.css",
     "./default/label.css": "./src/themes/default/styles/forms/label.css",
     "./default/menu.css": "./src/themes/default/styles/navigation/menu.css",
@@ -103,8 +102,8 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@askrjs/askr": "^0.0.29",
-    "@askrjs/ui": "file:../askr-ui",
+    "@askrjs/askr": ">=0.0.30 <0.1.0",
+    "@askrjs/ui": "0.0.1",
     "@askrjs/vite": "0.0.1",
     "@tsdown/css": "0.21.9",
     "@types/node": "^25.6.0",
@@ -114,7 +113,7 @@
     "vite-plus": "^0.1.19"
   },
   "peerDependencies": {
-    "@askrjs/askr": "^0.0.29",
+    "@askrjs/askr": ">=0.0.30 <0.1.0",
     "@askrjs/ui": "0.0.1"
   },
   "engines": {

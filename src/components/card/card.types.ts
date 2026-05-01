@@ -1,4 +1,4 @@
-﻿import type { Ref } from "@askrjs/askr/foundations";
+import type { Ref } from "@askrjs/askr/foundations";
 
 export type CardVariant = "default" | "raised";
 export type CardPadding = "sm" | "md" | "lg";

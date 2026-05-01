@@ -25,7 +25,6 @@
   }
 
   :where(.page-header-copy),
-  :where(.field-copy),
   :where(.empty-state-copy) {
     display: grid;
     gap: var(--ak-space-sm);
@@ -53,17 +52,6 @@
     justify-items: start;
     border-style: dashed;
     background: color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface));
-  }
-
-  :where(.field-error) {
-    color: var(--ak-color-danger-ink);
-    font-size: var(--ak-font-size-sm);
-    font-weight: var(--ak-font-weight-medium);
-    padding: 0.875rem var(--ak-space-lg);
-    border: 1px solid color-mix(in srgb, var(--ak-color-danger) 26%, var(--ak-color-border));
-    border-radius: var(--ak-radius-lg);
-    background: color-mix(in srgb, var(--ak-color-danger-soft) 74%, var(--ak-color-surface));
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.46) inset;
   }
 
   :where(.account-filters),
