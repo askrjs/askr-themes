@@ -1,0 +1,5 @@
+:where([data-slot="aspect-ratio"]) {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}

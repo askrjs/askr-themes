@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import {
+  AccessibleIcon,
+  AspectRatio,
   Badge,
   Button,
   Card,
@@ -43,6 +45,8 @@ describe("components entrypoint", () => {
   });
 
   it("exposes visual primitives and theme-owned wrappers", () => {
+    expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
+    expect(AccessibleIcon({ label: "Settings", children: "icon" })).toBeTruthy();
     expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
     expect(Badge({ children: "new" })).toBeTruthy();
     expect(Card({ children: "body" })).toBeTruthy();

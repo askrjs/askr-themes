@@ -106,6 +106,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "gap-y-lg",
     "gap-y-md",
     "gap-y-sm",
+    "sr-only",
     "items-baseline",
     "items-center",
     "items-end",

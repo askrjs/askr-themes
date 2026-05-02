@@ -22,6 +22,10 @@ export type {
 // Visual primitives
 export { Badge } from "./badge";
 export type { BadgeProps } from "./badge";
+export { AccessibleIcon } from "./accessible-icon";
+export type { AccessibleIconProps } from "./accessible-icon";
+export { AspectRatio } from "./aspect-ratio";
+export type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio";
 export { Box } from "./box";
 export type { BoxProps } from "./box";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
