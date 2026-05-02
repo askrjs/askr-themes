@@ -22,6 +22,8 @@ For app scaffolds, shell chrome, and visual composition:
 
 ```ts
 import {
+  AccessibleIcon,
+  AspectRatio,
   Badge,
   Button,
   EmptyState,
@@ -54,7 +56,7 @@ Semantic table primitives come from `@askrjs/ui`; the default theme styles the
 For theme-owned visual wrappers:
 
 ```ts
-import { Breadcrumb, Spinner } from "@askrjs/themes/components";
+import { AccessibleIcon, Breadcrumb, Spinner } from "@askrjs/themes/components";
 ```
 
 For visual-only layout wrappers and shell chrome:

@@ -6,6 +6,18 @@
   font-weight: var(--ak-font-weight-bold);
 }
 
+:where(.sr-only) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 :where(.gap-1, [data-slot="grid"][data-gap="initial:1"], [data-slot="flex"][data-gap="initial:1"]) {
   gap: var(--ak-space-1);
 }

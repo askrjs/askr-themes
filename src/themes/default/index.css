@@ -5,6 +5,7 @@
 @import "./styles/layout/layout.css";
 @import "./styles/layout/responsive-layout.css";
 @import "./styles/layout/patterns.css";
+@import "./styles/layout/aspect-ratio.css";
 @import "./styles/shell/theme.css";
 @import "./styles/shell/header.css";
 @import "./styles/shell/navbar.css";

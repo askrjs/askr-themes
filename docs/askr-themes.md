@@ -8,9 +8,9 @@ askr-themes is an optional styling layer. It provides:
 
 - Theme controls and design tokens
 - Visual primitives such as `Box`, `Stack`, `Inline`, `Flex`, `Grid`,
-  `Container`, `Section`, and `Spacer`
+  `Container`, `Section`, `Spacer`, and `AspectRatio`
 - Semantic `askr-ui` styling, starting with `Button`
-- Theme-owned wrappers such as `Breadcrumb` and `Spinner`
+- Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon`
 - Page scaffolds such as `EmptyState`, `FormSection`, and `SettingsSection`
 - Shell and navigation chrome such as `Header`, `Navbar`, `SidebarLayout`,
   and `TopbarLayout`
@@ -24,7 +24,7 @@ applies the default theme styles for that visual contract.
 - Start with theme controls when you need tokens, theme switching, or default
   button styling.
 - Use visual primitives for layout and surface composition.
-- Use wrappers like `Breadcrumb` and `Spinner` when you want a theme-owned
+- Use wrappers like `Breadcrumb`, `Spinner`, and `AccessibleIcon` when you want a theme-owned
   presentation around a core semantic primitive.
 - Use scaffolds when you are building app pages and need a packaged page
   fragment.
