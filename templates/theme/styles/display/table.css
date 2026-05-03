@@ -41,7 +41,7 @@
 
 :where([data-slot="table-header-cell"]),
 :where([data-slot="table-cell"]) {
-  padding: 0.875rem var(--ak-space-lg);
+  padding: 0.8rem var(--ak-space-md);
   border-block-end: 1px solid var(--ak-color-border-subtle);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);

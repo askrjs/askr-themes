@@ -62,7 +62,9 @@ the active scope:
 default theme also provides a small set of class aliases for raw HTML and app
 scaffolds. Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay thin,
 while shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
-`TopbarLayout` provide the app frame:
+`TopbarLayout` provide the app frame. Recipe shells like marketing or product
+pages should be composed in userland from these primitives rather than shipped
+as dedicated theme exports:
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.
@@ -88,9 +90,10 @@ accessibility state still belong to `@askrjs/ui`.
 
 Shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
 `TopbarLayout` are part of the same visual system, but they frame the
-application rather than a specific page fragment. The `Header` component is the
-public API; the shell stylesheet uses `.page-header` as its internal selector
-hook.
+application rather than a specific page fragment. Compose higher-level shells
+from these primitives in the app instead of relying on recipe-specific theme
+exports. The `Header` component is the public API; the shell stylesheet uses
+`.page-header` as its internal selector hook.
 
 ## See Also
 
