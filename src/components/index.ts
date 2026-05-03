@@ -85,13 +85,9 @@ export type {
 export { Spinner } from "./spinner";
 export type { SpinnerOwnProps, SpinnerProps } from "./spinner";
 
-// Scaffolds
+// Empty state
 export { EmptyState } from "./empty-state";
 export type { EmptyStateHeadingTag, EmptyStateProps } from "./empty-state";
-export { FormSection } from "./form-section";
-export type { FormSectionHeadingTag, FormSectionProps } from "./form-section";
-export { SettingsSection } from "./settings-section";
-export type { SettingsSectionHeadingTag, SettingsSectionProps } from "./settings-section";
 
 // Shell / chrome
 export { Header } from "./header";

@@ -101,28 +101,31 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
 function ThemeRootSync(props: { theme: ThemeName }): JSX.Element | null {
   const { theme } = props;
 
-  resource(({ signal }: { signal: AbortSignal }) => {
-    if (typeof window === "undefined") {
-      syncThemeRoot(theme);
-      return null;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      if (!signal.aborted) {
+  resource(
+    ({ signal }: { signal: AbortSignal }) => {
+      if (typeof window === "undefined") {
         syncThemeRoot(theme);
+        return null;
       }
-    }, 0);
 
-    signal.addEventListener(
-      "abort",
-      () => {
-        window.clearTimeout(timeoutId);
-      },
-      { once: true },
-    );
+      const timeoutId = window.setTimeout(() => {
+        if (!signal.aborted) {
+          syncThemeRoot(theme);
+        }
+      }, 0);
 
-    return null;
-  }, [theme]);
+      signal.addEventListener(
+        "abort",
+        () => {
+          window.clearTimeout(timeoutId);
+        },
+        { once: true },
+      );
+
+      return null;
+    },
+    [theme],
+  );
 
   return null;
 }

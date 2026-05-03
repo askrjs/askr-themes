@@ -29,7 +29,7 @@ describe("docs surface", () => {
         "// Theme controls",
         "// Visual primitives",
         "// Theme-owned wrappers",
-        "// Scaffolds",
+        "// Empty state",
         "// Shell / chrome",
       ]),
     ).toBe(true);
@@ -44,7 +44,6 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Theme controls");
     expect(themesDoc).toContain("Visual primitives");
     expect(themesDoc).toContain("Theme-owned wrappers");
-    expect(themesDoc).toContain("Page scaffolds");
     expect(themesDoc).toContain("Shell and navigation chrome");
     expect(themesDoc).toContain("AspectRatio");
     expect(themesDoc).toContain("AccessibleIcon");
@@ -53,11 +52,9 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Spinner");
 
     expect(themingDoc).toContain("## Selector Contract");
-    expect(themingDoc).toContain("## App Scaffolds");
     expect(themingDoc).toContain("AspectRatio");
     expect(themingDoc).toContain("AccessibleIcon");
     expect(themingDoc).toContain("Header");
-    expect(themingDoc).toContain(".page-header");
     expect(themingDoc).toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
   });

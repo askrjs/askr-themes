@@ -2,10 +2,7 @@ import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio.types";
 
-function serializeStyle(
-  base: Record<string, string | number>,
-  user: unknown,
-): string {
+function serializeStyle(base: Record<string, string | number>, user: unknown): string {
   const merged: Record<string, unknown> = { ...base };
 
   if (user && typeof user === "object") {
@@ -27,9 +24,7 @@ function serializeStyle(
 
 export function AspectRatio(props: AspectRatioProps): JSX.Element;
 export function AspectRatio(props: AspectRatioAsChildProps): JSX.Element;
-export function AspectRatio(
-  props: AspectRatioProps | AspectRatioAsChildProps,
-) {
+export function AspectRatio(props: AspectRatioProps | AspectRatioAsChildProps) {
   const { asChild, children, ratio = 1, ref, style, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,

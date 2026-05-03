@@ -47,7 +47,7 @@ Selector contract:
 - `askr-ui` public hooks are canonical: `data-slot`, `data-state`, `data-disabled`, `data-orientation`, `data-variant`, and `data-size`.
 - `askr-themes` may expose simple kebab-case class aliases for high-value authoring shortcuts such as `.btn`, `.btn-primary`, `.card`, `.input`, and `.badge-success`.
 - Alias selectors must be grouped with canonical selectors in the same low-specificity rule. Classes are convenience API, not a replacement source of truth.
-- Theme-owned pattern components use plain kebab-case classes such as `.page-header` and `.form-section`, and public pattern parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
+- Theme-owned pattern components use plain kebab-case classes such as `.page-header`, and public pattern parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
 - Semantic `askr-ui` table primitives are styled from `styles/display/table.css` using their `data-slot` hooks only; keep the surface semantic and avoid restoring data-grid behavior in themes.
 
 Example:
@@ -71,8 +71,7 @@ Package boundaries:
 
 Use `@askrjs/themes/components` for styled components such as Button, Box,
 Stack, Inline, Flex, Grid, Container, Section, Spacer, Badge, Skeleton,
-Separator/Divider, SidebarLayout, TopbarLayout, EmptyState, FormSection, and
-SettingsSection.
+Separator/Divider, SidebarLayout, TopbarLayout, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in

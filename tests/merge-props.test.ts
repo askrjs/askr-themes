@@ -8,9 +8,11 @@ describe("mergeProps", () => {
     let baseRefValue: HTMLDivElement | null = null;
 
     const merged = mergeProps(
-      { ref: (node: HTMLDivElement | null) => {
-        baseRefValue = node;
-      } },
+      {
+        ref: (node: HTMLDivElement | null) => {
+          baseRefValue = node;
+        },
+      },
       { ref: injectedRef },
     );
 

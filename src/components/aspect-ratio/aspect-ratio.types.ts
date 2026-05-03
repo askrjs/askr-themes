@@ -6,10 +6,7 @@ export type AspectRatioOwnProps = {
   style?: unknown;
 };
 
-export type AspectRatioProps = Omit<
-  JSX.IntrinsicElements["div"],
-  "children" | "ref"
-> &
+export type AspectRatioProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
   AspectRatioOwnProps & {
     asChild?: false;
     ref?: Ref<HTMLDivElement>;
