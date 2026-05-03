@@ -1,18 +1,7 @@
 :where([data-slot="theme-provider"]) {
   min-block-size: 100vh;
   color: var(--ak-color-text);
-  background:
-    radial-gradient(
-      80rem 42rem at 50% -12%,
-      color-mix(in srgb, var(--ak-color-primary-soft) 92%, transparent) 0%,
-      transparent 58%
-    ),
-    radial-gradient(
-      42rem 24rem at 100% 0%,
-      color-mix(in srgb, var(--ak-color-hover) 78%, transparent) 0%,
-      transparent 62%
-    ),
-    var(--ak-color-bg);
+  background: var(--ak-color-bg);
 }
 
 :where(html) {
@@ -28,9 +17,9 @@
   min-height: 2.5rem;
   min-width: 8rem;
   padding-inline: 0.85rem 2.1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white);
-  border-radius: var(--ak-radius-round);
-  background-color: color-mix(in srgb, var(--ak-color-surface) 92%, white 8%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
   font: inherit;
   font-size: var(--ak-font-size-sm);

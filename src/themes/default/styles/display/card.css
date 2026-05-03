@@ -2,17 +2,17 @@
   display: grid;
   gap: var(--ak-space-sm);
   padding: var(--ak-layout-panel-padding);
-  border: 1px solid var(--ak-color-border-subtle);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: none;
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.card-raised, [data-slot="card"][data-variant="raised"]) {
   background: var(--ak-color-surface-raised);
   border-color: var(--ak-color-border);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: var(--ak-shadow-md);
 }
 
 :where(.card-sm, [data-slot="card"][data-padding="sm"]) {
@@ -32,7 +32,7 @@
   margin: 0;
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
-  font-weight: var(--ak-font-weight-semibold);
+  font-weight: 650;
   line-height: var(--ak-line-height-tight);
 }
 

@@ -19,8 +19,7 @@
   padding: 0.875rem var(--ak-layout-page-gutter);
   gap: var(--ak-space-sm) var(--ak-space-md);
   border-bottom: 1px solid var(--ak-color-border);
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 95%, var(--ak-color-surface));
-  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--ak-color-surface) 98%, transparent);
 }
 
 :where([data-slot="sidebar-layout"]) {
@@ -37,11 +36,7 @@
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface-muted)),
-    var(--ak-color-surface)
-  );
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 92%, var(--ak-color-surface));
   border-inline-end: 0;
   border-block-end: 1px solid var(--ak-color-border);
 }

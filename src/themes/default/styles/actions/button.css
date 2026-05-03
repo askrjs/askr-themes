@@ -14,7 +14,7 @@
   border-radius: var(--_button-radius);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: none;
+  box-shadow: var(--ak-shadow-sm);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
@@ -42,11 +42,13 @@
 :where(.btn:hover, [data-slot="button"]:hover) {
   background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn:active, [data-slot="button"]:active) {
   background: color-mix(in srgb, var(--ak-color-active) 100%, var(--ak-color-surface));
   border-color: var(--ak-color-border-strong);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn:focus-visible, [data-slot="button"]:focus-visible) {
@@ -70,11 +72,13 @@
   background: var(--ak-color-primary);
   border-color: color-mix(in srgb, var(--ak-color-primary-active) 64%, var(--ak-color-primary));
   color: var(--ak-color-text-inverse);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-primary:hover, [data-slot="button"][data-variant="primary"]:hover) {
   background: var(--ak-color-primary-hover);
   border-color: var(--ak-color-primary-hover);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-primary:active, [data-slot="button"][data-variant="primary"]:active) {
@@ -83,14 +87,15 @@
 }
 
 :where(.btn-secondary, [data-slot="button"][data-variant="secondary"]) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface));
   border-color: color-mix(in srgb, var(--ak-color-primary) 18%, var(--ak-color-border));
   color: var(--ak-color-primary-ink);
 }
 
 :where(.btn-secondary:hover, [data-slot="button"][data-variant="secondary"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 72%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 30%, var(--ak-color-surface));
   border-color: color-mix(in srgb, var(--ak-color-primary) 26%, var(--ak-color-border-strong));
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-secondary:active, [data-slot="button"][data-variant="secondary"]:active) {
@@ -107,6 +112,7 @@
 :where(.btn-outline:hover, [data-slot="button"][data-variant="outline"]:hover) {
   background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-outline:active, [data-slot="button"][data-variant="outline"]:active) {

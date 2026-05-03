@@ -1,13 +1,15 @@
 :where(.textarea, [data-slot="textarea"]) {
+  box-sizing: border-box;
   width: 100%;
   min-height: 7rem;
   padding: var(--ak-space-sm) var(--ak-space-md);
-  border: 1px solid var(--ak-color-border);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-md);
   resize: vertical;
+  box-shadow: var(--ak-shadow-sm);
   transition:
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
@@ -19,6 +21,7 @@
 
 :where(.textarea:hover, [data-slot="textarea"]:hover) {
   border-color: var(--ak-color-border-strong);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.textarea:focus-visible, [data-slot="textarea"]:focus-visible) {

@@ -8,16 +8,10 @@
   width: 100%;
   padding: 0 calc(var(--ak-space-lg) + 0.125rem);
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 82%, white);
-  border-radius: var(--ak-radius-lg);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 78%, var(--ak-color-primary-soft)),
-    color-mix(in srgb, var(--ak-color-surface) 86%, var(--ak-color-surface-muted))
-  );
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.72) inset,
-    0 0 0 1px transparent;
+  box-shadow: var(--ak-shadow-sm);
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -26,7 +20,7 @@
 }
 
 :where([data-slot="select-trigger"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 18%, var(--ak-color-surface));
+  background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
 }
 
@@ -40,7 +34,7 @@
 
 :where([data-slot="select-trigger"][data-state="open"]) {
   border-color: var(--ak-color-primary);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 24%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--ak-color-surface));
   box-shadow:
     0 0 0 4px var(--ak-color-focus-ring),
     var(--ak-shadow-sm);
@@ -89,10 +83,9 @@
   overflow-y: auto;
   padding: calc(var(--ak-space-sm) + 0.125rem);
   border: 1px solid var(--ak-color-border-subtle);
-  border-radius: var(--ak-radius-xl);
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, var(--ak-color-surface));
-  box-shadow: var(--ak-shadow-lg);
-  backdrop-filter: blur(18px);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface-raised);
+  box-shadow: var(--ak-shadow-md);
   animation: ak-select-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -115,17 +108,17 @@
 }
 
 :where([data-slot="select-item"][data-state="checked"]) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 78%, var(--ak-color-surface));
+  background: var(--ak-color-primary-soft);
   color: var(--ak-color-primary-ink);
 }
 
 :where([data-slot="select-item"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface-muted));
+  background: color-mix(in srgb, var(--ak-color-hover) 68%, var(--ak-color-surface));
 }
 
 :where([data-slot="select-item"]:focus-visible) {
   outline: none;
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface-muted));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 32%, var(--ak-color-surface));
 }
 
 :where([data-slot="select-item"][data-disabled]) {

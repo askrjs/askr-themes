@@ -23,9 +23,8 @@
     align-items: center;
     gap: var(--ak-space-md);
     padding: 0.9rem 0;
-    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 90%, white);
-    background: color-mix(in srgb, var(--ak-color-bg) 82%, transparent);
-    backdrop-filter: blur(12px);
+    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 88%, white 12%);
+    background: color-mix(in srgb, var(--ak-color-bg) 96%, transparent);
   }
 
   :where(.marketing-brand) {
@@ -42,16 +41,13 @@
     place-items: center;
     inline-size: 2rem;
     block-size: 2rem;
-    border-radius: 0.7rem;
-    background: linear-gradient(
-      135deg,
-      var(--ak-color-primary) 0%,
-      color-mix(in srgb, white 24%, var(--ak-color-primary)) 100%
-    );
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-primary);
     color: var(--ak-color-text-inverse);
     font-size: 0.88rem;
     font-weight: var(--ak-font-weight-bold);
     letter-spacing: -0.03em;
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.marketing-brand-copy) {
@@ -145,7 +141,7 @@
     padding-inline: 0.85rem;
     border: 1px solid color-mix(in srgb, var(--ak-color-border) 82%, white 18%);
     border-radius: var(--ak-radius-round);
-    background: color-mix(in srgb, var(--ak-color-surface) 86%, white 14%);
+    background: var(--ak-color-surface);
     color: var(--ak-color-text-muted);
     font-size: var(--ak-font-size-sm);
     font-weight: var(--ak-font-weight-semibold);
@@ -168,9 +164,10 @@
     display: grid;
     gap: 0.25rem;
     padding: 0.95rem;
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
-    border-radius: calc(var(--ak-radius-md) + 2px);
-    background: color-mix(in srgb, var(--ak-color-surface) 90%, white 10%);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.marketing-stat-value) {
@@ -197,9 +194,9 @@
     justify-content: space-between;
     gap: var(--ak-space-md);
     padding: 0.85rem 0.95rem;
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
-    border-radius: calc(var(--ak-radius-md) + 1px);
-    background: color-mix(in srgb, var(--ak-color-surface) 90%, white 10%);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
   }
 
   :where(.marketing-key-value > span) {
@@ -264,9 +261,9 @@
   }
 
   :where(.marketing-card) {
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
-    border-radius: calc(var(--ak-radius-md) + 2px);
-    background: color-mix(in srgb, var(--ak-color-surface) 94%, white 6%);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
     box-shadow: var(--ak-shadow-sm);
   }
 

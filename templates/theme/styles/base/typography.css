@@ -3,41 +3,47 @@
 }
 
 :where(body) {
+  margin: 0;
   font-family: var(--ak-font-family-body);
   font-size: var(--ak-type-3-size);
-  line-height: var(--ak-type-3-line-height);
-  letter-spacing: var(--ak-type-3-letter-spacing);
+  line-height: 1.62;
+  letter-spacing: 0;
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
   color: var(--ak-color-text);
   font-family: var(--ak-font-family-body);
-  font-weight: var(--ak-font-weight-bold);
+  font-weight: 650;
+  text-wrap: balance;
   margin: 0;
 }
 
 :where(h1) {
-  font-size: var(--ak-type-9-size);
-  line-height: var(--ak-type-9-line-height);
-  letter-spacing: var(--ak-type-9-letter-spacing);
+  font-size: clamp(3rem, 6vw, var(--ak-type-9-size));
+  line-height: 0.93;
+  letter-spacing: -0.04em;
+  font-family: var(--ak-font-family-body);
+  font-weight: 700;
 }
 
 :where(h2) {
-  font-size: var(--ak-type-8-size);
-  line-height: var(--ak-type-8-line-height);
-  letter-spacing: var(--ak-type-8-letter-spacing);
+  font-size: clamp(2.25rem, 4vw, var(--ak-type-8-size));
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-family: var(--ak-font-family-body);
+  font-weight: 700;
 }
 
 :where(h3) {
   font-size: var(--ak-type-7-size);
-  line-height: var(--ak-type-7-line-height);
-  letter-spacing: var(--ak-type-7-letter-spacing);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
 }
 
 :where(h4) {
   font-size: var(--ak-type-6-size);
-  line-height: var(--ak-type-6-line-height);
-  letter-spacing: var(--ak-type-6-letter-spacing);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
 }
 
 :where(h5) {
@@ -53,13 +59,13 @@
 }
 
 :where(p, li, dd, dt) {
-  color: var(--ak-color-text);
+  color: var(--ak-color-text-muted);
 }
 
 :where(p, li) {
   font-size: var(--ak-type-3-size);
-  line-height: var(--ak-type-3-line-height);
-  letter-spacing: var(--ak-type-3-letter-spacing);
+  line-height: 1.7;
+  letter-spacing: -0.01em;
 }
 
 :where(small) {
@@ -93,7 +99,7 @@
 }
 
 :where(code, kbd) {
-  font-size: 0.925em;
+  font-size: 0.9em;
 }
 
 :where(pre) {
@@ -105,8 +111,8 @@
 
 .ak-prose {
   display: grid;
-  gap: 1rem;
-  max-inline-size: 42rem;
+  gap: 1.1rem;
+  max-inline-size: 44rem;
 }
 
 .ak-prose > * {
@@ -176,9 +182,10 @@
   display: grid;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, white 14%);
+  border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 .ak-type-card > p {

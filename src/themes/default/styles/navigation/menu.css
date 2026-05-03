@@ -4,11 +4,10 @@
   min-width: 13rem;
   padding: calc(var(--ak-space-sm) + 0.125rem);
   border: 1px solid var(--ak-color-border-subtle);
-  border-radius: var(--ak-radius-xl);
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, var(--ak-color-surface));
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-lg);
-  backdrop-filter: blur(18px);
+  box-shadow: var(--ak-shadow-md);
 }
 
 :where([data-slot="menu-item"]) {

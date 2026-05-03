@@ -4,5 +4,6 @@
 */
 
 [data-slot="dialog-content"] {
+  border-color: color-mix(in srgb, var(--ak-color-danger) 26%, var(--ak-color-border-subtle));
   border-width: 2px;
 }

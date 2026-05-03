@@ -1,13 +1,13 @@
 @layer components {
   :where(.marketing-shell) {
     display: grid;
-    gap: clamp(var(--ak-space-2xl), 1.2rem + 1.7vw, calc(var(--ak-space-3xl) + 0.5rem));
+    gap: clamp(var(--ak-space-xl), 0.95rem + 1.35vw, var(--ak-space-2xl));
     inline-size: min(
       calc(var(--ak-layout-content-max-width) + 8rem),
       calc(100% - 2 * var(--ak-layout-page-gutter))
     );
     margin-inline: auto;
-    padding-block: var(--ak-space-xl) calc(var(--ak-space-3xl) + var(--ak-space-xl));
+    padding-block: 0 calc(var(--ak-space-3xl) + var(--ak-space-xl));
   }
 
   :where(.marketing-shell > *) {
@@ -16,18 +16,15 @@
 
   :where(.marketing-topbar) {
     position: sticky;
-    inset-block-start: var(--ak-space-md);
+    inset-block-start: 0;
     z-index: var(--ak-z-sticky);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: var(--ak-space-md);
-    padding: 0.85rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
-    border-radius: calc(var(--ak-radius-lg) + 2px);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 92%, var(--ak-color-surface));
-    box-shadow: var(--ak-shadow-sm);
-    backdrop-filter: blur(18px);
+    padding: 0.9rem 0;
+    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 88%, white 12%);
+    background: color-mix(in srgb, var(--ak-color-bg) 96%, transparent);
   }
 
   :where(.marketing-brand) {
@@ -35,6 +32,22 @@
     align-items: center;
     gap: var(--ak-space-sm);
     min-inline-size: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :where(.marketing-brand-mark) {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-primary);
+    color: var(--ak-color-text-inverse);
+    font-size: 0.88rem;
+    font-weight: var(--ak-font-weight-bold);
+    letter-spacing: -0.03em;
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.marketing-brand-copy) {
@@ -44,33 +57,39 @@
     line-height: 1.1;
   }
 
+  :where(.marketing-brand-copy > strong) {
+    color: var(--ak-color-text);
+    font-size: var(--ak-font-size-sm);
+    font-weight: var(--ak-font-weight-bold);
+    letter-spacing: -0.02em;
+  }
+
+  :where(.marketing-brand-copy > span) {
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-xs);
+    letter-spacing: 0.01em;
+  }
+
   :where(.marketing-nav) {
     display: inline-flex;
     align-items: center;
     justify-self: center;
-    gap: var(--ak-space-xs);
+    gap: var(--ak-space-md);
     flex-wrap: wrap;
   }
 
   :where(.marketing-nav a) {
     display: inline-flex;
     align-items: center;
-    min-block-size: 2.5rem;
-    padding-inline: 0.95rem;
-    border: 1px solid transparent;
-    border-radius: var(--ak-radius-round);
+    min-block-size: auto;
+    padding: 0.2rem 0;
     color: var(--ak-color-text-muted);
     font-size: var(--ak-font-size-sm);
     font-weight: var(--ak-font-weight-semibold);
-    transition:
-      background var(--ak-duration-fast) var(--ak-ease-standard),
-      border-color var(--ak-duration-fast) var(--ak-ease-standard),
-      color var(--ak-duration-fast) var(--ak-ease-standard);
+    transition: color var(--ak-duration-fast) var(--ak-ease-standard);
   }
 
   :where(.marketing-nav a:hover) {
-    border-color: color-mix(in srgb, var(--ak-color-border) 82%, white);
-    background: color-mix(in srgb, var(--ak-color-primary-soft) 28%, var(--ak-color-surface));
     color: var(--ak-color-text);
   }
 
@@ -85,12 +104,16 @@
   :where(.marketing-hero),
   :where(.marketing-section-split) {
     display: grid;
-    gap: clamp(var(--ak-space-xl), 0.9rem + 1.75vw, calc(var(--ak-space-3xl) + 0.25rem));
+    gap: clamp(var(--ak-space-lg), 0.85rem + 1.1vw, var(--ak-space-2xl));
     align-items: start;
   }
 
   :where(.marketing-hero) {
-    grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+    max-inline-size: 52rem;
+  }
+
+  :where(.marketing-hero > *) {
+    min-inline-size: 0;
   }
 
   :where(.marketing-stack) {
@@ -99,11 +122,29 @@
     gap: var(--ak-space-lg);
   }
 
+  :where(.marketing-lead) {
+    max-inline-size: 44rem;
+    font-size: clamp(1.03rem, 0.96rem + 0.5vw, 1.22rem);
+  }
+
   :where(.marketing-pill-row) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(13rem, max-content));
     gap: var(--ak-space-sm);
     justify-content: start;
+  }
+
+  :where(.marketing-pill) {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2rem;
+    padding-inline: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--ak-color-border) 82%, white 18%);
+    border-radius: var(--ak-radius-round);
+    background: var(--ak-color-surface);
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-sm);
+    font-weight: var(--ak-font-weight-semibold);
   }
 
   :where(.marketing-hero-actions) {
@@ -119,16 +160,83 @@
     gap: var(--ak-space-sm);
   }
 
+  :where(.marketing-stat) {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.95rem;
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
+    box-shadow: var(--ak-shadow-sm);
+  }
+
+  :where(.marketing-stat-value) {
+    color: var(--ak-color-text);
+    font-size: 1.55rem;
+    font-weight: var(--ak-font-weight-bold);
+    letter-spacing: -0.04em;
+  }
+
+  :where(.marketing-stat-label) {
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-xs);
+    line-height: 1.4;
+  }
+
+  :where(.marketing-key-value-list) {
+    display: grid;
+    gap: var(--ak-space-sm);
+  }
+
+  :where(.marketing-key-value) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ak-space-md);
+    padding: 0.85rem 0.95rem;
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
+  }
+
+  :where(.marketing-key-value > span) {
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-sm);
+  }
+
+  :where(.marketing-key-value > strong) {
+    color: var(--ak-color-text);
+    font-size: var(--ak-font-size-sm);
+  }
+
   :where(.marketing-proof-strip) {
     display: grid;
     gap: var(--ak-space-md);
-    padding-block: var(--ak-space-md);
+    padding-block-start: var(--ak-space-md);
+    border-block-start: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 88%, white);
   }
 
   :where(.marketing-proof-grid) {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     gap: var(--ak-space-sm);
+  }
+
+  :where(.marketing-proof-item) {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  :where(.marketing-proof-item > strong) {
+    color: var(--ak-color-text);
+    font-size: var(--ak-font-size-sm);
+    font-weight: var(--ak-font-weight-semibold);
+  }
+
+  :where(.marketing-proof-item > span) {
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-xs);
+    line-height: 1.45;
   }
 
   :where(.marketing-section) {
@@ -153,9 +261,9 @@
   }
 
   :where(.marketing-card) {
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
-    border-radius: calc(var(--ak-radius-md) + 2px);
-    background: color-mix(in srgb, var(--ak-color-surface) 94%, white 6%);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
     box-shadow: var(--ak-shadow-sm);
   }
 
@@ -181,7 +289,6 @@
   }
 
   @media (max-width: 64rem) {
-    :where(.marketing-hero),
     :where(.marketing-section-split) {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -197,12 +304,12 @@
 
   @media (max-width: 48rem) {
     :where(.marketing-shell) {
-      padding-block: var(--ak-space-lg) var(--ak-space-2xl);
+      padding-block: 0 var(--ak-space-2xl);
       gap: var(--ak-space-2xl);
     }
 
     :where(.marketing-topbar) {
-      padding: 0.75rem;
+      padding-block: 0.75rem;
     }
 
     :where(.marketing-topbar),
@@ -221,12 +328,9 @@
       inline-size: 100%;
     }
 
-    :where(.marketing-stat-grid) {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    :where(.marketing-pill-row) {
-      grid-template-columns: minmax(0, 1fr);
+    :where(.marketing-key-value) {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 }
