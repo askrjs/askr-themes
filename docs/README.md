@@ -1,6 +1,6 @@
 ﻿# @askrjs/themes
 
-Default theme tokens, styles, and visual components for askr-ui admin and internal tools.
+Default theme tokens, styles, and visual components for askr-ui applications.
 
 ## Contents
 

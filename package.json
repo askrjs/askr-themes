@@ -103,18 +103,18 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@askrjs/askr": ">=0.0.30 <0.1.0",
+    "@askrjs/askr": ">=0.0.1 <0.1.0",
     "@askrjs/ui": ">=0.0.1 <0.1.0",
     "@askrjs/vite": ">=0.0.1 <0.1.0",
-    "@tsdown/css": "0.21.9",
+    "@tsdown/css": "0.21.10",
     "@types/node": "^25.6.0",
-    "jsdom": "^29.0.2",
+    "jsdom": "^29.1.1",
     "playwright": "^1.59.1",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.1.19"
+    "vite-plus": "^0.1.20"
   },
   "peerDependencies": {
-    "@askrjs/askr": ">=0.0.30 <0.1.0",
+    "@askrjs/askr": ">=0.0.1 <0.1.0",
     "@askrjs/ui": ">=0.0.1 <0.1.0"
   },
   "engines": {

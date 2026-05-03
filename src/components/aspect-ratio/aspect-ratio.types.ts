@@ -3,6 +3,7 @@ import type { JSXElement, Ref } from "@askrjs/askr/foundations";
 export type AspectRatioOwnProps = {
   children?: unknown;
   ratio?: number | string;
+  style?: unknown;
 };
 
 export type AspectRatioProps = Omit<

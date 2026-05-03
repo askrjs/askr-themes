@@ -1,4 +1,5 @@
-import { Slot, mergeProps } from "@askrjs/askr/foundations";
+import { Slot } from "@askrjs/askr/foundations";
+import { mergeProps } from "../_internal/merge-props";
 import { isCssLength, mergeLayoutStyles } from "../_internal/layout";
 import { isJsxElement, toChildArray } from "../_internal/jsx";
 import type { SpacerAsChildProps, SpacerNativeProps } from "./spacer.types";
