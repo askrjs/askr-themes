@@ -1,6 +1,7 @@
 # Styling: askr-themes
 
 `@askrjs/themes` provides the canonical default visual theme for Askr admin and internal-tool applications.
+It pairs with `@askrjs/charts`, which owns the lightweight charting surface.
 
 ## What askr-themes is
 
@@ -13,6 +14,7 @@ askr-themes is an optional styling layer. It provides:
 - Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon`
 - Shell and navigation chrome such as `Header`, `Navbar`, `SidebarLayout`,
   and `TopbarLayout`
+- Chart-adjacent shell styling, but not chart rendering itself
 
 It does not own runtime behavior or accessibility logic. When it exports a
 component wrapper, that wrapper composes an existing `askr-ui` primitive and
