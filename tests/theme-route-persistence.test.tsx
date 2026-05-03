@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA, navigate } from "@askrjs/askr";
 import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
 
-import { ThemeProvider, ThemeToggle } from "../src/components";
+import { ThemePicker, ThemeProvider, ThemeToggle } from "../src/components";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -177,5 +177,30 @@ describe("theme route persistence", () => {
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+  });
+
+  it("mounts theme controls without render-time state errors", async () => {
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="light">
+        <header>
+          <ThemePicker />
+          <ThemeToggle />
+        </header>
+        <main>
+          <div id="page">Example</div>
+        </main>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await expect(createSPA({ root: container!, manifest: getManifest() })).resolves.toBeUndefined();
+    await settle();
+
+    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-picker"]')).not.toBeNull();
+    expect(container.querySelector('[data-theme-control="toggle"]')).not.toBeNull();
   });
 });
