@@ -1,4 +1,5 @@
 import { defineContext, readContext, state } from "@askrjs/askr";
+import { resource } from "@askrjs/askr/resources";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
@@ -88,9 +89,42 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
   };
 
   const currentTheme = themeState();
-  syncThemeRoot(currentTheme);
 
-  return <ThemeContext.Scope value={value}>{children}</ThemeContext.Scope>;
+  return (
+    <ThemeContext.Scope value={value}>
+      <ThemeRootSync theme={currentTheme} />
+      <div data-slot="theme-provider">{children}</div>
+    </ThemeContext.Scope>
+  );
+}
+
+function ThemeRootSync(props: { theme: ThemeName }): JSX.Element | null {
+  const { theme } = props;
+
+  resource(({ signal }: { signal: AbortSignal }) => {
+    if (typeof window === "undefined") {
+      syncThemeRoot(theme);
+      return null;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      if (!signal.aborted) {
+        syncThemeRoot(theme);
+      }
+    }, 0);
+
+    signal.addEventListener(
+      "abort",
+      () => {
+        window.clearTimeout(timeoutId);
+      },
+      { once: true },
+    );
+
+    return null;
+  }, [theme]);
+
+  return null;
 }
 
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
@@ -109,7 +143,9 @@ export function ThemePicker(props: ThemePickerProps): JSX.Element {
       }}
     >
       {themes.map((option) => (
-        <option value={option.value}>{option.label}</option>
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
       ))}
     </select>
   );

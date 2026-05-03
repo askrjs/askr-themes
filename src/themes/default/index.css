@@ -16,6 +16,7 @@
 @import "./styles/actions/toggle-group.css";
 @import "./styles/forms/input.css";
 @import "./styles/forms/textarea.css";
+@import "./styles/forms/form.css";
 @import "./styles/forms/checkbox.css";
 @import "./styles/forms/switch.css";
 @import "./styles/forms/radio-group.css";
@@ -30,6 +31,7 @@
 @import "./styles/display/avatar.css";
 @import "./styles/display/separator.css";
 @import "./styles/display/table.css";
+@import "./styles/display/scroll-area.css";
 @import "./styles/display/spinner.css";
 @import "./styles/display/coverage.css";
 @import "./styles/navigation/breadcrumb.css";
@@ -44,4 +46,5 @@
 @import "./styles/overlays/toast.css";
 @import "./styles/overlays/dialog.css";
 @import "./styles/overlays/popover.css";
+@import "./styles/overlays/hover-card.css";
 @import "./styles/overlays/tooltip.css";

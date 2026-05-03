@@ -1,4 +1,5 @@
-import { Slot, mergeProps } from "@askrjs/askr/foundations";
+import { Slot } from "@askrjs/askr/foundations";
+import { mergeProps } from "../_internal/merge-props";
 import type { SkeletonAsChildProps, SkeletonProps } from "./skeleton.types";
 
 export function Skeleton(props: SkeletonProps): JSX.Element;

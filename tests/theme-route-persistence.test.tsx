@@ -10,6 +10,7 @@ import { ThemeProvider, ThemeToggle } from "../src/components";
 async function settle(): Promise<void> {
   await Promise.resolve();
   await Promise.resolve();
+  await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 function clearStoredTheme(): void {
@@ -96,6 +97,11 @@ describe("theme route persistence", () => {
     });
 
     await createSPA({ root: container!, manifest: getManifest() });
+
+    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
+
     await settle();
 
     const toggle = container.querySelector(
@@ -103,7 +109,7 @@ describe("theme route persistence", () => {
     ) as HTMLButtonElement | null;
     const html = document.documentElement;
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).toBeNull();
+    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
     expect(html.getAttribute("data-theme")).toBe("light");
     expect(html.getAttribute("data-theme-choice")).toBe("light");
