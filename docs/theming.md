@@ -3,6 +3,9 @@
 Theming in `@askrjs/themes` means overriding design tokens and, when needed,
 layering app-specific CSS over the default component selectors.
 
+Charts are intentionally out of scope here. Use `@askrjs/charts` as the sibling
+package for CSS-first chart visuals and lightweight trend approximations.
+
 ## Layer Model
 
 The default theme is split into replaceable CSS layers:

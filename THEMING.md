@@ -1,5 +1,9 @@
 ﻿# Theming
 
+`@askrjs/themes` is the shell, token, and component styling companion to
+`@askrjs/charts`. It owns the app frame and shared visual language, while chart
+rendering stays in the chart package.
+
 Import a theme:
 
 ```css
