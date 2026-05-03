@@ -68,8 +68,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Unit and jsdom tests
-        run: npm run test:unit && npm run test:jsdom
+      - name: Package tests
+        run: npm test
 
   browser:
     name: Browser Integration (${{ matrix.os }})
