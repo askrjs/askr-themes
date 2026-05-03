@@ -9,8 +9,6 @@
 @import "./styles/shell/theme.css";
 @import "./styles/shell/header.css";
 @import "./styles/shell/navbar.css";
-@import "./styles/shell/product-shell.css";
-@import "./styles/shell/marketing-shell.css";
 @import "./styles/actions/button.css";
 @import "./styles/actions/toggle.css";
 @import "./styles/actions/toggle-group.css";

@@ -7,7 +7,7 @@
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  font-size: var(--ak-font-size-md);
+  font-size: var(--ak-font-size-sm);
   resize: vertical;
   box-shadow: var(--ak-shadow-sm);
   transition:

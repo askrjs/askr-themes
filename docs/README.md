@@ -18,7 +18,7 @@ npm install @askrjs/themes
 import "@askrjs/themes/default";
 ```
 
-For app scaffolds, shell chrome, and visual composition:
+For reusable shell chrome and visual composition:
 
 ```ts
 import {
@@ -48,7 +48,8 @@ The theme supports both canonical `askr-ui` hooks and convenient class aliases:
 
 The default path is an admin-ready application shell: tables, settings pages,
 record detail screens, and dashboard layouts should look production-ready
-without custom CSS.
+without custom CSS. Product-style and marketing-style shells should be composed
+in userland from the generic primitives rather than expected as package recipes.
 
 Semantic table primitives come from `@askrjs/ui`; the default theme styles the
 `Table` surface through its bundled `table.css` rules.
