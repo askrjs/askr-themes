@@ -106,7 +106,12 @@
     border-color: transparent;
   }
 
-  :where(.navbar-item[aria-current="page"], [data-slot="nav-item"][aria-current="page"], .navbar-item[data-active="true"], [data-slot="nav-item"][data-active="true"]) {
+  :where(
+    .navbar-item[aria-current="page"],
+    [data-slot="nav-item"][aria-current="page"],
+    .navbar-item[data-active="true"],
+    [data-slot="nav-item"][data-active="true"]
+  ) {
     color: var(--ak-color-text);
     background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface));
     border-color: color-mix(in srgb, var(--ak-color-primary) 16%, var(--ak-color-border));

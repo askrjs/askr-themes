@@ -5,9 +5,7 @@ function isEventHandlerKey(key: string): boolean {
   return key.startsWith("on");
 }
 
-function isDefaultPrevented(
-  value: unknown,
-): value is { defaultPrevented: true } {
+function isDefaultPrevented(value: unknown): value is { defaultPrevented: true } {
   return (
     typeof value === "object" &&
     value !== null &&

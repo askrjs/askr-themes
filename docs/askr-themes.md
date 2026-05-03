@@ -1,4 +1,4 @@
-﻿# Styling: askr-themes
+# Styling: askr-themes
 
 `@askrjs/themes` provides the canonical default visual theme for Askr admin and internal-tool applications.
 
@@ -11,7 +11,6 @@ askr-themes is an optional styling layer. It provides:
   `Container`, `Section`, `Spacer`, and `AspectRatio`
 - Semantic `askr-ui` styling, starting with `Button`
 - Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon`
-- Page scaffolds such as `EmptyState`, `FormSection`, and `SettingsSection`
 - Shell and navigation chrome such as `Header`, `Navbar`, `SidebarLayout`,
   and `TopbarLayout`
 
@@ -26,8 +25,6 @@ applies the default theme styles for that visual contract.
 - Use visual primitives for layout and surface composition.
 - Use wrappers like `Breadcrumb`, `Spinner`, and `AccessibleIcon` when you want a theme-owned
   presentation around a core semantic primitive.
-- Use scaffolds when you are building app pages and need a packaged page
-  fragment.
 - Use shell and navigation chrome when you are composing the overall frame of
   an application. `Header` belongs here because it frames the page shell,
   while `Navbar`, `SidebarLayout`, and `TopbarLayout` define the surrounding
@@ -55,10 +52,8 @@ import {
   Breadcrumb,
   EmptyState,
   Flex,
-  FormSection,
   Grid,
   Header,
-  SettingsSection,
   Spinner,
   Stack,
 } from "@askrjs/themes/components";
@@ -69,19 +64,6 @@ behavior:
 
 ```ts
 import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
-```
-
-Or import a theme-owned visual component directly:
-
-```ts
-import {
-  Breadcrumb,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Spinner,
-} from "@askrjs/themes/components";
 ```
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`
@@ -107,60 +89,8 @@ Or in CSS:
 ```
 
 The default theme is designed to supply admin and internal-tool surfaces while
-leaving the overall app frame in userland: pair `Header`, `Grid`, `Card`,
-`FormSection`, and `EmptyState`, then customize the result by overriding
-semantic `--ak-*` tokens.
-
-## Admin page composition
-
-```tsx
-import "@askrjs/themes/default";
-import {
-  Button,
-  Card,
-  CardContent,
-  EmptyState,
-  Header,
-  FormSection,
-  SettingsSection,
-  Stack,
-} from "@askrjs/themes/components";
-
-export function OperationsPage() {
-  return (
-    <div class="ops-app">
-      <aside class="ops-app-nav">
-        <Stack gap="2">Navigation</Stack>
-      </aside>
-      <main class="ops-app-main">
-        <Header>
-          <Stack gap="1">
-            <h1>Operations Console</h1>
-            <p>Team activity, records, and configuration</p>
-          </Stack>
-          <Button variant="primary">Create record</Button>
-        </Header>
-        <Stack gap="5">
-          <Card>
-            <CardContent>Metrics, tables, or approval queues go here.</CardContent>
-          </Card>
-          <FormSection title="Record defaults" description="Settings applied to new entries.">
-            Form fields go here.
-          </FormSection>
-          <SettingsSection title="Access controls" description="Protected admin actions.">
-            <EmptyState title="No elevated actions configured" />
-          </SettingsSection>
-        </Stack>
-      </main>
-    </div>
-  );
-}
-```
-
-Keep narrow recipes as composition: a record-detail page is `Card` plus
-`FormSection`; a CRUD index page is `Header` plus the `askr-ui` `Table`
-inside a `Card` or surface. Those recipes do not need first-class wrappers
-until they prove reusable across several admin apps.
+leaving the overall app frame in userland. Use the package for primitives,
+tokens, and shell chrome, then compose any app-specific page helpers locally.
 
 `data-slot` is the canonical styling contract from `askr-ui`, and
 `askr-themes` layers optional unprefixed aliases over it for ergonomic raw HTML:
@@ -171,12 +101,11 @@ until they prove reusable across several admin apps.
 ```
 
 Pattern primitives keep their plain classes for raw HTML ergonomics
-(`.page-header`, `.form-section`, `.settings-section`) and also emit matching
-canonical `data-slot` hooks. `Header` is the public scaffold component; the
-shell stylesheet uses `.page-header` as the internal style hook for that
-surface. Global design tokens keep the `--ak-*` prefix. Class aliases are
-intentionally selective; prefer tokens and canonical data hooks for deeper
-customization.
+(`.page-header`) and also emit matching canonical `data-slot` hooks. `Header`
+is the public shell chrome component; the shell stylesheet uses `.page-header`
+as its internal style hook for that surface. Global design tokens keep the
+`--ak-*` prefix. Class aliases are intentionally selective; prefer tokens and
+canonical data hooks for deeper customization.
 
 ## When to use askr-themes
 

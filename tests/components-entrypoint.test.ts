@@ -8,7 +8,6 @@ import {
   Card,
   Breadcrumb,
   EmptyState,
-  FormSection,
   GitHubLogo,
   GoogleLogo,
   Header,
@@ -17,7 +16,6 @@ import {
   NavGroup,
   NavItem,
   Navbar,
-  SettingsSection,
   Spinner,
   Stack,
   ThemePicker,
@@ -57,36 +55,18 @@ describe("components entrypoint", () => {
     expect(Spinner({ label: "Working" })).toBeTruthy();
   });
 
-  it("exposes scaffolds and shell chrome", () => {
+  it("exposes empty state and shell chrome", () => {
     expect(Header({ children: "header" })).toBeTruthy();
     expect(Navbar({ children: "nav" })).toBeTruthy();
     expect(NavBrand({ children: "brand" })).toBeTruthy();
     expect(NavGroup({ children: "group" })).toBeTruthy();
     expect(NavItem({ href: "https://github.com/askrjs", children: "item" })).toBeTruthy();
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
-    expect(FormSection({ title: "Profile", children: "fields" })).toBeTruthy();
-    expect(SettingsSection({ title: "Team", children: "settings" })).toBeTruthy();
   });
 
-  it("lets high-level pattern components override heading level", () => {
+  it("lets the empty state override heading level", () => {
     const emptyState = asElement(EmptyState({ title: "No projects", titleAs: "h3" }));
-    const formSection = asElement(
-      FormSection({ title: "Profile", titleAs: "h4", children: "fields" }),
-    );
-    const settingsSection = asElement(
-      SettingsSection({ title: "Team", titleAs: "h5", children: "settings" }),
-    );
 
     expect((emptyState.props.children as ElementLike[])[1].type).toBe("h3");
-    expect(
-      (
-        ((formSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0].props
-          .children as ElementLike[]
-      )[0].type,
-    ).toBe("h4");
-    expect(
-      ((settingsSection.props.children as ElementLike[])[0].props.children as ElementLike[])[0]
-        .type,
-    ).toBe("h5");
   });
 });

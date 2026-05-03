@@ -59,12 +59,12 @@ the active scope:
 ## Selector Contract
 
 `data-slot` is the canonical selector contract for package components. The
-default theme also provides a small set of class aliases for raw HTML and app
-scaffolds. Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay thin,
-while shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
-`TopbarLayout` provide the app frame. Recipe shells like marketing or product
-pages should be composed in userland from these primitives rather than shipped
-as dedicated theme exports:
+default theme also provides a small set of class aliases for raw HTML.
+Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay
+thin, while shell chrome components such as `Header`, `Navbar`,
+`SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
+marketing or product pages should be composed in userland from these
+primitives rather than shipped as dedicated theme exports.
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.
@@ -81,19 +81,6 @@ When extending styles, group aliases with their canonical selectors:
   background: var(--ak-color-primary);
 }
 ```
-
-## App Scaffolds
-
-Theme-owned scaffold components such as `EmptyState`, `FormSection`, and
-`SettingsSection` provide visual composition only. Runtime behavior and
-accessibility state still belong to `@askrjs/ui`.
-
-Shell chrome components such as `Header`, `Navbar`, `SidebarLayout`, and
-`TopbarLayout` are part of the same visual system, but they frame the
-application rather than a specific page fragment. Compose higher-level shells
-from these primitives in the app instead of relying on recipe-specific theme
-exports. The `Header` component is the public API; the shell stylesheet uses
-`.page-header` as its internal selector hook.
 
 ## See Also
 

@@ -1,16 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import {
-  Button,
-  Card,
-  CardContent,
-  EmptyState,
-  FormSection,
-  SettingsSection,
-  Stack,
-} from "../src/components";
+import { Button, Card, CardContent, EmptyState, Stack } from "../src/components";
 
-describe("product SaaS scaffold patterns", () => {
+describe("product SaaS composition patterns", () => {
   it("builds dashboard content while leaving the shell in userland", () => {
     const page = (
       <div class="ops-app-shell">
@@ -56,18 +48,13 @@ describe("product SaaS scaffold patterns", () => {
     const settings = Stack({
       gap: "5",
       children: [
-        FormSection({
-          title: "Profile",
-          description: "Public information for this workspace.",
-          actions: Button({ children: "Save", variant: "primary" }),
-          children: "fields",
-        }),
-        SettingsSection({
-          title: "Danger zone",
-          description: "Actions that affect every member.",
-          children: EmptyState({
-            title: "No destructive actions configured",
-            description: "Add safeguards before enabling irreversible actions.",
+        Card({
+          children: CardContent({
+            children: EmptyState({
+              title: "No destructive actions configured",
+              description: "Add safeguards before enabling irreversible actions.",
+              actions: Button({ children: "Review policies", variant: "secondary" }),
+            }),
           }),
         }),
       ],
