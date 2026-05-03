@@ -46,9 +46,9 @@
   padding: var(--ak-space-sm);
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
-  background: var(--ak-color-surface);
+  background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-md);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 [data-slot="navigation-menu-link"],

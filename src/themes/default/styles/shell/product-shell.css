@@ -1,13 +1,10 @@
 @layer components {
   :where(.panel) {
-    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 92%, white);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
     border-radius: var(--ak-radius-lg);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, var(--ak-color-surface));
+    background: var(--ak-color-surface);
     padding: var(--ak-layout-panel-padding);
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.58) inset,
-      var(--ak-shadow-sm);
-    backdrop-filter: blur(18px);
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.page-header),
@@ -20,8 +17,8 @@
   }
 
   :where(.page-header) {
-    padding-block-end: var(--ak-space-sm);
-    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 90%, white);
+    padding-block-end: var(--ak-space-md);
+    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 84%, white 16%);
   }
 
   :where(.page-header-copy),
@@ -51,7 +48,7 @@
     align-content: center;
     justify-items: start;
     border-style: dashed;
-    background: color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface));
+    background: var(--ak-color-surface-muted);
   }
 
   :where(.account-filters),
@@ -71,16 +68,11 @@
     min-inline-size: min(18rem, 100%);
     min-block-size: 2.875rem;
     padding-inline: var(--ak-space-md);
-    border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white);
+    border: 1px solid color-mix(in srgb, var(--ak-color-border) 80%, white 20%);
     border-radius: var(--ak-radius-lg);
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, white 78%, var(--ak-color-primary-soft)),
-      color-mix(in srgb, var(--ak-color-surface) 88%, var(--ak-color-surface-muted))
-    );
+    background: var(--ak-color-surface);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.72) inset,
-      0 0 0 1px transparent;
+      var(--ak-shadow-sm);
     transition:
       background var(--ak-duration-fast) var(--ak-ease-standard),
       border-color var(--ak-duration-fast) var(--ak-ease-standard),
@@ -94,7 +86,7 @@
 
   :where(.account-search, [data-ak-search-field]):focus-within {
     border-color: var(--ak-color-primary);
-    background: color-mix(in srgb, var(--ak-color-primary-soft) 14%, var(--ak-color-surface));
+    background: var(--ak-color-surface);
     box-shadow:
       0 0 0 4px var(--ak-color-focus-ring),
       var(--ak-shadow-sm);

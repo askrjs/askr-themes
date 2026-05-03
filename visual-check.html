@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>askr-themes visual check</title>
+    <link rel="stylesheet" href="./src/themes/default/index.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: var(--ak-font-family-body);
+        background: #f6f7fb;
+      }
+
+      .page {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      .surface {
+        display: grid;
+        gap: 1rem;
+        padding: 1.25rem;
+        border-radius: 1.5rem;
+        border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+        overflow: hidden;
+      }
+
+      .stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .stack > * {
+        min-width: 0;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        align-items: center;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+      }
+
+      .span-6 {
+        grid-column: span 6;
+      }
+
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      .note {
+        color: var(--ak-color-text-muted);
+      }
+
+      .demo-shell {
+        display: grid;
+        gap: 1rem;
+      }
+
+      table {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <section class="surface" data-slot="theme-provider" data-theme="light">
+        <header class="header" data-slot="header">
+          <div class="panel">
+            <nav class="navbar" data-slot="navbar" aria-label="Primary light">
+              <div class="navbar-brand" data-slot="navbar-brand">
+                <a href="#">askr</a>
+              </div>
+              <div class="navbar-group" data-slot="navbar-group" data-align="center">
+                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">Components</a>
+                <a class="navbar-item" data-slot="nav-item" href="#">Charts</a>
+                <a class="navbar-item" data-slot="nav-item" href="#">About</a>
+              </div>
+              <div class="navbar-group" data-slot="navbar-group" data-align="end">
+                <button class="btn btn-ghost btn-icon" data-slot="button" aria-label="Toggle theme">◐</button>
+              </div>
+            </nav>
+          </div>
+        </header>
+
+        <main class="demo-shell">
+          <section class="panel">
+            <p class="marketing-eyebrow">Light mode</p>
+            <h1>Cleaner, calmer, crisper.</h1>
+            <p class="marketing-lead note">
+              The surfaces should separate more cleanly now, with less blur and fewer gradients.
+            </p>
+            <div class="row">
+              <button class="btn btn-primary" data-slot="button">Primary</button>
+              <button class="btn btn-secondary" data-slot="button">Secondary</button>
+              <button class="btn btn-outline" data-slot="button">Outline</button>
+              <button class="btn btn-ghost" data-slot="button">Ghost</button>
+            </div>
+          </section>
+
+          <div class="grid">
+            <section class="card card-raised span-6" data-slot="card" data-variant="raised">
+              <div class="card-header" data-slot="card-header">
+                <h2 class="card-title" data-slot="card-title">Cards</h2>
+                <p class="card-description" data-slot="card-description">Raised, but not glassy.</p>
+              </div>
+              <div class="card-content" data-slot="card-content">
+                <p class="note">This should read as a distinct surface, not a soft glow.</p>
+              </div>
+            </section>
+
+            <section class="panel span-6">
+              <div class="stack">
+                <input class="input" data-slot="input" placeholder="name@company.com" />
+                <textarea class="textarea" data-slot="textarea" placeholder="Type a note"></textarea>
+              </div>
+            </section>
+
+            <section class="panel span-12">
+              <table data-slot="table">
+                <thead data-slot="table-head">
+                  <tr data-slot="table-row">
+                    <th data-slot="table-header-cell">Name</th>
+                    <th data-slot="table-header-cell">Role</th>
+                    <th data-slot="table-header-cell">Status</th>
+                  </tr>
+                </thead>
+                <tbody data-slot="table-body">
+                  <tr data-slot="table-row">
+                    <td data-slot="table-cell">Avery</td>
+                    <td data-slot="table-cell">Design</td>
+                    <td data-slot="table-cell">Active</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="span-12 row">
+              <div data-slot="dialog-content">
+                <h3 data-slot="dialog-title">Dialog</h3>
+                <p data-slot="dialog-description">Cleaner overlays, less bleed.</p>
+                <button data-slot="dialog-close">Close</button>
+              </div>
+              <div data-slot="popover-content">
+                <p class="note">Popover</p>
+                <button data-slot="popover-close">Dismiss</button>
+              </div>
+              <div data-slot="tooltip-content">Tooltip</div>
+            </section>
+          </div>
+        </main>
+      </section>
+
+      <section class="surface" data-slot="theme-provider" data-theme="dark">
+        <header class="header" data-slot="header">
+          <div class="panel">
+            <nav class="navbar" data-slot="navbar" aria-label="Primary dark">
+              <div class="navbar-brand" data-slot="navbar-brand">
+                <a href="#">askr</a>
+              </div>
+              <div class="navbar-group" data-slot="navbar-group" data-align="center">
+                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">Components</a>
+                <a class="navbar-item" data-slot="nav-item" href="#">Charts</a>
+                <a class="navbar-item" data-slot="nav-item" href="#">About</a>
+              </div>
+              <div class="navbar-group" data-slot="navbar-group" data-align="end">
+                <button class="btn btn-ghost btn-icon" data-slot="button" aria-label="Toggle theme">◐</button>
+              </div>
+            </nav>
+          </div>
+        </header>
+
+        <main class="demo-shell">
+          <section class="panel">
+            <p class="marketing-eyebrow">Dark mode</p>
+            <h1>Same system, more depth.</h1>
+            <p class="marketing-lead note">
+              The dark surface should stay crisp and restrained, not foggy or overworked.
+            </p>
+            <div class="row">
+              <button class="btn btn-primary" data-slot="button">Primary</button>
+              <button class="btn btn-secondary" data-slot="button">Secondary</button>
+              <button class="btn btn-outline" data-slot="button">Outline</button>
+              <button class="btn btn-ghost" data-slot="button">Ghost</button>
+            </div>
+          </section>
+
+          <div class="grid">
+            <section class="card card-raised span-6" data-slot="card" data-variant="raised">
+              <div class="card-header" data-slot="card-header">
+                <h2 class="card-title" data-slot="card-title">Cards</h2>
+                <p class="card-description" data-slot="card-description">Raised, but not glassy.</p>
+              </div>
+              <div class="card-content" data-slot="card-content">
+                <p class="note">This should read as a distinct surface, not a soft glow.</p>
+              </div>
+            </section>
+
+            <section class="panel span-6">
+              <div class="stack">
+                <input class="input" data-slot="input" placeholder="name@company.com" />
+                <textarea class="textarea" data-slot="textarea" placeholder="Type a note"></textarea>
+              </div>
+            </section>
+
+            <section class="panel span-12">
+              <table data-slot="table">
+                <thead data-slot="table-head">
+                  <tr data-slot="table-row">
+                    <th data-slot="table-header-cell">Name</th>
+                    <th data-slot="table-header-cell">Role</th>
+                    <th data-slot="table-header-cell">Status</th>
+                  </tr>
+                </thead>
+                <tbody data-slot="table-body">
+                  <tr data-slot="table-row">
+                    <td data-slot="table-cell">Avery</td>
+                    <td data-slot="table-cell">Design</td>
+                    <td data-slot="table-cell">Active</td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="span-12 row">
+              <div data-slot="dialog-content">
+                <h3 data-slot="dialog-title">Dialog</h3>
+                <p data-slot="dialog-description">Cleaner overlays, less bleed.</p>
+                <button data-slot="dialog-close">Close</button>
+              </div>
+              <div data-slot="popover-content">
+                <p class="note">Popover</p>
+                <button data-slot="popover-close">Dismiss</button>
+              </div>
+              <div data-slot="tooltip-content">Tooltip</div>
+            </section>
+          </div>
+        </main>
+      </section>
+    </div>
+  </body>
+</html>

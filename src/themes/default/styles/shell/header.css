@@ -3,9 +3,8 @@
     position: relative;
     z-index: var(--ak-z-sticky);
     border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
-    box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
-    backdrop-filter: blur(18px) saturate(150%);
+    background: color-mix(in srgb, var(--ak-color-surface) 96%, transparent);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset;
   }
 
   :where(.header, [data-slot="header"])[data-position="static"] {

@@ -2,11 +2,11 @@
   inline-size: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid var(--ak-color-border);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
-  box-shadow: none;
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where([data-slot="table-caption"]) {
@@ -36,7 +36,7 @@
 }
 
 :where([data-slot="table-row"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-hover) 75%, transparent);
+  background: color-mix(in srgb, var(--ak-color-hover) 70%, transparent);
 }
 
 :where([data-slot="table-header-cell"]),
@@ -53,7 +53,7 @@
 :where([data-slot="table-header-cell"]) {
   color: var(--ak-color-text-muted);
   font-weight: var(--ak-font-weight-semibold);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.025em;
   text-transform: uppercase;
   white-space: nowrap;
 }

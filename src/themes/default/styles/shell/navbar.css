@@ -63,6 +63,7 @@
     align-items: center;
     min-block-size: 2.25rem;
     padding-inline: var(--ak-space-sm);
+    border: 1px solid transparent;
     border-radius: var(--ak-radius-md);
     color: var(--ak-color-text-muted);
     font-size: var(--ak-font-size-sm);
@@ -75,7 +76,9 @@
 
   :where(.navbar-item:hover, [data-slot="nav-item"]:hover) {
     color: var(--ak-color-text);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 84%, transparent);
+    background: var(--ak-color-surface-muted);
+    border-color: color-mix(in srgb, var(--ak-color-border) 78%, white 22%);
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) {
@@ -103,11 +106,23 @@
     border-color: transparent;
   }
 
+  :where(.navbar-item[aria-current="page"], [data-slot="nav-item"][aria-current="page"], .navbar-item[data-active="true"], [data-slot="nav-item"][data-active="true"]) {
+    color: var(--ak-color-text);
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface));
+    border-color: color-mix(in srgb, var(--ak-color-primary) 16%, var(--ak-color-border));
+    box-shadow: var(--ak-shadow-sm);
+  }
+
   :where(.navbar-item:focus-visible, [data-slot="nav-item"]:focus-visible) {
     outline: none;
     box-shadow:
       0 0 0 1px var(--ak-color-surface),
       0 0 0 4px var(--ak-color-focus-ring);
+  }
+
+  :where(.navbar-item[data-active="true"]:hover, [data-slot="nav-item"][data-active="true"]:hover) {
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 30%, var(--ak-color-surface-muted));
+    border-color: color-mix(in srgb, var(--ak-color-primary) 22%, var(--ak-color-border-strong));
   }
 
   :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {

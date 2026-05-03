@@ -41,8 +41,7 @@
 :where([data-slot="dialog-overlay"]) {
   position: fixed;
   inset: 0;
-  background: var(--ak-color-backdrop);
-  backdrop-filter: blur(10px) saturate(1.1);
+  background: color-mix(in srgb, var(--ak-color-backdrop) 96%, black 4%);
   animation: ak-fade-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -58,14 +57,11 @@
   max-block-size: calc(100dvh - 4rem);
   overflow-y: auto;
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
-  border: 1px solid var(--ak-color-border-subtle);
-  border-radius: var(--ak-radius-xl);
-  background: color-mix(in srgb, var(--ak-color-surface-overlay) 92%, var(--ak-color-surface));
+  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 88%, white 12%);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.58) inset,
-    var(--ak-shadow-lg);
-  backdrop-filter: blur(20px);
+  box-shadow: var(--ak-shadow-md);
   animation: ak-scale-in var(--ak-duration-normal) var(--ak-ease-standard);
 }
 
@@ -93,11 +89,11 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0 calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white);
-  border-radius: var(--ak-radius-lg);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 24%, var(--ak-color-surface-muted));
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+  box-shadow: var(--ak-shadow-sm);
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -106,7 +102,7 @@
 }
 
 :where([data-slot="dialog-close"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 42%, var(--ak-color-surface));
+  background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
   box-shadow: var(--ak-shadow-sm);
 }

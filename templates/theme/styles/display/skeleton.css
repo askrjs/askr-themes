@@ -2,10 +2,5 @@
   display: block;
   min-height: 1rem;
   border-radius: var(--ak-radius-sm);
-  background: linear-gradient(
-    90deg,
-    var(--ak-color-surface-muted),
-    var(--ak-color-surface),
-    var(--ak-color-surface-muted)
-  );
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface));
 }

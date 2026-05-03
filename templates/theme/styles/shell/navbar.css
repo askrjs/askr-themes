@@ -1,18 +1,16 @@
 @layer components {
   :where(.navbar, [data-slot="navbar"]) {
-    position: sticky;
-    inset-block-start: 0;
-    z-index: var(--ak-z-sticky);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-block-size: var(--ak-layout-navbar-height);
-    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
     gap: var(--ak-space-md);
-    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 94%, transparent);
-    box-shadow: 0 1px 0 rgba(17, 17, 19, 0.03);
-    backdrop-filter: blur(18px) saturate(150%);
+    padding-block: var(--ak-space-xs);
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
   }
 
   :where(.navbar-brand, [data-slot="navbar-brand"]) {
@@ -20,6 +18,11 @@
     align-items: center;
     gap: var(--ak-space-sm);
     min-inline-size: 0;
+  }
+
+  :where(.navbar-brand, [data-slot="navbar-brand"]) :where(a) {
+    color: inherit;
+    text-decoration: none;
   }
 
   :where(.navbar-group, [data-slot="navbar-group"]) {
@@ -30,11 +33,37 @@
     min-inline-size: 0;
   }
 
+  :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"]) {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"])
+    > :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+    grid-column: 2;
+    justify-self: center;
+    margin-inline: 0;
+  }
+
+  :where(.navbar, [data-slot="navbar"]):has(> [data-slot="navbar-group"][data-align="center"])
+    > :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {
+    grid-column: 3;
+    justify-self: end;
+    margin-inline-start: 0;
+  }
+
   :where(.navbar-item, [data-slot="nav-item"]) {
     display: inline-flex;
     align-items: center;
     min-block-size: 2.25rem;
     padding-inline: var(--ak-space-sm);
+    border: 1px solid transparent;
     border-radius: var(--ak-radius-md);
     color: var(--ak-color-text-muted);
     font-size: var(--ak-font-size-sm);
@@ -47,7 +76,9 @@
 
   :where(.navbar-item:hover, [data-slot="nav-item"]:hover) {
     color: var(--ak-color-text);
-    background: color-mix(in srgb, var(--ak-color-surface-overlay) 84%, transparent);
+    background: var(--ak-color-surface-muted);
+    border-color: color-mix(in srgb, var(--ak-color-border) 78%, white 22%);
+    box-shadow: var(--ak-shadow-sm);
   }
 
   :where(.navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) {
@@ -75,6 +106,13 @@
     border-color: transparent;
   }
 
+  :where(.navbar-item[aria-current="page"], [data-slot="nav-item"][aria-current="page"], .navbar-item[data-active="true"], [data-slot="nav-item"][data-active="true"]) {
+    color: var(--ak-color-text);
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface));
+    border-color: color-mix(in srgb, var(--ak-color-primary) 16%, var(--ak-color-border));
+    box-shadow: var(--ak-shadow-sm);
+  }
+
   :where(.navbar-item:focus-visible, [data-slot="nav-item"]:focus-visible) {
     outline: none;
     box-shadow:
@@ -82,23 +120,29 @@
       0 0 0 4px var(--ak-color-focus-ring);
   }
 
+  :where(.navbar-item[data-active="true"]:hover, [data-slot="nav-item"][data-active="true"]:hover) {
+    background: color-mix(in srgb, var(--ak-color-primary-soft) 30%, var(--ak-color-surface-muted));
+    border-color: color-mix(in srgb, var(--ak-color-primary) 22%, var(--ak-color-border-strong));
+  }
+
   :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {
     margin-inline-start: auto;
     justify-content: flex-end;
   }
-
-  :where([data-slot="topbar-layout"]) > :where(.navbar, [data-slot="navbar"]) {
-    padding-inline: clamp(1rem, 0.6rem + 1vw, 1.5rem);
-  }
-
   @media (max-width: 48rem) {
     :where(.navbar, [data-slot="navbar"]) {
+      display: flex;
       align-items: stretch;
       flex-wrap: wrap;
     }
 
     :where(.navbar-group, [data-slot="navbar-group"]) {
       inline-size: 100%;
+    }
+
+    :where(.navbar-group[data-align="center"], [data-slot="navbar-group"][data-align="center"]) {
+      justify-content: flex-start;
+      margin-inline: 0;
     }
 
     :where(.navbar-group[data-align="end"], [data-slot="navbar-group"][data-align="end"]) {

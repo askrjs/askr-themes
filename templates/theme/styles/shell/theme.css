@@ -1,20 +1,30 @@
 :where([data-slot="theme-provider"]) {
+  min-block-size: 100vh;
   color: var(--ak-color-text);
   background: var(--ak-color-bg);
 }
 
+:where(html) {
+  background: var(--ak-color-bg);
+}
+
+:where(body) {
+  background: transparent;
+}
+
 :where([data-slot="theme-picker"]) {
   display: inline-flex;
-  min-height: 2.25rem;
+  min-height: 2.5rem;
   min-width: 8rem;
-  padding-inline: 0.75rem 2rem;
-  border: 1px solid var(--ak-color-border);
-  border-radius: 8px;
-  background-color: var(--ak-color-surface);
+  padding-inline: 0.85rem 2.1rem;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
   font: inherit;
   font-size: var(--ak-font-size-sm);
   line-height: 1;
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where([data-slot="theme-picker"]:focus-visible) {

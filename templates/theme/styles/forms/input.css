@@ -1,15 +1,16 @@
 :where(.input, [data-slot="input"]) {
   appearance: none;
+  box-sizing: border-box;
   min-height: var(--ak-density-control-height-md);
   width: 100%;
   padding: 0 var(--ak-density-control-padding-x-md);
-  border: 1px solid var(--ak-color-border);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
-  box-shadow: none;
+  box-shadow: var(--ak-shadow-sm);
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
@@ -23,6 +24,7 @@
 :where(.input:hover, [data-slot="input"]:hover) {
   background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
+  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.input:focus-visible, [data-slot="input"]:focus-visible) {
@@ -33,7 +35,7 @@
 
 :where(.input[aria-invalid="true"], [data-slot="input"][aria-invalid="true"]) {
   border-color: var(--ak-color-danger);
-  background: color-mix(in srgb, var(--ak-color-danger-soft) 18%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-danger-soft) 12%, var(--ak-color-surface));
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 

@@ -150,6 +150,7 @@ This spec does not:
 5. Theme blocks should only override theme-dependent values.
 6. Layout, spacing, typography scale, icon scale, and breakpoints belong in the global root unless intentionally themed.
 7. Default visual choices should reduce end-user design decisions: one accent, subtle borders, compact density, restrained radius, and minimal decorative styling.
+8. The default theme should stay crisp and low-noise, closer to a shadcn-style baseline than a glossy decorative system.
 
 ---
 
