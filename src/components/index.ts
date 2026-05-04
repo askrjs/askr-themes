@@ -92,7 +92,7 @@ export type { EmptyStateHeadingTag, EmptyStateProps } from "./empty-state";
 // Shell / chrome
 export { Header } from "./header";
 export type { HeaderPosition, HeaderProps } from "./header";
-export { NavBrand, Navbar, NavGroup, NavItem } from "./navbar";
+export { NavBrand, Navbar, NavGroup, NavItem, NavLink } from "./navbar";
 export type {
   NavBrandProps,
   NavbarProps,
@@ -100,6 +100,7 @@ export type {
   NavItemAsChildProps,
   NavItemProps,
   NavItemVariant,
+  NavLinkProps,
 } from "./navbar";
 export { SidebarLayout } from "./sidebar-layout";
 export type { SidebarLayoutProps, SidebarPosition } from "./sidebar-layout";

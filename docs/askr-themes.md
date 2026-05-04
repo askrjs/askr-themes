@@ -12,8 +12,8 @@ askr-themes is an optional styling layer. It provides:
   `Container`, `Section`, `Spacer`, and `AspectRatio`
 - Semantic `askr-ui` styling, starting with `Button`
 - Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon`
-- Shell and navigation chrome such as `Header`, `Navbar`, `SidebarLayout`,
-  and `TopbarLayout`
+- Shell and navigation chrome such as `Header`, `Navbar`, `NavItem`,
+  `NavLink`, `SidebarLayout`, and `TopbarLayout`
 - Chart-adjacent shell styling, but not chart rendering itself
 
 It does not own runtime behavior or accessibility logic. When it exports a
@@ -56,6 +56,8 @@ import {
   Flex,
   Grid,
   Header,
+  NavItem,
+  NavLink,
   Spinner,
   Stack,
 } from "@askrjs/themes/components";

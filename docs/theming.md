@@ -64,8 +64,8 @@ the active scope:
 `data-slot` is the canonical selector contract for package components. The
 default theme also provides a small set of class aliases for raw HTML.
 Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay
-thin, while shell chrome components such as `Header`, `Navbar`,
-`SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
+thin, while shell chrome components such as `Header`, `Navbar`, `NavItem`,
+`NavLink`, `SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
 marketing or product pages should be composed in userland from these
 primitives rather than shipped as dedicated theme exports.
 
