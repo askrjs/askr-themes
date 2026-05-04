@@ -1,3 +1,6 @@
+import type { JSXElement, Ref } from "@askrjs/askr/foundations";
+import type { LinkProps } from "@askrjs/askr/router";
+
 export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
 };
@@ -9,8 +12,6 @@ export type NavBrandProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
 export type NavGroupProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
   children?: unknown;
 };
-
-import type { JSXElement, Ref } from "@askrjs/askr/foundations";
 
 export type NavItemVariant = "default" | "icon";
 
@@ -31,3 +32,5 @@ export type NavItemAsChildProps = Omit<JSX.IntrinsicElements["a"], "children" | 
     children: JSXElement;
     ref?: Ref<unknown>;
   };
+
+export type NavLinkProps = LinkProps & NavItemOwnProps;

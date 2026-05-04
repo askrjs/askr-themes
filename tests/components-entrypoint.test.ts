@@ -15,6 +15,7 @@ import {
   NavBrand,
   NavGroup,
   NavItem,
+  NavLink,
   Navbar,
   Spinner,
   Stack,
@@ -61,6 +62,7 @@ describe("components entrypoint", () => {
     expect(NavBrand({ children: "brand" })).toBeTruthy();
     expect(NavGroup({ children: "group" })).toBeTruthy();
     expect(NavItem({ href: "https://github.com/askrjs", children: "item" })).toBeTruthy();
+    expect(NavLink({ href: "/docs", children: "link" })).toBeTruthy();
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
   });
 

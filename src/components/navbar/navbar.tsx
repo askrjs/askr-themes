@@ -1,3 +1,4 @@
+import { Link } from "@askrjs/askr/router";
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import type {
@@ -5,9 +6,15 @@ import type {
   NavGroupProps,
   NavItemAsChildProps,
   NavItemProps,
+  NavItemVariant,
+  NavLinkProps,
   NavbarProps,
 } from "./navbar.types";
 import { classes } from "../_internal/classes";
+
+function navItemClasses(variant: NavItemVariant, className: unknown): string | undefined {
+  return classes("navbar-item", variant === "icon" && "navbar-item-icon", className);
+}
 
 export function Navbar(props: NavbarProps): JSX.Element {
   const { children, ref, class: className, ...rest } = props;
@@ -46,7 +53,7 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
 
   const finalProps = mergeProps(rest, {
     ref,
-    class: classes("navbar-item", variant === "icon" && "navbar-item-icon", className),
+    class: navItemClasses(variant, className),
     "data-slot": "nav-item",
     "data-variant": variant,
   });
@@ -56,4 +63,17 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
   }
 
   return <a {...finalProps}>{children}</a>;
+}
+
+export function NavLink(props: NavLinkProps): JSX.Element {
+  const { children, ref, class: className, variant = "default", ...rest } = props;
+
+  const finalProps = mergeProps(rest, {
+    ref,
+    class: navItemClasses(variant, className),
+    "data-slot": "nav-link",
+    "data-variant": variant,
+  });
+
+  return <Link {...finalProps}>{children}</Link>;
 }

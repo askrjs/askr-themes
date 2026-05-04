@@ -1,4 +1,4 @@
-export { NavBrand, Navbar, NavGroup, NavItem } from "./navbar";
+export { NavBrand, Navbar, NavGroup, NavItem, NavLink } from "./navbar";
 export type {
   NavBrandProps,
   NavbarProps,
@@ -6,4 +6,5 @@ export type {
   NavItemAsChildProps,
   NavItemProps,
   NavItemVariant,
+  NavLinkProps,
 } from "./navbar.types";
