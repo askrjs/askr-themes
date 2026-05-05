@@ -2,20 +2,29 @@
  * Verify that every data-slot value emitted by askr-ui components
  * has corresponding CSS coverage in the default theme.
  *
- * Expects askr-ui to be a sibling directory (../askr-ui).
+ * Prefers a sibling askr-ui checkout, then falls back to the installed
+ * @askrjs/ui package dist when a local source tree is not available.
  * Exit code 1 if uncovered or stale slots are found.
  */
 
 import fs from "node:fs";
 import path from "node:path";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const themesRoot = path.resolve(__dirname, "..");
-const uiRoot = path.resolve(themesRoot, "..", "askr-ui");
+const require = createRequire(import.meta.url);
 
-const UI_COMPONENTS_DIR = path.join(uiRoot, "src", "components");
+const UI_SOURCE_COMPONENTS_DIR = path.resolve(themesRoot, "..", "askr-ui", "src", "components");
+const UI_SOURCE_DIST_COMPONENTS_DIR = path.resolve(
+  themesRoot,
+  "..",
+  "askr-ui",
+  "dist",
+  "components",
+);
 const THEME_SOURCE_COMPONENTS_DIR = path.join(themesRoot, "src", "components");
 const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", "styles");
 const ALLOWED_THEME_ONLY_SLOTS = new Set(["center", "flex", "icon", "theme-provider"]);
@@ -34,17 +43,42 @@ function walkFiles(dirPath, extensions) {
   return results;
 }
 
+function resolveUiComponentsDir() {
+  if (fs.existsSync(UI_SOURCE_COMPONENTS_DIR)) {
+    return UI_SOURCE_COMPONENTS_DIR;
+  }
+
+  if (fs.existsSync(UI_SOURCE_DIST_COMPONENTS_DIR)) {
+    return UI_SOURCE_DIST_COMPONENTS_DIR;
+  }
+
+  try {
+    const packageJsonPath = require.resolve("@askrjs/ui/package.json");
+    const installedComponentsDir = path.join(path.dirname(packageJsonPath), "dist", "components");
+
+    if (fs.existsSync(installedComponentsDir)) {
+      return installedComponentsDir;
+    }
+  } catch {
+    // Ignore resolution failures and report a single consolidated error below.
+  }
+
+  return null;
+}
+
 function extractUiSlots() {
-  if (!fs.existsSync(UI_COMPONENTS_DIR)) {
+  const uiComponentsDir = resolveUiComponentsDir();
+
+  if (!uiComponentsDir) {
     console.error(
-      `askr-ui components not found at ${UI_COMPONENTS_DIR}.\n` +
-        "Ensure askr-ui is a sibling directory.",
+      "askr-ui components not found.\n" +
+        `Looked for ${UI_SOURCE_COMPONENTS_DIR}, ${UI_SOURCE_DIST_COMPONENTS_DIR}, and the installed @askrjs/ui package.`,
     );
     process.exit(1);
   }
 
   const slots = new Set();
-  const files = walkFiles(UI_COMPONENTS_DIR, [".ts", ".tsx"]);
+  const files = walkFiles(uiComponentsDir, [".ts", ".tsx", ".js", ".cjs", ".mjs"]);
 
   for (const file of files) {
     const content = fs.readFileSync(file, "utf-8");
