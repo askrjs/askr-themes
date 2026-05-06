@@ -1,5 +1,3 @@
-// @vitest-environment jsdom
-
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr";
@@ -33,24 +31,30 @@ describe("navbar link browser smoke", () => {
   });
 
   it("navigates client-side when NavLink is clicked", async () => {
-    route("/", () => (
-      <nav aria-label="Primary">
-        <NavLink href="/about">About</NavLink>
-      </nav>
-    ));
+    const shell = (page: string) => (
+      <>
+        <nav aria-label="Primary">
+          <NavLink href="/">Home</NavLink>
+          <NavLink href="/about">About</NavLink>
+        </nav>
+        <div id="page">{page}</div>
+      </>
+    );
 
-    route("/about", () => <div id="page">About page</div>);
+    route("/", () => shell("Home page"));
+
+    route("/about", () => shell("About page"));
 
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    const link = container?.querySelector('[data-slot="nav-link"]') as HTMLAnchorElement | null;
+    const aboutLink = container?.querySelector('a[href="/about"]') as HTMLAnchorElement | null;
 
-    expect(link?.tagName).toBe("A");
-    expect(link?.classList.contains("navbar-item")).toBe(true);
-    expect(link?.getAttribute("href")).toBe("/about");
+    expect(aboutLink?.tagName).toBe("A");
+    expect(aboutLink?.classList.contains("navbar-item")).toBe(true);
+    expect(aboutLink?.getAttribute("href")).toBe("/about");
 
-    link?.dispatchEvent(
+    aboutLink?.dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
         cancelable: true,

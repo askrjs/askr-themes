@@ -16,6 +16,42 @@ function navItemClasses(variant: NavItemVariant, className: unknown): string | u
   return classes("navbar-item", variant === "icon" && "navbar-item-icon", className);
 }
 
+function normalizePathname(pathname: string): string {
+  return pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+}
+
+function getCurrentPathname(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return normalizePathname(window.location.pathname || "/");
+}
+
+function resolveNavLinkPathname(href: string): string | null {
+  const baseHref = typeof window !== "undefined" ? window.location.href : "http://localhost/";
+  const baseOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+
+  try {
+    const target = new URL(href, baseHref);
+    if (target.origin !== baseOrigin) {
+      return null;
+    }
+
+    return normalizePathname(target.pathname);
+  } catch {
+    return null;
+  }
+}
+
+function isActiveNavLink(currentPathname: string, targetPathname: string): boolean {
+  if (targetPathname === "/") {
+    return currentPathname === "/";
+  }
+
+  return currentPathname === targetPathname || currentPathname.startsWith(`${targetPathname}/`);
+}
+
 export function Navbar(props: NavbarProps): JSX.Element {
   const { children, ref, class: className, ...rest } = props;
 
@@ -66,14 +102,34 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
 }
 
 export function NavLink(props: NavLinkProps): JSX.Element {
-  const { children, ref, class: className, variant = "default", ...rest } = props;
+  const { children, href, ref, class: className, variant = "default", ...rest } = props;
+  const currentPathname = getCurrentPathname();
+  const targetPathname = resolveNavLinkPathname(href);
+  const isActive =
+    currentPathname !== null &&
+    targetPathname !== null &&
+    isActiveNavLink(currentPathname, targetPathname);
 
-  const finalProps = mergeProps(rest, {
+  const linkProps = mergeProps(rest, {
     ref,
     class: navItemClasses(variant, className),
     "data-slot": "nav-link",
     "data-variant": variant,
   });
 
-  return <Link {...finalProps}>{children}</Link>;
+  const finalProps = isActive
+    ? mergeProps(
+        {
+          "aria-current": "page",
+          "data-active": "true",
+        },
+        linkProps,
+      )
+    : linkProps;
+
+  return (
+    <Link href={href} {...finalProps}>
+      {children}
+    </Link>
+  );
 }

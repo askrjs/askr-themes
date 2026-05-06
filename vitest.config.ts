@@ -1,15 +1,7 @@
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
-  esbuild: {
-    jsx: "automatic",
-    jsxImportSource: "@askrjs/askr",
-  },
   test: {
-    include: ["tests/**/*.test.{ts,tsx}"],
-    exclude: ["tests/**/*.browser.test.tsx"],
-  },
-  resolve: {
-    preserveSymlinks: true,
+    projects: ["./vitest.node.config.ts", "./vitest.jsdom.config.ts", "./vitest.browser.config.ts"],
   },
 });
