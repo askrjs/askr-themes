@@ -1,5 +1,3 @@
-// @vitest-environment jsdom
-
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA, navigate } from "@askrjs/askr";
