@@ -3,6 +3,8 @@ import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import type {
   NavBrandProps,
+  NavGroupAlign,
+  NavGroupPlacement,
   NavGroupProps,
   NavItemAsChildProps,
   NavItemProps,
@@ -14,6 +16,21 @@ import { classes } from "../_internal/classes";
 
 function navItemClasses(variant: NavItemVariant, className: unknown): string | undefined {
   return classes("navbar-item", variant === "icon" && "navbar-item-icon", className);
+}
+
+function resolveNavGroupAlign(
+  align: NavGroupAlign | undefined,
+  placement: NavGroupPlacement | undefined,
+): string | undefined {
+  if (placement === "bottom") {
+    return "end";
+  }
+
+  if (placement === "top") {
+    return undefined;
+  }
+
+  return align === "start" ? undefined : align;
 }
 
 function normalizePathname(pathname: string): string {
@@ -53,10 +70,16 @@ function isActiveNavLink(currentPathname: string, targetPathname: string): boole
 }
 
 export function Navbar(props: NavbarProps): JSX.Element {
-  const { children, ref, class: className, ...rest } = props;
+  const { children, orientation = "horizontal", ref, class: className, ...rest } = props;
 
   return (
-    <nav {...rest} ref={ref} class={classes("navbar", className)} data-slot="navbar">
+    <nav
+      {...rest}
+      ref={ref}
+      class={classes("navbar", className)}
+      data-orientation={orientation}
+      data-slot="navbar"
+    >
       {children}
     </nav>
   );
@@ -73,11 +96,49 @@ export function NavBrand(props: NavBrandProps): JSX.Element {
 }
 
 export function NavGroup(props: NavGroupProps): JSX.Element {
-  const { children, ref, class: className, ...rest } = props;
+  const {
+    align = "start",
+    children,
+    id,
+    placement,
+    ref,
+    class: className,
+    label,
+    ...rest
+  } = props;
+  const hasLabel = label !== undefined && label !== null;
+  const labelId = hasLabel && id ? `${id}-label` : undefined;
+  const accessibleLabel = typeof label === "string" ? label : undefined;
 
   return (
-    <div {...rest} ref={ref} class={classes("navbar-group", className)} data-slot="navbar-group">
-      {children}
+    <div
+      {...rest}
+      id={id}
+      ref={ref}
+      class={classes("navbar-group", className)}
+      aria-label={accessibleLabel}
+      aria-labelledby={labelId}
+      role={hasLabel ? "group" : rest.role}
+      data-align={resolveNavGroupAlign(align, placement)}
+      data-has-label={hasLabel ? "true" : undefined}
+      data-slot="navbar-group"
+    >
+      {hasLabel ? (
+        <>
+          <div
+            id={labelId}
+            class="navbar-group-label"
+            data-slot="navbar-group-label"
+          >
+            {label}
+          </div>
+          <div class="navbar-group-body" data-slot="navbar-group-body">
+            {children}
+          </div>
+        </>
+      ) : (
+        children
+      )}
     </div>
   );
 }

@@ -1,8 +1,13 @@
 import type { JSXElement, Ref } from "@askrjs/askr/foundations";
 import type { LinkProps } from "@askrjs/askr/router";
 
+export type NavbarOrientation = "horizontal" | "vertical";
+export type NavGroupAlign = "start" | "center" | "end";
+export type NavGroupPlacement = "top" | "bottom";
+
 export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
+  orientation?: NavbarOrientation;
 };
 
 export type NavBrandProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
@@ -10,7 +15,10 @@ export type NavBrandProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
 };
 
 export type NavGroupProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
+  align?: NavGroupAlign;
   children?: unknown;
+  label?: unknown;
+  placement?: NavGroupPlacement;
 };
 
 export type NavItemVariant = "default" | "icon";

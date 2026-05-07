@@ -65,9 +65,15 @@ the active scope:
 default theme also provides a small set of class aliases for raw HTML.
 Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay
 thin, while shell chrome components such as `Header`, `Navbar`, `NavItem`,
-`NavLink`, `SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
+`NavLink`, `NavGroup`, `NavBrand`, `SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
 marketing or product pages should be composed in userland from these
 primitives rather than shipped as dedicated theme exports.
+
+For `Navbar`, keep the orientation-specific API intent explicit:
+
+- Use `align="center" | "end"` for horizontal topbar grouping.
+- Use `placement="bottom"` when a vertical sidebar group should pin to the bottom.
+- Use `label` when a nav section needs a visible and semantic section heading.
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.

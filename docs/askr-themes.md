@@ -13,7 +13,7 @@ askr-themes is an optional styling layer. It provides:
 - Semantic `askr-ui` styling, starting with `Button`
 - Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon`
 - Shell and navigation chrome such as `Header`, `Navbar`, `NavItem`,
-  `NavLink`, `SidebarLayout`, and `TopbarLayout`
+  `NavLink`, `NavGroup`, `NavBrand`, `SidebarLayout`, and `TopbarLayout`
 - Chart-adjacent shell styling, but not chart rendering itself
 
 It does not own runtime behavior or accessibility logic. When it exports a
@@ -56,6 +56,9 @@ import {
   Flex,
   Grid,
   Header,
+  NavBrand,
+  NavGroup,
+  Navbar,
   NavItem,
   NavLink,
   Spinner,
@@ -68,6 +71,31 @@ behavior:
 
 ```ts
 import { SidebarLayout, TopbarLayout } from "@askrjs/themes/components";
+```
+
+For navigation chrome, prefer the typed grouping props over raw data
+attributes. Use `align` for horizontal bars and `placement` for vertical
+top-or-bottom grouping:
+
+```tsx
+import { NavBrand, NavGroup, NavLink, Navbar } from "@askrjs/themes/components";
+
+export function AppChrome() {
+  return (
+    <Navbar orientation="vertical" aria-label="Workspace navigation">
+      <NavBrand>
+        <a href="/">Workspace</a>
+      </NavBrand>
+      <NavGroup label="Primary">
+        <NavLink href="/dashboard">Dashboard</NavLink>
+        <NavLink href="/settings">Settings</NavLink>
+      </NavGroup>
+      <NavGroup label="Secondary" placement="bottom">
+        <NavLink href="/help">Help</NavLink>
+      </NavGroup>
+    </Navbar>
+  );
+}
 ```
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`

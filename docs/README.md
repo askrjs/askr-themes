@@ -29,6 +29,8 @@ import {
   EmptyState,
   Flex,
   Header,
+  NavBrand,
+  NavGroup,
   Navbar,
   NavItem,
   NavLink,
@@ -37,6 +39,30 @@ import {
   Stack,
   TopbarLayout,
 } from "@askrjs/themes/components";
+```
+
+`Navbar` supports both topbar and sidebar composition. Prefer `align` for
+horizontal grouping and `placement` for vertical top or bottom grouping:
+
+```tsx
+import { NavBrand, NavGroup, NavLink, Navbar } from "@askrjs/themes/components";
+
+export function DocsSidebar() {
+  return (
+    <Navbar orientation="vertical" aria-label="Docs navigation">
+      <NavBrand>
+        <a href="/">Docs</a>
+      </NavBrand>
+      <NavGroup label="Guides">
+        <NavLink href="/docs/getting-started">Getting started</NavLink>
+        <NavLink href="/docs/components">Components</NavLink>
+      </NavGroup>
+      <NavGroup label="Support" placement="bottom">
+        <NavLink href="/contact">Contact</NavLink>
+      </NavGroup>
+    </Navbar>
+  );
+}
 ```
 
 The theme supports both canonical `askr-ui` hooks and convenient class aliases:
