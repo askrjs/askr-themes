@@ -103,7 +103,7 @@
   },
   "devDependencies": {
     "@askrjs/askr": "^0.0.34",
-    "@askrjs/ui": "file:../askr-ui",
+    "@askrjs/ui": "^0.0.5",
     "@askrjs/vite": "^0.0.2",
     "@tsdown/css": "0.22.0",
     "@types/node": "^25.6.0",
