@@ -220,6 +220,17 @@ function normalizeCssBlock(body: string): string {
   return body.replace(/\s+/g, " ").trim();
 }
 
+function extractExplicitDarkBody(css: string): string {
+  return extractBlockBody(css, /\[data-theme="dark"\]\s*\{([\s\S]*?)\n\}/m);
+}
+
+function extractSystemDarkBody(css: string): string {
+  return extractBlockBody(
+    css,
+    /@media\s+\(prefers-color-scheme:\s*dark\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}\s*\}/m,
+  );
+}
+
 function listCssFiles(dir: string): string[] {
   if (!existsSync(dir)) return [];
 
@@ -427,6 +438,18 @@ describe("token completeness", () => {
       normalizeCssBlock(extractBlockBody(defaultCss, /\[data-theme="dark"\]\s*\{([\s\S]*?)\n\}/m)),
     ).toBe(
       normalizeCssBlock(extractBlockBody(templateCss, /\[data-theme="dark"\]\s*\{([\s\S]*?)\n\}/m)),
+    );
+  });
+
+  it("should keep explicit and system dark token blocks aligned", () => {
+    const defaultCss = readFileSync(TOKENS_FILE, "utf-8");
+    const templateCss = readFileSync(TEMPLATE_TOKENS_FILE, "utf-8");
+
+    expect(normalizeCssBlock(extractExplicitDarkBody(defaultCss))).toBe(
+      normalizeCssBlock(extractSystemDarkBody(defaultCss)),
+    );
+    expect(normalizeCssBlock(extractExplicitDarkBody(templateCss))).toBe(
+      normalizeCssBlock(extractSystemDarkBody(templateCss)),
     );
   });
 
