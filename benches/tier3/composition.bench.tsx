@@ -1,11 +1,24 @@
 import { afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
 
-import { group, route, clearRoutes } from "@askrjs/askr/router";
+import { group, route, navigate, clearRoutes } from "@askrjs/askr/router";
 
 import { mountScenario, settle, stubViewport, type MountedScenario } from "../_shared/dom";
-import { NavbarStaticLayout, SidebarBenchLayout, ThemeBenchLayout } from "../_shared/fixtures";
+import {
+  NavbarStaticLayout,
+  SidebarBenchLayout,
+  ThemeBenchLayout,
+  buildRouteTransitionPage,
+} from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
-import { Header, NavToggle, SidebarPanel } from "../../src/shells";
+import {
+  Header,
+  NavToggle,
+  Shell,
+  ShellMain,
+  ShellNav,
+  SidebarPanel,
+  SidebarToggle,
+} from "../../src/shells";
 
 describe("tier3 stateful composition benches", () => {
   describe("theme controls", () => {
@@ -138,6 +151,19 @@ describe("tier3 stateful composition benches", () => {
 
       consume(result);
     });
+
+    bench("sidebar toggle marker render", () => {
+      let result: JSX.Element | null | undefined;
+
+      for (let i = 0; i < BATCH; i += 1) {
+        result = SidebarToggle({
+          collapsedIcon: "collapsed",
+          expandedIcon: "expanded",
+        });
+      }
+
+      consume(result);
+    });
   });
 
   describe("sidebar shell updates", () => {
@@ -178,6 +204,68 @@ describe("tier3 stateful composition benches", () => {
 
       railToggleAfter?.click();
       await settle();
+    });
+  });
+
+  describe("route transitions", () => {
+    let scenario: MountedScenario | undefined;
+
+    beforeEach(async () => {
+      scenario = await mountScenario("/docs", () => {
+        group({ layout: NavbarBenchLayout }, () => {
+          route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 10 }));
+          route("/docs/components", () =>
+            buildRouteTransitionPage({ title: "Components", rows: 10 }),
+          );
+        });
+      });
+
+      expect(scenario.container.querySelector('[data-slot="navbar"]')).not.toBeNull();
+    });
+
+    afterEach(() => {
+      scenario?.cleanup();
+      scenario = undefined;
+      clearRoutes();
+    });
+
+    bench("route transition cycle", async () => {
+      navigate("/docs/components");
+      await settle();
+
+      navigate("/docs");
+      await settle();
+    });
+  });
+
+  describe("shell remounts", () => {
+    function RemountShellLayout(props: { children?: unknown }): JSX.Element {
+      const { children } = props;
+
+      return (
+        <Shell variant="topbar">
+          <ShellNav>
+            <div data-bench="remount-shell-nav">Docs</div>
+          </ShellNav>
+          <ShellMain>{children}</ShellMain>
+        </Shell>
+      );
+    }
+
+    bench("shell remount cycle", async () => {
+      const scenario = await mountScenario("/docs", () => {
+        group({ layout: RemountShellLayout }, () => {
+          route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 8 }));
+        });
+      });
+
+      try {
+        expect(scenario.container.querySelector('[data-slot="shell"]')).not.toBeNull();
+      } finally {
+        scenario.cleanup();
+        clearRoutes();
+        await settle();
+      }
     });
   });
 });

@@ -53,26 +53,55 @@ function BenchLeaf(props: { children?: unknown; label: string }): JSX.Element {
   });
 }
 
+function buildSerializeBranch(label: string, items: readonly string[]): JSX.Element {
+  return jsxs("article", {
+    "data-label": label,
+    children: [
+      jsx("header", { children: label }),
+      jsx("p", { children: `${label} summary` }),
+      jsxs("div", {
+        "data-group": label,
+        children: items.map((item, index) =>
+          jsxs("section", {
+            "data-entry": `${label}-${index}`,
+            children: [
+              jsx("h3", { children: item }),
+              jsxs("div", {
+                children: [
+                  jsx("span", { children: `${item} A` }),
+                  jsx("span", { children: `${item} B` }),
+                  jsx("span", { children: `${item} C` }),
+                ],
+              }),
+            ],
+          }),
+        ),
+      }),
+    ],
+  });
+}
+
 const jsxTree = jsxs("section", {
   "data-slot": "bench-root",
   children: [
     jsx(BenchLeaf, {
       label: "Alpha",
-      children: jsxs("div", {
-        children: [jsx("span", { children: "One" }), jsx("span", { children: "Two" })],
-      }),
+      children: buildSerializeBranch("Alpha", ["One", "Two", "Three"]),
     }),
     jsx(BenchLeaf, {
       label: "Beta",
-      children: jsxs("div", {
-        children: [
-          jsx("span", { children: "Three" }),
-          jsx("button", { type: "button", children: "Action" }),
-        ],
-      }),
+      children: buildSerializeBranch("Beta", ["Four", "Five", "Six"]),
+    }),
+    jsx(BenchLeaf, {
+      label: "Gamma",
+      children: buildSerializeBranch("Gamma", ["Seven", "Eight", "Nine"]),
     }),
     jsxs("footer", {
-      children: [jsx("small", { children: "Tail" }), jsx("em", { children: "Summary" })],
+      children: [
+        jsx("small", { children: "Tail" }),
+        jsx("em", { children: "Summary" }),
+        jsx("button", { type: "button", children: "Action" }),
+      ],
     }),
   ],
 });

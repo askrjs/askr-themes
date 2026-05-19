@@ -4,8 +4,8 @@ import path from "node:path";
 const THEME_NAME_RE = /^[a-z0-9-]+$/;
 
 function printUsage() {
-  console.log("Usage: bun run new:theme -- <theme-name>");
-  console.log("Example: bun run new:theme -- ocean");
+  console.log("Usage: npm run new:theme -- <theme-name>");
+  console.log("Example: npm run new:theme -- ocean");
 }
 
 async function pathExists(targetPath) {
