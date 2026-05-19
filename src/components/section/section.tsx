@@ -3,7 +3,7 @@ import { mergeProps } from "../_internal/merge-props";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
-  withBoxLayoutStyle,
+  withBoxLayoutClass,
 } from "../_internal/box-layout";
 import { serializeResponsiveValueIf } from "../_internal/layout";
 import type { SectionAsChildProps, SectionElementProps } from "./section.types";
@@ -20,13 +20,14 @@ export function Section(props: SectionElementProps | SectionAsChildProps) {
   const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
   const layoutStyle: Record<string, string | number> = {};
   applyBoxLayoutStyles(layoutStyle, boxProps);
+  const layoutClass = withBoxLayoutClass(layoutStyle, userStyle);
 
   const finalProps = mergeProps(passthroughProps, {
     ref,
     "data-slot": "section",
     "data-ak-layout": "true",
     "data-size": serializeResponsiveValueIf(size, isSectionSizeToken),
-    style: withBoxLayoutStyle(layoutStyle, userStyle),
+    ...(layoutClass ? { class: layoutClass } : {}),
   });
 
   if (asChild) {

@@ -49,8 +49,8 @@ const SECTION_SIZE_MAP: Record<string, string> = {
 };
 
 /**
- * Returns true when `value` is a concrete CSS length/size that can be applied
- * directly as an inline style.
+ * Returns true when `value` is a concrete CSS length/size that can be serialized
+ * into a CSS declaration without token translation.
  */
 export function isCssLength(value: unknown): value is string {
   if (typeof value !== "string") return false;
@@ -176,8 +176,8 @@ export function resolveInlineAlignValue(value: "left" | "center" | "right"): {
 }
 
 /**
- * Merges a record of computed layout styles with a user-supplied `style` prop.
- * The user's styles take precedence for conflicting keys.
+ * Merges a record of computed layout declarations with a user-supplied style
+ * value. The user's declarations take precedence for conflicting keys.
  */
 export function mergeLayoutStyles(
   layout: Record<string, string | number>,

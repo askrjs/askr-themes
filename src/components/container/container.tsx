@@ -3,7 +3,7 @@ import { mergeProps } from "../_internal/merge-props";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
-  withBoxLayoutStyle,
+  withBoxLayoutClass,
 } from "../_internal/box-layout";
 import {
   isResponsiveValue,
@@ -104,9 +104,9 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     applyAlign("marginRight", align);
   }
 
-  const mergedStyle =
+  const layoutClass =
     Object.keys(layoutStyle).length > 2 || hasStyleValue(userStyle)
-      ? withBoxLayoutStyle(layoutStyle, userStyle)
+      ? withBoxLayoutClass(layoutStyle, userStyle)
       : undefined;
 
   const finalProps = mergeProps(passthroughProps, {
@@ -128,7 +128,7 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
       : isStaticValue(maxWidth)
         ? serializeResponsiveValueIf(maxWidth, isContainerWidthToken)
         : undefined,
-    style: mergedStyle,
+    ...(layoutClass ? { class: layoutClass } : {}),
   });
 
   if (asChild) {

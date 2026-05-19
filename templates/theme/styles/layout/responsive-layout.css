@@ -4,6 +4,10 @@
   color: var(--ak-color-text);
 }
 
+:where([data-shell-scroll-lock="true"]) {
+  overflow: hidden;
+}
+
 :where([data-slot="shell"]) {
   display: flex;
 }
