@@ -1,4 +1,5 @@
 import { mergeLayoutStyles, resolveSpaceValue, setResponsiveStyleVar } from "./layout";
+import { styleDeclarationsToClass } from "./style";
 import type { BoxLayoutOwnProps } from "../box/box.types";
 
 const SPACE_PROP_KEYS = new Set([
@@ -153,4 +154,11 @@ export function withBoxLayoutStyle(
   userStyle: unknown,
 ): string | undefined {
   return mergeLayoutStyles(styles, userStyle);
+}
+
+export function withBoxLayoutClass(
+  styles: Record<string, string | number>,
+  userStyle: unknown,
+): string | undefined {
+  return styleDeclarationsToClass(mergeLayoutStyles(styles, userStyle));
 }

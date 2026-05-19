@@ -26,7 +26,7 @@ describe("moved visual components", () => {
     expect(Spacer({ basis: "1rem" })).toBeTruthy();
   });
 
-  it("keeps default and fluid containers on data attributes instead of inline styles", () => {
+  it("keeps default and fluid containers on data attributes", () => {
     const constrained = asElement(Container({ children: "container" }));
     const fluid = asElement(Container({ children: "container", fluid: true }));
 
@@ -54,17 +54,18 @@ describe("moved visual components", () => {
     expect(containerXxl.props.style).toBeUndefined();
   });
 
-  it("falls back to inline styles only for explicit width overrides", () => {
+  it("uses generated classes for explicit width overrides", () => {
     const fixed = asElement(Container({ children: "container", size: "lg" }));
     const custom = asElement(Container({ children: "container", maxWidth: "68rem" }));
 
     expect(fixed.props["data-size"]).toBe("initial:lg");
     expect(fixed.props.style).toBeUndefined();
     expect(custom.props["data-max-width"]).toBeUndefined();
-    expect(String(custom.props.style)).toContain("--ak-max-width-initial:68rem");
+    expect(custom.props.style).toBeUndefined();
+    expect(String(custom.props.class)).toContain("ak-style-");
   });
 
-  it("avoids inline styles for CSS-covered layout defaults", () => {
+  it("keeps CSS-covered layout defaults off the style attribute", () => {
     const box = asElement(Box({ children: "box" }));
     const block = asElement(Block({ children: "block", gap: "sm", size: "md" }));
     const paddedBox = asElement(Box({ children: "box", p: "2" }));
@@ -85,7 +86,8 @@ describe("moved visual components", () => {
     expect(block.props["data-gap"]).toBe("initial:sm");
     expect(block.props["data-size"]).toBe("initial:md");
     expect(paddedBox.props["data-p"]).toBeUndefined();
-    expect(String(paddedBox.props.style)).toContain("--ak-p-initial:var(--ak-space-2)");
+    expect(paddedBox.props.style).toBeUndefined();
+    expect(String(paddedBox.props.class)).toContain("ak-style-");
     expect(flex.props.style).toBeUndefined();
     expect(tokenFlex.props.style).toBeUndefined();
     expect(tokenFlex.props["data-gap"]).toBe("initial:sm");
@@ -99,24 +101,29 @@ describe("moved visual components", () => {
     expect(topbarShell.props.style).toBeUndefined();
   });
 
-  it("keeps inline styles for uncovered flex overrides", () => {
+  it("uses generated classes for uncovered flex overrides", () => {
     const responsiveFlex = asElement(Flex({ children: "flex", gap: { initial: "sm", md: "lg" } }));
     const customFlex = asElement(Flex({ children: "flex", gap: "1.5rem" }));
 
-    expect(String(responsiveFlex.props.style)).toContain("--ak-gap-initial:var(--ak-space-sm)");
+    expect(responsiveFlex.props.style).toBeUndefined();
+    expect(String(responsiveFlex.props.class)).toContain("ak-style-");
     expect(responsiveFlex.props["data-gap"]).toBeUndefined();
     expect(customFlex.props["data-gap"]).toBeUndefined();
-    expect(String(customFlex.props.style)).toContain("--ak-gap-initial:1.5rem");
+    expect(customFlex.props.style).toBeUndefined();
+    expect(String(customFlex.props.class)).toContain("ak-style-");
   });
 
-  it("keeps inline styles only for explicit spacer overrides", () => {
+  it("uses generated classes for explicit spacer overrides", () => {
     const flexBasisSpacer = asElement(Spacer({ basis: "1rem" }));
     const widthSpacer = asElement(Spacer({ axis: "inline", basis: "2rem" }));
     const growSpacer = asElement(Spacer({ grow: 2 }));
 
-    expect(String(flexBasisSpacer.props.style)).toContain("flex-basis:1rem");
-    expect(String(widthSpacer.props.style)).toContain("width:2rem");
-    expect(String(growSpacer.props.style)).toContain("flex-grow:2");
+    expect(flexBasisSpacer.props.style).toBeUndefined();
+    expect(widthSpacer.props.style).toBeUndefined();
+    expect(growSpacer.props.style).toBeUndefined();
+    expect(String(flexBasisSpacer.props.class)).toContain("ak-style-");
+    expect(String(widthSpacer.props.class)).toContain("ak-style-");
+    expect(String(growSpacer.props.class)).toContain("ak-style-");
   });
 
   it("exposes visual display primitives and divider aliases", () => {

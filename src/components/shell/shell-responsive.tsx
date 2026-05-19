@@ -11,6 +11,37 @@ export type ShellResponsivePanelProps = {
   panelId?: string;
 };
 
+let shellScrollLockCount = 0;
+let shellScrollLockPreviousValue: string | null = null;
+
+function acquireShellScrollLock(): void {
+  if (typeof document === "undefined") return;
+
+  const body = document.body;
+  if (shellScrollLockCount === 0) {
+    shellScrollLockPreviousValue = body.getAttribute("data-shell-scroll-lock");
+  }
+
+  shellScrollLockCount += 1;
+  body.setAttribute("data-shell-scroll-lock", "true");
+}
+
+function releaseShellScrollLock(): void {
+  if (typeof document === "undefined" || shellScrollLockCount === 0) return;
+
+  shellScrollLockCount -= 1;
+  if (shellScrollLockCount > 0) return;
+
+  const body = document.body;
+  if (shellScrollLockPreviousValue === null) {
+    body.removeAttribute("data-shell-scroll-lock");
+  } else {
+    body.setAttribute("data-shell-scroll-lock", shellScrollLockPreviousValue);
+  }
+
+  shellScrollLockPreviousValue = null;
+}
+
 export function isShellPanelChild(child: unknown, panelComponent: unknown): child is JSXElement {
   return isJsxElement(child) && child.type === panelComponent;
 }
@@ -128,6 +159,7 @@ export function ShellPanelWatcher(props: {
   resource(
     ({ signal }: { signal: AbortSignal }) => {
       if (!open || typeof window === "undefined") {
+        releaseShellScrollLock();
         return null;
       }
 
@@ -142,8 +174,6 @@ export function ShellPanelWatcher(props: {
 
       window.addEventListener("keydown", onKeyDown);
 
-      const body = typeof document !== "undefined" ? document.body : null;
-      const previousOverflow = body?.style.overflow;
       const focusFrame =
         typeof window.requestAnimationFrame === "function"
           ? window.requestAnimationFrame(() => {
@@ -157,9 +187,7 @@ export function ShellPanelWatcher(props: {
             })
           : undefined;
 
-      if (body) {
-        body.style.overflow = "hidden";
-      }
+      acquireShellScrollLock();
 
       signal.addEventListener(
         "abort",
@@ -170,9 +198,7 @@ export function ShellPanelWatcher(props: {
             window.cancelAnimationFrame(focusFrame);
           }
 
-          if (body && previousOverflow !== undefined) {
-            body.style.overflow = previousOverflow;
-          }
+          releaseShellScrollLock();
         },
         { once: true },
       );

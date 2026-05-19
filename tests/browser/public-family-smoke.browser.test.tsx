@@ -45,6 +45,10 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+function px(value: string): number {
+  return Number.parseFloat(value.replace("px", ""));
+}
+
 describe("public family browser smoke", () => {
   let container: HTMLDivElement | undefined;
 
@@ -157,8 +161,11 @@ describe("public family browser smoke", () => {
     expect(container?.querySelector('[data-slot="progress-circle"]')).not.toBeNull();
 
     const containerEl = container?.querySelector('[data-slot="container"]') as HTMLElement | null;
+    const boxEl = container?.querySelector('[data-slot="box"]') as HTMLElement | null;
     const flexEl = container?.querySelector('[data-slot="flex"]') as HTMLElement | null;
     const inlineEl = container?.querySelector('[data-slot="inline"]') as HTMLElement | null;
+    const sectionEl = container?.querySelector('[data-slot="section"]') as HTMLElement | null;
+    const stackEl = container?.querySelector('[data-slot="stack"]') as HTMLElement | null;
     const aspectRatioEl = container?.querySelector(
       '[data-slot="aspect-ratio"]',
     ) as HTMLElement | null;
@@ -167,7 +174,20 @@ describe("public family browser smoke", () => {
     expect(containerEl?.getAttribute("data-size")).toBe("initial:lg");
     expect(flexEl?.getAttribute("data-gap")).toBe("initial:2");
     expect(inlineEl?.getAttribute("data-slot")).toBe("inline");
-    expect(String(aspectRatioEl?.getAttribute("style"))).toContain("aspect-ratio:");
-    expect(String(spacerEl?.getAttribute("style"))).toContain("flex-basis:");
+    for (const element of [
+      containerEl,
+      boxEl,
+      flexEl,
+      inlineEl,
+      sectionEl,
+      stackEl,
+      aspectRatioEl,
+      spacerEl,
+    ]) {
+      expect(element?.getAttribute("style")).toBeNull();
+    }
+
+    expect(getComputedStyle(aspectRatioEl!).aspectRatio).not.toBe("auto");
+    expect(px(getComputedStyle(spacerEl!).flexBasis)).toBeGreaterThan(0);
   });
 });

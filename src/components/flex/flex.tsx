@@ -3,7 +3,7 @@ import { mergeProps } from "../_internal/merge-props";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
-  withBoxLayoutStyle,
+  withBoxLayoutClass,
 } from "../_internal/box-layout";
 import {
   isResponsiveValue,
@@ -133,6 +133,8 @@ export function Flex(props: FlexDivProps | FlexSpanProps | FlexAsChildProps) {
     setResponsiveStyleVar(layoutStyle, "flex-wrap", wrap, (value) => value);
   }
 
+  const layoutClass = withBoxLayoutClass(layoutStyle, userStyle);
+
   const finalProps = mergeProps(passthroughProps, {
     ref,
     "data-slot": rootSlot,
@@ -145,7 +147,7 @@ export function Flex(props: FlexDivProps | FlexSpanProps | FlexAsChildProps) {
     "data-justify": serializeStaticThemeValue(justify, isCssCoveredJustifyValue),
     "data-wrap": serializeStaticThemeValue(wrap, isCssCoveredWrapValue),
     "data-collapse-below": collapseBelow,
-    style: withBoxLayoutStyle(layoutStyle, userStyle),
+    ...(layoutClass ? { class: layoutClass } : {}),
   });
 
   if (asChild) {

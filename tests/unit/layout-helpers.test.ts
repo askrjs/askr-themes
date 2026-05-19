@@ -15,7 +15,7 @@ import {
 import { mergeCssVar } from "../../src/components/_internal/style";
 
 describe("layout helpers", () => {
-  it("merges inline layout styles with user overrides", () => {
+  it("serializes layout declarations with user overrides", () => {
     expect(
       mergeLayoutStyles(
         {

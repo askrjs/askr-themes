@@ -8,7 +8,7 @@ export type SpacerOwnProps = {
   grow?: number;
   /** flex-shrink factor (default 1 when no axis is set, 0 when axis is set). */
   shrink?: number;
-  /** CSS flex-basis / width (axis=inline) / height (axis=block) value. Applied as inline style only when it is a real CSS length. */
+  /** CSS flex-basis / width (axis=inline) / height (axis=block) value. */
   basis?: string;
   /** When set, renders a fixed space along the given axis instead of a flex-grow spacer. */
   axis?: SpacerAxis;

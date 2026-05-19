@@ -12,13 +12,13 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("AspectRatio", () => {
-  it("renders a canonical wrapper with a responsive ratio style", () => {
+  it("renders a canonical wrapper with a generated ratio class", () => {
     const element = asElement(AspectRatio({ ratio: 16 / 9, children: "media" }));
 
     expect(element.type).toBe("div");
     expect(element.props["data-slot"]).toBe("aspect-ratio");
-    expect(String(element.props.style)).toContain("aspect-ratio:1.7777777777777777");
-    expect(String(element.props.style)).toContain("width:100%");
+    expect(element.props.style).toBeUndefined();
+    expect(String(element.props.class)).toContain("ak-style-");
   });
 
   it("supports asChild composition", () => {

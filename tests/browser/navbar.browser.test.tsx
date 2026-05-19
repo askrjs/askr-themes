@@ -117,11 +117,14 @@ describe("navbar browser smoke", () => {
     expect(panel?.getAttribute("role")).toBe("dialog");
     expect(getComputedStyle(panel!).display).toBe("flex");
     expect(panel?.querySelector('[data-slot="navbar-panel-header"]')).not.toBeNull();
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBe("true");
+    expect(document.body.getAttribute("style")).toBeNull();
 
     backdrop?.click();
     await settle();
 
     expect(container?.querySelector('[data-slot="navbar-panel"]')).toBeNull();
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
 
     setViewport(1200);
     await settle();

@@ -3,7 +3,7 @@ import { mergeProps } from "../_internal/merge-props";
 import {
   applyBoxLayoutStyles,
   splitBoxLayoutProps,
-  withBoxLayoutStyle,
+  withBoxLayoutClass,
 } from "../_internal/box-layout";
 import type { BoxAsChildProps, BoxDivProps, BoxSpanProps } from "./box.types";
 
@@ -17,12 +17,13 @@ export function Box(props: BoxDivProps | BoxSpanProps | BoxAsChildProps) {
   const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
   const layoutStyle: Record<string, string | number> = {};
   applyBoxLayoutStyles(layoutStyle, boxProps);
+  const layoutClass = withBoxLayoutClass(layoutStyle, userStyle);
 
   const finalProps = mergeProps(passthroughProps, {
     ref,
     "data-slot": "box",
     "data-ak-layout": "true",
-    style: withBoxLayoutStyle(layoutStyle, userStyle),
+    ...(layoutClass ? { class: layoutClass } : {}),
   });
 
   if (asChild) {

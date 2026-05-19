@@ -216,11 +216,14 @@ describe("sidebar browser smoke", () => {
     expect(getComputedStyle(panel!).display).toBe("flex");
     expect(panel?.textContent).toContain("Askr");
     expect(panel?.textContent).toContain("Overview");
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBe("true");
+    expect(document.body.getAttribute("style")).toBeNull();
 
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     await settle();
 
     expect(container?.querySelector('[data-slot="sidebar-panel"]')).toBeNull();
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
 
     const mobileToggleAfterClose = container?.querySelector(
       '[data-slot="sidebar-toggle"]',
