@@ -75,7 +75,7 @@ They compose well because each primitive owns a different concern.
 ## Installation
 
 ```bash
-npm install @askrjs/themes
+bun add @askrjs/themes
 ```
 
 Import once at your app entry point:

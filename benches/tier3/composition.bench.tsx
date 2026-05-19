@@ -5,6 +5,7 @@ import { group, route, clearRoutes } from "@askrjs/askr/router";
 import { mountScenario, settle, stubViewport, type MountedScenario } from "../_shared/dom";
 import { NavbarStaticLayout, SidebarBenchLayout, ThemeBenchLayout } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
+import { Header, NavToggle, SidebarPanel } from "../../src/shells";
 
 describe("tier3 stateful composition benches", () => {
   describe("theme controls", () => {
@@ -81,6 +82,57 @@ describe("tier3 stateful composition benches", () => {
       for (let i = 0; i < BATCH; i += 1) {
         result = NavbarStaticLayout({
           children: <div id="page">Docs home</div>,
+        });
+      }
+
+      consume(result);
+    });
+  });
+
+  describe("shell primitives", () => {
+    const BATCH = 64;
+
+    bench("header render", () => {
+      let result: JSX.Element | undefined;
+
+      for (let i = 0; i < BATCH; i += 1) {
+        result = Header({
+          children: "Docs",
+          position: i % 2 === 0 ? "sticky" : "static",
+        });
+      }
+
+      consume(result);
+    });
+
+    bench("navbar toggle render", () => {
+      let result: JSX.Element | null | undefined;
+
+      for (let i = 0; i < BATCH; i += 1) {
+        result = NavToggle({
+          active: true,
+          label: "Menu",
+          open: i % 2 === 0,
+          panelId: "docs-navbar-panel",
+          onToggle: () => undefined,
+        });
+      }
+
+      consume(result);
+    });
+
+    bench("sidebar panel render", () => {
+      let result: JSX.Element | null | undefined;
+
+      for (let i = 0; i < BATCH; i += 1) {
+        result = SidebarPanel({
+          active: true,
+          brand: <strong>Askr</strong>,
+          children: <div>Docs</div>,
+          collapseLabel: "Docs navigation",
+          onClose: () => undefined,
+          open: true,
+          panelId: "docs-sidebar-panel",
         });
       }
 
