@@ -2,7 +2,8 @@
   display: grid;
   gap: var(--ak-space-xs);
   padding: var(--ak-layout-panel-padding);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 86%, white 14%);
+  border: 1px solid
+    color-mix(in srgb, var(--ak-color-border-subtle) 86%, var(--ak-color-surface) 14%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
@@ -32,7 +33,7 @@
   margin: 0;
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
-  font-weight: 650;
+  font-weight: var(--ak-font-weight-semibold);
   line-height: 1.15;
 }
 
@@ -50,4 +51,12 @@
   flex-wrap: wrap;
   gap: var(--ak-space-sm);
   align-items: center;
+}
+
+:where(.card-actions, [data-slot="card-actions"]) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ak-space-sm);
+  align-items: center;
+  justify-content: flex-end;
 }

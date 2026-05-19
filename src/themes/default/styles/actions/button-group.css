@@ -1,0 +1,64 @@
+:where(.btn-group, [data-slot="button-group"]) {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  max-inline-size: 100%;
+}
+
+:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"]) {
+  flex-direction: column;
+}
+
+:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"]) {
+  gap: var(--ak-space-xs);
+}
+
+:where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]) {
+  position: relative;
+  box-shadow: none;
+}
+
+:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
+  > :where(.btn, [data-slot="button"]) {
+  border-radius: var(--ak-radius-md);
+  box-shadow: var(--ak-shadow-sm);
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]) {
+  border-radius: 0;
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]):first-child {
+  border-start-start-radius: var(--ak-radius-md);
+  border-end-start-radius: var(--ak-radius-md);
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]):last-child {
+  border-start-end-radius: var(--ak-radius-md);
+  border-end-end-radius: var(--ak-radius-md);
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"])
+  + :where(.btn, [data-slot="button"]) {
+  margin-inline-start: -1px;
+}
+
+:where(
+    .btn-group-vertical,
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"])
+  + :where(.btn, [data-slot="button"]) {
+  margin-inline-start: 0;
+  margin-block-start: -1px;
+}
+
+:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"])
+  > :where(.btn, [data-slot="button"]) {
+  inline-size: 100%;
+  justify-content: center;
+}

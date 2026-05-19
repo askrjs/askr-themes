@@ -1,0 +1,202 @@
+:where(.input-group, [data-slot="input-group"]) {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0;
+}
+
+:where(.input-group-vertical, [data-slot="input-group"][data-orientation="vertical"]) {
+  flex-direction: column;
+}
+
+:where(.input-group[data-attached="false"], [data-slot="input-group"][data-attached="false"]) {
+  gap: var(--ak-space-xs);
+}
+
+:where(.input-group, [data-slot="input-group"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  ) {
+  flex: 0 0 auto;
+  margin: 0;
+  border-radius: 0;
+}
+
+:where(.input-group, [data-slot="input-group"])
+  > :where(.btn, .input-group-text, [data-slot="button"], [data-slot="input-group-text"]) {
+  box-shadow: none;
+}
+
+:where(.input-group, [data-slot="input-group"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"]
+  ) {
+  flex: 1 1 12rem;
+  width: auto;
+  min-inline-size: 0;
+  box-shadow: none;
+}
+
+:where(.input-group[data-attached="false"], [data-slot="input-group"][data-attached="false"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  ) {
+  border-radius: var(--ak-radius-md);
+  box-shadow: var(--ak-shadow-sm);
+}
+
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  )
+  + :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  ) {
+  margin-inline-start: -1px;
+}
+
+:where(
+    .input-group-vertical[data-attached="true"],
+    [data-slot="input-group"][data-attached="true"][data-orientation="vertical"]
+  )
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  )
+  + :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  ) {
+  margin-inline-start: 0;
+  margin-block-start: -1px;
+}
+
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"]
+  ):first-child {
+  border-start-start-radius: var(--ak-radius-md);
+  border-end-start-radius: var(--ak-radius-md);
+}
+
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"]
+  ):last-child {
+  border-start-end-radius: var(--ak-radius-md);
+  border-end-end-radius: var(--ak-radius-md);
+}
+
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]):first-child,
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(.input-group-text, [data-slot="input-group-text"]):first-child {
+  border-start-start-radius: var(--ak-radius-md);
+  border-end-start-radius: var(--ak-radius-md);
+}
+
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]):last-child,
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(.input-group-text, [data-slot="input-group-text"]):last-child {
+  border-start-end-radius: var(--ak-radius-md);
+  border-end-end-radius: var(--ak-radius-md);
+}
+
+:where(.input-group-vertical, [data-slot="input-group"][data-orientation="vertical"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    .input-group-text,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"],
+    [data-slot="input-group-text"]
+  ) {
+  inline-size: 100%;
+}
+
+:where(.input-group-text, [data-slot="input-group-text"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--ak-density-control-height-md);
+  padding-inline: var(--ak-density-control-padding-x-md);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  background: var(--ak-color-surface-muted);
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+  white-space: nowrap;
+}

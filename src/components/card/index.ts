@@ -1,6 +1,15 @@
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
+export {
+  Card,
+  CardActions,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./card";
 
 export type {
+  CardActionsProps,
   CardContentProps,
   CardDescriptionProps,
   CardFooterProps,

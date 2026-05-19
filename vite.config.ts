@@ -9,7 +9,14 @@ export default defineConfig({
   },
   pack: {
     entry: {
-      "components/index": "src/components/index.ts",
+      controls: "src/controls.ts",
+      feedback: "src/feedback.ts",
+      layouts: "src/layouts.ts",
+      logos: "src/logos.ts",
+      navs: "src/navs.ts",
+      shells: "src/shells.ts",
+      surfaces: "src/surfaces.ts",
+      theme: "src/theme.ts",
     },
     format: ["esm"],
     outDir: "dist",
@@ -27,7 +34,14 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        "components/index": "src/components/index.ts",
+        controls: "src/controls.ts",
+        feedback: "src/feedback.ts",
+        layouts: "src/layouts.ts",
+        logos: "src/logos.ts",
+        navs: "src/navs.ts",
+        shells: "src/shells.ts",
+        surfaces: "src/surfaces.ts",
+        theme: "src/theme.ts",
       },
     },
     rollupOptions: {

@@ -1,4 +1,4 @@
-import type { Ref } from "@askrjs/askr/foundations";
+import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 export type CardVariant = "default" | "raised";
 export type CardPadding = "sm" | "md" | "lg";
@@ -25,6 +25,11 @@ export type CardContentProps = DivProps & {
 };
 
 export type CardFooterProps = DivProps & {
+  children?: unknown;
+  ref?: Ref<HTMLDivElement>;
+};
+
+export type CardActionsProps = DivProps & {
   children?: unknown;
   ref?: Ref<HTMLDivElement>;
 };

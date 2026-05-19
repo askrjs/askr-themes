@@ -18,114 +18,131 @@
   border: 0;
 }
 
-:where(.gap-1, [data-slot="grid"][data-gap="initial:1"], [data-slot="flex"][data-gap="initial:1"]) {
+:where(
+  .gap-1,
+  [data-slot="flex"][data-gap="initial:1"],
+  [data-slot="block"][data-gap="initial:1"],
+  [data-slot="shell"][data-gap="initial:1"]
+) {
   gap: var(--ak-space-1);
 }
 
-:where(.gap-2, [data-slot="grid"][data-gap="initial:2"], [data-slot="flex"][data-gap="initial:2"]) {
+:where(
+  .gap-2,
+  [data-slot="flex"][data-gap="initial:2"],
+  [data-slot="block"][data-gap="initial:2"],
+  [data-slot="shell"][data-gap="initial:2"]
+) {
   gap: var(--ak-space-2);
 }
 
-:where(.gap-3, [data-slot="grid"][data-gap="initial:3"], [data-slot="flex"][data-gap="initial:3"]) {
+:where(
+  .gap-3,
+  [data-slot="flex"][data-gap="initial:3"],
+  [data-slot="block"][data-gap="initial:3"],
+  [data-slot="shell"][data-gap="initial:3"]
+) {
   gap: var(--ak-space-3);
 }
 
-:where(.gap-4, [data-slot="grid"][data-gap="initial:4"], [data-slot="flex"][data-gap="initial:4"]) {
+:where(
+  .gap-4,
+  [data-slot="flex"][data-gap="initial:4"],
+  [data-slot="block"][data-gap="initial:4"],
+  [data-slot="shell"][data-gap="initial:4"]
+) {
   gap: var(--ak-space-4);
 }
 
 :where(
   .gap-xs,
-  [data-slot="grid"][data-gap="initial:xs"],
-  [data-slot="flex"][data-gap="initial:xs"]
+  [data-slot="flex"][data-gap="initial:xs"],
+  [data-slot="block"][data-gap="initial:xs"],
+  [data-slot="shell"][data-gap="initial:xs"]
 ) {
   gap: var(--ak-space-xs);
 }
 
 :where(
   .gap-sm,
-  [data-slot="grid"][data-gap="initial:sm"],
   [data-slot="flex"][data-gap="initial:sm"],
-  [data-slot="sidebar-layout"][data-gap="sm"],
-  [data-slot="topbar-layout"][data-gap="sm"]
+  [data-slot="block"][data-gap="initial:sm"],
+  [data-slot="shell"][data-gap="initial:sm"]
 ) {
   gap: var(--ak-space-sm);
 }
 
 :where(
   .gap-md,
-  [data-slot="grid"][data-gap="initial:md"],
   [data-slot="flex"][data-gap="initial:md"],
-  [data-slot="sidebar-layout"][data-gap="md"],
-  [data-slot="topbar-layout"][data-gap="md"]
+  [data-slot="block"][data-gap="initial:md"],
+  [data-slot="shell"][data-gap="initial:md"]
 ) {
   gap: var(--ak-space-md);
 }
 
 :where(
   .gap-lg,
-  [data-slot="grid"][data-gap="initial:lg"],
   [data-slot="flex"][data-gap="initial:lg"],
-  [data-slot="sidebar-layout"][data-gap="lg"],
-  [data-slot="topbar-layout"][data-gap="lg"]
+  [data-slot="block"][data-gap="initial:lg"],
+  [data-slot="shell"][data-gap="initial:lg"]
 ) {
   gap: var(--ak-space-lg);
 }
 
 :where(
   .gap-xl,
-  [data-slot="grid"][data-gap="initial:xl"],
   [data-slot="flex"][data-gap="initial:xl"],
-  [data-slot="sidebar-layout"][data-gap="xl"],
-  [data-slot="topbar-layout"][data-gap="xl"]
+  [data-slot="block"][data-gap="initial:xl"],
+  [data-slot="shell"][data-gap="initial:xl"]
 ) {
   gap: var(--ak-space-xl);
 }
 
 :where(
   .gap-x-sm,
-  [data-slot="grid"][data-gap-x="initial:sm"],
-  [data-slot="flex"][data-gap-x="initial:sm"]
+  [data-slot="flex"][data-gap-x="initial:sm"],
+  [data-slot="block"][data-gap-x="initial:sm"]
 ) {
   column-gap: var(--ak-space-sm);
 }
 
 :where(
   .gap-x-md,
-  [data-slot="grid"][data-gap-x="initial:md"],
-  [data-slot="flex"][data-gap-x="initial:md"]
+  [data-slot="flex"][data-gap-x="initial:md"],
+  [data-slot="block"][data-gap-x="initial:md"]
 ) {
   column-gap: var(--ak-space-md);
 }
 
 :where(
   .gap-x-lg,
-  [data-slot="grid"][data-gap-x="initial:lg"],
-  [data-slot="flex"][data-gap-x="initial:lg"]
+  [data-slot="flex"][data-gap-x="initial:lg"],
+  [data-slot="block"][data-gap-x="initial:lg"]
 ) {
   column-gap: var(--ak-space-lg);
 }
 
 :where(
   .gap-y-sm,
-  [data-slot="grid"][data-gap-y="initial:sm"],
-  [data-slot="flex"][data-gap-y="initial:sm"]
+  [data-slot="flex"][data-gap-y="initial:sm"],
+  [data-slot="block"][data-gap-y="initial:sm"]
 ) {
   row-gap: var(--ak-space-sm);
 }
 
 :where(
   .gap-y-md,
-  [data-slot="grid"][data-gap-y="initial:md"],
-  [data-slot="flex"][data-gap-y="initial:md"]
+  [data-slot="flex"][data-gap-y="initial:md"],
+  [data-slot="block"][data-gap-y="initial:md"]
 ) {
   row-gap: var(--ak-space-md);
 }
 
 :where(
   .gap-y-lg,
-  [data-slot="grid"][data-gap-y="initial:lg"],
-  [data-slot="flex"][data-gap-y="initial:lg"]
+  [data-slot="flex"][data-gap-y="initial:lg"],
+  [data-slot="block"][data-gap-y="initial:lg"]
 ) {
   row-gap: var(--ak-space-lg);
 }
@@ -145,7 +162,7 @@
 :where(
   .items-start,
   [data-slot="flex"][data-align="initial:start"],
-  [data-slot="grid"][data-align="initial:start"]
+  [data-slot="block"][data-align="initial:start"]
 ) {
   align-items: flex-start;
 }
@@ -153,7 +170,7 @@
 :where(
   .items-end,
   [data-slot="flex"][data-align="initial:end"],
-  [data-slot="grid"][data-align="initial:end"]
+  [data-slot="block"][data-align="initial:end"]
 ) {
   align-items: flex-end;
 }
@@ -161,7 +178,7 @@
 :where(
   .items-center,
   [data-slot="flex"][data-align="initial:center"],
-  [data-slot="grid"][data-align="initial:center"]
+  [data-slot="block"][data-align="initial:center"]
 ) {
   align-items: center;
 }
@@ -169,7 +186,7 @@
 :where(
   .items-stretch,
   [data-slot="flex"][data-align="initial:stretch"],
-  [data-slot="grid"][data-align="initial:stretch"]
+  [data-slot="block"][data-align="initial:stretch"]
 ) {
   align-items: stretch;
 }
@@ -177,7 +194,7 @@
 :where(
   .items-baseline,
   [data-slot="flex"][data-align="initial:baseline"],
-  [data-slot="grid"][data-align="initial:baseline"]
+  [data-slot="block"][data-align="initial:baseline"]
 ) {
   align-items: baseline;
 }
@@ -185,7 +202,7 @@
 :where(
   .justify-start,
   [data-slot="flex"][data-justify="initial:start"],
-  [data-slot="grid"][data-justify="initial:start"]
+  [data-slot="block"][data-justify="initial:start"]
 ) {
   justify-content: flex-start;
 }
@@ -193,7 +210,7 @@
 :where(
   .justify-end,
   [data-slot="flex"][data-justify="initial:end"],
-  [data-slot="grid"][data-justify="initial:end"]
+  [data-slot="block"][data-justify="initial:end"]
 ) {
   justify-content: flex-end;
 }
@@ -201,7 +218,7 @@
 :where(
   .justify-center,
   [data-slot="flex"][data-justify="initial:center"],
-  [data-slot="grid"][data-justify="initial:center"]
+  [data-slot="block"][data-justify="initial:center"]
 ) {
   justify-content: center;
 }
@@ -209,7 +226,7 @@
 :where(
   .justify-between,
   [data-slot="flex"][data-justify="initial:between"],
-  [data-slot="grid"][data-justify="initial:between"]
+  [data-slot="block"][data-justify="initial:between"]
 ) {
   justify-content: space-between;
 }

@@ -1,3 +1,5 @@
+import { classes } from "./classes";
+
 type Handler = (...args: readonly unknown[]) => void;
 type Ref<T> = { current: T | null } | ((value: T | null) => void) | null | undefined;
 
@@ -16,6 +18,8 @@ function isDefaultPrevented(value: unknown): value is { defaultPrevented: true }
 
 function composeHandlers(first: Handler, second: Handler): Handler {
   return (...args) => {
+    // Internal composition runs first so wrappers can normalize state or stop
+    // follow-on handlers when the event has already been consumed.
     first(...args);
 
     if (isDefaultPrevented(args[0])) {
@@ -79,6 +83,11 @@ export function mergeProps<TBase extends object, TInjected extends object>(
         injectedValue as Handler,
         baseValue as Handler,
       );
+      continue;
+    }
+
+    if (key === "class") {
+      (out as Record<string, unknown>)[key] = classes(injectedValue, baseValue);
       continue;
     }
 

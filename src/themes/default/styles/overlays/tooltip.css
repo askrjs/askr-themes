@@ -21,15 +21,23 @@
 }
 
 [data-slot="tooltip-content"] {
+  --_tooltip-surface: var(--ak-color-surface-overlay);
+  --_tooltip-border: color-mix(
+    in srgb,
+    var(--ak-color-border-subtle) 88%,
+    var(--_tooltip-surface) 12%
+  );
+
   position: relative;
   max-width: 18rem;
-  padding: 0.45rem 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 48%, transparent);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--_tooltip-border);
   border-radius: var(--ak-radius-md);
-  background: var(--ak-color-text);
-  color: var(--ak-color-text-inverse);
+  background: var(--_tooltip-surface);
+  color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   box-shadow: var(--ak-shadow-md);
+  z-index: var(--ak-z-tooltip);
   animation: ak-tooltip-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -40,7 +48,7 @@
   block-size: 0;
   border-inline-start: 0.38rem solid transparent;
   border-inline-end: 0.38rem solid transparent;
-  border-block-start: 0.38rem solid var(--ak-color-text);
+  border-block-start: 0.38rem solid var(--_tooltip-surface);
 }
 
 [data-slot="tooltip-content"]:not([data-side])::before,
@@ -72,12 +80,19 @@
   animation: ak-tooltip-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+[data-slot="tooltip-trigger"]:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+}
+
 [data-slot="tooltip-trigger"][data-state="open"] {
-  box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 [data-slot="tooltip-trigger"][data-disabled] {
-  opacity: 0.5;
+  color: var(--ak-color-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
 }

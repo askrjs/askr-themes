@@ -1,9 +1,13 @@
 :where(.textarea, [data-slot="textarea"]) {
+  --_textarea-min-height: 7rem;
+  --_textarea-padding-block: var(--ak-space-sm);
+  --_textarea-padding-inline: var(--ak-space-md);
   box-sizing: border-box;
   width: 100%;
-  min-height: 7rem;
-  padding: var(--ak-space-sm) var(--ak-space-md);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  min-height: var(--_textarea-min-height);
+  padding-block: var(--_textarea-padding-block);
+  padding-inline: var(--_textarea-padding-inline);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
@@ -16,7 +20,7 @@
 }
 
 :where(.textarea, [data-slot="textarea"])::placeholder {
-  color: var(--ak-color-text-muted);
+  color: var(--ak-color-text-subtle);
 }
 
 :where(.textarea:hover, [data-slot="textarea"]:hover) {
@@ -27,11 +31,35 @@
 :where(.textarea:focus-visible, [data-slot="textarea"]:focus-visible) {
   outline: none;
   border-color: var(--ak-color-primary);
-  box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where(.textarea[aria-invalid="true"], [data-slot="textarea"][aria-invalid="true"]) {
+  border-color: var(--ak-color-danger);
+  background: color-mix(in srgb, var(--ak-color-danger-soft) 12%, var(--ak-color-surface));
+  box-shadow: 0 0 0 var(--ak-focus-ring-width)
+    color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 
 :where(.textarea[data-disabled], .textarea:disabled, [data-slot="textarea"][data-disabled]) {
-  opacity: 0.5;
+  background: var(--ak-color-disabled-surface);
+  border-color: var(--ak-color-disabled-border);
+  box-shadow: none;
+  color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
+}
+
+:where(.textarea-sm, [data-slot="textarea"][data-size="sm"]) {
+  --_textarea-min-height: 5.75rem;
+  --_textarea-padding-block: var(--ak-space-xs);
+  --_textarea-padding-inline: var(--ak-space-sm);
+  font-size: var(--ak-font-size-xs);
+}
+
+:where(.textarea-lg, [data-slot="textarea"][data-size="lg"]) {
+  --_textarea-min-height: 8.75rem;
+  --_textarea-padding-block: var(--ak-space-md);
+  --_textarea-padding-inline: var(--ak-space-lg);
+  font-size: var(--ak-font-size-sm);
 }

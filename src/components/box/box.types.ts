@@ -1,4 +1,5 @@
-import type { JSXElement, Ref } from "@askrjs/askr/foundations";
+import type { JSXElement } from "@askrjs/askr/foundations";
+import type { Ref } from "@askrjs/askr/foundations/utilities";
 import type { ResponsiveValue } from "../_internal/layout";
 
 export type LayoutResponsive<T> = ResponsiveValue<T>;

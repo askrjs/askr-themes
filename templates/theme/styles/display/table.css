@@ -2,7 +2,7 @@
   inline-size: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);

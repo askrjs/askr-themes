@@ -65,11 +65,25 @@
 
 [data-slot="slider-thumb"]:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 [data-slot="slider"][data-disabled] {
-  opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+[data-slot="slider"][data-disabled] [data-slot="slider-track"] {
+  background: var(--ak-color-disabled-surface);
+}
+
+[data-slot="slider"][data-disabled] [data-slot="slider-range"] {
+  background: var(--ak-color-disabled-border);
+  opacity: 1;
+}
+
+[data-slot="slider"][data-disabled] [data-slot="slider-thumb"] {
+  border-color: var(--ak-color-disabled-border);
+  background: var(--ak-color-disabled-bg);
+  box-shadow: none;
 }

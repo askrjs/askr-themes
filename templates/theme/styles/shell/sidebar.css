@@ -1,0 +1,631 @@
+@layer components {
+  :where(.sidebar, [data-slot="sidebar"]) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--ak-space-md);
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--ak-layout-navbar-height);
+    padding-block: var(--ak-space-xs);
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"]) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--ak-space-md);
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  :where(.sidebar-rail, [data-slot="sidebar-rail"]) {
+    display: flex;
+    justify-content: flex-end;
+    inline-size: 100%;
+    padding-inline: var(--ak-space-sm);
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(
+      .navbar-brand,
+      [data-slot="navbar-brand"],
+      .sidebar-brand,
+      [data-slot="sidebar-brand"]
+    ),
+  :where(.sidebar-panel-header, [data-slot="sidebar-panel-header"])
+    > :where(
+      .navbar-brand,
+      [data-slot="navbar-brand"],
+      .sidebar-brand,
+      [data-slot="sidebar-brand"]
+    ) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ak-space-sm);
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding-inline: var(--ak-space-sm);
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a),
+  :where(.sidebar-panel-header, [data-slot="sidebar-panel-header"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ak-space-sm);
+    min-inline-size: 0;
+    color: var(--ak-color-text);
+    text-decoration: none;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(.navbar-group, [data-slot="navbar-group"], .sidebar-group, [data-slot="sidebar-group"]) {
+    display: grid;
+    align-items: stretch;
+    align-content: start;
+    gap: var(--ak-space-xs);
+    inline-size: 100%;
+    margin-inline: 0;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group[data-align="center"],
+      [data-slot="navbar-group"][data-align="center"],
+      .sidebar-group[data-align="center"],
+      [data-slot="sidebar-group"][data-align="center"]
+    ) {
+    justify-items: stretch;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group[data-align="center"],
+      [data-slot="navbar-group"][data-align="center"],
+      .sidebar-group[data-align="center"],
+      [data-slot="sidebar-group"][data-align="center"]
+    )
+    > :where(
+      .navbar-group-label,
+      [data-slot="navbar-group-label"],
+      .sidebar-group-label,
+      [data-slot="sidebar-group-label"]
+    ) {
+    text-align: center;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group[data-align="end"],
+      [data-slot="navbar-group"][data-align="end"],
+      .sidebar-group[data-align="end"],
+      [data-slot="sidebar-group"][data-align="end"]
+    ) {
+    justify-content: stretch;
+    margin-block-start: auto;
+    margin-inline-start: 0;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group-body,
+      [data-slot="navbar-group-body"],
+      .sidebar-group-body,
+      [data-slot="sidebar-group-body"]
+    ) {
+    display: grid;
+    align-content: start;
+    gap: var(--ak-space-xs);
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group-label,
+      [data-slot="navbar-group-label"],
+      .sidebar-group-label,
+      [data-slot="sidebar-group-label"]
+    ) {
+    color: var(--ak-color-text-muted);
+    font-size: var(--ak-font-size-xs);
+    font-weight: var(--ak-font-weight-semibold);
+    letter-spacing: 0.08em;
+    line-height: var(--ak-line-height-tight);
+    padding-inline: var(--ak-space-sm);
+    text-transform: uppercase;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item) {
+    inline-size: 100%;
+    min-inline-size: 0;
+    justify-content: flex-start;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group[data-align="center"],
+      [data-slot="navbar-group"][data-align="center"],
+      .sidebar-group[data-align="center"],
+      [data-slot="sidebar-group"][data-align="center"]
+    )
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item) {
+    justify-content: center;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item)
+    > :where([data-slot="icon"], svg) {
+    flex: none;
+  }
+
+  :where(
+    .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+    [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+  ) {
+    inline-size: var(--ak-layout-sidebar-rail-width);
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"]) {
+    align-items: center;
+    gap: var(--ak-space-sm);
+    inline-size: var(--ak-layout-sidebar-rail-width);
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.sidebar-rail, [data-slot="sidebar-rail"]) {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.sidebar-rail, [data-slot="sidebar-rail"]),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(
+      .navbar-brand,
+      [data-slot="navbar-brand"],
+      .sidebar-brand,
+      [data-slot="sidebar-brand"]
+    ),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(.navbar-group, [data-slot="navbar-group"], .sidebar-group, [data-slot="sidebar-group"]),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(
+      .navbar-group-body,
+      [data-slot="navbar-group-body"],
+      .sidebar-group-body,
+      [data-slot="sidebar-group-body"]
+    ) {
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(
+      .navbar-brand,
+      [data-slot="navbar-brand"],
+      .sidebar-brand,
+      [data-slot="sidebar-brand"]
+    ),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a) {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.sidebar-rail, [data-slot="sidebar-rail"])
+    > :where(.sidebar-rail-toggle, [data-slot="sidebar-rail-toggle"]),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item) {
+    justify-content: center;
+    inline-size: var(--ak-density-control-height-md);
+    min-inline-size: 0;
+    block-size: var(--ak-density-control-height-md);
+    min-block-size: var(--ak-density-control-height-md);
+    padding-inline: 0;
+    gap: 0;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(.navbar-group, [data-slot="navbar-group"], .sidebar-group, [data-slot="sidebar-group"]) {
+    justify-items: center;
+    inline-size: 100%;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(
+      .navbar-group-body,
+      [data-slot="navbar-group-body"],
+      .sidebar-group-body,
+      [data-slot="sidebar-group-body"]
+    ) {
+    justify-items: center;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(
+      .navbar-group-label,
+      [data-slot="navbar-group-label"],
+      .sidebar-group-label,
+      [data-slot="sidebar-group-label"]
+    ),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item)
+    > :where(:not([data-slot="icon"]):not(svg)),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a)
+    > :where(:not([data-slot="icon"]):not(svg)) {
+    position: absolute;
+    overflow: hidden;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item)
+    > :where([data-slot="icon"], svg),
+  :where(
+      .sidebar[data-icon-collapsed="true"][data-responsive-collapsed="false"],
+      [data-slot="sidebar"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    )
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a)
+    > :where([data-slot="icon"], svg) {
+    inline-size: var(--ak-icon-size-md);
+    block-size: var(--ak-icon-size-md);
+    font-size: var(--ak-font-size-md);
+  }
+
+  :where(
+    .sidebar-toggle,
+    [data-slot="sidebar-toggle"],
+    .sidebar-rail-toggle,
+    [data-slot="sidebar-rail-toggle"],
+    .sidebar-panel-close,
+    [data-slot="sidebar-panel-close"]
+  ) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ak-space-sm);
+    min-block-size: var(--ak-density-control-height-md);
+    padding-inline: var(--ak-space-sm);
+    border: 1px solid var(--ak-color-border);
+    border-radius: var(--ak-radius-md);
+    background: var(--ak-color-surface);
+    color: var(--ak-color-text);
+    font-size: var(--ak-font-size-sm);
+    font-weight: var(--ak-font-weight-medium);
+    transition:
+      color var(--ak-duration-fast) var(--ak-ease-standard),
+      background var(--ak-duration-fast) var(--ak-ease-standard),
+      border-color var(--ak-duration-fast) var(--ak-ease-standard),
+      box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+  }
+
+  :where(.sidebar-rail-toggle, [data-slot="sidebar-rail-toggle"]) {
+    inline-size: var(--ak-density-control-height-md);
+    block-size: var(--ak-density-control-height-md);
+    padding-inline: 0;
+  }
+
+  :where(
+    .sidebar-toggle:hover,
+    [data-slot="sidebar-toggle"]:hover,
+    .sidebar-rail-toggle:hover,
+    [data-slot="sidebar-rail-toggle"]:hover,
+    .sidebar-panel-close:hover,
+    [data-slot="sidebar-panel-close"]:hover
+  ) {
+    color: var(--ak-color-text);
+    background: var(--ak-color-hover);
+    border-color: var(--ak-color-border-strong);
+  }
+
+  :where(.sidebar-toggle[data-state="open"], [data-slot="sidebar-toggle"][data-state="open"]) {
+    border-color: var(--ak-color-primary);
+    background: var(--ak-color-primary-soft);
+    color: var(--ak-color-primary-ink);
+  }
+
+  :where(
+    .sidebar-toggle:focus-visible,
+    [data-slot="sidebar-toggle"]:focus-visible,
+    .sidebar-rail-toggle:focus-visible,
+    [data-slot="sidebar-rail-toggle"]:focus-visible,
+    .sidebar-panel-close:focus-visible,
+    [data-slot="sidebar-panel-close"]:focus-visible
+  ) {
+    outline: none;
+    box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  }
+
+  :where(
+    .sidebar-toggle-icon,
+    [data-slot="sidebar-toggle-icon"],
+    .sidebar-rail-toggle-icon,
+    [data-slot="sidebar-rail-toggle-icon"]
+  ) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--ak-icon-size-sm);
+    block-size: var(--ak-icon-size-sm);
+    flex: none;
+  }
+
+  :where(.sidebar-rail-toggle-icon, [data-slot="sidebar-rail-toggle-icon"])
+    :where([data-slot="icon"], svg) {
+    inline-size: var(--ak-icon-size-sm);
+    block-size: var(--ak-icon-size-sm);
+  }
+
+  :where(.sidebar-rail-toggle-label, [data-slot="sidebar-rail-toggle-label"]) {
+    position: absolute;
+    overflow: hidden;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  :where(.sidebar-toggle-glyph--menu) {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.16rem;
+    inline-size: var(--ak-icon-size-sm);
+    block-size: var(--ak-icon-size-sm);
+  }
+
+  :where(.sidebar-toggle-glyph--menu > span) {
+    display: block;
+    block-size: 1.5px;
+    inline-size: 100%;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  :where(.sidebar-toggle-glyph--rail) {
+    position: relative;
+    display: inline-flex;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+  }
+
+  :where(.sidebar-toggle-glyph--rail)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-block-start: 1.75px solid currentColor;
+    border-inline-end: 1.75px solid currentColor;
+  }
+
+  :where(.sidebar-toggle-glyph--rail.is-collapsed)::before {
+    transform: rotate(45deg);
+  }
+
+  :where(.sidebar-toggle-glyph--rail.is-expanded)::before {
+    transform: rotate(225deg);
+  }
+
+  :where(.sidebar-panel, [data-slot="sidebar-panel"]) {
+    position: static;
+    z-index: var(--ak-z-modal);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    gap: var(--ak-space-xs);
+    overflow: auto;
+    overscroll-behavior: contain;
+    inline-size: 100%;
+    padding: var(--ak-space-md);
+    border: 1px solid var(--ak-color-border);
+    background: var(--ak-color-surface-raised);
+    box-shadow: var(--ak-shadow-lg);
+  }
+
+  :where([data-slot="sidebar"][data-responsive-collapsed="true"])
+    > :where(.sidebar-panel, [data-slot="sidebar-panel"]) {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: min(var(--ak-layout-mobile-drawer-width, 22rem), 88vw);
+    max-block-size: 100dvh;
+    gap: var(--ak-space-md);
+    border-inline-start: 0;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: var(--ak-radius-lg);
+    border-end-end-radius: var(--ak-radius-lg);
+  }
+
+  :where(.sidebar-panel-header, [data-slot="sidebar-panel-header"]) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ak-space-md);
+    min-inline-size: 0;
+    padding-block-end: var(--ak-space-sm);
+    border-block-end: 1px solid var(--ak-color-border);
+  }
+
+  :where(.sidebar-panel-header, [data-slot="sidebar-panel-header"])
+    > :where(
+      .navbar-brand,
+      [data-slot="navbar-brand"],
+      .sidebar-brand,
+      [data-slot="sidebar-brand"]
+    ) {
+    inline-size: auto;
+    padding-inline: 0;
+  }
+
+  :where(.sidebar-panel-header, [data-slot="sidebar-panel-header"])
+    > :where(.navbar-brand, [data-slot="navbar-brand"], .sidebar-brand, [data-slot="sidebar-brand"])
+    :where(a) {
+    color: var(--ak-color-text);
+    font-size: var(--ak-font-size-lg);
+    font-weight: var(--ak-font-weight-semibold);
+  }
+
+  :where(.sidebar-panel-close, [data-slot="sidebar-panel-close"]) {
+    flex: none;
+    margin-inline-start: auto;
+  }
+
+  :where(.sidebar-panel, [data-slot="sidebar-panel"])
+    > :where(.navbar-group, [data-slot="navbar-group"], .sidebar-group, [data-slot="sidebar-group"])
+    > :where(
+      .navbar-group-label,
+      [data-slot="navbar-group-label"],
+      .sidebar-group-label,
+      [data-slot="sidebar-group-label"]
+    ) {
+    padding-inline: 0;
+  }
+
+  :where(.sidebar-mobile, [data-slot="sidebar-mobile"]) {
+    display: none;
+  }
+
+  :where([data-slot="sidebar"][data-responsive-collapsed="true"]) {
+    inline-size: 100%;
+  }
+
+  :where([data-slot="sidebar"][data-responsive-collapsed="true"])
+    > :where(.sidebar-mobile, [data-slot="sidebar-mobile"]) {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  :where([data-slot="sidebar"][data-responsive-collapsed="true"])
+    > :where(.sidebar-shell, [data-slot="sidebar-shell"]) {
+    display: none;
+  }
+
+  :where(.sidebar-backdrop, [data-slot="sidebar-backdrop"]) {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ak-z-modal-backdrop);
+    border: 0;
+    background: var(--ak-color-backdrop);
+    cursor: default;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :where(
+      .sidebar-backdrop[data-state="open"],
+      [data-slot="sidebar-backdrop"][data-state="open"]
+    ) {
+      animation: sidebar-backdrop-in var(--ak-duration-fast) var(--ak-ease-standard);
+    }
+
+    :where(.sidebar-panel[data-state="open"], [data-slot="sidebar-panel"][data-state="open"]) {
+      animation: sidebar-drawer-in var(--ak-duration-normal) var(--ak-ease-standard);
+    }
+  }
+
+  @keyframes sidebar-backdrop-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes sidebar-drawer-in {
+    from {
+      opacity: 0;
+      transform: translateX(-0.75rem);
+    }
+  }
+}

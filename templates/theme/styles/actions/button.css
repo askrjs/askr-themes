@@ -1,4 +1,4 @@
-:where(.btn, [data-slot="button"]) {
+:where(.btn, .btn-close, [data-slot="button"]) {
   --_button-height: var(--ak-density-control-height-md);
   --_button-padding-x: var(--ak-density-control-padding-x-md);
   --_button-radius: var(--ak-radius-md);
@@ -55,7 +55,7 @@
   outline: none;
   box-shadow:
     0 0 0 1px var(--ak-color-surface),
-    0 0 0 4px var(--ak-color-focus-ring);
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }
 
 :where(.btn[data-disabled], .btn:disabled, [data-slot="button"][data-disabled]) {
@@ -143,12 +143,12 @@
 }
 
 :where(.btn-destructive:hover, [data-slot="button"][data-variant="destructive"]:hover) {
-  background: color-mix(in srgb, black 4%, var(--ak-color-danger));
+  background: color-mix(in srgb, var(--ak-color-danger) 94%, var(--ak-color-danger-ink) 6%);
   border-color: color-mix(in srgb, var(--ak-color-danger-ink) 48%, var(--ak-color-danger));
 }
 
 :where(.btn-destructive:active, [data-slot="button"][data-variant="destructive"]:active) {
-  background: color-mix(in srgb, black 9%, var(--ak-color-danger));
+  background: color-mix(in srgb, var(--ak-color-danger) 88%, var(--ak-color-danger-ink) 12%);
   border-color: color-mix(in srgb, var(--ak-color-danger-ink) 56%, var(--ak-color-danger));
 }
 
@@ -176,6 +176,44 @@
   border-color: transparent;
   box-shadow: none;
   color: var(--ak-color-link-hover);
+}
+
+:where(.btn-close) {
+  justify-content: center;
+  gap: 0;
+  inline-size: var(--_button-height);
+  padding-inline: 0;
+  border-color: transparent;
+  border-radius: var(--ak-radius-round);
+  background: transparent;
+  box-shadow: none;
+}
+
+:where(.btn-close:hover) {
+  background: var(--ak-color-hover);
+  border-color: transparent;
+}
+
+:where(.btn-close:active) {
+  background: var(--ak-color-active);
+  border-color: transparent;
+}
+
+:where(.btn-close:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+}
+
+:where(.btn-close[data-disabled], .btn-close:disabled) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--ak-color-disabled-text);
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 1;
 }
 
 :where(.btn-sm, [data-slot="button"][data-size="sm"]) {

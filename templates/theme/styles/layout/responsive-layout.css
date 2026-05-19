@@ -1,16 +1,23 @@
-:where([data-slot="topbar-layout"]),
-:where([data-slot="sidebar-layout"]) {
+:where([data-slot="shell"]) {
   min-block-size: 100vh;
   background: var(--ak-color-bg);
   color: var(--ak-color-text);
 }
 
-:where([data-slot="topbar-layout"]) {
+:where([data-slot="shell"]) {
   display: flex;
+}
+
+:where([data-slot="shell"][data-variant="topbar"]) {
   flex-direction: column;
 }
 
-:where([data-slot="topbar-layout"]) > :where([data-slot="navbar"]) {
+:where([data-slot="shell"][data-variant="sidebar"]) {
+  flex-direction: column;
+  gap: var(--ak-space-lg);
+}
+
+:where([data-slot="shell"][data-variant="topbar"]) > :where([data-slot="shell-nav"]) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -22,17 +29,10 @@
   background: color-mix(in srgb, var(--ak-color-surface) 98%, transparent);
 }
 
-:where([data-slot="sidebar-layout"]) {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ak-space-lg);
-}
-
-:where([data-slot="sidebar-layout"][data-sidebar-position="end"]) {
-  flex-direction: column;
-}
-
-:where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"]) {
+:where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"]) {
+  display: grid;
+  align-content: start;
+  padding: var(--ak-layout-page-gutter);
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
@@ -41,8 +41,7 @@
   border-block-end: 1px solid var(--ak-color-border);
 }
 
-:where([data-slot="topbar-layout"]) > :where([data-slot="main"]),
-:where([data-slot="sidebar-layout"]) > :where([data-slot="main"]) {
+:where([data-slot="shell"]) > :where([data-slot="shell-main"]) {
   flex: 1 1 auto;
   min-inline-size: 0;
   inline-size: 100%;
@@ -57,127 +56,39 @@
   align-items: stretch;
 }
 
-:where([data-slot="sidebar-layout"][data-collapse-below="sm"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="md"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="lg"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
-  flex-direction: column;
-}
-
-:where([data-slot="sidebar-layout"][data-collapse-below="sm"]) > :where([data-slot="sidebar"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]),
-:where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
-  inline-size: 100%;
-  flex-basis: auto;
-}
-
-:where([data-slot="sidebar-layout"][data-sidebar-width="sm"]) > :where([data-slot="sidebar"]) {
-  inline-size: var(--ak-layout-sidebar-width-sm);
-  flex-basis: var(--ak-layout-sidebar-width-sm);
-}
-
-:where([data-slot="sidebar-layout"][data-sidebar-width="md"]) > :where([data-slot="sidebar"]) {
-  inline-size: var(--ak-layout-sidebar-width-md);
-  flex-basis: var(--ak-layout-sidebar-width-md);
-}
-
-:where([data-slot="sidebar-layout"][data-sidebar-width="lg"]) > :where([data-slot="sidebar"]) {
-  inline-size: var(--ak-layout-sidebar-width-lg);
-  flex-basis: var(--ak-layout-sidebar-width-lg);
-}
-
-:where([data-slot="sidebar-layout"][data-sidebar-width="xl"]) > :where([data-slot="sidebar"]) {
-  inline-size: var(--ak-layout-sidebar-width-xl);
-  flex-basis: var(--ak-layout-sidebar-width-xl);
-}
-
 @media (min-width: 40rem) {
   :where([data-slot="flex"][data-collapse-below="sm"]) {
     flex-direction: row;
     align-items: center;
   }
 
-  :where([data-slot="sidebar-layout"]) {
+  :where([data-slot="shell"][data-variant="sidebar"]) {
     flex-direction: row;
     align-items: stretch;
   }
 
-  :where([data-slot="sidebar-layout"][data-sidebar-position="end"]) {
-    flex-direction: row-reverse;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="md"]),
-  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]),
-  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
-    flex-direction: column;
-  }
-
-  :where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"]) {
+  :where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
+    align-self: stretch;
+    min-block-size: 100vh;
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]),
-  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]),
-  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
-    inline-size: 100%;
-    flex-basis: auto;
-    border-block-end: 1px solid var(--ak-color-border);
-    border-inline-end: 0;
   }
 }
 
 @media (min-width: 48rem) {
-  :where([data-slot="topbar-layout"]) > :where([data-slot="navbar"]) {
+  :where([data-slot="shell"][data-variant="topbar"]) > :where([data-slot="shell-nav"]) {
     padding-inline: var(--ak-layout-page-gutter);
   }
 
-  :where([data-slot="topbar-layout"]) > :where([data-slot="main"]),
-  :where([data-slot="sidebar-layout"]) > :where([data-slot="main"]) {
+  :where([data-slot="shell"]) > :where([data-slot="shell-main"]) {
     padding: var(--ak-layout-page-gutter);
-  }
-
-  :where([data-slot="flex"][data-collapse-below="md"]) {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="md"]) {
-    flex-direction: row-reverse;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="md"]) > :where([data-slot="sidebar"]) {
-    inline-size: var(--ak-layout-sidebar-width);
-    flex-basis: var(--ak-layout-sidebar-width);
-    border-block-end: 0;
-    border-inline-end: 1px solid var(--ak-color-border);
   }
 }
 
 @media (min-width: 64rem) {
-  :where([data-slot="flex"][data-collapse-below="lg"]) {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="lg"]) {
-    flex-direction: row-reverse;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="lg"]) > :where([data-slot="sidebar"]) {
+  :where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
@@ -186,24 +97,29 @@
 }
 
 @media (min-width: 80rem) {
-  :where([data-slot="flex"][data-collapse-below="xl"]) {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  :where([data-slot="sidebar-layout"][data-sidebar-position="end"][data-collapse-below="xl"]) {
-    flex-direction: row-reverse;
-  }
-
-  :where([data-slot="sidebar-layout"][data-collapse-below="xl"]) > :where([data-slot="sidebar"]) {
+  :where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"]) {
     inline-size: var(--ak-layout-sidebar-width);
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
+  }
+}
+
+@media (min-width: 40rem) {
+  :where([data-slot="shell"][data-variant="sidebar"])
+    > [data-slot="shell-nav"]:has(
+      > [data-slot="sidebar"][data-collapsible="icon"][data-icon-collapsed="true"][data-responsive-collapsed="false"]
+    ) {
+    flex: 0 0 var(--ak-layout-sidebar-rail-width);
+    width: var(--ak-layout-sidebar-rail-width);
+    inline-size: var(--ak-layout-sidebar-rail-width);
+    flex-basis: var(--ak-layout-sidebar-rail-width);
+    min-width: var(--ak-layout-sidebar-rail-width);
+    min-inline-size: var(--ak-layout-sidebar-rail-width);
+    max-width: var(--ak-layout-sidebar-rail-width);
+    max-inline-size: var(--ak-layout-sidebar-rail-width);
+    padding-left: 0;
+    padding-right: 0;
+    padding-inline: 0;
   }
 }

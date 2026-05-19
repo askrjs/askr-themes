@@ -2,9 +2,22 @@
   :where(.header, [data-slot="header"]) {
     position: relative;
     z-index: var(--ak-z-sticky);
-    border-block-end: 1px solid color-mix(in srgb, var(--ak-color-border) 88%, white 12%);
-    background: color-mix(in srgb, var(--ak-color-surface) 96%, transparent);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.34) inset;
+    display: flex;
+    align-items: center;
+    padding-block: var(--ak-space-xs);
+    border-block-end: 1px solid
+      color-mix(in srgb, var(--ak-color-border) 88%, var(--ak-color-surface) 12%);
+    background: color-mix(in srgb, var(--ak-color-surface) 90%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    box-shadow: none;
+  }
+
+  :where(.header, [data-slot="header"]) > :where([data-slot="container"]) {
+    inline-size: 100%;
+  }
+
+  :where(.header, [data-slot="header"]) :where(.navbar-brand, [data-slot="navbar-brand"]) {
+    min-block-size: var(--ak-density-control-height-md);
   }
 
   :where(.header, [data-slot="header"])[data-position="static"] {

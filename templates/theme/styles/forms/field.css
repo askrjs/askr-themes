@@ -1,0 +1,20 @@
+:where(.field, [data-slot="field"]) {
+  display: grid;
+  gap: var(--ak-space-xs);
+  min-inline-size: 0;
+}
+
+:where(.field-hint, [data-slot="field-hint"]) {
+  margin: 0;
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+}
+
+:where(.field-error, [data-slot="field-error"]) {
+  margin: 0;
+  color: var(--ak-color-danger-ink);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  line-height: var(--ak-line-height-normal);
+}

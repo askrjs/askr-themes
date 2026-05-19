@@ -41,7 +41,8 @@
 :where([data-slot="dialog-overlay"]) {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--ak-color-backdrop) 96%, black 4%);
+  background: var(--ak-color-backdrop);
+  z-index: var(--ak-z-modal-backdrop);
   animation: ak-fade-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -57,11 +58,13 @@
   max-block-size: calc(100dvh - 4rem);
   overflow-y: auto;
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 88%, white 12%);
+  border: 1px solid
+    color-mix(in srgb, var(--ak-color-border-subtle) 88%, var(--ak-color-surface) 12%);
   border-radius: var(--ak-radius-lg);
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
+  z-index: var(--ak-z-modal);
   animation: ak-scale-in var(--ak-duration-normal) var(--ak-ease-standard);
 }
 
@@ -89,7 +92,7 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0 calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);

@@ -42,7 +42,7 @@ export type ThemeToggleProps = Omit<ButtonNativeProps, "children" | "onPress"> &
   lightIcon?: unknown;
   darkIcon?: unknown;
   systemIcon?: unknown;
-  toggleThemes?: readonly ThemeName[];
+  themes?: readonly ThemeName[];
   onPress?: (event: PressEvent) => void;
 };
 
@@ -161,13 +161,13 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
     lightIcon,
     darkIcon,
     systemIcon,
-    toggleThemes = ["light", "dark"],
+    themes = ["light", "dark"],
     onPress,
     ...rest
   } = props;
 
   const currentTheme = theme.theme();
-  const nextTheme = getNextTheme(currentTheme, toggleThemes);
+  const nextTheme = getNextTheme(currentTheme, themes);
   const renderContext = { theme: currentTheme, nextTheme };
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"];
   const themedIcon = resolveThemeToggleIcon(currentTheme, nextTheme, {

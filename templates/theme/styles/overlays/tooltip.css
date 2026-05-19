@@ -30,6 +30,7 @@
   color: var(--ak-color-text-inverse);
   font-size: var(--ak-font-size-sm);
   box-shadow: var(--ak-shadow-md);
+  z-index: var(--ak-z-tooltip);
   animation: ak-tooltip-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -73,11 +74,11 @@
 }
 
 [data-slot="tooltip-trigger"][data-state="open"] {
-  box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 [data-slot="tooltip-trigger"][data-disabled] {
-  opacity: 0.5;
+  color: var(--ak-color-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
 }

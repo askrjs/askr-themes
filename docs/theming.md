@@ -8,21 +8,67 @@ package for CSS-first chart visuals and lightweight trend approximations.
 
 ## Layer Model
 
-The default theme is split into replaceable CSS layers:
+The default theme ships as a single import graph rooted at
+[src/themes/default/index.css](../src/themes/default/index.css). The ordered
+layers below match that file:
 
 ```text
-reset.css          - baseline resets
-tokens.css         - design tokens
-styles/base/       - typography and foundational primitives
-styles/actions/    - buttons and toggle controls
-styles/forms/      - inputs, labels, and form controls
-styles/display/    - cards, badges, progress, separators, aspect ratios, tables, and status display
-styles/navigation/ - menus, tabs, and breadcrumbs
-styles/disclosure/ - accordion and collapsible patterns
-styles/overlays/   - dialogs, popovers, toasts, and tooltips
-styles/shell/      - app shell theme values
-styles/layout/     - layout primitives and responsive page structure
-components.css     - component-level composition defaults
+tokens.css
+styles/base/reset.css
+styles/base/typography.css
+styles/base/icon.css
+styles/base/utilities.css
+styles/layout/layout.css
+styles/layout/responsive-layout.css
+styles/layout/block.css
+styles/layout/patterns.css
+styles/layout/aspect-ratio.css
+styles/shell/theme.css
+styles/shell/header.css
+styles/shell/navbar.css
+styles/shell/sidebar.css
+styles/actions/button.css
+styles/actions/button-group.css
+styles/actions/toggle.css
+styles/actions/toggle-group.css
+styles/display/alert.css
+styles/forms/input.css
+styles/forms/input-group.css
+styles/forms/textarea.css
+styles/forms/form.css
+styles/forms/field.css
+styles/forms/checkbox.css
+styles/forms/switch.css
+styles/forms/radio-group.css
+styles/forms/select.css
+styles/forms/slider.css
+styles/forms/label.css
+styles/display/card.css
+styles/display/list-group.css
+styles/display/progress.css
+styles/display/progress-circle.css
+styles/display/badge.css
+styles/display/skeleton.css
+styles/display/avatar.css
+styles/display/separator.css
+styles/display/table.css
+styles/display/scroll-area.css
+styles/display/spinner.css
+styles/display/coverage.css
+styles/navigation/breadcrumb.css
+styles/navigation/nav.css
+styles/navigation/pagination.css
+styles/navigation/menu.css
+styles/navigation/menubar.css
+styles/disclosure/accordion.css
+styles/disclosure/collapsible.css
+styles/overlays/alert-dialog.css
+styles/overlays/dropdown.css
+styles/overlays/toast.css
+styles/overlays/dialog.css
+styles/overlays/popover.css
+styles/overlays/hover-card.css
+styles/overlays/tooltip.css
 ```
 
 Import the full default theme when you want the standard admin UI baseline:
@@ -63,11 +109,42 @@ the active scope:
 
 `data-slot` is the canonical selector contract for package components. The
 default theme also provides a small set of class aliases for raw HTML.
-Theme-owned wrappers such as `Breadcrumb`, `Spinner`, and `AccessibleIcon` stay
-thin, while shell chrome components such as `Header`, `Navbar`, `NavItem`,
-`NavLink`, `SidebarLayout`, and `TopbarLayout` provide the app frame. Recipe shells like
+See [Architecture](./architecture.md) for the package boundary between
+`@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
+The public package surface is organized into curated entrypoints rather than a
+generic catch-all: use `theme`, `layouts`, `controls`, `surfaces`,
+`feedback`, `shells`, `navs`, and `logos` based on concern.
+Use the curated theme entrypoints such as `controls`, `surfaces`, `navs`, and
+`shells` for styled components such as Button, ButtonGroup, Close, InputGroup,
+Field, Alert, ListGroup, Pagination, Badge, Card, CardActions, and Skeleton.
+`Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
+while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
+theme-owned because they are visual composition only.
+The wrappers intentionally emit familiar alias classes for the common app
+surfaces they own, so the DOM stays easy to target with either `data-slot`
+hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
+`field`, `field-hint`, `field-error`, `input-group`, `list-group`, and
+`pagination`.
+Feedback helpers such as `Spinner` and nav helpers such as `Breadcrumb` stay
+thin, while shell chrome components such as `Header`, `Sidebar`, `Navbar`,
+`NavItem`, `NavLink`, `NavGroup`, `NavBrand`, `Shell`, `ShellNav`, and `ShellMain`
+provide the app frame. Recipe shells like
 marketing or product pages should be composed in userland from these
 primitives rather than shipped as dedicated theme exports.
+
+Density modifiers are available on the shared control classes, including
+`btn-sm`, `btn-lg`, `input-sm`, `input-lg`, `textarea-sm`, `textarea-lg`, and
+`select-trigger-sm` / `select-trigger-lg`.
+
+For shell chrome, keep the orientation-specific API intent explicit:
+
+- Use `align="center" | "end"` for horizontal topbar grouping.
+- Use `align="end"` when a vertical sidebar group should pin to the bottom.
+- Use `label` when a nav section needs a visible and semantic section heading.
+- Use `Sidebar` when vertical navigation should collapse into an icon rail and generated drawer.
+- Use `Navbar` for horizontal topbars.
+- Use `collapsible="icon"` for desktop vertical sidebars that should shrink to an icon rail.
+- Use `match="exact"` when a nav item should not stay selected for child routes.
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.
