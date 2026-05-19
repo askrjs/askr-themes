@@ -1,5 +1,6 @@
 :where([data-slot="table"]) {
   inline-size: 100%;
+  min-inline-size: 0;
   border-collapse: separate;
   border-spacing: 0;
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
@@ -49,6 +50,7 @@
   line-height: var(--ak-line-height-normal);
   text-align: start;
   vertical-align: top;
+  overflow-wrap: anywhere;
 }
 
 :where([data-slot="table-header-cell"]) {
@@ -56,7 +58,7 @@
   font-weight: var(--ak-font-weight-semibold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 :where([data-slot="table-cell"]) {

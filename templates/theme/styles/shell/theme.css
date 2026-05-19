@@ -14,9 +14,10 @@
 
 :where([data-slot="theme-picker"]) {
   display: inline-flex;
-  min-height: 2.5rem;
-  min-width: 8rem;
-  padding-inline: 0.85rem 2.1rem;
+  min-block-size: var(--ak-density-control-height-md);
+  min-inline-size: min(8rem, 100%);
+  max-inline-size: 100%;
+  padding-inline: var(--ak-density-control-padding-x-md) 2.1rem;
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
@@ -24,6 +25,7 @@
   font: inherit;
   font-size: var(--ak-font-size-sm);
   line-height: 1;
+  text-overflow: ellipsis;
   box-shadow: var(--ak-shadow-sm);
 }
 

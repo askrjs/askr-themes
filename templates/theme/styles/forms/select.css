@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: var(--ak-space-sm);
   min-height: var(--_select-height);
-  min-width: 12rem;
+  min-width: min(12rem, 100%);
   width: 100%;
   padding-block: 0;
   padding-inline: var(--_select-padding-x);
@@ -104,7 +104,9 @@
 
   display: grid;
   gap: 0.25rem;
-  min-width: 12rem;
+  box-sizing: border-box;
+  min-inline-size: min(12rem, 100%);
+  max-inline-size: min(100%, calc(100vw - 1rem));
   max-block-size: min(20rem, calc(100vh - 4rem));
   overflow-y: auto;
   padding: calc(var(--ak-space-sm) + 0.125rem);
@@ -113,11 +115,13 @@
   background: var(--_select-surface);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-dropdown);
+  transform-origin: top center;
   animation: ak-select-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where(.select-content[data-state="closed"], [data-slot="select-content"][data-state="closed"]) {
   animation: ak-select-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
 }
 
 :where(.select-item, [data-slot="select-item"]) {
@@ -130,6 +134,7 @@
   cursor: pointer;
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
+  overflow-wrap: anywhere;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     color var(--ak-duration-fast) var(--ak-ease-standard);
@@ -174,4 +179,10 @@
   block-size: 1px;
   background: var(--ak-color-border);
   margin: 0.25rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.select-content, [data-slot="select-content"]) {
+    animation: none;
+  }
 }

@@ -83,7 +83,9 @@
 
   display: grid;
   gap: 0.25rem;
-  min-width: 12rem;
+  box-sizing: border-box;
+  min-inline-size: min(12rem, 100%);
+  max-inline-size: min(100%, calc(100vw - 1rem));
   max-block-size: min(20rem, calc(100vh - 4rem));
   overflow-y: auto;
   padding: var(--ak-space-sm);
@@ -93,11 +95,13 @@
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-dropdown);
+  transform-origin: top center;
   animation: ak-menu-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where(.dropdown-content, [data-slot="dropdown-content"])[data-state="closed"] {
   animation: ak-menu-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
 }
 
 :where(.dropdown-item, [data-slot="dropdown-item"]) {
@@ -111,6 +115,7 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -146,4 +151,10 @@
   block-size: 1px;
   margin: 0.25rem 0;
   background: var(--ak-color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.dropdown-content, [data-slot="dropdown-content"]) {
+    animation: none;
+  }
 }

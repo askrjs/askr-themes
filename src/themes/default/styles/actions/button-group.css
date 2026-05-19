@@ -2,7 +2,16 @@
   display: inline-flex;
   align-items: stretch;
   gap: 0;
+  min-inline-size: 0;
   max-inline-size: 100%;
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]) {
+  flex-wrap: nowrap;
+}
+
+:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"]) {
+  flex-wrap: wrap;
 }
 
 :where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"]) {
@@ -15,6 +24,7 @@
 
 :where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]) {
   position: relative;
+  min-inline-size: 0;
   box-shadow: none;
 }
 

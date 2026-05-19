@@ -6,7 +6,7 @@ Default theme tokens, styles, and visual components for askr-ui applications.
 
 - [Overview](./askr-themes.md) - What askr-themes is and when to use it
 - [Tokens](./tokens.md) - Design token reference and overrides
-- [Theming](./theming.md) - Layered CSS architecture and dark mode
+- [Theming](./theming.md) - Layered CSS architecture, visual quality, and dark mode
 
 ## Quick start
 
@@ -186,6 +186,15 @@ The default path is an admin-ready application shell: tables, settings pages,
 record detail screens, and dashboard layouts should look production-ready
 without custom CSS. Product-style and marketing-style shells should be composed
 in userland from the generic primitives rather than expected as package recipes.
+
+## Visual quality
+
+The default theme targets quiet, high-end SaaS surfaces: compact density,
+deliberate typography, restrained color, and predictable responsive behavior.
+Use [../visual-check.html](../visual-check.html) as the manual audit page for
+theme work, and inspect it in light and dark mode at `320`, `390`, `768`,
+`1024`, and desktop widths. The detailed checklist lives in
+[Theming](./theming.md#visual-quality-standard).
 
 Semantic table primitives come from `@askrjs/ui`; the default theme styles the
 `Table` surface through its bundled `table.css` rules.

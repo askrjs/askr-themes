@@ -48,6 +48,7 @@
 
 :where([data-slot="dialog-overlay"][data-state="closed"]) {
   animation: ak-fade-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
 }
 
 :where([data-slot="dialog-content"]) {
@@ -60,9 +61,11 @@
 
   display: grid;
   gap: var(--ak-space-md);
-  min-width: min(34rem, calc(100vw - 1.5rem));
-  max-width: 40rem;
-  max-block-size: calc(100dvh - 4rem);
+  box-sizing: border-box;
+  inline-size: min(40rem, 100%);
+  min-inline-size: 0;
+  max-inline-size: calc(100vw - 1rem);
+  max-block-size: calc(100dvh - 1rem);
   overflow-y: auto;
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
   border: 1px solid var(--_dialog-border);
@@ -71,11 +74,13 @@
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-modal);
+  transform-origin: center;
   animation: ak-scale-in var(--ak-duration-normal) var(--ak-ease-standard);
 }
 
 :where([data-slot="dialog-content"][data-state="closed"]) {
   animation: ak-scale-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
 }
 
 :where([data-slot="dialog-title"]) {
@@ -84,6 +89,7 @@
   font-size: var(--ak-font-size-lg);
   font-weight: var(--ak-font-weight-bold);
   line-height: var(--ak-line-height-tight);
+  overflow-wrap: anywhere;
 }
 
 :where([data-slot="dialog-description"]) {
@@ -133,4 +139,10 @@
   color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where([data-slot="dialog-overlay"], [data-slot="dialog-content"]) {
+    animation: none;
+  }
 }

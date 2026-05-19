@@ -341,6 +341,44 @@
         overflow-wrap: anywhere;
       }
 
+      .mobile-frame {
+        inline-size: min(100%, 20rem);
+        min-inline-size: 0;
+        margin-inline: auto;
+      }
+
+      .mobile-frame-surface {
+        display: grid;
+        gap: var(--ak-space-md);
+        inline-size: 100%;
+        min-inline-size: 0;
+        padding: var(--ak-space-md);
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        background: var(--ak-color-bg);
+        overflow: hidden;
+      }
+
+      .wide-table {
+        inline-size: 100%;
+      }
+
+      .mobile-drawer-demo {
+        position: relative;
+        min-block-size: 16rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        overflow: hidden;
+        background: var(--ak-color-bg);
+      }
+
+      .mobile-drawer-demo [data-slot="sidebar-panel"],
+      .mobile-drawer-demo [data-slot="navbar-panel"] {
+        position: static;
+        inline-size: 100%;
+        max-block-size: 14rem;
+      }
+
       .audit-page :where(.btn, [data-slot="button"]) {
         max-inline-size: 100%;
       }
@@ -408,6 +446,53 @@
         renderBadge("Info", 'data-variant="info"'),
       ].join("");
 
+      const resilienceContent = `
+        <div class="stack">
+          <div class="row">
+            <span class="badge" data-slot="badge" data-variant="info">
+              <svg data-slot="icon" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="5" fill="currentColor"></circle>
+              </svg>
+              Status with icon
+            </span>
+            <span class="badge" data-slot="badge" data-variant="secondary">
+              Long badge label that wraps without forcing overflow
+            </span>
+            <div data-slot="progress-circle" data-state="indeterminate"></div>
+          </div>
+          <div class="alert" data-slot="alert" data-variant="warning">
+            <div class="alert-icon" data-slot="alert-icon">!</div>
+            <div class="alert-content" data-slot="alert-content">
+              <h4 class="alert-title" data-slot="alert-title">
+                Exceptionally long alert title that still needs to wrap cleanly on mobile
+              </h4>
+              <p class="alert-description" data-slot="alert-description">
+                Alert copy can include a long deployment identifier like
+                production-north-america-control-plane-reconciliation-job without clipping.
+              </p>
+            </div>
+            <button class="btn btn-close alert-close" data-slot="alert-close" aria-label="Dismiss">x</button>
+          </div>
+          <section class="empty-state" data-slot="empty-state">
+            <div class="empty-state-icon" data-slot="empty-state-icon">0</div>
+            <h4 class="empty-state-title" data-slot="empty-state-title">
+              No matching records for the selected operational filters
+            </h4>
+            <p class="empty-state-description" data-slot="empty-state-description">
+              Try a shorter date range or remove one segment to see whether records reappear.
+            </p>
+            <div class="empty-state-actions" data-slot="empty-state-actions">
+              <button class="btn btn-primary" data-slot="button">Reset filters</button>
+              <button class="btn btn-outline" data-slot="button">Save view</button>
+            </div>
+          </section>
+          <div data-slot="aspect-ratio" style="aspect-ratio: 21 / 9;">
+            <div style="display:grid;place-items:center;inline-size:100%;block-size:100%;background:var(--ak-color-surface-muted);">
+              Responsive media wrapper
+            </div>
+          </div>
+        </div>`;
+
       const buttonsContent = `
         <div class="stack">
           ${renderRow([
@@ -461,19 +546,30 @@
             </ol>
           </nav>
           <header class="header" data-slot="header">
-            <nav class="navbar" data-slot="navbar" data-orientation="horizontal">
-              <div class="navbar-brand" data-slot="navbar-brand">
-                <a href="#">askr</a>
-              </div>
-              <div class="navbar-group" data-slot="navbar-group" data-align="center">
-                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">Components</a>
-                <a class="navbar-item" data-slot="nav-item" href="#">Charts</a>
-                <a class="navbar-item" data-slot="nav-item" href="#">Docs</a>
-              </div>
-              <div class="navbar-group" data-slot="navbar-group" data-align="end">
-                <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
-                  Aa
-                </button>
+            <nav class="navbar" data-slot="navbar" data-orientation="horizontal" data-responsive-collapsed="false">
+              <div class="navbar-shell" data-slot="navbar-shell">
+                <div class="navbar-brand" data-slot="navbar-brand">
+                  <a href="#">
+                    <span data-slot="icon" aria-hidden="true">A</span>
+                    <strong>Askr Production Workspace</strong>
+                  </a>
+                </div>
+                <div class="navbar-group" data-slot="navbar-group" data-align="center">
+                  <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">
+                    <span>Components</span>
+                  </a>
+                  <a class="navbar-item" data-slot="nav-item" href="#">
+                    <span>Usage analytics</span>
+                  </a>
+                  <a class="navbar-item" data-slot="nav-item" href="#">
+                    <span>Long documentation destination</span>
+                  </a>
+                </div>
+                <div class="navbar-group" data-slot="navbar-group" data-align="end">
+                  <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
+                    Aa
+                  </button>
+                </div>
               </div>
             </nav>
           </header>
@@ -493,12 +589,28 @@
         <div class="stack">
           <div class="layout-demo">
             <div data-slot="block" data-columns="initial:2" class="layout-shell">
-              <aside class="layout-sidebar">
-                <span class="badge" data-slot="badge" data-variant="secondary">Sidebar</span>
-                <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">Overview</a>
-                <a class="nav-item long-label" data-slot="nav-link" href="#">
-                  A very long navigation destination name
-                </a>
+              <aside class="layout-sidebar sidebar" data-slot="sidebar" data-responsive-collapsed="false">
+                <div class="sidebar-shell" data-slot="sidebar-shell" data-orientation="vertical">
+                  <div data-slot="navbar-brand">
+                    <a href="#">
+                      <span data-slot="icon" aria-hidden="true">A</span>
+                      <strong>Askr Production Workspace</strong>
+                    </a>
+                  </div>
+                  <div data-slot="navbar-group">
+                    <span data-slot="navbar-group-label">Operations and reporting</span>
+                    <div data-slot="navbar-group-body">
+                      <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">
+                        <span data-slot="icon" aria-hidden="true">D</span>
+                        <span>Dashboard</span>
+                      </a>
+                      <a class="nav-item long-label" data-slot="nav-link" href="#">
+                        <span data-slot="icon" aria-hidden="true">R</span>
+                        <span>A very long navigation destination name for production readiness</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </aside>
               <main class="layout-main">
                 <div data-slot="container" data-size="initial:2">
@@ -517,6 +629,105 @@
           </div>
           <div data-slot="aspect-ratio" style="aspect-ratio: 16 / 9;">
             <div class="preview-surface">Aspect-ratio media frame</div>
+          </div>
+        </div>`;
+
+      const mobileStressContent = `
+        <div class="mobile-frame">
+          <div class="mobile-frame-surface">
+            <div data-slot="block" data-size="initial:xl">
+              <article class="card" data-slot="card">
+                <h4 class="card-title" data-slot="card-title">Large block preset inside 320px</h4>
+                <p class="card-description" data-slot="card-description">
+                  This should not create horizontal scroll even with the xl grid preset.
+                </p>
+              </article>
+            </div>
+            <div data-slot="radio-group" data-orientation="horizontal">
+              <button data-slot="radio-group-item" data-state="checked">Daily digest</button>
+              <button data-slot="radio-group-item">Weekly operational review</button>
+              <button data-slot="radio-group-item">Monthly executive summary</button>
+            </div>
+            <div data-slot="toggle-group" aria-label="Mobile density">
+              <button data-slot="toggle-group-item" data-state="on">Compact</button>
+              <button data-slot="toggle-group-item">Comfortable</button>
+              <button data-slot="toggle-group-item">Expanded</button>
+            </div>
+            <nav class="pagination" data-slot="pagination" aria-label="Mobile pagination">
+              <a data-slot="pagination-link" href="#">Previous report</a>
+              <a data-slot="pagination-link" data-active="true" href="#">12</a>
+              <span data-slot="pagination-ellipsis">...</span>
+              <a data-slot="pagination-link" href="#">Next report</a>
+            </nav>
+            <section data-slot="dialog-content">
+              <h4 data-slot="dialog-title">Mobile dialog with a long title that wraps cleanly</h4>
+              <p data-slot="dialog-description">
+                Dialog content should fit the frame without requiring horizontal panning.
+              </p>
+              <button data-slot="dialog-close">Close</button>
+            </section>
+            <div class="mini-grid">
+              <div data-slot="select-content">
+                <button data-slot="select-item" data-state="checked">
+                  Production environment with a very long deployment target name
+                </button>
+                <button data-slot="select-item">Preview</button>
+              </div>
+              <div data-slot="dropdown-content">
+                <button data-slot="dropdown-item">Account settings with an intentionally long label</button>
+                <button data-slot="dropdown-item">Billing</button>
+              </div>
+              <div data-slot="menu-content">
+                <div data-slot="menu-label">Mobile submenu</div>
+                <button data-slot="menu-item">Overview</button>
+                <details open data-submenu="true">
+                  <summary data-slot="menu-item" data-submenu-trigger="true">Archive</summary>
+                  <ul data-submenu-content="true">
+                    <li data-submenu-item="true">
+                      <button data-slot="menu-item">Archive this very long document name</button>
+                    </li>
+                    <li data-submenu-item="true">
+                      <button data-slot="menu-item">Archive and close</button>
+                    </li>
+                  </ul>
+                </details>
+              </div>
+            </div>
+            <div class="compact-table-wrap">
+              <table class="wide-table" data-slot="table">
+                <thead data-slot="table-head">
+                  <tr data-slot="table-row">
+                    <th data-slot="table-header-cell">Extremely long header label</th>
+                    <th data-slot="table-header-cell">State</th>
+                  </tr>
+                </thead>
+                <tbody data-slot="table-body">
+                  <tr data-slot="table-row">
+                    <td data-slot="table-cell">
+                      Long enterprise table cell content should wrap instead of blowing out the viewport.
+                    </td>
+                    <td data-slot="table-cell">Healthy</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mobile-drawer-demo" data-slot="sidebar" data-responsive-collapsed="true">
+              <aside data-slot="sidebar-panel">
+                <header data-slot="sidebar-panel-header">
+                  <div data-slot="navbar-brand"><a href="#">Long workspace navigation</a></div>
+                  <button data-slot="sidebar-panel-close" aria-label="Close sidebar">
+                    <span aria-hidden="true">x</span>
+                  </button>
+                </header>
+                <div data-slot="navbar-group">
+                  <div data-slot="navbar-group-body">
+                    <a class="nav-item long-label" data-slot="nav-link" href="#">
+                      <span>Deeply nested operational dashboard navigation item</span>
+                    </a>
+                  </div>
+                </div>
+              </aside>
+            </div>
           </div>
         </div>`;
 
@@ -699,6 +910,40 @@
           </nav>
         </div>`;
 
+      const primitivesContent = `
+        <div class="stack">
+          <div class="row">
+            <span class="avatar" data-slot="avatar">
+              <span class="avatar-fallback" data-slot="avatar-fallback">AK</span>
+            </span>
+            <span class="avatar" data-slot="avatar">
+              <span class="avatar-fallback" data-slot="avatar-fallback">LONG</span>
+            </span>
+            <div data-slot="progress-circle" aria-label="Sync progress">
+              <div data-slot="progress-circle-indicator"></div>
+            </div>
+          </div>
+          <div data-slot="separator" data-orientation="horizontal"></div>
+          <div class="stack">
+            <div data-slot="progress" aria-label="Deployment progress" style="--ak-progress-percentage: 74%;">
+              <div data-slot="progress-indicator"></div>
+            </div>
+            <div class="skeleton" data-slot="skeleton" style="height: 0.875rem; width: 82%;"></div>
+            <div class="skeleton" data-slot="skeleton" style="height: 0.875rem; width: 54%;"></div>
+          </div>
+          <div class="btn-group" data-slot="button-group" data-attached="true">
+            <button class="btn btn-outline" data-slot="button">Overview</button>
+            <button class="btn btn-outline" data-slot="button">Detailed metrics</button>
+            <button class="btn btn-outline" data-slot="button">Export history</button>
+          </div>
+          <label class="label" data-slot="label" for="theme-stress">
+            Theme picker with a deliberately long label
+          </label>
+          <select id="theme-stress" data-slot="theme-picker">
+            <option>System appearance with long option text</option>
+          </select>
+        </div>`;
+
       const disclosureContent = `
         <div class="stack">
           <div data-slot="accordion">
@@ -778,7 +1023,13 @@
             <button data-slot="menu-item">Open</button>
             <button data-slot="menu-item" data-disabled>Disabled</button>
             <div data-slot="menu-separator"></div>
-            <button data-slot="menu-item">Archive</button>
+            <details open data-submenu="true">
+              <summary data-slot="menu-item" data-submenu-trigger="true">Archive</summary>
+              <ul data-submenu-content="true">
+                <li data-submenu-item="true"><button data-slot="menu-item">Archive this document</button></li>
+                <li data-submenu-item="true"><button data-slot="menu-item">Archive and close</button></li>
+              </ul>
+            </details>
           </div>
         </div>`;
 
@@ -794,7 +1045,13 @@
             <button data-slot="menubar-item">Open</button>
             <button data-slot="menubar-item" data-disabled>Disabled</button>
             <div data-slot="menubar-separator"></div>
-            <button data-slot="menubar-sub-trigger">Export</button>
+            <details open data-submenu="true">
+              <summary data-slot="menubar-sub-trigger" data-submenu-trigger="true">Export</summary>
+              <ul data-submenu-content="true">
+                <li data-submenu-item="true"><button data-slot="menubar-item">Export as PDF</button></li>
+                <li data-submenu-item="true"><button data-slot="menubar-item">Export as CSV</button></li>
+              </ul>
+            </details>
           </div>
         </div>`;
 
@@ -859,6 +1116,39 @@
           )}
         </div>`;
 
+      const motionContent = `
+        <div class="stack">
+          <section data-slot="dialog-content" data-state="closed">
+            <h4 data-slot="dialog-title">Closing modal state</h4>
+            <p data-slot="dialog-description">
+              Exit states should keep layout stable while they animate out.
+            </p>
+          </section>
+          <div class="mini-grid">
+            <section data-slot="popover-content" data-state="closed">Closing popover surface</section>
+            <section data-slot="hover-card-content" data-state="closed">Closing hover-card surface</section>
+            <div data-slot="dropdown-content" data-state="closed">
+              <button data-slot="dropdown-item">Closing dropdown row</button>
+            </div>
+            <div data-slot="select-content" data-state="closed">
+              <button data-slot="select-item">Closing select option</button>
+            </div>
+            <div data-slot="menu-content" data-state="closed">
+              <button data-slot="menu-item">Closing menu row</button>
+            </div>
+            <div data-slot="menubar-content" data-state="closed">
+              <button data-slot="menubar-item">Closing menubar row</button>
+            </div>
+            <div data-slot="tooltip-content" data-state="closed" data-side="top">
+              Closing tooltip with a long label that wraps intentionally.
+            </div>
+            <div data-slot="toast" data-state="closed">
+              <strong data-slot="toast-title">Closing toast</strong>
+              <p data-slot="toast-description">Exit motion should not change width.</p>
+            </div>
+          </div>
+        </div>`;
+
       const sections = [
         {
           id: "foundations",
@@ -908,6 +1198,11 @@
                   </div>
                 </div>`,
             },
+            {
+              title: "Resilience states",
+              note: "Long status labels, alert close alignment, empty states, spinner, and media wrappers.",
+              content: resilienceContent,
+            },
           ],
         },
         {
@@ -920,6 +1215,19 @@
               note: "Layout primitives with realistic sidebar and content rhythm.",
               layout: "split",
               content: layoutContent,
+            },
+          ],
+        },
+        {
+          id: "mobile",
+          title: "Mobile stress",
+          note: "A constrained 320px-style frame for long labels, wide data, overlays, and drawers.",
+          cards: [
+            {
+              title: "320px frame",
+              note: "Responsive stress sample for the most failure-prone component combinations.",
+              layout: "split",
+              content: mobileStressContent,
             },
           ],
         },
@@ -997,6 +1305,11 @@
               note: "List rows, progress, skeleton, and pagination in one dense surface.",
               content: displayContent,
             },
+            {
+              title: "Supporting primitives",
+              note: "Avatars, separators, skeleton lines, grouped buttons, and theme picker stress.",
+              content: primitivesContent,
+            },
           ],
         },
         {
@@ -1058,6 +1371,12 @@
               note: "Overlay surface plus status-tinted variants.",
               span: "full",
               content: toastContent,
+            },
+            {
+              title: "Motion states",
+              note: "Closed modal, menu, tooltip, and toast states without layout drift.",
+              span: "full",
+              content: motionContent,
             },
           ],
         },
@@ -1132,6 +1451,7 @@
           <nav class="section-nav" aria-label="Jump to section">
             <a href="#foundations">Foundations</a>
             <a href="#layouts">Layouts</a>
+            <a href="#mobile">Mobile</a>
             <a href="#shell">Shell</a>
             <a href="#actions">Actions</a>
             <a href="#forms">Forms</a>

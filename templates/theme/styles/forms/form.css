@@ -1,5 +1,5 @@
 :where([data-slot="form"]) {
   display: grid;
-  gap: var(--ak-space-4);
+  gap: var(--ak-space-md);
   min-inline-size: 0;
 }

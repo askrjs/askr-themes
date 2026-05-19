@@ -21,6 +21,12 @@ function findNavbarBrand(children: unknown): unknown {
   return toChildArray(children).find((child) => isJsxElement(child) && child.type === NavBrand);
 }
 
+function withoutNavbarBrand(children: unknown): unknown[] {
+  return toChildArray(children).filter(
+    (child) => !(isJsxElement(child) && child.type === NavBrand),
+  );
+}
+
 /**
  * Responsive mobile-first navbar component.
  *
@@ -42,6 +48,10 @@ export function Navbar(props: NavbarProps): JSX.Element {
   const { children, breakpoint, ref, class: className, id, ...rest } = props;
   const responsiveChildren = toChildArray(children);
   const desktopChildren = renderKeyedShellChildren(responsiveChildren, "navbar-desktop");
+  const panelChildren = renderKeyedShellChildren(
+    withoutNavbarBrand(responsiveChildren),
+    "navbar-panel",
+  );
   // Extract brand to display in mobile panel header
   const responsiveCollapsedState =
     breakpoint !== undefined ? state(isNavbarCollapsed(breakpoint)) : undefined;
@@ -102,7 +112,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
             open={panelOpen}
             panelId={panelId}
           >
-            {desktopChildren}
+            {panelChildren}
           </NavbarPanel>
         ) : null}
 

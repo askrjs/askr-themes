@@ -2,8 +2,9 @@
   display: grid;
   place-items: center;
   gap: var(--ak-space-sm);
-  min-block-size: 18rem;
-  padding: var(--ak-space-6) var(--ak-space-4);
+  min-inline-size: 0;
+  min-block-size: min(18rem, 52dvh);
+  padding: clamp(var(--ak-space-lg), 7vw, var(--ak-space-6)) var(--ak-space-4);
   border: 1px dashed var(--ak-color-border);
   border-radius: var(--ak-radius-lg);
   background: color-mix(in srgb, var(--ak-color-surface-muted) 80%, transparent);
@@ -25,8 +26,9 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
   font-weight: var(--ak-font-weight-semibold);
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 :where(.empty-state-description, [data-slot="empty-state-description"]) {
@@ -34,6 +36,7 @@
   max-inline-size: 32rem;
   color: var(--ak-color-text-muted);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
 }
 
 :where(.empty-state-actions, [data-slot="empty-state-actions"]) {
@@ -42,6 +45,7 @@
   justify-content: center;
   gap: var(--ak-space-2);
   flex-wrap: wrap;
+  max-inline-size: 100%;
 }
 
 :where(.section-header) {

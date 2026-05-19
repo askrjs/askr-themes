@@ -3,6 +3,8 @@
   align-items: center;
   gap: 0.35rem;
   min-height: 1.5rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
   padding: 0 0.55rem;
   border: 1px solid color-mix(in srgb, var(--ak-color-primary) 10%, var(--ak-color-border-subtle));
   border-radius: var(--ak-radius-sm);
@@ -13,6 +15,12 @@
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
   letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+:where(.badge, [data-slot="badge"]) > :where([data-slot="icon"]) {
+  inline-size: var(--ak-icon-size-sm);
+  block-size: var(--ak-icon-size-sm);
 }
 
 :where(.badge-secondary, [data-slot="badge"][data-variant="secondary"]) {

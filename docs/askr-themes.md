@@ -199,6 +199,12 @@ The default theme is designed to supply admin and internal-tool surfaces while
 leaving the overall app frame in userland. Use the package for primitives,
 tokens, and shell chrome, then compose any app-specific page helpers locally.
 
+The visual bar is intentionally product-app oriented: compact controls,
+precise spacing, readable type, resilient long labels, and equal light/dark
+polish from narrow mobile widths through desktop. Use `visual-check.html` as
+the manual audit page for default theme work; the checklist is documented in
+[Theming](./theming.md#visual-quality-standard).
+
 For responsive composition, use `Block`. It is the intended default for groups
 of cards or content blocks that should wrap naturally with a small API surface.
 
