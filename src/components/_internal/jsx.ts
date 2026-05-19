@@ -84,6 +84,10 @@ function serializeArray(value: readonly unknown[]): string {
     return serializeForId(value[0]);
   }
 
+  if (value.length === 2) {
+    return `${serializeForId(value[0])}|${serializeForId(value[1])}`;
+  }
+
   let result = serializeForId(value[0]);
 
   for (let index = 1; index < value.length; index += 1) {
@@ -94,7 +98,7 @@ function serializeArray(value: readonly unknown[]): string {
 }
 
 function serializeSerializableProps(props: Record<string, unknown>): string {
-  const entries: Array<[string, string]> = [];
+  const keys: string[] = [];
 
   for (const key of Object.keys(props)) {
     if (key === "children" || key === "ref" || key.startsWith("on")) {
@@ -108,25 +112,47 @@ function serializeSerializableProps(props: Record<string, unknown>): string {
       typeof entryValue === "number" ||
       typeof entryValue === "boolean"
     ) {
-      entries.push([key, String(entryValue)]);
+      keys.push(key);
     }
   }
 
-  if (entries.length === 0) {
+  if (keys.length === 0) {
     return "";
   }
 
-  if (entries.length > 1) {
-    entries.sort(([left], [right]) => left.localeCompare(right));
+  if (keys.length === 1) {
+    const key = keys[0];
+
+    return `${key}:${String(props[key])}`;
   }
 
-  let result = `${entries[0][0]}:${entries[0][1]}`;
+  if (keys.length === 2) {
+    if (keys[1].localeCompare(keys[0]) < 0) {
+      [keys[0], keys[1]] = [keys[1], keys[0]];
+    }
 
-  for (let index = 1; index < entries.length; index += 1) {
-    result += `,${entries[index][0]}:${entries[index][1]}`;
+    return `${keys[0]}:${String(props[keys[0]])},${keys[1]}:${String(props[keys[1]])}`;
+  }
+
+  keys.sort((left, right) => left.localeCompare(right));
+
+  let result = `${keys[0]}:${String(props[keys[0]])}`;
+
+  for (let index = 1; index < keys.length; index += 1) {
+    const key = keys[index];
+    result += `,${key}:${String(props[key])}`;
   }
 
   return result;
+}
+
+function hasEmptyJsxChildren(children: unknown): boolean {
+  return (
+    children === undefined ||
+    children === null ||
+    typeof children === "boolean" ||
+    (Array.isArray(children) && children.length === 0)
+  );
 }
 
 export function extractTextContent(value: unknown): string {
@@ -177,15 +203,13 @@ export function serializeForId(value: unknown): string {
     const props = (value.props ?? {}) as Record<string, unknown>;
     const propEntries = serializeSerializableProps(props);
     const children = props.children;
+    const propsPrefix = propEntries === "" ? `${typeName}[]` : `${typeName}[${propEntries}]`;
 
-    if (
-      propEntries === "" &&
-      (children === undefined || children === null || typeof children === "boolean")
-    ) {
-      return `${typeName}[]()`;
+    if (hasEmptyJsxChildren(children)) {
+      return `${propsPrefix}()`;
     }
 
-    return `${typeName}[${propEntries}](${serializeForId(children)})`;
+    return `${propsPrefix}(${serializeForId(children)})`;
   }
 
   return typeof value;

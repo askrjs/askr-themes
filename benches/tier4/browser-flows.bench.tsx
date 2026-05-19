@@ -94,6 +94,25 @@ function NestedThemeRoute(): JSX.Element {
   );
 }
 
+type BrowserHeapPerformance = Performance & {
+  memory?: {
+    usedJSHeapSize: number;
+  };
+};
+
+function readBrowserHeapUsed(): number | null {
+  const usedJSHeapSize = (globalThis.performance as BrowserHeapPerformance | undefined)?.memory
+    ?.usedJSHeapSize;
+
+  return typeof usedJSHeapSize === "number" ? usedJSHeapSize : null;
+}
+
+function formatHeap(bytes: number): string {
+  return `${(bytes / (1024 * 1024)).toFixed(2)}MiB`;
+}
+
+let memorySoakReported = false;
+
 describe("tier4 browser benches", () => {
   bench("public family mount", async () => {
     const scenario = await mountScenario("/families", () => {
@@ -485,6 +504,72 @@ describe("tier4 browser benches", () => {
         await settle();
         void table.querySelectorAll("tbody tr").length;
         void log.querySelectorAll("li").length;
+      }
+    });
+  });
+
+  describe("long-session memory", () => {
+    const MEMORY_SOAK_CYCLES = 8;
+
+    bench("shell/theme memory soak", async () => {
+      const viewport = stubViewport(1200);
+      const retainedHeapSamples: number[] = [];
+
+      try {
+        for (let cycle = 0; cycle < MEMORY_SOAK_CYCLES; cycle += 1) {
+          window.localStorage.removeItem("askr-theme-memory-soak");
+          document.documentElement.removeAttribute("data-theme");
+          document.documentElement.removeAttribute("data-theme-choice");
+
+          const scenario = await mountScenario("/docs", () => {
+            group({ layout: ThemeBenchLayout }, () => {
+              route("/docs", () =>
+                buildRouteTransitionPage({ title: `Docs ${cycle + 1}`, rows: 18 }),
+              );
+            });
+          });
+
+          try {
+            const themeHeader = scenario.container.querySelector(
+              '[data-bench="theme-header"]',
+            ) as HTMLElement | null;
+
+            if (!themeHeader) {
+              throw new Error("memory soak bench failed to mount the expected controls");
+            }
+          } finally {
+            scenario.cleanup();
+            clearRoutes();
+            window.localStorage.removeItem("askr-theme-memory-soak");
+            document.documentElement.removeAttribute("data-theme");
+            document.documentElement.removeAttribute("data-theme-choice");
+            await settle();
+          }
+
+          const heapUsed = readBrowserHeapUsed();
+
+          if (heapUsed !== null) {
+            retainedHeapSamples.push(heapUsed);
+          }
+        }
+      } finally {
+        viewport.restore();
+      }
+
+      if (retainedHeapSamples.length === 0) {
+        console.info("[memory soak] performance.memory unavailable");
+        return;
+      }
+
+      const baseline = retainedHeapSamples[0];
+      const final = retainedHeapSamples[retainedHeapSamples.length - 1];
+      const peak = retainedHeapSamples.reduce((max, sample) => Math.max(max, sample), baseline);
+
+      if (!memorySoakReported) {
+        console.info(
+          `[memory soak] cycles=${MEMORY_SOAK_CYCLES} retained=${formatHeap(baseline)} -> ${formatHeap(final)} (delta ${formatHeap(final - baseline)}), peak=${formatHeap(peak)}`,
+        );
+        memorySoakReported = true;
       }
     });
   });
