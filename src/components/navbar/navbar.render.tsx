@@ -5,11 +5,17 @@ export function renderNavbarCollapseContents(
   collapseIcon: unknown,
   collapseIconPlacement: CollapseIconPlacement,
 ): unknown {
-  if (collapseIcon === undefined) {
-    return <span data-slot="navbar-toggle-label">{collapseLabel}</span>;
-  }
-
-  const icon = <span data-slot="navbar-toggle-icon">{collapseIcon}</span>;
+  const icon = (
+    <span data-slot="navbar-toggle-icon" aria-hidden="true">
+      {collapseIcon ?? (
+        <span class="navbar-toggle-glyph" data-slot="navbar-toggle-glyph">
+          <span />
+          <span />
+          <span />
+        </span>
+      )}
+    </span>
+  );
   const label = <span data-slot="navbar-toggle-label">{collapseLabel}</span>;
 
   return collapseIconPlacement === "end" ? (

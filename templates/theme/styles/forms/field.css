@@ -9,6 +9,7 @@
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
 }
 
 :where(.field-error, [data-slot="field-error"]) {
@@ -17,4 +18,5 @@
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
 }

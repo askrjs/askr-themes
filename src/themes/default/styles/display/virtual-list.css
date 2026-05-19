@@ -10,6 +10,7 @@
   box-shadow: var(--ak-shadow-sm);
   overflow: auto;
   scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
 }
 
 :where([data-slot="virtual-list-row"]) {
@@ -17,6 +18,7 @@
   align-items: stretch;
   min-inline-size: 0;
   box-sizing: border-box;
+  overflow-wrap: anywhere;
   border-block-end: 1px solid var(--ak-color-border-subtle);
   background: inherit;
   transition: background var(--ak-duration-fast) var(--ak-ease-standard);

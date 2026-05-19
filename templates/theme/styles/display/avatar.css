@@ -1,12 +1,15 @@
 :where(.avatar, [data-slot="avatar"]) {
   display: inline-grid;
+  flex: none;
   place-items: center;
   inline-size: 2.5rem;
   block-size: 2.5rem;
   overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 72%, transparent);
   border-radius: 999px;
-  background: var(--ak-color-surface-muted);
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 86%, var(--ak-color-surface) 14%);
   color: var(--ak-color-text);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ak-color-surface) 72%, transparent);
 }
 
 :where(.avatar-image, [data-slot="avatar-image"]) {
@@ -22,4 +25,6 @@
   block-size: 100%;
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
+  overflow-wrap: anywhere;
 }

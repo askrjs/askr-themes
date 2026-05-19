@@ -8,6 +8,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--ak-space-sm);
+  min-inline-size: 0;
   padding: calc(var(--ak-layout-panel-padding) - 0.05rem) var(--ak-layout-panel-padding);
   border: 1px solid var(--_alert-border);
   border-radius: var(--ak-radius-lg);
@@ -72,6 +73,7 @@
   font-size: var(--ak-font-size-md);
   font-weight: var(--ak-font-weight-bold);
   line-height: var(--ak-line-height-tight);
+  overflow-wrap: anywhere;
 }
 
 :where(.alert-description, [data-slot="alert-description"]) {
@@ -79,6 +81,7 @@
   color: color-mix(in srgb, currentColor 82%, var(--ak-color-text-muted));
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
 }
 
 :where(.alert-actions, [data-slot="alert-actions"]) {
@@ -91,4 +94,16 @@
 :where(.alert-close, [data-slot="alert-close"]) {
   flex: none;
   margin-inline-start: auto;
+}
+
+@media (max-width: 30rem) {
+  :where(.alert, [data-slot="alert"]) {
+    gap: var(--ak-space-xs);
+    padding: var(--ak-space-md);
+  }
+
+  :where(.alert-icon, [data-slot="alert-icon"]) {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
 }

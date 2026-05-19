@@ -1,9 +1,9 @@
-[data-slot="accordion"] {
+:where([data-slot="accordion"]) {
   display: grid;
   gap: var(--ak-space-sm);
 }
 
-[data-slot="accordion-item"] {
+:where([data-slot="accordion-item"]) {
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
@@ -11,24 +11,30 @@
   transition: border-color var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot="accordion-item"][data-state="open"] {
+:where([data-slot="accordion-item"][data-state="open"]) {
   border-color: var(--ak-color-primary);
 }
 
-[data-slot="accordion-header"] {
+:where([data-slot="accordion-header"]) {
   margin: 0;
 }
 
-[data-slot="accordion-trigger"] {
+:where([data-slot="accordion-trigger"]) {
   display: flex;
   align-items: center;
   justify-content: space-between;
   inline-size: 100%;
-  min-height: 2.75rem;
-  padding: 0 var(--ak-space-md);
+  min-height: var(--ak-density-control-height-lg);
+  min-inline-size: 0;
+  padding: 0 var(--ak-density-control-padding-x-md);
   border: 0;
   background: transparent;
   color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-align: start;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -36,27 +42,29 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-[data-slot="accordion-trigger"]:hover {
+:where([data-slot="accordion-trigger"]:hover) {
   background: var(--ak-color-hover);
 }
 
-[data-slot="accordion-trigger"]:active {
+:where([data-slot="accordion-trigger"]:active) {
   background: var(--ak-color-active);
 }
 
-[data-slot="accordion-trigger"]:focus-visible {
+:where([data-slot="accordion-trigger"]:focus-visible) {
   outline: none;
   box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-[data-slot="accordion-trigger"][data-disabled] {
+:where([data-slot="accordion-trigger"][data-disabled]) {
   color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
 }
 
-[data-slot="accordion-content"] {
+:where([data-slot="accordion-content"]) {
   padding: 0 var(--ak-space-md) var(--ak-space-md);
   color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
 }

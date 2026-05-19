@@ -1,18 +1,21 @@
-[data-slot="progress"] {
+:where([data-slot="progress"]) {
+  position: relative;
   inline-size: 100%;
-  block-size: 0.625rem;
+  min-inline-size: 0;
+  block-size: 0.5rem;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--ak-color-surface-muted);
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 86%, var(--ak-color-surface));
 }
 
-[data-slot="progress-indicator"] {
+:where([data-slot="progress-indicator"]) {
   block-size: 100%;
   inline-size: var(--ak-progress-percentage);
   border-radius: inherit;
   background: var(--ak-color-primary);
+  transition: inline-size var(--ak-duration-normal) var(--ak-ease-standard);
 }
 
-[data-slot="progress-indicator"][data-state="indeterminate"] {
+:where([data-slot="progress-indicator"][data-state="indeterminate"]) {
   inline-size: 35%;
 }

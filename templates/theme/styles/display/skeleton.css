@@ -1,6 +1,29 @@
-[data-slot="skeleton"] {
+:where([data-slot="skeleton"]) {
   display: block;
+  inline-size: 100%;
+  max-inline-size: 100%;
   min-height: 1rem;
   border-radius: var(--ak-radius-sm);
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface)),
+    color-mix(in srgb, var(--ak-color-surface-muted) 78%, var(--ak-color-surface)),
+    color-mix(in srgb, var(--ak-color-surface-muted) 62%, var(--ak-color-surface))
+  );
+  background-size: 200% 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :where([data-slot="skeleton"]) {
+    animation: ak-skeleton-shimmer 1.4s var(--ak-ease-standard) infinite;
+  }
+}
+
+@keyframes ak-skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
 }

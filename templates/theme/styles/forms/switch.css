@@ -5,6 +5,7 @@
   justify-content: flex-start;
   inline-size: 3.3rem;
   block-size: 2rem;
+  flex: none;
   padding: 0.2rem;
   border: 1px solid var(--ak-color-border-strong);
   border-radius: var(--ak-radius-round);

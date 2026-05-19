@@ -45,7 +45,9 @@
     var(--_hover-card-surface) 12%
   );
 
-  min-width: 14rem;
+  box-sizing: border-box;
+  min-inline-size: min(14rem, 100%);
+  max-inline-size: min(100%, calc(100vw - 1rem));
   padding: calc(var(--ak-space-md) + 0.125rem);
   border: 1px solid var(--_hover-card-border);
   border-radius: var(--ak-radius-lg);
@@ -53,9 +55,17 @@
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-popover);
+  transform-origin: top center;
   animation: ak-hover-card-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where([data-slot="hover-card-content"][data-state="closed"]) {
   animation: ak-hover-card-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where([data-slot="hover-card-content"]) {
+    animation: none;
+  }
 }

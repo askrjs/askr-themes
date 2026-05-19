@@ -365,4 +365,116 @@ describe("sidebar browser smoke", () => {
     expect(getComputedStyle(shellNav!).width).not.toBe("72px");
     expect(getComputedStyle(sidebar!).width).not.toBe("72px");
   });
+
+  it("keeps production sidebar chrome stable with long labels and mobile drawers", async () => {
+    route("/docs", () => (
+      <Shell variant="sidebar">
+        <ShellNav>
+          <Sidebar
+            id="production-sidebar"
+            aria-label="Workspace navigation with unusually long labels"
+            breakpoint="md"
+            collapsible="icon"
+          >
+            <SidebarToggle
+              expandedIcon={<RailExpandedIcon />}
+              collapsedIcon={<RailCollapsedIcon />}
+            />
+            <NavBrand>
+              <a href="/">
+                <TestIcon label="Workspace" />
+                <strong>Enterprise Workspace With A Very Long Name</strong>
+              </a>
+            </NavBrand>
+            <NavGroup label="Primary workspace navigation">
+              <NavLink href="/docs" match="exact">
+                <TestIcon label="Dashboard" />
+                <span>Executive dashboard and operating metrics with a long label</span>
+              </NavLink>
+              <NavLink href="/docs/audit">
+                <TestIcon label="Audit" />
+                <span>Compliance review queue for enterprise operations</span>
+              </NavLink>
+            </NavGroup>
+            <NavGroup label="Administration">
+              <NavLink href="/docs/billing">
+                <TestIcon label="Billing" />
+                <span>Billing, invoices, renewal controls, and procurement settings</span>
+              </NavLink>
+            </NavGroup>
+          </Sidebar>
+        </ShellNav>
+        <ShellMain>Docs content</ShellMain>
+      </Shell>
+    ));
+
+    setViewport(1200);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const shellNav = container?.querySelector('[data-slot="shell-nav"]') as HTMLElement | null;
+    const sidebarShell = container?.querySelector(
+      '[data-slot="sidebar-shell"]',
+    ) as HTMLElement | null;
+    const activeLink = container?.querySelector(
+      '[data-slot="nav-link"][aria-current="page"]',
+    ) as HTMLElement | null;
+    const activeLabel = activeLink?.querySelector(
+      ':scope > :not([data-slot="icon"])',
+    ) as HTMLElement | null;
+    const groupLabel = container?.querySelector(
+      '[data-slot="navbar-group-label"]',
+    ) as HTMLElement | null;
+    const brandLink = container?.querySelector(
+      '[data-slot="navbar-brand"] a',
+    ) as HTMLElement | null;
+
+    if (window.matchMedia("(min-width: 40rem)").matches) {
+      expect(getComputedStyle(shellNav!).position).toBe("sticky");
+      expect(getComputedStyle(shellNav!).overflow).toBe("hidden");
+    }
+    expect(getComputedStyle(sidebarShell!).overflowY).toBe("auto");
+    expect(getComputedStyle(sidebarShell!).minHeight).toBe("0px");
+    expect(getComputedStyle(brandLink!).minHeight).toBe("38px");
+    expect(getComputedStyle(groupLabel!).textOverflow).toBe("ellipsis");
+    expect(getComputedStyle(groupLabel!).whiteSpace).toBe("nowrap");
+    expect(getComputedStyle(activeLink!, "::before").content).not.toBe("none");
+    expect(getComputedStyle(activeLink!, "::before").width).toBe("2px");
+    expect(getComputedStyle(activeLabel!).overflow).toBe("hidden");
+    expect(getComputedStyle(activeLabel!).textOverflow).toBe("ellipsis");
+    expect(getComputedStyle(activeLabel!).whiteSpace).toBe("nowrap");
+
+    setViewport(375);
+    await settle();
+
+    const mobileToggle = container?.querySelector(
+      '[data-slot="sidebar-toggle"]',
+    ) as HTMLButtonElement | null;
+    mobileToggle?.click();
+    await settle();
+
+    const panel = container?.querySelector('[data-slot="sidebar-panel"]') as HTMLElement | null;
+    const panelHeader = container?.querySelector(
+      '[data-slot="sidebar-panel-header"]',
+    ) as HTMLElement | null;
+    const closeButton = container?.querySelector(
+      '[data-slot="sidebar-panel-close"]',
+    ) as HTMLButtonElement | null;
+    const backdrop = container?.querySelector(
+      '[data-slot="sidebar-backdrop"]',
+    ) as HTMLElement | null;
+    const panelRect = panel!.getBoundingClientRect();
+    const viewportWidth = document.documentElement.clientWidth;
+
+    expect(panelRect.width).toBeLessThanOrEqual(viewportWidth);
+    expect(getComputedStyle(panel!).overflowY).toBe("auto");
+    expect(getComputedStyle(panel!).boxShadow).not.toBe("none");
+    expect(Number.parseFloat(getComputedStyle(panel!).borderTopRightRadius)).toBeGreaterThanOrEqual(
+      8,
+    );
+    expect(getComputedStyle(panelHeader!).position).toBe("sticky");
+    expect(getComputedStyle(closeButton!).width).toBe(getComputedStyle(closeButton!).height);
+    expect(getComputedStyle(backdrop!).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(backdrop!).backdropFilter).not.toBe("none");
+  });
 });

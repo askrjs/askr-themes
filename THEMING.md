@@ -56,6 +56,8 @@ need to fix basic spacing or type rhythm.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
 component family in light and dark mode at desktop, tablet, and mobile widths.
+Use `320`, `390`, `768`, `1024`, and desktop widths as the standard responsive
+manual pass.
 
 Manual acceptance criteria:
 
@@ -66,6 +68,17 @@ Manual acceptance criteria:
 - Dense SaaS compositions scan cleanly without feeling cramped.
 - Overlays, menus, and popups use the shared elevated surface language.
 - Long labels and realistic enterprise copy remain legible without breaking layout.
+
+## Template Sync
+
+- When changing `src/themes/default/styles/**`, update the matching
+  `templates/theme/styles/**` file in the same change unless a test documents
+  an intentional template difference.
+- Keep generated theme templates visually aligned with the default theme so
+  scaffolded themes inherit the same density, spacing, typography, and
+  responsive behavior.
+- `visual-check.html` is the primary manual audit surface; browser tests should
+  assert stable computed-style contracts and no page-level overflow.
 
 Selector contract:
 

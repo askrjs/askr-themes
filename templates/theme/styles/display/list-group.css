@@ -34,6 +34,7 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
   text-decoration: none;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

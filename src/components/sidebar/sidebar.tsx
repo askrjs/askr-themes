@@ -168,9 +168,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
   };
   const { items: drawerSourceItems, toggle: railToggleConfig } = splitSidebarToggle(contentItems);
   const { brand: drawerBrand, items: drawerItems } = splitSidebarChildren(drawerSourceItems);
-  const desktopChildren = isMobile
-    ? null
-    : renderKeyedShellChildren(drawerSourceItems, "sidebar-desktop");
+  const desktopChildren = renderKeyedShellChildren(drawerSourceItems, "sidebar-desktop");
   const drawerChildren = renderKeyedShellChildren(drawerItems, "sidebar-drawer");
 
   const contextValue = {

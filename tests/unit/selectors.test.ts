@@ -143,6 +143,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "navbar-item-icon",
     "navbar-shell",
     "navbar-toggle",
+    "navbar-toggle-glyph",
   ],
   "pagination.css": [
     "active",

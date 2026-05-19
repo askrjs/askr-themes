@@ -72,6 +72,10 @@
     flex-basis: var(--ak-layout-sidebar-width);
     align-self: stretch;
     min-block-size: 100vh;
+    max-block-size: 100dvh;
+    position: sticky;
+    inset-block-start: 0;
+    overflow: hidden;
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
   }

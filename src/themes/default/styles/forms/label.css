@@ -3,4 +3,6 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
+  line-height: var(--ak-line-height-tight);
+  overflow-wrap: anywhere;
 }

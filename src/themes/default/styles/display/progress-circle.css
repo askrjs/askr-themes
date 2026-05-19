@@ -1,8 +1,9 @@
-[data-slot="progress-circle"] {
+:where([data-slot="progress-circle"]) {
   display: inline-grid;
   place-items: center;
   inline-size: 2.75rem;
   block-size: 2.75rem;
+  flex: none;
   border-radius: 999px;
   background: conic-gradient(
     var(--ak-color-primary) var(--ak-progress-percentage),
@@ -10,7 +11,7 @@
   );
 }
 
-[data-slot="progress-circle-indicator"] {
+:where([data-slot="progress-circle-indicator"]) {
   inline-size: 1.9rem;
   block-size: 1.9rem;
   border-radius: 999px;

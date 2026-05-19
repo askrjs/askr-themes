@@ -162,6 +162,46 @@ When extending styles, group aliases with their canonical selectors:
 }
 ```
 
+## Visual Quality Standard
+
+The default theme is optimized for quiet SaaS products: compact, readable,
+low-noise, and resilient across mobile, tablet, desktop, light mode, and dark
+mode. Theme work should improve that baseline without adding app-specific
+behavior or marketing-page assumptions.
+
+Use [../visual-check.html](../visual-check.html) as the manual audit surface
+before shipping theme changes. Inspect `320`, `390`, `768`, `1024`, and desktop widths in both light and dark mode.
+
+Acceptance criteria:
+
+- No clipped text, accidental horizontal scroll, collapsed gaps, or misaligned icons.
+- Controls share height, padding, radius, typography, and focus treatment.
+- Long enterprise labels wrap or truncate intentionally in navs, cards, badges, tables, overlays, and dense rows.
+- Overlays, menus, toasts, dialogs, and popovers fit narrow screens without fixed-width overflow.
+- Typography feels deliberate: calm letter spacing, readable line heights, and balanced heading scale.
+- Dark mode has equal depth, contrast, and polish rather than inverted colors only.
+- Dense SaaS screens scan cleanly without feeling cramped.
+
+Computed browser tests should cover stable contracts such as nonzero padding,
+shared control heights, focus ring presence, mobile overlay width, wrapped
+horizontal groups, and audit-page overflow. Screenshot baselines remain a
+manual workflow for now.
+
+## Template Sync
+
+The source default theme and generated theme template must stay visually
+aligned. When changing a file under `src/themes/default/styles`, update the
+matching file under `templates/theme/styles` in the same change unless that
+template file is intentionally different and covered by a test.
+
+Keep selectors aligned with the public contract:
+
+- Prefer low-specificity `:where(...)` rules.
+- Target public `data-slot` hooks and documented alias classes only.
+- Avoid deep internal selectors and `!important`.
+- Add class aliases selectively and update selector contract tests when they
+  become public authoring API.
+
 ## See Also
 
 - [Tokens](./tokens.md)

@@ -29,7 +29,9 @@
   );
 
   position: relative;
-  max-width: 18rem;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  max-inline-size: min(18rem, calc(100vw - 1rem));
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--_tooltip-border);
   border-radius: var(--ak-radius-md);
@@ -37,8 +39,10 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
+  overflow-wrap: anywhere;
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-tooltip);
+  transform-origin: bottom center;
   animation: ak-tooltip-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -79,6 +83,7 @@
 
 :where([data-slot="tooltip-content"][data-state="closed"]) {
   animation: ak-tooltip-out var(--ak-duration-fast) var(--ak-ease-standard);
+  pointer-events: none;
 }
 
 :where([data-slot="tooltip-trigger"]:focus-visible) {
@@ -96,4 +101,10 @@
   color: var(--ak-color-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where([data-slot="tooltip-content"]) {
+    animation: none;
+  }
 }

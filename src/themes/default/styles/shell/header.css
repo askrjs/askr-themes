@@ -4,6 +4,7 @@
     z-index: var(--ak-z-sticky);
     display: flex;
     align-items: center;
+    min-inline-size: 0;
     padding-block: var(--ak-space-xs);
     border-block-end: 1px solid
       color-mix(in srgb, var(--ak-color-border) 88%, var(--ak-color-surface) 12%);
@@ -14,6 +15,7 @@
 
   :where(.header, [data-slot="header"]) > :where([data-slot="container"]) {
     inline-size: 100%;
+    min-inline-size: 0;
   }
 
   :where(.header, [data-slot="header"]) :where(.navbar-brand, [data-slot="navbar-brand"]) {

@@ -1,15 +1,15 @@
-[data-slot="separator"] {
+:where([data-slot="separator"]) {
   display: block;
   flex: none;
-  background: var(--ak-color-border);
+  background: color-mix(in srgb, var(--ak-color-border) 82%, transparent);
 }
 
-[data-slot="separator"][data-orientation="horizontal"] {
+:where([data-slot="separator"][data-orientation="horizontal"]) {
   inline-size: 100%;
   block-size: 1px;
 }
 
-[data-slot="separator"][data-orientation="vertical"] {
+:where([data-slot="separator"][data-orientation="vertical"]) {
   inline-size: 1px;
   block-size: 100%;
 }
