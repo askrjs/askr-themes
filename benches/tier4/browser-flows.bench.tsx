@@ -34,11 +34,15 @@ describe("tier4 browser benches", () => {
     });
 
     try {
-      const table = scenario.container.querySelector('[data-slot="table"]') as HTMLTableElement | null;
+      const table = scenario.container.querySelector(
+        '[data-slot="table"]',
+      ) as HTMLTableElement | null;
       const headerCell = scenario.container.querySelector(
         '[data-slot="table-header-cell"]',
       ) as HTMLTableCellElement | null;
-      const bodyCell = scenario.container.querySelector('[data-slot="table-cell"]') as HTMLTableCellElement | null;
+      const bodyCell = scenario.container.querySelector(
+        '[data-slot="table-cell"]',
+      ) as HTMLTableCellElement | null;
 
       if (!table || !headerCell || !bodyCell) {
         throw new Error("table theme bench failed to mount the expected table slots");
@@ -144,8 +148,12 @@ describe("tier4 browser benches", () => {
       window.dispatchEvent(new Event("resize"));
       await settle();
 
-      const navbar = scenario?.container.querySelector('[data-slot="navbar"]') as HTMLElement | null;
-      const shell = scenario?.container.querySelector('[data-slot="navbar-shell"]') as HTMLElement | null;
+      const navbar = scenario?.container.querySelector(
+        '[data-slot="navbar"]',
+      ) as HTMLElement | null;
+      const shell = scenario?.container.querySelector(
+        '[data-slot="navbar-shell"]',
+      ) as HTMLElement | null;
       const toggle = scenario?.container.querySelector(
         '[data-slot="navbar-toggle"]',
       ) as HTMLButtonElement | null;
@@ -198,8 +206,12 @@ describe("tier4 browser benches", () => {
     });
 
     bench("sidebar responsive cycle", async () => {
-      const sidebar = scenario?.container.querySelector('[data-slot="sidebar"]') as HTMLElement | null;
-      const shellNav = scenario?.container.querySelector('[data-slot="shell-nav"]') as HTMLElement | null;
+      const sidebar = scenario?.container.querySelector(
+        '[data-slot="sidebar"]',
+      ) as HTMLElement | null;
+      const shellNav = scenario?.container.querySelector(
+        '[data-slot="shell-nav"]',
+      ) as HTMLElement | null;
       const railToggle = scenario?.container.querySelector(
         '[data-slot="sidebar-rail-toggle"]',
       ) as HTMLButtonElement | null;
@@ -229,7 +241,9 @@ describe("tier4 browser benches", () => {
       mobileToggle.click();
       await settle();
 
-      const panel = scenario?.container.querySelector('[data-slot="sidebar-panel"]') as HTMLElement | null;
+      const panel = scenario?.container.querySelector(
+        '[data-slot="sidebar-panel"]',
+      ) as HTMLElement | null;
       const backdrop = scenario?.container.querySelector(
         '[data-slot="sidebar-backdrop"]',
       ) as HTMLElement | null;

@@ -49,10 +49,7 @@ const cssVarStringStyle = "background-color:var(--ak-color-surface);color:var(--
 function BenchLeaf(props: { children?: unknown; label: string }): JSX.Element {
   return jsxs("article", {
     "data-label": props.label,
-    children: [
-      jsx("header", { children: props.label }),
-      jsx("div", { children: props.children }),
-    ],
+    children: [jsx("header", { children: props.label }), jsx("div", { children: props.children })],
   });
 }
 
@@ -62,10 +59,7 @@ const jsxTree = jsxs("section", {
     jsx(BenchLeaf, {
       label: "Alpha",
       children: jsxs("div", {
-        children: [
-          jsx("span", { children: "One" }),
-          jsx("span", { children: "Two" }),
-        ],
+        children: [jsx("span", { children: "One" }), jsx("span", { children: "Two" })],
       }),
     }),
     jsx(BenchLeaf, {
@@ -78,10 +72,7 @@ const jsxTree = jsxs("section", {
       }),
     }),
     jsxs("footer", {
-      children: [
-        jsx("small", { children: "Tail" }),
-        jsx("em", { children: "Summary" }),
-      ],
+      children: [jsx("small", { children: "Tail" }), jsx("em", { children: "Summary" })],
     }),
   ],
 });
@@ -114,7 +105,11 @@ describe("tier1 helper benches", () => {
     let result: string | undefined;
 
     for (let i = 0; i < WORK; i += 1) {
-      result = mergeCssVar(i % 2 === 0 ? cssVarObjectStyle : cssVarStringStyle, "--ak-test", "1rem");
+      result = mergeCssVar(
+        i % 2 === 0 ? cssVarObjectStyle : cssVarStringStyle,
+        "--ak-test",
+        "1rem",
+      );
     }
 
     consume(result);

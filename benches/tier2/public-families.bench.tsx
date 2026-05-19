@@ -1,6 +1,12 @@
 import { bench, describe } from "vite-plus/test";
 
-import { buildControlsFixture, buildFeedbackFixture, buildLayoutsFixture, buildLogosFixture, buildSurfacesFixture } from "../_shared/fixtures";
+import {
+  buildControlsFixture,
+  buildFeedbackFixture,
+  buildLayoutsFixture,
+  buildLogosFixture,
+  buildSurfacesFixture,
+} from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
 
 const BATCH = 64;

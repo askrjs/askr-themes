@@ -1,6 +1,24 @@
-import { ButtonGroup, Close, Field, FieldError, FieldHint, InputGroup, InputGroupText } from "../../src/controls";
+import {
+  ButtonGroup,
+  Close,
+  Field,
+  FieldError,
+  FieldHint,
+  InputGroup,
+  InputGroupText,
+} from "../../src/controls";
 import { EmptyState, Spinner } from "../../src/feedback";
-import { AspectRatio, Block, Box, Container, Flex, Inline, Section, Spacer, Stack } from "../../src/layouts";
+import {
+  AspectRatio,
+  Block,
+  Box,
+  Container,
+  Flex,
+  Inline,
+  Section,
+  Spacer,
+  Stack,
+} from "../../src/layouts";
 import { GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
 import {
   Alert,
@@ -30,14 +48,7 @@ import {
   SidebarToggle,
 } from "../../src/shells";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableRow,
-} from "@askrjs/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
 
 function BenchIcon(props: { label: string; state?: string }): JSX.Element {
   const { label, state } = props;

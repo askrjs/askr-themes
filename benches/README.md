@@ -3,12 +3,12 @@
 The bench suite is split into four tiers so each layer of the package can be
 tracked separately.
 
-| Tier | Environment | What it models | Signal |
-| --- | --- | --- | --- |
-| `tier1` | `node` | Pure helper work | Allocation cost, string/object normalization, and tree traversal overhead |
-| `tier2` | `jsdom` | Static component render | Prop normalization and JSX tree assembly for public families |
-| `tier3` | `jsdom` | Stateful composition | Reconciliation cost for shell, nav, and theme updates |
-| `tier4` | browser | Real user flows | Mounting, responsive behavior, theme persistence, and style-sensitive regressions |
+| Tier    | Environment | What it models          | Signal                                                                            |
+| ------- | ----------- | ----------------------- | --------------------------------------------------------------------------------- |
+| `tier1` | `node`      | Pure helper work        | Allocation cost, string/object normalization, and tree traversal overhead         |
+| `tier2` | `jsdom`     | Static component render | Prop normalization and JSX tree assembly for public families                      |
+| `tier3` | `jsdom`     | Stateful composition    | Reconciliation cost for shell, nav, and theme updates                             |
+| `tier4` | browser     | Real user flows         | Mounting, responsive behavior, theme persistence, and style-sensitive regressions |
 
 Guidelines:
 

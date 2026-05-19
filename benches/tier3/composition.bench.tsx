@@ -3,11 +3,7 @@ import { afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
 import { group, route, clearRoutes } from "@askrjs/askr/router";
 
 import { mountScenario, settle, stubViewport, type MountedScenario } from "../_shared/dom";
-import {
-  NavbarStaticLayout,
-  SidebarBenchLayout,
-  ThemeBenchLayout,
-} from "../_shared/fixtures";
+import { NavbarStaticLayout, SidebarBenchLayout, ThemeBenchLayout } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
 
 describe("tier3 stateful composition benches", () => {
