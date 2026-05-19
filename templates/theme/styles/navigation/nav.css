@@ -20,8 +20,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ak-space-sm);
-  min-block-size: 2.25rem;
-  padding-inline: var(--ak-space-sm);
+  min-block-size: var(--ak-density-control-height-md);
+  padding-inline: var(--ak-density-control-padding-x-sm);
   border: 1px solid transparent;
   border-radius: var(--ak-radius-md);
   color: var(--ak-color-text-muted);
@@ -145,7 +145,7 @@
 
 :where(.nav[data-variant="tabs"], [data-slot="nav"][data-variant="tabs"])
   :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"]) {
-  min-block-size: 2.5rem;
+  min-block-size: var(--ak-density-control-height-md);
   padding-inline: var(--ak-space-md);
   border-radius: calc(var(--ak-radius-md) + 2px) calc(var(--ak-radius-md) + 2px) 0 0;
   border-color: transparent;

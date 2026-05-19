@@ -16,6 +16,9 @@
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-sm);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  line-height: 1;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -120,11 +123,12 @@
 :where(.select-item, [data-slot="select-item"]) {
   display: flex;
   align-items: center;
-  min-height: 2.5rem;
-  padding: 0 calc(var(--ak-space-md) + 0.125rem);
+  min-height: var(--ak-density-control-height-md);
+  padding: 0 var(--ak-density-control-padding-x-md);
   border-radius: var(--ak-radius-md);
   color: var(--ak-color-text);
   cursor: pointer;
+  font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

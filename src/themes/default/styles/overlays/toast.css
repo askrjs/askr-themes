@@ -56,10 +56,12 @@
 :where([data-slot="toast-title"]) {
   font-weight: var(--ak-font-weight-bold);
   line-height: var(--ak-line-height-tight);
+  letter-spacing: -0.005em;
 }
 
 :where([data-slot="toast-description"]) {
   color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
 }
 
@@ -80,6 +82,9 @@
   background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--_toast-surface));
   color: var(--ak-color-text);
   box-shadow: none;
+  font-size: var(--ak-font-size-xs);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

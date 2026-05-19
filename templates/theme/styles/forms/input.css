@@ -12,7 +12,7 @@
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
-  line-height: var(--ak-line-height-normal);
+  line-height: 1.25;
   box-shadow: var(--ak-shadow-sm);
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

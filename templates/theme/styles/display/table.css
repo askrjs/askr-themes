@@ -7,6 +7,7 @@
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-sm);
+  overflow: hidden;
 }
 
 :where([data-slot="table-caption"]) {
@@ -41,7 +42,7 @@
 
 :where([data-slot="table-header-cell"]),
 :where([data-slot="table-cell"]) {
-  padding: 0.8rem var(--ak-space-md);
+  padding: 0.7rem var(--ak-space-md);
   border-block-end: 1px solid var(--ak-color-border-subtle);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
@@ -53,7 +54,7 @@
 :where([data-slot="table-header-cell"]) {
   color: var(--ak-color-text-muted);
   font-weight: var(--ak-font-weight-semibold);
-  letter-spacing: 0.025em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
 }

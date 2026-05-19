@@ -1,6 +1,6 @@
 :where(.card, [data-slot="card"]) {
   display: grid;
-  gap: var(--ak-space-xs);
+  gap: var(--ak-space-md);
   padding: var(--ak-layout-panel-padding);
   border: 1px solid
     color-mix(in srgb, var(--ak-color-border-subtle) 86%, var(--ak-color-surface) 14%);
@@ -34,12 +34,15 @@
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
   font-weight: var(--ak-font-weight-semibold);
-  line-height: 1.15;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 :where(.card-description, [data-slot="card-description"]) {
   margin: 0;
   color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
 }
 
 :where(.card-content, [data-slot="card-content"]) {

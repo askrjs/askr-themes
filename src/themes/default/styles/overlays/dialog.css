@@ -59,7 +59,7 @@
   );
 
   display: grid;
-  gap: var(--ak-space-sm);
+  gap: var(--ak-space-md);
   min-width: min(34rem, calc(100vw - 1.5rem));
   max-width: 40rem;
   max-block-size: calc(100dvh - 4rem);
@@ -96,13 +96,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.5rem;
-  padding: 0 calc(var(--ak-space-md) + 0.125rem);
+  min-height: var(--ak-density-control-height-md);
+  padding: 0 var(--ak-density-control-padding-x-md);
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-sm);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

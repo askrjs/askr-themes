@@ -18,11 +18,13 @@
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
-  letter-spacing: -0.015em;
+  letter-spacing: 0;
   text-decoration: none;
+  text-align: center;
   cursor: pointer;
   user-select: none;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
   vertical-align: middle;
   -webkit-tap-highlight-color: transparent;
   transition:
@@ -219,13 +221,13 @@
 :where(.btn-sm, [data-slot="button"][data-size="sm"]) {
   --_button-height: var(--ak-density-control-height-sm);
   --_button-padding-x: var(--ak-density-control-padding-x-sm);
-  font-size: 0.8125rem;
+  font-size: var(--ak-font-size-xs);
 }
 
 :where(.btn-lg, [data-slot="button"][data-size="lg"]) {
   --_button-height: var(--ak-density-control-height-lg);
   --_button-padding-x: var(--ak-density-control-padding-x-lg);
-  font-size: 0.9375rem;
+  font-size: var(--ak-font-size-sm);
 }
 
 :where(.btn-icon, [data-slot="button"][data-size="icon"]) {

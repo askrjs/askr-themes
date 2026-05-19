@@ -197,6 +197,6 @@
   background: var(--ak-color-surface-muted);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
-  line-height: var(--ak-line-height-normal);
+  line-height: 1;
   white-space: nowrap;
 }
