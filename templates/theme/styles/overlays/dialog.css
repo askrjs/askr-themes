@@ -51,17 +51,23 @@
 }
 
 :where([data-slot="dialog-content"]) {
+  --_dialog-surface: var(--ak-color-surface-overlay);
+  --_dialog-border: color-mix(
+    in srgb,
+    var(--ak-color-border-subtle) 88%,
+    var(--_dialog-surface) 12%
+  );
+
   display: grid;
-  gap: var(--ak-space-sm);
+  gap: var(--ak-space-md);
   min-width: min(34rem, calc(100vw - 1.5rem));
   max-width: 40rem;
   max-block-size: calc(100dvh - 4rem);
   overflow-y: auto;
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
-  border: 1px solid
-    color-mix(in srgb, var(--ak-color-border-subtle) 88%, var(--ak-color-surface) 12%);
+  border: 1px solid var(--_dialog-border);
   border-radius: var(--ak-radius-lg);
-  background: var(--ak-color-surface-raised);
+  background: var(--_dialog-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-modal);
@@ -90,17 +96,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.5rem;
-  padding: 0 calc(var(--ak-space-md) + 0.125rem);
+  min-height: var(--ak-density-control-height-md);
+  padding: 0 var(--ak-density-control-padding-x-md);
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-sm);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard),
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -108,6 +118,13 @@
   background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
   box-shadow: var(--ak-shadow-sm);
+}
+
+:where([data-slot="dialog-close"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--_dialog-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="dialog-close"][data-disabled]) {

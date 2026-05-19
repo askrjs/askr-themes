@@ -35,12 +35,15 @@
 }
 
 :where([data-slot="toast"]) {
+  --_toast-surface: var(--ak-color-surface-overlay);
+  --_toast-border: color-mix(in srgb, var(--ak-color-border-subtle) 88%, var(--_toast-surface) 12%);
+
   display: grid;
   gap: var(--ak-space-sm);
   padding: calc(var(--ak-layout-panel-padding) - 0.15rem) var(--ak-layout-panel-padding);
-  border: 1px solid var(--ak-color-border-subtle);
+  border: 1px solid var(--_toast-border);
   border-radius: var(--ak-radius-lg);
-  background: var(--ak-color-surface-raised);
+  background: var(--_toast-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
   animation: ak-toast-in var(--ak-duration-normal) var(--ak-ease-standard);
@@ -53,10 +56,12 @@
 :where([data-slot="toast-title"]) {
   font-weight: var(--ak-font-weight-bold);
   line-height: var(--ak-line-height-tight);
+  letter-spacing: -0.005em;
 }
 
 :where([data-slot="toast-description"]) {
   color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
 }
 
@@ -64,6 +69,7 @@
 :where([data-slot="toast-close"]) {
   --_button-height: var(--ak-density-control-height-sm);
   --_button-padding-x: var(--ak-density-control-padding-x-sm);
+  --_button-border: color-mix(in srgb, var(--ak-color-border) 84%, var(--_toast-surface) 16%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -71,11 +77,14 @@
   min-height: var(--_button-height);
   padding-block: 0;
   padding-inline: var(--_button-padding-x);
-  border: 1px solid var(--ak-color-border);
+  border: 1px solid var(--_button-border);
   border-radius: var(--ak-radius-md);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--ak-color-surface));
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--_toast-surface));
   color: var(--ak-color-text);
   box-shadow: none;
+  font-size: var(--ak-font-size-xs);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -88,6 +97,14 @@
   background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface-muted));
   border-color: var(--ak-color-border-strong);
   box-shadow: var(--ak-shadow-sm);
+}
+
+:where([data-slot="toast-action"]:focus-visible),
+:where([data-slot="toast-close"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--_toast-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="toast-close"]) {
@@ -116,23 +133,23 @@
 
 /* toast variants */
 :where([data-slot="toast"][data-variant="success"]) {
-  background: color-mix(in srgb, var(--ak-color-success-soft) 78%, var(--ak-color-surface-raised));
-  border-color: var(--ak-color-success);
+  background: color-mix(in srgb, var(--ak-color-success-soft) 76%, var(--_toast-surface));
+  border-color: color-mix(in srgb, var(--ak-color-success) 62%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="warning"]) {
-  background: color-mix(in srgb, var(--ak-color-warning-soft) 78%, var(--ak-color-surface-raised));
-  border-color: var(--ak-color-warning);
+  background: color-mix(in srgb, var(--ak-color-warning-soft) 76%, var(--_toast-surface));
+  border-color: color-mix(in srgb, var(--ak-color-warning) 62%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="danger"]) {
-  background: color-mix(in srgb, var(--ak-color-danger-soft) 78%, var(--ak-color-surface-raised));
-  border-color: var(--ak-color-danger);
+  background: color-mix(in srgb, var(--ak-color-danger-soft) 76%, var(--_toast-surface));
+  border-color: color-mix(in srgb, var(--ak-color-danger) 62%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="info"]) {
-  background: color-mix(in srgb, var(--ak-color-info-soft) 78%, var(--ak-color-surface-raised));
-  border-color: var(--ak-color-info);
+  background: color-mix(in srgb, var(--ak-color-info-soft) 76%, var(--_toast-surface));
+  border-color: color-mix(in srgb, var(--ak-color-info) 62%, var(--_toast-border));
 }
 
 @media (max-width: 40rem) {

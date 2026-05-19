@@ -48,6 +48,25 @@ Icon override:
 
 Rules: style only public data-\* hooks, never internal DOM, no deep selectors, no !important.
 
+## Visual Quality Standard
+
+The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
+restrained enough for application chrome, and polished enough that downstream apps should not
+need to fix basic spacing or type rhythm.
+
+Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
+component family in light and dark mode at desktop, tablet, and mobile widths.
+
+Manual acceptance criteria:
+
+- No clipped text, awkward wrapping, accidental overflow, collapsed gaps, or misaligned icons.
+- Interactive controls share height, padding, radius, typography, and focus treatment.
+- Headings and body text use deliberate hierarchy, readable line lengths, and calm letter spacing.
+- Dark mode has equal polish and contrast, not just inverted colors.
+- Dense SaaS compositions scan cleanly without feeling cramped.
+- Overlays, menus, and popups use the shared elevated surface language.
+- Long labels and realistic enterprise copy remain legible without breaking layout.
+
 Selector contract:
 
 - Tokens keep the `--ak-*` prefix because they are global.

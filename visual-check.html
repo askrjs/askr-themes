@@ -14,22 +14,7 @@
         margin: 0;
         font-family: var(--ak-font-family-body);
         color: var(--ak-color-text);
-        background:
-          radial-gradient(
-            circle at top left,
-            color-mix(in srgb, var(--ak-color-primary-soft) 28%, transparent),
-            transparent 34%
-          ),
-          radial-gradient(
-            circle at 92% 0%,
-            color-mix(in srgb, var(--ak-color-info-soft) 20%, transparent),
-            transparent 26%
-          ),
-          linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--ak-color-bg) 96%, white 4%),
-            var(--ak-color-bg)
-          );
+        background: var(--ak-color-bg);
       }
 
       h1,
@@ -71,9 +56,9 @@
       }
 
       .hero h1 {
-        font-size: clamp(2.25rem, 1.5rem + 2.8vw, 4.25rem);
-        line-height: 0.98;
-        letter-spacing: -0.05em;
+        font-size: clamp(2.2rem, 1.55rem + 2.4vw, 3.75rem);
+        line-height: 1;
+        letter-spacing: 0;
         text-wrap: balance;
       }
 
@@ -181,7 +166,7 @@
         gap: 1rem;
         padding: 1rem;
         border: 1px solid var(--ak-color-border-subtle);
-        border-radius: var(--ak-radius-xl);
+        border-radius: var(--ak-radius-lg);
         background: color-mix(in srgb, var(--ak-color-surface) 96%, transparent);
         box-shadow: var(--ak-shadow-sm);
       }
@@ -265,6 +250,7 @@
       .preview-surface {
         display: grid;
         gap: 0.9rem;
+        overflow: hidden;
         padding: var(--ak-layout-panel-padding);
         border: 1px solid var(--ak-color-border-subtle);
         border-radius: var(--ak-radius-lg);
@@ -272,6 +258,31 @@
         color: var(--ak-color-text);
         box-shadow: var(--ak-shadow-sm);
         min-inline-size: 0;
+      }
+
+      .quality-list {
+        display: grid;
+        gap: 0.45rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .quality-list li {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-sm);
+      }
+
+      .quality-list li::before {
+        content: "";
+        flex: none;
+        inline-size: 0.4rem;
+        block-size: 0.4rem;
+        border-radius: var(--ak-radius-round);
+        background: var(--ak-color-primary);
       }
 
       .stack {
@@ -284,6 +295,7 @@
         flex-wrap: wrap;
         gap: 0.5rem;
         align-items: center;
+        min-inline-size: 0;
       }
 
       .field {
@@ -296,6 +308,46 @@
         display: grid;
         gap: 0.75rem;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
+        min-inline-size: 0;
+      }
+
+      .mini-grid > * {
+        min-inline-size: 0;
+      }
+
+      .layout-demo {
+        min-block-size: 12rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        overflow: hidden;
+        background: var(--ak-color-surface);
+      }
+
+      .layout-sidebar {
+        display: grid;
+        gap: var(--ak-space-xs);
+        padding: var(--ak-space-md);
+        background: var(--ak-color-surface-muted);
+      }
+
+      .layout-main {
+        display: grid;
+        gap: var(--ak-space-sm);
+        padding: var(--ak-space-md);
+      }
+
+      .long-label {
+        max-inline-size: 100%;
+        overflow-wrap: anywhere;
+      }
+
+      .audit-page :where(.btn, [data-slot="button"]) {
+        max-inline-size: 100%;
+      }
+
+      .audit-page :where([data-slot="toast"]) {
+        animation: none;
+        min-inline-size: 0;
       }
 
       .mini-label {
@@ -373,6 +425,13 @@
             '<button class="btn btn-icon" data-slot="button" data-size="icon" aria-label="Icon">i</button>',
             '<button class="btn" data-slot="button" data-disabled disabled>Disabled</button>',
           ])}
+          ${renderRow([
+            renderButton(
+              "btn btn-outline long-label",
+              "Long enterprise action label that should wrap without breaking alignment",
+              'data-variant="outline"',
+            ),
+          ])}
         </div>`;
 
       const togglesContent = `
@@ -392,6 +451,15 @@
 
       const shellContent = `
         <div class="stack">
+          <nav data-slot="breadcrumb" aria-label="Breadcrumb">
+            <ol data-slot="breadcrumb-list">
+              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li>
+              <li data-slot="breadcrumb-separator">/</li>
+              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Admin</a></li>
+              <li data-slot="breadcrumb-separator">/</li>
+              <li data-slot="breadcrumb-current">Components</li>
+            </ol>
+          </nav>
           <header class="header" data-slot="header">
             <nav class="navbar" data-slot="navbar" data-orientation="horizontal">
               <div class="navbar-brand" data-slot="navbar-brand">
@@ -419,6 +487,37 @@
             <a class="nav-item" data-slot="nav-link" href="#">Queued</a>
             <a class="nav-item" data-slot="nav-link" href="#">Done</a>
           </nav>
+        </div>`;
+
+      const layoutContent = `
+        <div class="stack">
+          <div class="layout-demo">
+            <div data-slot="block" data-columns="initial:2" class="layout-shell">
+              <aside class="layout-sidebar">
+                <span class="badge" data-slot="badge" data-variant="secondary">Sidebar</span>
+                <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">Overview</a>
+                <a class="nav-item long-label" data-slot="nav-link" href="#">
+                  A very long navigation destination name
+                </a>
+              </aside>
+              <main class="layout-main">
+                <div data-slot="container" data-size="initial:2">
+                  <section data-slot="section" data-size="2">
+                    <div data-slot="stack" data-gap="initial:2">
+                      <h4>Responsive layout rhythm</h4>
+                      <p>
+                        Containers, sections, blocks, stacks, inline rows, and aspect-ratio wrappers
+                        should keep their rhythm with realistic copy.
+                      </p>
+                    </div>
+                  </section>
+                </div>
+              </main>
+            </div>
+          </div>
+          <div data-slot="aspect-ratio" style="aspect-ratio: 16 / 9;">
+            <div class="preview-surface">Aspect-ratio media frame</div>
+          </div>
         </div>`;
 
       const textFieldsContent = `
@@ -574,6 +673,53 @@
           </table>
         </div>`;
 
+      const displayContent = `
+        <div class="stack">
+          <ul class="list-group" data-slot="list-group">
+            <li class="list-group-item" data-slot="list-group-item">Default row with calm spacing</li>
+            <li class="list-group-item list-group-item-action" data-slot="list-group-item" data-action="true">
+              Interactive row with a longer label that still aligns to the same baseline
+            </li>
+            <li class="list-group-item active" data-slot="list-group-item" data-active="true">Selected row</li>
+            <li class="list-group-item disabled" data-slot="list-group-item" data-disabled="true">Disabled row</li>
+          </ul>
+          <div class="stack">
+            <div data-slot="progress" aria-label="Progress">
+              <div data-slot="progress-indicator" style="width: 68%;"></div>
+            </div>
+            <div data-slot="progress-circle" data-state="indeterminate"></div>
+            <div class="skeleton" data-slot="skeleton" style="height: 2.5rem;"></div>
+          </div>
+          <nav class="pagination" data-slot="pagination" aria-label="Pagination">
+            <a data-slot="pagination-link" href="#">Previous</a>
+            <a data-slot="pagination-link" data-active="true" href="#">1</a>
+            <span data-slot="pagination-ellipsis">...</span>
+            <a data-slot="pagination-link" href="#">8</a>
+            <a data-slot="pagination-link" href="#">Next</a>
+          </nav>
+        </div>`;
+
+      const disclosureContent = `
+        <div class="stack">
+          <div data-slot="accordion">
+            <div data-slot="accordion-item" data-state="open">
+              <button data-slot="accordion-trigger" data-state="open">Open accordion item</button>
+              <div data-slot="accordion-content">
+                Disclosure content should align with the trigger, not feel visually detached.
+              </div>
+            </div>
+            <div data-slot="accordion-item">
+              <button data-slot="accordion-trigger">Closed accordion item</button>
+            </div>
+          </div>
+          <div data-slot="collapsible" data-state="open">
+            <button data-slot="collapsible-trigger" data-state="open">Collapsible trigger</button>
+            <div data-slot="collapsible-content">
+              Compact disclosure copy with clear padding and text rhythm.
+            </div>
+          </div>
+        </div>`;
+
       const dialogContent = `
         <div class="stack">
           <section data-slot="dialog-content">
@@ -720,6 +866,19 @@
           note: "Type, semantic colors, badges, and low-noise alert surfaces.",
           cards: [
             {
+              title: "Quality checklist",
+              note: "The manual audit standard used for every family.",
+              layout: "split",
+              content: `
+                <ul class="quality-list">
+                  <li>No clipped text, awkward wrapping, accidental overflow, or collapsed gaps.</li>
+                  <li>Controls share height, padding, radius, type size, and focus treatment.</li>
+                  <li>Headings and body copy use deliberate hierarchy and readable line lengths.</li>
+                  <li>Dark mode has equal contrast, depth, and polish.</li>
+                  <li>Dense SaaS compositions scan cleanly without feeling cramped.</li>
+                </ul>`,
+            },
+            {
               title: "Typography and status",
               note: "Heading rhythm, badge variants, and a light alert sample.",
               layout: "split",
@@ -748,6 +907,19 @@
                     </div>
                   </div>
                 </div>`,
+            },
+          ],
+        },
+        {
+          id: "layouts",
+          title: "Layouts",
+          note: "Containers, sections, blocks, stacks, and responsive media wrappers.",
+          cards: [
+            {
+              title: "Responsive composition",
+              note: "Layout primitives with realistic sidebar and content rhythm.",
+              layout: "split",
+              content: layoutContent,
             },
           ],
         },
@@ -803,7 +975,7 @@
         {
           id: "surfaces",
           title: "Data surfaces",
-          note: "Cards, empty states, and tables on clear raised surfaces.",
+          note: "Cards, empty states, tables, lists, pagination, progress, and skeletons.",
           cards: [
             {
               title: "Card",
@@ -819,6 +991,24 @@
               title: "Table",
               note: "Header, body, and hover treatment.",
               content: tableContent,
+            },
+            {
+              title: "Display states",
+              note: "List rows, progress, skeleton, and pagination in one dense surface.",
+              content: displayContent,
+            },
+          ],
+        },
+        {
+          id: "disclosure",
+          title: "Disclosure",
+          note: "Accordion and collapsible states with consistent trigger density.",
+          cards: [
+            {
+              title: "Accordion and collapsible",
+              note: "Open, closed, and content rhythm under the shared control language.",
+              layout: "split",
+              content: disclosureContent,
             },
           ],
         },
@@ -919,9 +1109,9 @@
               <p class="eyebrow">askr-themes</p>
               <h1>Component audit, one family at a time.</h1>
               <p class="hero-lead">
-                The old matrix is gone. Each sample is now isolated so light and dark can be
-                compared without scanning a noisy grid, and the shared overlay token keeps popups
-                from flipping into bright bubbles in dark mode.
+                Each sample is isolated so light and dark can be compared quickly, while the
+                checklist keeps spacing, alignment, hierarchy, and interaction states held to the
+                same quiet SaaS standard.
               </p>
             </div>
             <div class="hero-asides">
@@ -941,10 +1131,12 @@
           </div>
           <nav class="section-nav" aria-label="Jump to section">
             <a href="#foundations">Foundations</a>
+            <a href="#layouts">Layouts</a>
             <a href="#shell">Shell</a>
             <a href="#actions">Actions</a>
             <a href="#forms">Forms</a>
             <a href="#surfaces">Surfaces</a>
+            <a href="#disclosure">Disclosure</a>
             <a href="#overlays">Overlays</a>
           </nav>
         </section>`;

@@ -27,11 +27,13 @@
   align-items: center;
   gap: var(--ak-space-sm);
   min-inline-size: 0;
-  min-block-size: 2.75rem;
-  padding: var(--ak-space-md) var(--ak-space-lg);
+  min-block-size: 2.625rem;
+  padding: var(--ak-space-sm) var(--ak-space-md);
   border-block-start: 1px solid
     color-mix(in srgb, var(--ak-color-border-subtle) 86%, var(--ak-color-surface));
   color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
   text-decoration: none;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

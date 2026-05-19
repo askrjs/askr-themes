@@ -103,12 +103,14 @@
 :where(.dropdown-item, [data-slot="dropdown-item"]) {
   display: flex;
   align-items: center;
-  min-height: 2.25rem;
-  padding: 0 var(--ak-space-sm);
+  min-height: var(--ak-density-control-height-md);
+  padding: 0 var(--ak-density-control-padding-x-md);
   border: 0;
   border-radius: var(--ak-radius-md);
   background: transparent;
   color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
@@ -132,10 +134,12 @@
 }
 
 :where(.dropdown-label, [data-slot="dropdown-label"]) {
-  padding: 0 var(--ak-space-sm);
+  padding: 0 var(--ak-density-control-padding-x-md);
   color: var(--ak-color-text-muted);
-  font-size: var(--ak-font-size-sm);
+  font-size: var(--ak-font-size-xs);
   font-weight: var(--ak-font-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 :where(.dropdown-separator, [data-slot="dropdown-separator"]) {
