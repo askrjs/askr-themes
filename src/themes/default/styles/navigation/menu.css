@@ -1,11 +1,14 @@
 :where([data-slot="menu-content"]) {
+  --_menu-surface: var(--ak-color-surface-overlay);
+  --_menu-border: color-mix(in srgb, var(--ak-color-border-subtle) 88%, var(--_menu-surface) 12%);
+
   display: grid;
   gap: 0.35rem;
   min-width: 13rem;
   padding: calc(var(--ak-space-sm) + 0.125rem);
-  border: 1px solid var(--ak-color-border-subtle);
+  border: 1px solid var(--_menu-border);
   border-radius: var(--ak-radius-lg);
-  background: var(--ak-color-surface-raised);
+  background: var(--_menu-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
 }
@@ -17,7 +20,7 @@
   min-height: 2.5rem;
   padding: 0 calc(var(--ak-space-sm) + 0.25rem);
   border: 0;
-  border-radius: var(--ak-radius-lg);
+  border-radius: var(--ak-radius-md);
   background: transparent;
   color: var(--ak-color-text);
   font-weight: var(--ak-font-weight-medium);
@@ -36,6 +39,7 @@
   outline: none;
   background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-surface-muted));
   color: var(--ak-color-primary-ink);
+  box-shadow: inset 0 0 0 1px var(--ak-color-focus-ring);
 }
 
 :where([data-slot="menu-item"][data-disabled]) {

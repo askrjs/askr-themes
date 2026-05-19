@@ -1,30 +1,277 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>askr-themes visual check</title>
+    <title>askr-themes component audit</title>
     <link rel="stylesheet" href="./src/themes/default/index.css" />
     <style>
+      :root {
+        color-scheme: light;
+      }
+
       body {
         margin: 0;
         font-family: var(--ak-font-family-body);
-        background: #f6f7fb;
+        color: var(--ak-color-text);
+        background:
+          radial-gradient(
+            circle at top left,
+            color-mix(in srgb, var(--ak-color-primary-soft) 28%, transparent),
+            transparent 34%
+          ),
+          radial-gradient(
+            circle at 92% 0%,
+            color-mix(in srgb, var(--ak-color-info-soft) 20%, transparent),
+            transparent 26%
+          ),
+          linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--ak-color-bg) 96%, white 4%),
+            var(--ak-color-bg)
+          );
       }
 
-      .page {
+      h1,
+      h2,
+      h3,
+      h4,
+      p {
+        margin: 0;
+      }
+
+      .audit-page {
         display: grid;
-        gap: 1.5rem;
-        padding: 1.5rem;
+        gap: clamp(1.25rem, 1rem + 1vw, 2rem);
+        max-inline-size: 96rem;
+        margin-inline: auto;
+        padding: clamp(1rem, 0.8rem + 1.4vw, 2rem);
       }
 
-      .surface {
+      .hero {
         display: grid;
         gap: 1rem;
-        padding: 1.25rem;
-        border-radius: 1.5rem;
-        border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
-        overflow: hidden;
+        padding: clamp(1.25rem, 1rem + 1.4vw, 2rem);
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-xl);
+        background: color-mix(in srgb, var(--ak-color-surface) 94%, transparent);
+        box-shadow: var(--ak-shadow-sm);
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.9fr);
+        align-items: start;
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.25rem, 1.5rem + 2.8vw, 4.25rem);
+        line-height: 0.98;
+        letter-spacing: -0.05em;
+        text-wrap: balance;
+      }
+
+      .hero-lead {
+        max-inline-size: 64ch;
+        color: var(--ak-color-text-muted);
+        line-height: 1.65;
+      }
+
+      .hero-asides {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .hero-tile {
+        display: grid;
+        gap: 0.35rem;
+        padding: 0.9rem 1rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        background: var(--ak-color-surface-muted);
+      }
+
+      .hero-tile strong {
+        font-size: var(--ak-font-size-sm);
+      }
+
+      .hero-tile p {
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-sm);
+        line-height: 1.5;
+      }
+
+      .section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .section-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2rem;
+        padding: 0 0.8rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: 999px;
+        background: var(--ak-color-surface);
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-sm);
+        text-decoration: none;
+        transition:
+          background var(--ak-duration-fast) var(--ak-ease-standard),
+          border-color var(--ak-duration-fast) var(--ak-ease-standard),
+          color var(--ak-duration-fast) var(--ak-ease-standard),
+          box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+      }
+
+      .section-nav a:hover {
+        background: var(--ak-color-surface-muted);
+        border-color: var(--ak-color-border);
+        color: var(--ak-color-text);
+      }
+
+      .section-nav a:focus-visible {
+        outline: none;
+        box-shadow:
+          0 0 0 1px var(--ak-color-surface),
+          0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+      }
+
+      .section {
+        display: grid;
+        gap: 0.875rem;
+      }
+
+      .section-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding-block-end: 0.25rem;
+        border-block-end: 1px solid var(--ak-color-border-subtle);
+      }
+
+      .section-head h2 {
+        font-size: var(--ak-type-5-size);
+        line-height: var(--ak-type-5-line-height);
+      }
+
+      .section-head p {
+        max-inline-size: 68ch;
+        color: var(--ak-color-text-muted);
+        line-height: 1.55;
+      }
+
+      .component-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+      }
+
+      .component-card {
+        display: grid;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-xl);
+        background: color-mix(in srgb, var(--ak-color-surface) 96%, transparent);
+        box-shadow: var(--ak-shadow-sm);
+      }
+
+      .component-card[data-span="full"] {
+        grid-column: 1 / -1;
+      }
+
+      .component-card-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+
+      .component-card-head h3 {
+        font-size: var(--ak-font-size-lg);
+        line-height: 1.2;
+      }
+
+      .component-note {
+        max-inline-size: 58ch;
+        margin-top: 0.25rem;
+        color: var(--ak-color-text-muted);
+        line-height: 1.5;
+      }
+
+      .preview-grid {
+        display: grid;
+        gap: 0.875rem;
+      }
+
+      .preview-grid[data-layout="split"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @media (max-width: 54rem) {
+        .preview-grid[data-layout="split"] {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .preview {
+        display: grid;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        background: var(--ak-color-bg);
+        box-shadow: inset 0 0 0 1px
+          color-mix(in srgb, var(--ak-color-border-subtle) 48%, transparent);
+      }
+
+      .preview-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-xs);
+        font-weight: var(--ak-font-weight-semibold);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .preview-tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.7rem;
+        padding: 0 0.65rem;
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: 999px;
+        background: var(--ak-color-surface);
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-xs);
+        letter-spacing: 0.04em;
+        text-transform: none;
+      }
+
+      .preview-surface {
+        display: grid;
+        gap: 0.9rem;
+        padding: var(--ak-layout-panel-padding);
+        border: 1px solid var(--ak-color-border-subtle);
+        border-radius: var(--ak-radius-lg);
+        background: var(--ak-color-surface);
+        color: var(--ak-color-text);
+        box-shadow: var(--ak-shadow-sm);
+        min-inline-size: 0;
       }
 
       .stack {
@@ -32,236 +279,677 @@
         gap: 0.75rem;
       }
 
-      .stack > * {
-        min-width: 0;
-      }
-
       .row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.625rem;
+        gap: 0.5rem;
         align-items: center;
       }
 
-      .grid {
+      .field {
         display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 0.45rem;
+        min-inline-size: 0;
       }
 
-      .span-6 {
-        grid-column: span 6;
+      .mini-grid {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
       }
 
-      .span-12 {
-        grid-column: span 12;
-      }
-
-      .note {
+      .mini-label {
         color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-xs);
+        font-weight: var(--ak-font-weight-semibold);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
-      .demo-shell {
+      .slider-demo {
         display: grid;
-        gap: 1rem;
+        gap: 0.35rem;
       }
 
-      table {
-        width: 100%;
+      .compact-table-wrap {
+        overflow: hidden;
+        border-radius: var(--ak-radius-lg);
+      }
+
+      @media (max-width: 64rem) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="page">
-      <section class="surface" data-slot="theme-provider" data-theme="light">
-        <header class="header" data-slot="header">
-          <div class="panel">
-            <nav class="navbar" data-slot="navbar" aria-label="Primary light">
+    <main class="audit-page" id="audit-root"></main>
+    <script type="module">
+      const renderRow = (items) => `<div class="row">${items.join("")}</div>`;
+      const renderButton = (className, label, attrs = "") =>
+        `<button class="${className}" data-slot="button" ${attrs}>${label}</button>`;
+      const renderBadge = (label, attrs = "") =>
+        `<span class="badge" data-slot="badge" ${attrs}>${label}</span>`;
+      const renderField = (label, control, meta = "") => `
+        <div class="field" data-slot="field">
+          <label class="label" data-slot="label">${label}</label>
+          ${control}
+          ${meta}
+        </div>`;
+      const renderToast = (variant, title, description, action) => `
+        <div data-slot="toast" data-variant="${variant}">
+          <strong data-slot="toast-title">${title}</strong>
+          <p data-slot="toast-description">${description}</p>
+          <div class="row">
+            <button data-slot="toast-action">${action}</button>
+            <button data-slot="toast-close" aria-label="Dismiss">x</button>
+          </div>
+        </div>`;
+
+      const badgeVariantsMarkup = [
+        renderBadge("Default"),
+        renderBadge("Secondary", 'data-variant="secondary"'),
+        renderBadge("Success", 'data-variant="success"'),
+        renderBadge("Warning", 'data-variant="warning"'),
+        renderBadge("Danger", 'data-variant="danger"'),
+        renderBadge("Info", 'data-variant="info"'),
+      ].join("");
+
+      const buttonsContent = `
+        <div class="stack">
+          ${renderRow([
+            renderButton("btn btn-primary", "Primary", 'data-variant="primary"'),
+            renderButton("btn btn-secondary", "Secondary", 'data-variant="secondary"'),
+            renderButton("btn btn-outline", "Outline", 'data-variant="outline"'),
+            renderButton("btn btn-ghost", "Ghost", 'data-variant="ghost"'),
+            renderButton("btn btn-destructive", "Delete", 'data-variant="destructive"'),
+            renderButton("btn btn-link", "Link", 'data-variant="link"'),
+          ])}
+          ${renderRow([
+            renderButton("btn btn-sm", "Small", 'data-size="sm"'),
+            renderButton("btn", "Default"),
+            renderButton("btn btn-lg", "Large", 'data-size="lg"'),
+            '<button class="btn btn-icon" data-slot="button" data-size="icon" aria-label="Icon">i</button>',
+            '<button class="btn" data-slot="button" data-disabled disabled>Disabled</button>',
+          ])}
+        </div>`;
+
+      const togglesContent = `
+        <div class="stack">
+          ${renderRow([
+            '<button data-slot="toggle">Off</button>',
+            '<button data-slot="toggle" data-state="on">On</button>',
+            '<button data-slot="toggle" data-disabled>Disabled</button>',
+          ])}
+          <div data-slot="toggle-group" aria-label="Density">
+            <button data-slot="toggle-group-item" data-state="on">Compact</button>
+            <button data-slot="toggle-group-item">Cozy</button>
+            <button data-slot="toggle-group-item" data-disabled>Disabled</button>
+          </div>
+          <button data-slot="collapsible-trigger" data-disabled>Disabled disclosure</button>
+        </div>`;
+
+      const shellContent = `
+        <div class="stack">
+          <header class="header" data-slot="header">
+            <nav class="navbar" data-slot="navbar" data-orientation="horizontal">
               <div class="navbar-brand" data-slot="navbar-brand">
                 <a href="#">askr</a>
               </div>
               <div class="navbar-group" data-slot="navbar-group" data-align="center">
-                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page"
-                  >Components</a
-                >
+                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">Components</a>
                 <a class="navbar-item" data-slot="nav-item" href="#">Charts</a>
-                <a class="navbar-item" data-slot="nav-item" href="#">About</a>
+                <a class="navbar-item" data-slot="nav-item" href="#">Docs</a>
               </div>
               <div class="navbar-group" data-slot="navbar-group" data-align="end">
-                <button class="btn btn-ghost btn-icon" data-slot="button" aria-label="Toggle theme">
-                  ◐
+                <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
+                  Aa
                 </button>
               </div>
             </nav>
-          </div>
-        </header>
+          </header>
+          <nav class="nav" data-slot="nav" data-variant="tabs" aria-label="Tabs">
+            <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">Overview</a>
+            <a class="nav-item" data-slot="nav-link" href="#">Usage</a>
+            <a class="nav-item" data-slot="nav-link" href="#">API</a>
+          </nav>
+          <nav class="nav" data-slot="nav" data-variant="pills" aria-label="Pills">
+            <a class="nav-item" data-slot="nav-link" href="#" data-active="true">Open</a>
+            <a class="nav-item" data-slot="nav-link" href="#">Queued</a>
+            <a class="nav-item" data-slot="nav-link" href="#">Done</a>
+          </nav>
+        </div>`;
 
-        <main class="demo-shell">
-          <section class="panel">
-            <p class="marketing-eyebrow">Light mode</p>
-            <h1>Cleaner, calmer, crisper.</h1>
-            <p class="marketing-lead note">
-              The surfaces should separate more cleanly now, with less blur and fewer gradients.
+      const textFieldsContent = `
+        <div class="stack">
+          ${renderField(
+            "Email",
+            '<input class="input" data-slot="input" placeholder="name@company.com" />',
+            '<p class="field-hint" data-slot="field-hint">We only use this for account notices.</p>',
+          )}
+          ${renderField(
+            "Validation",
+            '<input class="input" data-slot="input" aria-invalid="true" value="invalid value" />',
+            '<p class="field-error" data-slot="field-error">This value is invalid.</p>',
+          )}
+          ${renderField(
+            "Notes",
+            '<textarea class="textarea" data-slot="textarea" placeholder="Write a short admin note"></textarea>',
+            '<p class="field-hint" data-slot="field-hint">Textareas should stay quiet until they need attention.</p>',
+          )}
+          ${renderField(
+            "Invalid note",
+            '<textarea class="textarea" data-slot="textarea" aria-invalid="true">Needs a clearer error state</textarea>',
+            '<p class="field-error" data-slot="field-error">This textarea needs attention.</p>',
+          )}
+          ${renderField(
+            "Disabled note",
+            '<textarea class="textarea" data-slot="textarea" data-disabled disabled>Disabled textarea</textarea>',
+            '<p class="field-hint" data-slot="field-hint">Disabled controls should sit back quietly.</p>',
+          )}
+        </div>`;
+
+      const selectionContent = `
+        <div class="stack">
+          ${renderField(
+            "Environment",
+            `
+              <button data-slot="select-trigger">
+                <span data-slot="select-value">Production</span>
+                <span aria-hidden="true">v</span>
+              </button>
+              <div data-slot="select-content">
+                <button data-slot="select-item" data-state="checked">Production</button>
+                <button data-slot="select-item">Staging</button>
+                <button data-slot="select-item">Preview</button>
+                <div data-slot="select-separator"></div>
+                <div data-slot="select-label">Disabled</div>
+                <button data-slot="select-item" data-disabled>Archived</button>
+              </div>
+            `,
+            '<p class="field-hint" data-slot="field-hint">The popup panel now uses the shared overlay surface.</p>',
+          )}
+          <div class="mini-grid">
+            <label class="row">
+              <input data-slot="checkbox" type="checkbox" data-state="checked" checked />
+              <span>Checked checkbox</span>
+            </label>
+            <label class="row">
+              <input data-slot="checkbox" type="checkbox" data-disabled disabled />
+              <span>Disabled checkbox</span>
+            </label>
+            <button data-slot="switch" data-state="checked" aria-label="Enabled"></button>
+            <button data-slot="switch" data-disabled aria-label="Disabled"></button>
+          </div>
+          <div data-slot="radio-group" data-orientation="horizontal">
+            <button data-slot="radio-group-item" data-state="checked">Daily</button>
+            <button data-slot="radio-group-item">Weekly</button>
+            <button data-slot="radio-group-item" data-disabled>Monthly</button>
+          </div>
+          <div class="slider-demo" data-slot="slider">
+            <div data-slot="slider-track">
+              <div data-slot="slider-range"></div>
+            </div>
+            <div data-slot="slider-thumb" data-orientation="horizontal" tabindex="0"></div>
+          </div>
+          <div class="slider-demo" data-slot="slider" data-disabled>
+            <div data-slot="slider-track">
+              <div data-slot="slider-range"></div>
+            </div>
+            <div data-slot="slider-thumb" data-orientation="horizontal"></div>
+          </div>
+        </div>`;
+
+      const cardContent = `
+        <article class="card card-raised" data-slot="card" data-variant="raised">
+          <div class="card-header" data-slot="card-header">
+            <p class="eyebrow">Overview</p>
+            <h4 class="card-title" data-slot="card-title">Raised card</h4>
+            <p class="card-description" data-slot="card-description">Elevated but still restrained.</p>
+          </div>
+          <div class="card-content" data-slot="card-content">
+            <p>The body should stay calm while still reading as a discrete surface.</p>
+          </div>
+          <div class="card-footer" data-slot="card-footer">
+            <button class="btn btn-outline" data-slot="button">Review</button>
+            <span class="badge badge-success" data-slot="badge" data-variant="success">Healthy</span>
+          </div>
+        </article>`;
+
+      const emptyStateContent = `
+        <section class="empty-state" data-slot="empty-state">
+          <div class="empty-state-icon" data-slot="empty-state-icon">i</div>
+          <h4 class="empty-state-title" data-slot="empty-state-title">No results yet</h4>
+          <p class="empty-state-description" data-slot="empty-state-description">
+            Empty states should feel helpful without becoming decorative noise.
+          </p>
+          <div class="empty-state-actions" data-slot="empty-state-actions">
+            <button class="btn btn-primary" data-slot="button">Create item</button>
+            <button class="btn btn-outline" data-slot="button">Import</button>
+          </div>
+        </section>`;
+
+      const tableRowsMarkup = [
+        [
+          "Avery",
+          "Design systems",
+          '<span class="badge badge-success" data-slot="badge" data-variant="success">Active</span>',
+        ],
+        [
+          "Morgan",
+          "Platform",
+          '<span class="badge badge-warning" data-slot="badge" data-variant="warning">Review</span>',
+        ],
+        [
+          "Riley",
+          "Data",
+          '<span class="badge badge-secondary" data-slot="badge" data-variant="secondary">Queued</span>',
+        ],
+      ]
+        .map(
+          ([name, role, status]) => `
+            <tr data-slot="table-row">
+              <td data-slot="table-cell">${name}</td>
+              <td data-slot="table-cell">${role}</td>
+              <td data-slot="table-cell">${status}</td>
+            </tr>`,
+        )
+        .join("");
+
+      const tableContent = `
+        <div class="compact-table-wrap">
+          <table data-slot="table">
+            <caption data-slot="table-caption">Table caption with muted supporting context</caption>
+            <thead data-slot="table-head">
+              <tr data-slot="table-row">
+                <th data-slot="table-header-cell">Name</th>
+                <th data-slot="table-header-cell">Role</th>
+                <th data-slot="table-header-cell">Status</th>
+              </tr>
+            </thead>
+            <tbody data-slot="table-body">
+              ${tableRowsMarkup}
+            </tbody>
+          </table>
+        </div>`;
+
+      const dialogContent = `
+        <div class="stack">
+          <section data-slot="dialog-content">
+            <h4 data-slot="dialog-title">Confirm publish</h4>
+            <p data-slot="dialog-description">
+              Overlay surfaces should feel separated without heavy chrome.
             </p>
             <div class="row">
-              <button class="btn btn-primary" data-slot="button">Primary</button>
-              <button class="btn btn-secondary" data-slot="button">Secondary</button>
-              <button class="btn btn-outline" data-slot="button">Outline</button>
-              <button class="btn btn-ghost" data-slot="button">Ghost</button>
+              <button data-slot="dialog-close">Close</button>
+              <button class="btn btn-destructive" data-slot="button" data-variant="destructive">
+                Publish
+              </button>
             </div>
           </section>
+        </div>`;
 
-          <div class="grid">
-            <section class="card card-raised span-6" data-slot="card" data-variant="raised">
-              <div class="card-header" data-slot="card-header">
-                <h2 class="card-title" data-slot="card-title">Cards</h2>
-                <p class="card-description" data-slot="card-description">Raised, but not glassy.</p>
-              </div>
-              <div class="card-content" data-slot="card-content">
-                <p class="note">This should read as a distinct surface, not a soft glow.</p>
-              </div>
-            </section>
-
-            <section class="panel span-6">
-              <div class="stack">
-                <input class="input" data-slot="input" placeholder="name@company.com" />
-                <textarea
-                  class="textarea"
-                  data-slot="textarea"
-                  placeholder="Type a note"
-                ></textarea>
-              </div>
-            </section>
-
-            <section class="panel span-12">
-              <table data-slot="table">
-                <thead data-slot="table-head">
-                  <tr data-slot="table-row">
-                    <th data-slot="table-header-cell">Name</th>
-                    <th data-slot="table-header-cell">Role</th>
-                    <th data-slot="table-header-cell">Status</th>
-                  </tr>
-                </thead>
-                <tbody data-slot="table-body">
-                  <tr data-slot="table-row">
-                    <td data-slot="table-cell">Avery</td>
-                    <td data-slot="table-cell">Design</td>
-                    <td data-slot="table-cell">Active</td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-
-            <section class="span-12 row">
-              <div data-slot="dialog-content">
-                <h3 data-slot="dialog-title">Dialog</h3>
-                <p data-slot="dialog-description">Cleaner overlays, less bleed.</p>
-                <button data-slot="dialog-close">Close</button>
-              </div>
-              <div data-slot="popover-content">
-                <p class="note">Popover</p>
-                <button data-slot="popover-close">Dismiss</button>
-              </div>
-              <div data-slot="tooltip-content">Tooltip</div>
-            </section>
-          </div>
-        </main>
-      </section>
-
-      <section class="surface" data-slot="theme-provider" data-theme="dark">
-        <header class="header" data-slot="header">
-          <div class="panel">
-            <nav class="navbar" data-slot="navbar" aria-label="Primary dark">
-              <div class="navbar-brand" data-slot="navbar-brand">
-                <a href="#">askr</a>
-              </div>
-              <div class="navbar-group" data-slot="navbar-group" data-align="center">
-                <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page"
-                  >Components</a
-                >
-                <a class="navbar-item" data-slot="nav-item" href="#">Charts</a>
-                <a class="navbar-item" data-slot="nav-item" href="#">About</a>
-              </div>
-              <div class="navbar-group" data-slot="navbar-group" data-align="end">
-                <button class="btn btn-ghost btn-icon" data-slot="button" aria-label="Toggle theme">
-                  ◐
-                </button>
-              </div>
-            </nav>
-          </div>
-        </header>
-
-        <main class="demo-shell">
-          <section class="panel">
-            <p class="marketing-eyebrow">Dark mode</p>
-            <h1>Same system, more depth.</h1>
-            <p class="marketing-lead note">
-              The dark surface should stay crisp and restrained, not foggy or overworked.
-            </p>
-            <div class="row">
-              <button class="btn btn-primary" data-slot="button">Primary</button>
-              <button class="btn btn-secondary" data-slot="button">Secondary</button>
-              <button class="btn btn-outline" data-slot="button">Outline</button>
-              <button class="btn btn-ghost" data-slot="button">Ghost</button>
-            </div>
+      const popoverContent = `
+        <div class="stack">
+          <button class="btn btn-outline" data-slot="popover-trigger" data-state="open">
+            Popover trigger
+          </button>
+          <section data-slot="popover-content">
+            <p class="mini-label">Popover</p>
+            <p>Compact contextual content with the shared overlay surface token.</p>
+            <button data-slot="popover-close">Dismiss</button>
           </section>
+        </div>`;
 
-          <div class="grid">
-            <section class="card card-raised span-6" data-slot="card" data-variant="raised">
-              <div class="card-header" data-slot="card-header">
-                <h2 class="card-title" data-slot="card-title">Cards</h2>
-                <p class="card-description" data-slot="card-description">Raised, but not glassy.</p>
+      const hoverCardContent = `
+        <div class="stack">
+          <button class="btn btn-outline" data-slot="hover-card-trigger">Hover card trigger</button>
+          <section data-slot="hover-card-content">
+            <p class="mini-label">Hover card</p>
+            <p>Preview content with the same elevation language.</p>
+          </section>
+        </div>`;
+
+      const dropdownContent = `
+        <div class="stack">
+          <button data-slot="dropdown-trigger" data-state="open">Dropdown trigger</button>
+          <div data-slot="dropdown-content">
+            <div data-slot="dropdown-label">Navigation</div>
+            <button data-slot="dropdown-item">Profile</button>
+            <button data-slot="dropdown-item">Settings</button>
+            <button data-slot="dropdown-item" data-disabled>Disabled item</button>
+            <div data-slot="dropdown-separator"></div>
+            <button data-slot="dropdown-item">Help</button>
+          </div>
+        </div>`;
+
+      const menuContent = `
+        <div class="stack">
+          <div data-slot="menu-content">
+            <div data-slot="menu-label">Menu</div>
+            <button data-slot="menu-item">New</button>
+            <button data-slot="menu-item">Open</button>
+            <button data-slot="menu-item" data-disabled>Disabled</button>
+            <div data-slot="menu-separator"></div>
+            <button data-slot="menu-item">Archive</button>
+          </div>
+        </div>`;
+
+      const menubarContent = `
+        <div class="stack">
+          <div data-slot="menubar">
+            <button data-slot="menubar-trigger" data-state="open">File</button>
+            <button data-slot="menubar-trigger">View</button>
+            <button data-slot="menubar-trigger">Help</button>
+          </div>
+          <div data-slot="menubar-content">
+            <button data-slot="menubar-item">New</button>
+            <button data-slot="menubar-item">Open</button>
+            <button data-slot="menubar-item" data-disabled>Disabled</button>
+            <div data-slot="menubar-separator"></div>
+            <button data-slot="menubar-sub-trigger">Export</button>
+          </div>
+        </div>`;
+
+      const tooltipContent = `
+        <div class="stack">
+          <div class="mini-grid">
+            <div class="stack">
+              <button class="btn btn-outline" data-slot="tooltip-trigger" data-state="open">
+                Tooltip top
+              </button>
+              <div data-slot="tooltip-content" data-side="top">
+                Tooltip content is now using the overlay surface token.
               </div>
-              <div class="card-content" data-slot="card-content">
-                <p class="note">This should read as a distinct surface, not a soft glow.</p>
+            </div>
+            <div class="stack">
+              <button class="btn btn-outline" data-slot="tooltip-trigger" data-state="open">
+                Tooltip bottom
+              </button>
+              <div data-slot="tooltip-content" data-side="bottom">
+                Arrow and background stay in sync in dark mode too.
               </div>
+            </div>
+            <div class="stack">
+              <button class="btn btn-outline" data-slot="tooltip-trigger" data-state="open">
+                Tooltip left
+              </button>
+              <div data-slot="tooltip-content" data-side="left">
+                Compact and legible on the same overlay surface.
+              </div>
+            </div>
+            <div class="stack">
+              <button class="btn btn-outline" data-slot="tooltip-trigger" data-state="open">
+                Tooltip right
+              </button>
+              <div data-slot="tooltip-content" data-side="right">
+                The arrow should still read as the same surface.
+              </div>
+            </div>
+          </div>
+        </div>`;
+
+      const toastContent = `
+        <div class="mini-grid">
+          ${renderToast("success", "Saved", "Changes were saved successfully.", "Undo")}
+          ${renderToast(
+            "warning",
+            "Review needed",
+            "This item needs a second look before it goes live.",
+            "Review",
+          )}
+          ${renderToast(
+            "danger",
+            "Failed",
+            "Check the destructive state before retrying.",
+            "Retry",
+          )}
+          ${renderToast(
+            "info",
+            "Queued",
+            "The background job is still running in the queue.",
+            "Details",
+          )}
+        </div>`;
+
+      const sections = [
+        {
+          id: "foundations",
+          title: "Foundations",
+          note: "Type, semantic colors, badges, and low-noise alert surfaces.",
+          cards: [
+            {
+              title: "Typography and status",
+              note: "Heading rhythm, badge variants, and a light alert sample.",
+              layout: "split",
+              content: `
+                <div class="stack">
+                  <div class="stack">
+                    <p class="eyebrow">Typography</p>
+                    <h1>Admin clarity</h1>
+                    <h2>Section rhythm</h2>
+                    <p>
+                      Body copy should stay readable, muted copy should recede, and headings
+                      should not feel heavier than the surface needs.
+                    </p>
+                    <p><code>--ak-color-surface</code> and <kbd>Tab</kbd> should sit quietly.</p>
+                  </div>
+                  <div class="row">
+                    ${badgeVariantsMarkup}
+                  </div>
+                  <div class="alert" data-slot="alert" data-variant="info">
+                    <div class="alert-icon" data-slot="alert-icon">i</div>
+                    <div class="alert-content" data-slot="alert-content">
+                      <h4 class="alert-title" data-slot="alert-title">Surface balance</h4>
+                      <p class="alert-description" data-slot="alert-description">
+                        Muted surfaces should stay calmer than action surfaces.
+                      </p>
+                    </div>
+                  </div>
+                </div>`,
+            },
+          ],
+        },
+        {
+          id: "shell",
+          title: "Shell and navigation",
+          note: "Header, navbar, tabs, and pills in one isolated shell sample.",
+          cards: [
+            {
+              title: "Navbar and navs",
+              note: "Brand row plus tab and pill states under the same token set.",
+              layout: "split",
+              content: shellContent,
+            },
+          ],
+        },
+        {
+          id: "actions",
+          title: "Actions",
+          note: "Buttons and toggles with density, hover, and disabled treatment.",
+          cards: [
+            {
+              title: "Buttons",
+              note: "Variant, size, icon, and disabled coverage.",
+              layout: "split",
+              content: buttonsContent,
+            },
+            {
+              title: "Toggle controls",
+              note: "Toggle and group states under the same control language.",
+              layout: "split",
+              content: togglesContent,
+            },
+          ],
+        },
+        {
+          id: "forms",
+          title: "Forms",
+          note: "Inputs, textareas, and selection controls with shared focus language.",
+          cards: [
+            {
+              title: "Text entry",
+              note: "Normal, invalid, and disabled field states.",
+              content: textFieldsContent,
+            },
+            {
+              title: "Selection controls",
+              note: "Select, checkbox, switch, radio, and slider surfaces.",
+              content: selectionContent,
+            },
+          ],
+        },
+        {
+          id: "surfaces",
+          title: "Data surfaces",
+          note: "Cards, empty states, and tables on clear raised surfaces.",
+          cards: [
+            {
+              title: "Card",
+              note: "Raised card structure with footer actions.",
+              content: cardContent,
+            },
+            {
+              title: "Empty state",
+              note: "Helpful emptiness without decorative noise.",
+              content: emptyStateContent,
+            },
+            {
+              title: "Table",
+              note: "Header, body, and hover treatment.",
+              content: tableContent,
+            },
+          ],
+        },
+        {
+          id: "overlays",
+          title: "Overlays",
+          note: "Dialogs, popovers, hover cards, menus, tooltips, and toasts.",
+          cards: [
+            {
+              title: "Dialog",
+              note: "Overlay surface and close action styling.",
+              span: "full",
+              content: dialogContent,
+            },
+            {
+              title: "Popover",
+              note: "Compact contextual surface with shared overlay treatment.",
+              content: popoverContent,
+            },
+            {
+              title: "Hover card",
+              note: "Preview card with the same elevation language.",
+              content: hoverCardContent,
+            },
+            {
+              title: "Dropdown",
+              note: "Trigger, panel, and item focus states.",
+              content: dropdownContent,
+            },
+            {
+              title: "Menu",
+              note: "Menu panel and item treatment.",
+              content: menuContent,
+            },
+            {
+              title: "Menubar",
+              note: "Toolbar trigger focus states and panel contents.",
+              content: menubarContent,
+            },
+            {
+              title: "Tooltip",
+              note: "Overlay token and arrow stay aligned in both themes.",
+              content: tooltipContent,
+            },
+            {
+              title: "Toast",
+              note: "Overlay surface plus status-tinted variants.",
+              span: "full",
+              content: toastContent,
+            },
+          ],
+        },
+      ];
+
+      const renderCard = ({ title, note, content, layout = "stack", span = "auto" }) => `
+        <article class="component-card" data-span="${span}">
+          <header class="component-card-head">
+            <div>
+              <h3>${title}</h3>
+              <p class="component-note">${note}</p>
+            </div>
+          </header>
+          <div class="preview-grid" data-layout="${layout}">
+            <section class="preview" data-theme="light">
+              <div class="preview-head">
+                <span>Light mode</span>
+                <span class="preview-tag">light</span>
+              </div>
+              <div class="preview-surface">${content}</div>
             </section>
-
-            <section class="panel span-6">
-              <div class="stack">
-                <input class="input" data-slot="input" placeholder="name@company.com" />
-                <textarea
-                  class="textarea"
-                  data-slot="textarea"
-                  placeholder="Type a note"
-                ></textarea>
+            <section class="preview" data-theme="dark">
+              <div class="preview-head">
+                <span>Dark mode</span>
+                <span class="preview-tag">dark</span>
               </div>
-            </section>
-
-            <section class="panel span-12">
-              <table data-slot="table">
-                <thead data-slot="table-head">
-                  <tr data-slot="table-row">
-                    <th data-slot="table-header-cell">Name</th>
-                    <th data-slot="table-header-cell">Role</th>
-                    <th data-slot="table-header-cell">Status</th>
-                  </tr>
-                </thead>
-                <tbody data-slot="table-body">
-                  <tr data-slot="table-row">
-                    <td data-slot="table-cell">Avery</td>
-                    <td data-slot="table-cell">Design</td>
-                    <td data-slot="table-cell">Active</td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-
-            <section class="span-12 row">
-              <div data-slot="dialog-content">
-                <h3 data-slot="dialog-title">Dialog</h3>
-                <p data-slot="dialog-description">Cleaner overlays, less bleed.</p>
-                <button data-slot="dialog-close">Close</button>
-              </div>
-              <div data-slot="popover-content">
-                <p class="note">Popover</p>
-                <button data-slot="popover-close">Dismiss</button>
-              </div>
-              <div data-slot="tooltip-content">Tooltip</div>
+              <div class="preview-surface">${content}</div>
             </section>
           </div>
-        </main>
-      </section>
-    </div>
+        </article>`;
+
+      const renderSection = ({ id, title, note, cards }) => `
+        <section class="section" id="${id}">
+          <header class="section-head">
+            <div>
+              <h2>${title}</h2>
+              <p>${note}</p>
+            </div>
+          </header>
+          <div class="component-grid">
+            ${cards.map(renderCard).join("")}
+          </div>
+        </section>`;
+
+      const hero = `
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">askr-themes</p>
+              <h1>Component audit, one family at a time.</h1>
+              <p class="hero-lead">
+                The old matrix is gone. Each sample is now isolated so light and dark can be
+                compared without scanning a noisy grid, and the shared overlay token keeps popups
+                from flipping into bright bubbles in dark mode.
+              </p>
+            </div>
+            <div class="hero-asides">
+              <div class="hero-tile">
+                <strong>Light + dark</strong>
+                <p>Every component family is rendered twice and labeled clearly.</p>
+              </div>
+              <div class="hero-tile">
+                <strong>Overlay surface</strong>
+                <p>Dialogs, popovers, tooltips, and toasts now share the same surface token.</p>
+              </div>
+              <div class="hero-tile">
+                <strong>Focus states</strong>
+                <p>Close actions and menu-like triggers have explicit keyboard rings.</p>
+              </div>
+            </div>
+          </div>
+          <nav class="section-nav" aria-label="Jump to section">
+            <a href="#foundations">Foundations</a>
+            <a href="#shell">Shell</a>
+            <a href="#actions">Actions</a>
+            <a href="#forms">Forms</a>
+            <a href="#surfaces">Surfaces</a>
+            <a href="#overlays">Overlays</a>
+          </nav>
+        </section>`;
+
+      document.getElementById("audit-root").innerHTML = hero + sections.map(renderSection).join("");
+    </script>
   </body>
 </html>

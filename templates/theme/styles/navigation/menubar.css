@@ -45,6 +45,7 @@
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-sm);
+  z-index: var(--ak-z-dropdown);
 }
 
 [data-slot="menubar-item"],
@@ -70,7 +71,7 @@
 
 [data-slot="menubar-item"][data-disabled],
 [data-slot="menubar-sub-trigger"][data-disabled] {
-  opacity: 0.5;
+  color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
 }

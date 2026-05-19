@@ -151,19 +151,6 @@ export function resolveSectionSizeValue(value: string): string {
   return SECTION_SIZE_MAP[trimmed] ?? trimmed;
 }
 
-export function resolveGridTrackValue(value: string | number): string {
-  if (typeof value === "number") {
-    return `repeat(${value}, minmax(0, 1fr))`;
-  }
-
-  const trimmed = value.trim();
-  if (/^\d+$/.test(trimmed)) {
-    return `repeat(${trimmed}, minmax(0, 1fr))`;
-  }
-
-  return trimmed;
-}
-
 export function resolveJustifyValue(value: string): string {
   const trimmed = value.trim();
   if (trimmed === "between") return "space-between";

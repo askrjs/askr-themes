@@ -181,9 +181,46 @@ async function readThemeTokens(theme) {
   return readFile(tokensPath, "utf8");
 }
 
+async function readTemplateTokens() {
+  const tokensPath = path.join(root, "templates", "theme", "tokens.css");
+  return readFile(tokensPath, "utf8");
+}
+
+function normalizeBlockBody(body) {
+  return body.replace(/\s+/g, " ").trim();
+}
+
+function extractExplicitDarkBody(css) {
+  const match = css.match(/\[data-theme="dark"\]\s*\{([\s\S]*?)\n\}/m);
+
+  if (!match) {
+    throw new Error("Unable to find the explicit dark token block.");
+  }
+
+  return match[1];
+}
+
+function extractSystemDarkBody(css) {
+  const match = css.match(
+    /@media\s+\(prefers-color-scheme:\s*dark\)\s*\{\s*:root:not\(\[data-theme\]\)\s*\{([\s\S]*?)\n\s*\}\s*\}/m,
+  );
+
+  if (!match) {
+    throw new Error("Unable to find the system dark token block.");
+  }
+
+  return match[1];
+}
+
 async function main() {
   const defaultCss = await readThemeTokens("default");
+  const templateCss = await readTemplateTokens();
   const defaultRootTokens = tokensFromBlocks(defaultCss, isRootSelector);
+  const templateRootTokens = tokensFromBlocks(templateCss, isRootSelector);
+  const defaultLightTokens = tokensFromBlocks(defaultCss, isLightSelector);
+  const templateLightTokens = tokensFromBlocks(templateCss, isLightSelector);
+  const defaultDarkTokens = tokensFromBlocks(defaultCss, isDarkSelector);
+  const templateDarkTokens = tokensFromBlocks(templateCss, isDarkSelector);
 
   for (const theme of officialThemes) {
     const css = await readThemeTokens(theme);
@@ -225,6 +262,54 @@ async function main() {
       difference(rootTokens, defaultRootTokens),
       `${theme} has extra root contract tokens not present in default`,
     );
+  }
+
+  assertNoMissing(
+    difference(defaultRootTokens, templateRootTokens),
+    "template is missing root contract tokens present in default",
+  );
+  assertNoMissing(
+    difference(templateRootTokens, defaultRootTokens),
+    "template has extra root contract tokens not present in default",
+  );
+
+  assertNoMissing(
+    difference(defaultLightTokens, templateLightTokens),
+    "template is missing light color tokens present in default",
+  );
+  assertNoMissing(
+    difference(templateLightTokens, defaultLightTokens),
+    "template has extra light color tokens not present in default",
+  );
+
+  assertNoMissing(
+    difference(defaultDarkTokens, templateDarkTokens),
+    "template is missing dark color tokens present in default",
+  );
+  assertNoMissing(
+    difference(templateDarkTokens, defaultDarkTokens),
+    "template has extra dark color tokens not present in default",
+  );
+
+  if (
+    normalizeBlockBody(extractExplicitDarkBody(defaultCss)) !==
+    normalizeBlockBody(extractSystemDarkBody(defaultCss))
+  ) {
+    throw new Error("default explicit dark and system dark token blocks are out of sync.");
+  }
+
+  if (
+    normalizeBlockBody(extractExplicitDarkBody(defaultCss)) !==
+    normalizeBlockBody(extractExplicitDarkBody(templateCss))
+  ) {
+    throw new Error("template explicit dark tokens are out of sync with default.");
+  }
+
+  if (
+    normalizeBlockBody(extractSystemDarkBody(defaultCss)) !==
+    normalizeBlockBody(extractSystemDarkBody(templateCss))
+  ) {
+    throw new Error("template system dark tokens are out of sync with default.");
   }
 
   console.log("Theme token contract verified.");

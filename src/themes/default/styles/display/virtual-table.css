@@ -1,0 +1,65 @@
+:where([data-slot="virtual-table"]) {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface-raised);
+  color: var(--ak-color-text);
+  box-shadow: var(--ak-shadow-sm);
+  scrollbar-gutter: stable;
+}
+
+:where([data-slot="virtual-table-table"]) {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+:where([data-slot="virtual-table-head"]) {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--ak-color-surface-muted);
+}
+
+:where([data-slot="virtual-table-body"]) {
+  background: var(--ak-color-surface-raised);
+}
+
+:where([data-slot="virtual-table-header-row"]) {
+  background: inherit;
+}
+
+:where([data-slot="virtual-table-row"]) {
+  background: inherit;
+  transition: background var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="virtual-table-row"]:hover) {
+  background: color-mix(in srgb, var(--ak-color-hover) 70%, transparent);
+}
+
+:where([data-slot="virtual-table-spacer-row"]) {
+  background: transparent;
+}
+
+:where([data-slot="virtual-table-header-cell"]),
+:where([data-slot="virtual-table-cell"]) {
+  padding: 0.8rem var(--ak-space-md);
+  border-block-end: 1px solid var(--ak-color-border-subtle);
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+  text-align: start;
+  vertical-align: top;
+}
+
+:where([data-slot="virtual-table-header-cell"]) {
+  color: var(--ak-color-text-muted);
+  font-weight: var(--ak-font-weight-semibold);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

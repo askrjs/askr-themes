@@ -1,0 +1,27 @@
+:where([data-slot="virtual-list"]) {
+  display: grid;
+  gap: 0;
+  inline-size: 100%;
+  max-block-size: 100%;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  box-shadow: var(--ak-shadow-sm);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+:where([data-slot="virtual-list-row"]) {
+  display: flex;
+  align-items: stretch;
+  min-inline-size: 0;
+  box-sizing: border-box;
+  border-block-end: 1px solid var(--ak-color-border-subtle);
+  background: inherit;
+  transition: background var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="virtual-list-row"]:hover) {
+  background: color-mix(in srgb, var(--ak-color-hover) 70%, transparent);
+}

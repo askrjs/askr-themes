@@ -7,6 +7,7 @@
     "emitDeclarationOnly": false,
     "paths": {
       "@askrjs/askr": ["../askr/dist/index.d.ts"],
+      "@askrjs/askr/router": ["../askr/dist/router/index.d.ts"],
       "@askrjs/askr/jsx-runtime": ["../askr/dist/jsx-runtime.d.ts"],
       "@askrjs/askr/jsx-dev-runtime": ["../askr/dist/jsx-dev-runtime.d.ts"],
       "@askrjs/ui": ["../askr-ui/dist/index.d.ts"],
@@ -14,6 +15,6 @@
       "@askrjs/ui/foundations": ["../askr-ui/node_modules/@askrjs/askr/dist/foundations/index.d.ts"]
     }
   },
-  "include": ["src/components/**/*", "src/themes/**/*", "src/*.d.ts"],
+  "include": ["src/components/**/*", "src/themes/**/*", "src/*.ts", "src/*.d.ts"],
   "exclude": ["src/default/**/*"]
 }

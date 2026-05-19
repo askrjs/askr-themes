@@ -3,6 +3,7 @@
     opacity: 0;
     transform: translateY(4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -14,6 +15,7 @@
     opacity: 1;
     transform: translateY(0);
   }
+
   to {
     opacity: 0;
     transform: translateY(4px);
@@ -21,13 +23,21 @@
 }
 
 :where([data-slot="popover-content"]) {
+  --_popover-surface: var(--ak-color-surface-overlay);
+  --_popover-border: color-mix(
+    in srgb,
+    var(--ak-color-border-subtle) 88%,
+    var(--_popover-surface) 12%
+  );
+
   min-width: 14rem;
   padding: calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 84%, white 16%);
+  border: 1px solid var(--_popover-border);
   border-radius: var(--ak-radius-lg);
-  background: var(--ak-color-surface-raised);
+  background: var(--_popover-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
+  z-index: var(--ak-z-popover);
   animation: ak-slide-up var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -35,8 +45,20 @@
   animation: ak-slide-up-out var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+:where([data-slot="popover-trigger"]) {
+  cursor: pointer;
+}
+
+:where([data-slot="popover-trigger"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+}
+
 :where([data-slot="popover-trigger"][data-state="open"]) {
   border-color: var(--ak-color-primary);
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--ak-color-surface));
 }
 
 :where([data-slot="popover-close"]) {
@@ -45,7 +67,7 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0 calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
@@ -61,6 +83,13 @@
   background: var(--ak-color-surface-muted);
   border-color: var(--ak-color-border-strong);
   box-shadow: var(--ak-shadow-sm);
+}
+
+:where([data-slot="popover-close"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--_popover-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="popover-close"][data-disabled]) {

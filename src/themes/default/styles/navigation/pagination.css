@@ -1,0 +1,84 @@
+:where(.pagination, [data-slot="pagination"]) {
+  display: block;
+}
+
+:where(.pagination-list, [data-slot="pagination-list"]) {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ak-space-2xs, 0.125rem);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+:where(.page-item, [data-slot="pagination-item"]) {
+  display: block;
+}
+
+:where(.page-link, [data-slot="pagination-link"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.25rem;
+  min-block-size: 2.25rem;
+  padding-inline: var(--ak-space-sm);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text-muted);
+  box-shadow: var(--ak-shadow-sm);
+  text-decoration: none;
+  transition:
+    background-color var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where(.page-link:hover, [data-slot="pagination-link"]:hover) {
+  background: var(--ak-color-surface-muted);
+  border-color: var(--ak-color-border-strong);
+  color: var(--ak-color-text);
+  box-shadow: var(--ak-shadow-sm);
+}
+
+:where(.page-link:focus-visible, [data-slot="pagination-link"]:focus-visible) {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--ak-color-surface),
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+}
+
+:where(
+  .page-link.active,
+  .page-item.active > .page-link,
+  [data-slot="pagination-link"][data-active="true"],
+  [data-slot="pagination-item"][data-active="true"] > [data-slot="pagination-link"]
+) {
+  background: var(--ak-color-selected);
+  border-color: var(--ak-color-selected-border);
+  color: var(--ak-color-text);
+}
+
+:where(
+  .page-link.disabled,
+  .page-item.disabled > .page-link,
+  [data-slot="pagination-link"][data-disabled="true"],
+  [data-slot="pagination-item"][data-disabled="true"] > [data-slot="pagination-link"]
+) {
+  background: var(--ak-color-disabled-surface);
+  border-color: var(--ak-color-disabled-border);
+  color: var(--ak-color-disabled-text);
+  pointer-events: none;
+  box-shadow: none;
+}
+
+:where(.pagination-ellipsis, [data-slot="pagination-ellipsis"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.25rem;
+  min-block-size: 2.25rem;
+  color: var(--ak-color-text-subtle);
+}

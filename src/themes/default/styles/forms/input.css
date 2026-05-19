@@ -1,10 +1,13 @@
 :where(.input, [data-slot="input"]) {
+  --_input-height: var(--ak-density-control-height-md);
+  --_input-padding-x: var(--ak-density-control-padding-x-md);
   appearance: none;
   box-sizing: border-box;
-  min-height: var(--ak-density-control-height-md);
+  min-height: var(--_input-height);
   width: 100%;
-  padding: 0 var(--ak-density-control-padding-x-md);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  padding-block: 0;
+  padding-inline: var(--_input-padding-x);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
@@ -30,13 +33,14 @@
 :where(.input:focus-visible, [data-slot="input"]:focus-visible) {
   outline: none;
   border-color: var(--ak-color-primary);
-  box-shadow: 0 0 0 4px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.input[aria-invalid="true"], [data-slot="input"][aria-invalid="true"]) {
   border-color: var(--ak-color-danger);
   background: color-mix(in srgb, var(--ak-color-danger-soft) 12%, var(--ak-color-surface));
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width)
+    color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 
 :where(.input[data-disabled], .input:disabled, [data-slot="input"][data-disabled]) {
@@ -46,4 +50,16 @@
   color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
+}
+
+:where(.input-sm, [data-slot="input"][data-size="sm"]) {
+  --_input-height: var(--ak-density-control-height-sm);
+  --_input-padding-x: var(--ak-density-control-padding-x-sm);
+  font-size: var(--ak-font-size-xs);
+}
+
+:where(.input-lg, [data-slot="input"][data-size="lg"]) {
+  --_input-height: var(--ak-density-control-height-lg);
+  --_input-padding-x: var(--ak-density-control-padding-x-lg);
+  font-size: var(--ak-font-size-sm);
 }

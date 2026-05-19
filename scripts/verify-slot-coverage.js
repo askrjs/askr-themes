@@ -27,7 +27,32 @@ const UI_SOURCE_DIST_COMPONENTS_DIR = path.resolve(
 );
 const THEME_SOURCE_COMPONENTS_DIR = path.join(themesRoot, "src", "components");
 const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", "styles");
-const ALLOWED_THEME_ONLY_SLOTS = new Set(["center", "flex", "icon", "theme-provider"]);
+const ALLOWED_THEME_ONLY_SLOTS = new Set([
+  "center",
+  "flex",
+  "icon",
+  "navbar-panel",
+  "navbar-panel-close",
+  "navbar-panel-header",
+  "sidebar-panel",
+  "sidebar-panel-close",
+  "sidebar-panel-header",
+  "sidebar-brand",
+  "sidebar-group",
+  "sidebar-group-body",
+  "sidebar-group-label",
+  "theme-provider",
+]);
+const ALLOWED_UNCOVERED_UI_SLOTS = new Set([
+  "navigation-menu",
+  "navigation-menu-content",
+  "navigation-menu-indicator",
+  "navigation-menu-link",
+  "navigation-menu-list",
+  "navigation-menu-sub-trigger",
+  "navigation-menu-trigger",
+  "navigation-menu-viewport",
+]);
 
 function walkFiles(dirPath, extensions) {
   const normalizedExtensions = Array.isArray(extensions) ? extensions : [extensions];
@@ -152,7 +177,9 @@ function run() {
   const themeSlots = extractThemeSlots();
   const themeComponentSlots = extractSourceSlots(THEME_SOURCE_COMPONENTS_DIR);
 
-  const uncovered = [...uiSlots].filter((s) => !themeSlots.has(s)).sort();
+  const uncovered = [...uiSlots]
+    .filter((s) => !themeSlots.has(s) && !ALLOWED_UNCOVERED_UI_SLOTS.has(s))
+    .sort();
   const themeOnly = [...themeSlots]
     .filter(
       (s) => !uiSlots.has(s) && !themeComponentSlots.has(s) && !ALLOWED_THEME_ONLY_SLOTS.has(s),

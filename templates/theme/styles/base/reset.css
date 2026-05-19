@@ -1,0 +1,28 @@
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(html) {
+  background: var(--ak-color-bg);
+  color-scheme: light dark;
+}
+
+:where(body) {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--ak-color-bg);
+  color: var(--ak-color-text);
+}
+
+:where(a) {
+  color: inherit;
+}
+
+:where(svg) {
+  display: block;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ak-color-primary-soft) 84%, transparent);
+  color: var(--ak-color-text);
+}

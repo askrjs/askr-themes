@@ -17,7 +17,7 @@
   min-height: 2.5rem;
   min-width: 8rem;
   padding-inline: 0.85rem 2.1rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
@@ -31,5 +31,5 @@
   outline: none;
   box-shadow:
     0 0 0 1px var(--ak-color-surface),
-    0 0 0 4px var(--ak-color-focus-ring);
+    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }

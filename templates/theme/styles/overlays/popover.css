@@ -23,11 +23,13 @@
 :where([data-slot="popover-content"]) {
   min-width: 14rem;
   padding: calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border-subtle) 84%, white 16%);
+  border: 1px solid
+    color-mix(in srgb, var(--ak-color-border-subtle) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-lg);
   background: var(--ak-color-surface-raised);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-md);
+  z-index: var(--ak-z-popover);
   animation: ak-slide-up var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
@@ -45,7 +47,7 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0 calc(var(--ak-space-md) + 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, white 16%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);

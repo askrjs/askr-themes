@@ -3,7 +3,6 @@
 }
 
 :where(body) {
-  margin: 0;
   font-family: var(--ak-font-family-body);
   font-size: var(--ak-type-3-size);
   line-height: 1.58;
@@ -13,7 +12,7 @@
 :where(h1, h2, h3, h4, h5, h6) {
   color: var(--ak-color-text);
   font-family: var(--ak-font-family-body);
-  font-weight: 650;
+  font-weight: var(--ak-font-weight-semibold);
   text-wrap: balance;
   margin: 0;
 }
@@ -63,6 +62,7 @@
 }
 
 :where(p, li) {
+  margin: 0;
   font-size: var(--ak-type-3-size);
   line-height: 1.64;
   letter-spacing: -0.01em;
@@ -99,6 +99,13 @@
 }
 
 :where(code, kbd) {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16em 0.45em;
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, var(--ak-color-surface) 14%);
+  border-radius: calc(var(--ak-radius-sm) - 2px);
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 88%, var(--ak-color-surface) 12%);
+  color: var(--ak-color-text);
   font-size: 0.9em;
 }
 
@@ -182,7 +189,7 @@
   display: grid;
   gap: 0.4rem;
   padding: 0.875rem;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, white 14%);
+  border: 1px solid color-mix(in srgb, var(--ak-color-border) 86%, var(--ak-color-surface) 14%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   box-shadow: var(--ak-shadow-sm);

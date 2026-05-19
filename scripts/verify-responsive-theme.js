@@ -67,10 +67,11 @@ async function main() {
   }
 
   const requiredResponsiveSnippets = [
-    ':where([data-slot="topbar-layout"])',
-    ':where([data-slot="sidebar-layout"])',
-    ':where([data-slot="topbar-layout"]) > :where([data-slot="navbar"])',
-    ':where([data-slot="sidebar-layout"]) > :where([data-slot="sidebar"])',
+    ':where([data-slot="shell"])',
+    ':where([data-slot="shell"][data-variant="sidebar"])',
+    ':where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"])',
+    ':where([data-slot="shell"][data-variant="topbar"]) > :where([data-slot="shell-nav"])',
+    ':where([data-slot="shell"]) > :where([data-slot="shell-main"])',
     "@media (min-width: 40rem)",
     "@media (min-width: 48rem)",
     "@media (min-width: 64rem)",

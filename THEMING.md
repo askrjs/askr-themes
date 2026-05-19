@@ -4,6 +4,9 @@
 `@askrjs/charts`. It owns the app frame and shared visual language, while chart
 rendering stays in the chart package.
 
+See [docs/architecture.md](./docs/architecture.md) for the package boundary
+between `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
+
 Import a theme:
 
 ```css
@@ -53,6 +56,7 @@ Selector contract:
 - Alias selectors must be grouped with canonical selectors in the same low-specificity rule. Classes are convenience API, not a replacement source of truth.
 - Theme-owned pattern components use plain kebab-case classes such as `.page-header`, and public pattern parts should emit matching `data-slot` hooks so the same grouped selector pattern applies there as well.
 - Semantic `askr-ui` table primitives are styled from `styles/display/table.css` using their `data-slot` hooks only; keep the surface semantic and avoid restoring data-grid behavior in themes.
+- `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it. `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay in themes because they are visual composition wrappers.
 
 Example:
 
@@ -73,24 +77,30 @@ Package boundaries:
 - `@askrjs/themes` owns visual-only components, layout composition, and
   default styling.
 
-Use `@askrjs/themes/components` for styled components such as Button, Box,
-Stack, Inline, Flex, Grid, Container, Section, Spacer, Badge, Skeleton,
-Separator/Divider, SidebarLayout, TopbarLayout, and EmptyState.
+Use the curated theme entrypoints such as `@askrjs/themes/controls`,
+`@askrjs/themes/surfaces`, `@askrjs/themes/navs`, and `@askrjs/themes/shells`
+for styled components such as Button, ButtonGroup, Close, InputGroup, Alert,
+Badge, Box, Block, ListGroup, Pagination, Skeleton, Separator/Divider, Shell,
+ShellNav, ShellMain, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
 icons; applications pass their own icon/content props.
+The common wrapper components also emit familiar alias classes such as
+`alert`, `btn-group`, `btn-close`, `input-group`, `list-group`, and
+`pagination` so app-level CSS can stay close to the Bootstrap mental model
+without giving up the canonical `data-slot` contract.
 
 Responsive rules:
 
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
 - The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for `data-collapse-below`.
 - Keep breakpoint values centralized in theme tokens so the default theme and generated themes stay aligned.
-- Responsive behavior must target only public hooks such as `data-collapse-below`, `data-columns`, `data-min-item-width`, `data-gap`, `data-sidebar-position`, and `data-sidebar-width`.
+- Responsive behavior must target only public hooks such as `data-collapse-below`, `data-columns`, `data-min-item-width`, `data-gap`, `data-size`, and `data-variant`.
 - Prefer token overrides first. Reach for component CSS overrides only when tokens are insufficient.
 - Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
-- Broad layout slots like `main`, `sidebar`, and `navbar` must always be anchored to a public layout root such as `topbar-layout` or `sidebar-layout`.
-- Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, `data-gap`, and `data-sidebar-width` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
+- Broad layout slots like `main`, `sidebar`, and `navbar` must always be anchored to a public layout root such as `shell`.
+- Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, and `data-gap` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
 - Icons are part of the public theme contract. `@askrjs/ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
 - Icon size and stroke defaults should resolve through the shared icon tokens: `--ak-icon-size-sm|md|lg|xl` and `--ak-icon-stroke-width-sm|md|lg|xl`.
 - Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Recipe shells such as product-style or marketing-style page wrappers belong in userland composition, not the shipped theme package.
@@ -563,7 +573,7 @@ Generic interaction overlays for neutral interactive surfaces.
 
 ### Selected
 
-Selection state for tabs, nav items, rows, or toggles.
+Selection state for nav items, rows, or toggles.
 
 ### Disabled
 
@@ -925,7 +935,7 @@ All official themes are tested for WCAG AA compliance:
 - Status ink on soft backgrounds: 3:1 minimum
 - Inverse text on primary: 4.5:1 minimum
 
-The automated test suite (`tests/contrast.test.ts`) validates these pairs across all themes in both light and dark modes.
+The automated test suite (`tests/unit/contrast.test.ts`) validates these pairs across all themes in both light and dark modes.
 
 ---
 

@@ -30,7 +30,7 @@
 :where([data-slot="checkbox"]:focus-visible) {
   outline: none;
   box-shadow:
-    0 0 0 4px var(--ak-color-focus-ring),
+    0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
     var(--ak-shadow-sm);
 }
 

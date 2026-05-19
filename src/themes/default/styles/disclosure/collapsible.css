@@ -31,11 +31,14 @@
 
 [data-slot="collapsible-trigger"]:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 [data-slot="collapsible-trigger"][data-disabled] {
-  opacity: 0.5;
+  background: var(--ak-color-disabled-surface);
+  border-color: var(--ak-color-disabled-border);
+  box-shadow: none;
+  color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
 }

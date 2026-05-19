@@ -1,6 +1,11 @@
 :where([data-slot="scroll-area-viewport"]) {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 :where([data-slot="scroll-area-viewport"]::-webkit-scrollbar) {
@@ -13,6 +18,7 @@
   padding: 0.125rem;
   border-radius: var(--ak-radius-round);
   background: color-mix(in srgb, var(--ak-color-surface-muted) 72%, transparent);
+  user-select: none;
 }
 
 :where([data-slot="scroll-area-scrollbar"][data-orientation="vertical"]) {
@@ -25,10 +31,16 @@
 }
 
 :where([data-slot="scroll-area-thumb"]) {
+  display: block;
+  flex: 1 1 auto;
+  min-inline-size: 100%;
+  min-block-size: 100%;
   border-radius: var(--ak-radius-round);
   background: var(--ak-color-border-strong);
 }
 
 :where([data-slot="scroll-area-corner"]) {
+  display: block;
+  flex: 0 0 auto;
   background: var(--ak-color-surface-muted);
 }
