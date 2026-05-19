@@ -64,10 +64,6 @@
       "types": "./dist/navs.d.ts",
       "import": "./dist/navs.js"
     },
-    "./logos": {
-      "types": "./dist/logos.d.ts",
-      "import": "./dist/logos.js"
-    },
     "./default/card.css": "./src/themes/default/styles/display/card.css",
     "./default/tokens.css": "./src/themes/default/tokens.css",
     "./default/accordion.css": "./src/themes/default/styles/disclosure/accordion.css",
@@ -141,7 +137,7 @@
     "@askrjs/ui": "^0.0.7",
     "@askrjs/vite": "^0.0.2",
     "@tsdown/css": "0.22.0",
-    "@types/node": "^25.9.0",
+    "@types/node": "^25.9.1",
     "cross-env": "^10.1.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.60.0",

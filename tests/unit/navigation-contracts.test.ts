@@ -103,4 +103,23 @@ describe("navigation contracts", () => {
     expect(ellipsis.type).toBe("span");
     expect(ellipsis.props["data-slot"]).toBe("pagination-ellipsis");
   });
+
+  it("renders sidebar panels from explicit props without requiring responsive context", () => {
+    const sidebarPanel = asElement(
+      SidebarPanel({
+        active: true,
+        brand: "brand",
+        children: "panel",
+        collapseLabel: "Docs navigation",
+        onClose: () => undefined,
+        open: true,
+        panelId: "docs-sidebar-panel",
+      }),
+    );
+
+    expect(sidebarPanel.type).toBe("div");
+    expect(sidebarPanel.props["data-slot"]).toBe("sidebar-panel");
+    expect(sidebarPanel.props.role).toBe("dialog");
+    expect(sidebarPanel.props["aria-label"]).toBe("Docs navigation");
+  });
 });

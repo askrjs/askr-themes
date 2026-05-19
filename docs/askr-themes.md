@@ -8,7 +8,7 @@ It pairs with `@askrjs/charts`, which owns the lightweight charting surface.
 askr-themes is an optional styling layer. It provides:
 
 - Curated entrypoints such as `theme`, `layouts`, `controls`, `surfaces`,
-  `feedback`, `shells`, `navs`, and `logos`
+  `feedback`, `shells`, and `navs`
 - Theme controls and design tokens
 - Visual primitives such as `Box`, `Block`, `Stack`, `Inline`, `Flex`,
   `Container`, `Section`, `Spacer`, and `AspectRatio`
@@ -21,8 +21,7 @@ askr-themes is an optional styling layer. It provides:
 - Shell and navigation chrome such as `Header`, `Navbar`, `Nav`, `NavItem`,
   `NavLink`, `NavGroup`, `NavBrand`, `Pagination`, `Breadcrumb`, `Shell`,
   `ShellNav`, and `ShellMain`
-- Optional branded asset helpers such as `GitHubLogo`, `GoogleLogo`, and
-  `MicrosoftLogo`
+- App-specific asset helpers belong in userland so the package stays focused
 - Chart-adjacent shell styling, but not chart rendering itself
 - A small, opinionated foundation of primitives that look good out of the box,
   stay easy to override with tokens, and stop short of app-specific recipes
@@ -48,8 +47,7 @@ See [Architecture](./architecture.md) for the package boundary between
 - Use `@askrjs/themes/shells` for the overall app frame and shell layout.
 - Use `@askrjs/themes/navs` for navigational building blocks such as
   `Navbar`, `Nav`, `NavLink`, and `Breadcrumb`.
-- Use `@askrjs/themes/logos` only when branded asset helpers are useful in the
-  app surface.
+- Keep app-specific asset helpers in userland so the package stays focused.
 
 ## Layout primitive roles
 

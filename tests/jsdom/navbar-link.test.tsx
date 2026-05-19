@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { NavItem, NavLink } from "../../src/navs";
+import { NavItem, NavLink, Pagination, PaginationLink } from "../../src/navs";
 
 type ElementLike = {
   props: Record<string, unknown>;
@@ -232,12 +232,84 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/docs");
   });
 
+  it("leaves external PaginationLink targets to native browser navigation", async () => {
+    let wasDefaultPreventedByPaginationLink: boolean | undefined;
+
+    window.history.replaceState({}, "", "/");
+    route("/", () => (
+      <Pagination aria-label="Pagination">
+        <PaginationLink href="https://example.com/docs">External docs</PaginationLink>
+      </Pagination>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const externalLink = container?.querySelector(
+      'a[href="https://example.com/docs"]',
+    ) as HTMLAnchorElement | null;
+    externalLink?.addEventListener(
+      "click",
+      (event) => {
+        wasDefaultPreventedByPaginationLink = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true },
+    );
+
+    externalLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+
+    expect(wasDefaultPreventedByPaginationLink).toBe(false);
+    expect(window.location.pathname).toBe("/");
+  });
+
+  it("leaves same-page hash PaginationLink targets to native browser navigation", async () => {
+    let wasDefaultPreventedByPaginationLink: boolean | undefined;
+
+    window.history.replaceState({}, "", "/docs");
+    route("/docs", () => (
+      <Pagination aria-label="Pagination">
+        <PaginationLink href="#api">API</PaginationLink>
+      </Pagination>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const hashLink = container?.querySelector('a[href="#api"]') as HTMLAnchorElement | null;
+    hashLink?.addEventListener(
+      "click",
+      (event) => {
+        wasDefaultPreventedByPaginationLink = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true },
+    );
+
+    hashLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+
+    expect(wasDefaultPreventedByPaginationLink).toBe(false);
+    expect(window.location.pathname).toBe("/docs");
+  });
+
   it("keeps route matching props off plain NavItem anchors", () => {
     const item = NavItem({
       href: "/docs",
       children: "Docs",
       match: "exact",
-    } as Parameters<typeof NavItem>[0] & { match: string }) as ElementLike;
+    } as unknown as Parameters<typeof NavItem>[0]) as ElementLike;
 
     expect(item.props.match).toBeUndefined();
     expect(item.props.href).toBe("/docs");

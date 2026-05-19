@@ -225,12 +225,6 @@ import {
 } from "@askrjs/themes/surfaces";
 ```
 
-For branded asset helpers:
-
-```ts
-import { GitHubLogo, GoogleLogo, MicrosoftLogo } from "@askrjs/themes/logos";
-```
-
 For app theme controls:
 
 ```tsx

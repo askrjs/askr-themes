@@ -4,7 +4,6 @@ import {
   buildControlsFixture,
   buildFeedbackFixture,
   buildLayoutsFixture,
-  buildLogosFixture,
   buildNavsFixture,
   buildSurfacesFixture,
 } from "../_shared/fixtures";
@@ -33,10 +32,6 @@ describe("tier2 public family render benches", () => {
 
   bench("layouts family render", () => {
     renderBatch(buildLayoutsFixture);
-  });
-
-  bench("logos family render", () => {
-    renderBatch(buildLogosFixture);
   });
 
   bench("navs family render", () => {

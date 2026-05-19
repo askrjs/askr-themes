@@ -3,7 +3,6 @@ import { describe, expect, it } from "vite-plus/test";
 import { Button, ButtonGroup, Close, InputGroup, InputGroupText } from "../../src/controls";
 import { EmptyState, Spinner } from "../../src/feedback";
 import { Block, Stack, AspectRatio } from "../../src/layouts";
-import { GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
 import {
   Breadcrumb,
   Nav,
@@ -41,7 +40,7 @@ describe("curated entrypoints", () => {
     expect(typeof useTheme).toBe("function");
   });
 
-  it("exposes layout, surface, feedback, nav, shell, and logo families", () => {
+  it("exposes layout, surface, feedback, nav, and shell families", () => {
     expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
     expect(Block({ children: "block", gap: "2" })).toBeTruthy();
     expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
@@ -52,9 +51,6 @@ describe("curated entrypoints", () => {
     expect(Alert({ title: "Notice" })).toBeTruthy();
     expect(Badge({ children: "new" })).toBeTruthy();
     expect(Card({ children: "body" })).toBeTruthy();
-    expect(GitHubLogo({ title: "GitHub" })).toBeTruthy();
-    expect(GoogleLogo({ title: "Google" })).toBeTruthy();
-    expect(MicrosoftLogo({ title: "Microsoft" })).toBeTruthy();
     expect(Breadcrumb({ children: "trail" })).toBeTruthy();
     expect(Nav({ children: "nav" })).toBeTruthy();
     expect(Spinner({ label: "Working" })).toBeTruthy();

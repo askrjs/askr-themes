@@ -25,7 +25,6 @@ import {
   Spacer,
   Stack,
 } from "../../src/layouts";
-import { GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
 import {
   Alert,
   Badge,
@@ -126,19 +125,12 @@ describe("public family browser smoke", () => {
           />
           <Spinner label="Loading" />
         </section>
-
-        <section>
-          <GitHubLogo title="GitHub" />
-          <GoogleLogo title="Google" size="lg" />
-          <MicrosoftLogo title="Microsoft" size={28} />
-        </section>
       </div>
     ));
 
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    expect(container?.querySelectorAll('svg[data-slot="icon"]')).toHaveLength(3);
     expect(container?.querySelector('[data-slot="button"]')).not.toBeNull();
     expect(container?.querySelector('[data-slot="button-group"]')).not.toBeNull();
     expect(container?.querySelector("button.btn-close")).not.toBeNull();

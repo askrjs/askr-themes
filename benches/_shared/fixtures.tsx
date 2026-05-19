@@ -19,7 +19,6 @@ import {
   Spacer,
   Stack,
 } from "../../src/layouts";
-import { createLogo, GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
 import {
   Breadcrumb,
   BreadcrumbCurrent,
@@ -73,10 +72,6 @@ function BenchIcon(props: { label: string; state?: string }): JSX.Element {
     </span>
   );
 }
-
-const BenchMark = createLogo("BenchMark", "0 0 24 24", [
-  ["path", { d: "M4 4h16v16H4z", fill: "currentColor" }],
-]);
 
 export function buildControlsFixture(): JSX.Element {
   return (
@@ -165,17 +160,6 @@ export function buildLayoutsFixture(): JSX.Element {
   );
 }
 
-export function buildLogosFixture(): JSX.Element {
-  return (
-    <section data-bench="logos">
-      <GitHubLogo title="GitHub" />
-      <GoogleLogo title="Google" size="lg" />
-      <MicrosoftLogo title="Microsoft" size={28} />
-      <BenchMark title="Bench" />
-    </section>
-  );
-}
-
 export function buildNavsFixture(): JSX.Element {
   return (
     <section data-bench="navs">
@@ -260,7 +244,6 @@ export function buildPublicFamilyPage(): JSX.Element {
       {buildBrowserNavsFixture()}
       {buildLayoutsFixture()}
       {buildSurfacesFixture()}
-      {buildLogosFixture()}
     </div>
   );
 }
