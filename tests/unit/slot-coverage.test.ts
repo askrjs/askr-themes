@@ -189,16 +189,25 @@ describe("slot coverage", () => {
       .filter((slot) => !themeSlots.has(slot) && !ALLOWED_UNCOVERED_UI_SLOTS.has(slot))
       .sort();
 
-    expect(uncovered, `Uncovered slots (in askr-ui but not in theme): ${uncovered.join(", ")}`).toEqual([]);
+    expect(
+      uncovered,
+      `Uncovered slots (in askr-ui but not in theme): ${uncovered.join(", ")}`,
+    ).toEqual([]);
   });
 
   it("does not leave stale theme-only slots", () => {
     const themeOnly = [...themeSlots]
       .filter(
-        (slot) => !uiSlots.has(slot) && !themeComponentSlots.has(slot) && !ALLOWED_THEME_ONLY_SLOTS.has(slot),
+        (slot) =>
+          !uiSlots.has(slot) &&
+          !themeComponentSlots.has(slot) &&
+          !ALLOWED_THEME_ONLY_SLOTS.has(slot),
       )
       .sort();
 
-    expect(themeOnly, `Theme-only slots (in theme but not in askr-ui): ${themeOnly.join(", ")}`).toEqual([]);
+    expect(
+      themeOnly,
+      `Theme-only slots (in theme but not in askr-ui): ${themeOnly.join(", ")}`,
+    ).toEqual([]);
   });
 });
