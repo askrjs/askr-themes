@@ -6,7 +6,6 @@ import { describe, expect, it } from "vite-plus/test";
 import * as controls from "../../src/controls";
 import * as feedback from "../../src/feedback";
 import * as layouts from "../../src/layouts";
-import * as logos from "../../src/logos";
 import * as navs from "../../src/navs";
 import * as shells from "../../src/shells";
 import * as surfaces from "../../src/surfaces";
@@ -86,22 +85,6 @@ const COVERAGE = {
         "tests/jsdom/aspect-ratio.test.tsx",
         "tests/jsdom/block.test.tsx",
         "tests/unit/moved-components.test.ts",
-        "tests/unit/components-entrypoint.test.ts",
-        "tests/unit/package-surface.test.ts",
-      ],
-      benchFiles: [
-        "benches/tier2/public-families.bench.tsx",
-        "benches/tier4/browser-flows.bench.tsx",
-      ],
-      benchTier: 2,
-    },
-  ],
-  logos: [
-    {
-      exports: ["createLogo", "GitHubLogo", "GoogleLogo", "MicrosoftLogo"],
-      directTests: [
-        "tests/unit/logo-components.test.ts",
-        "tests/jsdom/logos.test.tsx",
         "tests/unit/components-entrypoint.test.ts",
         "tests/unit/package-surface.test.ts",
       ],
@@ -283,10 +266,6 @@ describe("component coverage matrix", () => {
 
   it("keeps the layouts family covered by direct tests and tier2 benches", () => {
     assertCoverage("layouts", layouts, [], COVERAGE.layouts);
-  });
-
-  it("keeps the logos family covered by direct tests and tier2 benches", () => {
-    assertCoverage("logos", logos, [], COVERAGE.logos);
   });
 
   it("keeps the nav family covered by direct tests and the correct bench tiers", () => {

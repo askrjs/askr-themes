@@ -16,11 +16,32 @@ export function SidebarPanel(props: SidebarPanelProps): JSX.Element | null {
     ref,
     ...rest
   } = props;
-  const responsive = (() => {
-    try {
-      return readContext(SidebarResponsiveContext);
-    } catch {
-      return {
+  const needsResponsiveContext =
+    activeProp === undefined ||
+    collapseLabelProp === undefined ||
+    onClose === undefined ||
+    openProp === undefined ||
+    panelIdProp === undefined;
+  const responsive = needsResponsiveContext
+    ? (() => {
+        try {
+          return readContext(SidebarResponsiveContext);
+        } catch {
+          return {
+            active: () => false,
+            collapseLabel: () => "Menu",
+            closePanel: () => undefined,
+            iconCollapsed: () => false,
+            isRailCollapsible: () => false,
+            orientation: () => "vertical" as const,
+            panelId: () => undefined,
+            panelOpen: () => false,
+            togglePanel: () => undefined,
+            toggleRail: () => undefined,
+          };
+        }
+      })()
+    : {
         active: () => false,
         collapseLabel: () => "Menu",
         closePanel: () => undefined,
@@ -32,8 +53,6 @@ export function SidebarPanel(props: SidebarPanelProps): JSX.Element | null {
         togglePanel: () => undefined,
         toggleRail: () => undefined,
       };
-    }
-  })();
   const active = activeProp ?? responsive.active();
   const open = openProp ?? responsive.panelOpen();
   const panelId = panelIdProp ?? responsive.panelId();

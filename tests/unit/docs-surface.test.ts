@@ -21,7 +21,7 @@ describe("docs surface", () => {
     expect(pkg.exports?.["./feedback"]).toBeTruthy();
     expect(pkg.exports?.["./shells"]).toBeTruthy();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
-    expect(pkg.exports?.["./logos"]).toBeTruthy();
+    expect(pkg.exports?.["./logos"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
   });
 
@@ -39,7 +39,7 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("@askrjs/themes/feedback");
     expect(themesDoc).toContain("@askrjs/themes/shells");
     expect(themesDoc).toContain("@askrjs/themes/navs");
-    expect(themesDoc).toContain("@askrjs/themes/logos");
+    expect(themesDoc).not.toContain("@askrjs/themes/logos");
     expect(themesDoc).toContain("AspectRatio");
     expect(themesDoc).toContain("Alert");
     expect(themesDoc).toContain("ButtonGroup");
@@ -70,7 +70,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("@askrjs/themes/surfaces");
     expect(readmeDoc).toContain("@askrjs/themes/feedback");
     expect(readmeDoc).toContain("@askrjs/themes/theme");
-    expect(readmeDoc).toContain("@askrjs/themes/logos");
+    expect(readmeDoc).not.toContain("@askrjs/themes/logos");
     expect(readmeDoc).toContain("ButtonGroup");
     expect(readmeDoc).toContain("InputGroup");
     expect(readmeDoc).toContain("Field");

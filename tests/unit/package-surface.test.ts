@@ -109,7 +109,7 @@ describe("package surface", () => {
     expect(pkg.exports?.["./feedback"]).toBeTruthy();
     expect(pkg.exports?.["./shells"]).toBeTruthy();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
-    expect(pkg.exports?.["./logos"]).toBeTruthy();
+    expect(pkg.exports?.["./logos"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
     expect(pkg.exports?.["./default/navbar.css"]).toBeTruthy();
     expect(pkg.exports?.["./default/button-group.css"]).toBeTruthy();

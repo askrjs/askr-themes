@@ -2,6 +2,7 @@ import { Slot } from "@askrjs/askr/foundations";
 import { currentRoute, navigate } from "@askrjs/askr/router";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { resolvePathname } from "../_internal/pathname";
 import type {
   NavAsChildProps,
   NavDivProps,
@@ -41,31 +42,6 @@ function getReactiveCurrentPathname(): string | null {
     return normalizePathname(currentRoute().path || "/");
   } catch {
     return getCurrentPathname();
-  }
-}
-
-function resolveNavLinkPathname(href: string): string | null {
-  const baseHref = typeof window !== "undefined" ? window.location.href : "http://localhost/";
-  const baseOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
-
-  try {
-    const target = new URL(href, baseHref);
-    if (target.origin !== baseOrigin) {
-      return null;
-    }
-
-    if (
-      typeof window !== "undefined" &&
-      target.hash &&
-      target.pathname === window.location.pathname &&
-      target.search === window.location.search
-    ) {
-      return null;
-    }
-
-    return normalizePathname(target.pathname);
-  } catch {
-    return null;
   }
 }
 
@@ -183,7 +159,7 @@ export function NavLink(props: NavLinkProps): JSX.Element {
     ...rest
   } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
   const currentPathname = getReactiveCurrentPathname();
-  const targetPathname = resolveNavLinkPathname(href);
+  const targetPathname = resolvePathname(href);
   const isActive =
     currentPathname !== null &&
     targetPathname !== null &&

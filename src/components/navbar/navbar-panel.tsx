@@ -16,11 +16,28 @@ export function NavbarPanel(props: NavbarPanelProps): JSX.Element | null {
     ref,
     ...rest
   } = props;
-  const responsive = (() => {
-    try {
-      return readContext(NavbarResponsiveContext);
-    } catch {
-      return {
+  const needsResponsiveContext =
+    activeProp === undefined ||
+    collapseLabelProp === undefined ||
+    onClose === undefined ||
+    openProp === undefined ||
+    panelIdProp === undefined;
+  const responsive = needsResponsiveContext
+    ? (() => {
+        try {
+          return readContext(NavbarResponsiveContext);
+        } catch {
+          return {
+            active: () => false,
+            collapseLabel: () => "Menu",
+            closePanel: () => undefined,
+            panelId: () => undefined,
+            panelOpen: () => false,
+            togglePanel: () => undefined,
+          };
+        }
+      })()
+    : {
         active: () => false,
         collapseLabel: () => "Menu",
         closePanel: () => undefined,
@@ -28,8 +45,6 @@ export function NavbarPanel(props: NavbarPanelProps): JSX.Element | null {
         panelOpen: () => false,
         togglePanel: () => undefined,
       };
-    }
-  })();
   const active = activeProp ?? responsive.active();
   const open = openProp ?? responsive.panelOpen();
   const panelId = panelIdProp ?? responsive.panelId();

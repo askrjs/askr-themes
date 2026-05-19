@@ -113,7 +113,7 @@ See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
 generic catch-all: use `theme`, `layouts`, `controls`, `surfaces`,
-`feedback`, `shells`, `navs`, and `logos` based on concern.
+`feedback`, `shells`, and `navs` based on concern.
 Use the curated theme entrypoints such as `controls`, `surfaces`, `navs`, and
 `shells` for styled components such as Button, ButtonGroup, Close, InputGroup,
 Field, Alert, ListGroup, Pagination, Badge, Card, CardActions, and Skeleton.

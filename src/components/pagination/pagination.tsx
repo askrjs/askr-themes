@@ -2,6 +2,7 @@ import { navigate } from "@askrjs/askr/router";
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "@askrjs/askr/foundations/utilities";
 import { classes } from "../_internal/classes";
+import { resolvePathname } from "../_internal/pathname";
 import type {
   PaginationEllipsisProps,
   PaginationItemAsChildProps,
@@ -9,35 +10,6 @@ import type {
   PaginationLinkProps,
   PaginationProps,
 } from "./pagination.types";
-
-function normalizePathname(pathname: string): string {
-  return pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
-}
-
-function resolvePaginationLinkPathname(href: string): string | null {
-  const baseHref = typeof window !== "undefined" ? window.location.href : "http://localhost/";
-  const baseOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
-
-  try {
-    const target = new URL(href, baseHref);
-    if (target.origin !== baseOrigin) {
-      return null;
-    }
-
-    if (
-      typeof window !== "undefined" &&
-      target.hash &&
-      target.pathname === window.location.pathname &&
-      target.search === window.location.search
-    ) {
-      return null;
-    }
-
-    return normalizePathname(target.pathname);
-  } catch {
-    return null;
-  }
-}
 
 function shouldHandleClientNavigation(
   event: MouseEvent,
@@ -126,7 +98,7 @@ export function PaginationLink(props: PaginationLinkProps): JSX.Element {
   } = props as PaginationLinkProps & { onClick?: (event: MouseEvent) => void };
   const hrefValue = href as string;
   const targetValue = target as string | undefined;
-  const targetPathname = resolvePaginationLinkPathname(hrefValue);
+  const targetPathname = resolvePathname(hrefValue);
   const isActive = active;
 
   const linkProps = mergeProps(rest, {
