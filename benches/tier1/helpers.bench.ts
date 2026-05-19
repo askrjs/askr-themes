@@ -56,21 +56,34 @@ function BenchLeaf(props: { children?: unknown; label: string }): JSX.Element {
 function buildSerializeBranch(label: string, items: readonly string[]): JSX.Element {
   return jsxs("article", {
     "data-label": label,
+    role: "region",
     children: [
       jsx("header", { children: label }),
       jsx("p", { children: `${label} summary` }),
       jsxs("div", {
         "data-group": label,
+        role: "list",
         children: items.map((item, index) =>
           jsxs("section", {
             "data-entry": `${label}-${index}`,
+            "aria-label": `${label} ${item}`,
+            tabIndex: -1,
             children: [
               jsx("h3", { children: item }),
               jsxs("div", {
+                "data-depth": `${label}-${index}`,
+                role: "group",
                 children: [
-                  jsx("span", { children: `${item} A` }),
-                  jsx("span", { children: `${item} B` }),
-                  jsx("span", { children: `${item} C` }),
+                  jsx("span", { "data-tone": "a", children: `${item} A` }),
+                  jsx("span", { "data-tone": "b", children: `${item} B` }),
+                  jsx("span", { "data-tone": "c", children: `${item} C` }),
+                  jsxs("aside", {
+                    "aria-label": `${item} detail`,
+                    children: [
+                      jsx("small", { children: `${item} note` }),
+                      jsx("strong", { children: `${item} focus` }),
+                    ],
+                  }),
                 ],
               }),
             ],
@@ -102,6 +115,29 @@ const jsxTree = jsxs("section", {
         jsx("em", { children: "Summary" }),
         jsx("button", { type: "button", children: "Action" }),
       ],
+    }),
+  ],
+});
+
+const serializeTree = jsxs("section", {
+  "data-slot": "serialize-root",
+  "aria-label": "Serialize benchmark tree",
+  children: [
+    jsx(BenchLeaf, {
+      label: "Alpha",
+      children: buildSerializeBranch("Alpha", ["One", "Two", "Three"]),
+    }),
+    jsx(BenchLeaf, {
+      label: "Beta",
+      children: buildSerializeBranch("Beta", ["Four", "Five", "Six"]),
+    }),
+    jsx(BenchLeaf, {
+      label: "Gamma",
+      children: buildSerializeBranch("Gamma", ["Seven", "Eight", "Nine"]),
+    }),
+    jsx(BenchLeaf, {
+      label: "Delta",
+      children: buildSerializeBranch("Delta", ["Ten", "Eleven", "Twelve"]),
     }),
   ],
 });
@@ -158,7 +194,7 @@ describe("tier1 helper benches", () => {
     let result: string | undefined;
 
     for (let i = 0; i < WORK; i += 1) {
-      result = serializeForId(jsxTree);
+      result = serializeForId(serializeTree);
     }
 
     consume(result);

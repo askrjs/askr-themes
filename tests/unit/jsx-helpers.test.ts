@@ -45,6 +45,15 @@ describe("JSX serialization helpers", () => {
     expect(serializeForId(value)).toBe(
       "section[data-slot:root](span[](One)|NamedWidget[active:true,data-state:open,id:named,title:Widget](div[](strong[](Two)|em[](Three)))|component[role:note]())",
     );
+
+    expect(
+      serializeForId(
+        jsx("div", {
+          "data-state": "idle",
+          children: [],
+        }),
+      ),
+    ).toBe("div[data-state:idle]()");
   });
 
   it("returns stable fallbacks for unsupported values", () => {
