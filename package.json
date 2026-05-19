@@ -121,20 +121,20 @@
   },
   "scripts": {
     "new:theme": "node ./scripts/new-theme.js",
-    "clean": "bunx rimraf dist node_modules",
-    "bench": "bun run bench:tier1 && bun run bench:tier2 && bun run bench:tier3 && bun run bench:tier4",
+    "clean": "npx --yes rimraf dist node_modules",
+    "bench": "npm run bench:tier2",
     "bench:tier1": "vp test bench --run --reporter=default --config vitest.bench.tier1.config.ts",
     "bench:tier2": "vp test bench --run --reporter=default --config vitest.bench.tier2.config.ts",
     "bench:tier3": "vp test bench --run --reporter=default --config vitest.bench.tier3.config.ts",
-    "bench:tier4": "vp test bench --run --reporter=default --config vitest.bench.tier4.config.ts",
-    "test": "bun run test:unit && bun run test:jsdom && bun run test:browser",
+    "bench:tier4": "vp test bench --run --reporter=default --config vitest.bench.tier4.config.ts benches/tier4/browser-flows.bench.tsx",
+    "test": "npm run test:unit && npm run test:jsdom && npm run test:browser",
     "test:unit": "vp test run -c vitest.test.unit.config.ts",
     "test:jsdom": "vp test run -c vitest.test.jsdom.config.ts",
     "test:browser": "vp test run -c vitest.test.browser.config.ts",
     "fmt": "vp fmt .",
     "lint": "vp lint .",
     "build": "vp pack",
-    "prepublishOnly": "bun run build"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@askrjs/askr": "^0.0.37",
@@ -154,5 +154,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.3.14"
+  "packageManager": "npm@11.14.1"
 }

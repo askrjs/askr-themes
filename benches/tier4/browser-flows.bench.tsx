@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, bench, describe, expect, vi } from "vite-plus/test";
 
+import { state } from "@askrjs/askr";
 import { group, navigate, route, clearRoutes } from "@askrjs/askr/router";
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
 
 import "../../src/themes/default/index.css";
 
@@ -10,8 +12,87 @@ import {
   SidebarBenchLayout,
   ThemeBenchLayout,
   buildPublicFamilyPage,
+  buildRouteTransitionPage,
   buildTablePage,
 } from "../_shared/fixtures";
+import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
+
+const LIVE_LOG_LIMIT = 32;
+
+type LiveEntry = {
+  id: number;
+  label: string;
+  detail: string;
+};
+
+function createLiveEntry(id: number): LiveEntry {
+  return {
+    id,
+    label: `Row ${id + 1}`,
+    detail: id % 2 === 0 ? "steady" : "updated",
+  };
+}
+
+function createLiveEntries(limit: number): LiveEntry[] {
+  return Array.from({ length: limit }, (_, index) => createLiveEntry(index));
+}
+
+function LiveTableLog(): JSX.Element {
+  const rows = state(createLiveEntries(LIVE_LOG_LIMIT));
+
+  const appendRow = () => {
+    const currentRows = rows();
+    const nextId = (currentRows.at(-1)?.id ?? -1) + 1;
+    rows.set([...currentRows.slice(1), createLiveEntry(nextId)]);
+  };
+
+  return (
+    <section data-bench="live-table-log">
+      <button data-slot="log-append" type="button" onClick={appendRow}>
+        Append
+      </button>
+      <Table aria-label="Live log">
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>Label</TableHeaderCell>
+            <TableHeaderCell>Detail</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows().map((row) => (
+            <TableRow key={row.id}>
+              <TableCell>{row.label}</TableCell>
+              <TableCell>{row.detail}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <ol data-slot="live-log">
+        {rows().map((row) => (
+          <li key={row.id} data-row={row.id}>
+            {row.label}: {row.detail}
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function NestedThemeRoute(): JSX.Element {
+  return (
+    <section data-bench="nested-theme-route">
+      <ThemeProvider defaultTheme="dark" storageKey="askr-theme-nested">
+        <header data-bench="nested-theme-header">
+          <ThemePicker label="Nested theme" />
+          <ThemeToggle />
+        </header>
+        <div data-bench="nested-theme-body">
+          {buildRouteTransitionPage({ title: "Nested theme", rows: 6 })}
+        </div>
+      </ThemeProvider>
+    </section>
+  );
+}
 
 describe("tier4 browser benches", () => {
   bench("public family mount", async () => {
@@ -22,6 +103,8 @@ describe("tier4 browser benches", () => {
     try {
       void scenario.container.querySelectorAll('[data-slot="icon"]').length;
       void scenario.container.querySelector('[data-slot="button-group"]');
+      void scenario.container.querySelector('[data-slot="breadcrumb"]');
+      void scenario.container.querySelector('[data-slot="pagination"]');
       void scenario.container.querySelector('[data-slot="card"]');
     } finally {
       scenario.cleanup();
@@ -58,6 +141,63 @@ describe("tier4 browser benches", () => {
     } finally {
       scenario.cleanup();
     }
+  });
+
+  describe("nested theme invalidation", () => {
+    let scenario: MountedScenario | undefined;
+
+    beforeEach(async () => {
+      window.localStorage.removeItem("askr-theme");
+      window.localStorage.removeItem("askr-theme-nested");
+      document.documentElement.removeAttribute("data-theme");
+      document.documentElement.removeAttribute("data-theme-choice");
+
+      scenario = await mountScenario("/example", () => {
+        group({ layout: ThemeBenchLayout }, () => {
+          route("/example", () => <NestedThemeRoute />);
+        });
+      });
+
+      expect(scenario.container.querySelector('[data-bench="nested-theme-route"]')).not.toBeNull();
+    });
+
+    afterEach(() => {
+      scenario?.cleanup();
+      scenario = undefined;
+      clearRoutes();
+      window.localStorage.removeItem("askr-theme");
+      window.localStorage.removeItem("askr-theme-nested");
+      document.documentElement.removeAttribute("data-theme");
+      document.documentElement.removeAttribute("data-theme-choice");
+    });
+
+    bench("nested theme invalidation cycle", async () => {
+      const outerToggle = scenario?.container.querySelector(
+        '[data-bench="theme-header"] [data-theme-control="toggle"]',
+      ) as HTMLButtonElement | null;
+      const innerToggle = scenario?.container.querySelector(
+        '[data-bench="nested-theme-header"] [data-theme-control="toggle"]',
+      ) as HTMLButtonElement | null;
+      const nestedBody = scenario?.container.querySelector(
+        '[data-bench="nested-theme-body"]',
+      ) as HTMLElement | null;
+
+      if (!outerToggle || !innerToggle || !nestedBody) {
+        throw new Error("nested theme bench failed to mount the expected controls");
+      }
+
+      outerToggle.click();
+      await settle();
+      void getComputedStyle(nestedBody).color;
+
+      innerToggle.click();
+      await settle();
+      void getComputedStyle(nestedBody).color;
+
+      outerToggle.click();
+      await settle();
+      void getComputedStyle(nestedBody).color;
+    });
   });
 
   describe("theme persistence", () => {
@@ -110,6 +250,37 @@ describe("tier4 browser benches", () => {
       ) as HTMLButtonElement | null;
 
       toggleAfter?.click();
+      await settle();
+    });
+  });
+
+  describe("large route transitions", () => {
+    let scenario: MountedScenario | undefined;
+
+    beforeEach(async () => {
+      scenario = await mountScenario("/docs", () => {
+        group({ layout: NavbarBenchLayout }, () => {
+          route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 24 }));
+          route("/docs/components", () =>
+            buildRouteTransitionPage({ title: "Components", rows: 24 }),
+          );
+        });
+      });
+
+      expect(scenario.container.querySelector('[data-slot="navbar"]')).not.toBeNull();
+    });
+
+    afterEach(() => {
+      scenario?.cleanup();
+      scenario = undefined;
+      clearRoutes();
+    });
+
+    bench("large route transition cycle", async () => {
+      navigate("/docs/components");
+      await settle();
+
+      navigate("/docs");
       await settle();
     });
   });
@@ -274,6 +445,47 @@ describe("tier4 browser benches", () => {
       viewport?.set(1200);
       window.dispatchEvent(new Event("resize"));
       await settle();
+    });
+  });
+
+  describe("live table logs", () => {
+    let scenario: MountedScenario | undefined;
+
+    beforeEach(async () => {
+      scenario = await mountScenario("/logs", () => {
+        route("/logs", () => <LiveTableLog />);
+      });
+
+      expect(scenario.container.querySelector('[data-bench="live-table-log"]')).not.toBeNull();
+    });
+
+    afterEach(() => {
+      scenario?.cleanup();
+      scenario = undefined;
+      clearRoutes();
+    });
+
+    bench("live table log append-evict cycle", async () => {
+      const append = scenario?.container.querySelector(
+        '[data-slot="log-append"]',
+      ) as HTMLButtonElement | null;
+      const table = scenario?.container.querySelector(
+        '[aria-label="Live log"]',
+      ) as HTMLTableElement | null;
+      const log = scenario?.container.querySelector(
+        '[data-slot="live-log"]',
+      ) as HTMLOListElement | null;
+
+      if (!append || !table || !log) {
+        throw new Error("live table bench failed to mount the expected log controls");
+      }
+
+      for (let i = 0; i < 4; i += 1) {
+        append.click();
+        await settle();
+        void table.querySelectorAll("tbody tr").length;
+        void log.querySelectorAll("li").length;
+      }
     });
   });
 });

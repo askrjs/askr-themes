@@ -19,7 +19,20 @@ import {
   Spacer,
   Stack,
 } from "../../src/layouts";
-import { GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
+import { createLogo, GitHubLogo, GoogleLogo, MicrosoftLogo } from "../../src/logos";
+import {
+  Breadcrumb,
+  BreadcrumbCurrent,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  Nav,
+  Pagination,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+} from "../../src/navs";
 import {
   Alert,
   Badge,
@@ -60,6 +73,10 @@ function BenchIcon(props: { label: string; state?: string }): JSX.Element {
     </span>
   );
 }
+
+const BenchMark = createLogo("BenchMark", "0 0 24 24", [
+  ["path", { d: "M4 4h16v16H4z", fill: "currentColor" }],
+]);
 
 export function buildControlsFixture(): JSX.Element {
   return (
@@ -154,6 +171,83 @@ export function buildLogosFixture(): JSX.Element {
       <GitHubLogo title="GitHub" />
       <GoogleLogo title="Google" size="lg" />
       <MicrosoftLogo title="Microsoft" size={28} />
+      <BenchMark title="Bench" />
+    </section>
+  );
+}
+
+export function buildNavsFixture(): JSX.Element {
+  return (
+    <section data-bench="navs">
+      <Breadcrumb aria-label="Docs breadcrumb">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbCurrent>Overview</BreadcrumbCurrent>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Nav aria-label="Primary">
+        <NavBrand>
+          <a href="/">
+            <BenchIcon label="Askr" />
+            <strong>Askr</strong>
+          </a>
+        </NavBrand>
+        <NavGroup label="Docs">
+          <NavItem href="/docs">Overview</NavItem>
+          <NavLink href="/docs/components">Components</NavLink>
+        </NavGroup>
+      </Nav>
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink href="/docs">1</PaginationLink>
+        </PaginationItem>
+        <PaginationEllipsis />
+        <PaginationItem>
+          <PaginationLink href="/docs/components" active>
+            2
+          </PaginationLink>
+        </PaginationItem>
+      </Pagination>
+    </section>
+  );
+}
+
+export function buildBrowserNavsFixture(): JSX.Element {
+  return (
+    <section data-bench="navs-browser">
+      <Breadcrumb aria-label="Docs breadcrumb">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbCurrent>Overview</BreadcrumbCurrent>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Nav aria-label="Primary">
+        <NavBrand>
+          <a href="/">
+            <BenchIcon label="Askr" />
+            <strong>Askr</strong>
+          </a>
+        </NavBrand>
+        <NavGroup label="Docs">
+          <NavItem href="/docs">Overview</NavItem>
+          <NavItem href="/docs/components">Components</NavItem>
+        </NavGroup>
+      </Nav>
+      <Pagination>
+        <PaginationItem active>1</PaginationItem>
+        <PaginationEllipsis />
+        <PaginationItem>2</PaginationItem>
+      </Pagination>
     </section>
   );
 }
@@ -163,10 +257,43 @@ export function buildPublicFamilyPage(): JSX.Element {
     <div data-bench="public-family">
       {buildControlsFixture()}
       {buildFeedbackFixture()}
+      {buildBrowserNavsFixture()}
       {buildLayoutsFixture()}
       {buildSurfacesFixture()}
       {buildLogosFixture()}
     </div>
+  );
+}
+
+export function buildRouteTransitionPage(props: { title: string; rows?: number }): JSX.Element {
+  const { title, rows = 12 } = props;
+
+  return (
+    <section data-bench="route-transition" data-title={title}>
+      <Card>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>Route content</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Stack gap="2">
+            {Array.from({ length: rows }, (_, index) => (
+              <Card key={index} variant="raised" padding={index % 3 === 0 ? "sm" : "md"}>
+                <CardHeader>
+                  <CardTitle>Item {index + 1}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div>Content {index + 1}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </Stack>
+        </CardContent>
+        <CardFooter>
+          <Badge variant="info">{rows} records</Badge>
+        </CardFooter>
+      </Card>
+    </section>
   );
 }
 

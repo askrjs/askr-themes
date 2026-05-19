@@ -5,6 +5,7 @@ import {
   buildFeedbackFixture,
   buildLayoutsFixture,
   buildLogosFixture,
+  buildNavsFixture,
   buildSurfacesFixture,
 } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
@@ -36,5 +37,9 @@ describe("tier2 public family render benches", () => {
 
   bench("logos family render", () => {
     renderBatch(buildLogosFixture);
+  });
+
+  bench("navs family render", () => {
+    renderBatch(buildNavsFixture);
   });
 });
