@@ -30,6 +30,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Divider,
   ListGroup,
   ListGroupItem,
   Separator,
@@ -115,6 +116,7 @@ export function buildSurfacesFixture(): JSX.Element {
         <ListGroupItem>First item</ListGroupItem>
         <ListGroupItem>Second item</ListGroupItem>
       </ListGroup>
+      <Divider />
       <Separator />
       <Skeleton />
     </section>

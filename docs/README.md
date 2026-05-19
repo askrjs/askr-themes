@@ -11,7 +11,7 @@ Default theme tokens, styles, and visual components for askr-ui applications.
 ## Quick start
 
 ```bash
-npm install @askrjs/themes
+bun add @askrjs/themes
 ```
 
 ```ts
