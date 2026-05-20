@@ -18,6 +18,14 @@ import {
   Sidebar,
   SidebarPanel,
 } from "../../src/navs";
+import {
+  Dropdown,
+  DropdownContent,
+  DropdownItem,
+  DropdownTrigger,
+  Menu,
+  Menubar,
+} from "../../src/overlays";
 import { Alert, Badge, Card, ListGroup, ListGroupItem } from "../../src/surfaces";
 import { Header } from "../../src/shells";
 import { ThemePicker, ThemeProvider, ThemeToggle, useTheme } from "../../src/theme";
@@ -66,6 +74,12 @@ describe("curated entrypoints", () => {
     expect(PaginationEllipsis({})).toBeTruthy();
     expect(PaginationItem({ children: "item" })).toBeTruthy();
     expect(PaginationLink({ href: "/docs", children: "page 1" })).toBeTruthy();
+    expect(typeof Dropdown).toBe("function");
+    expect(typeof DropdownTrigger).toBe("function");
+    expect(typeof DropdownContent).toBe("function");
+    expect(typeof DropdownItem).toBe("function");
+    expect(typeof Menu).toBe("function");
+    expect(typeof Menubar).toBe("function");
     expect(ListGroup({ children: "list" })).toBeTruthy();
     expect(ListGroupItem({ children: "row" })).toBeTruthy();
     expect(EmptyState({ title: "No projects" })).toBeTruthy();

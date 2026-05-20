@@ -137,6 +137,30 @@ const REQUIRED_COLOR_TOKENS = [
   "--ak-color-backdrop",
 ] as const;
 
+const REQUIRED_TOKEN_CATEGORIES = {
+  color: REQUIRED_COLOR_TOKENS,
+  typography: [
+    "--ak-font-family-body",
+    "--ak-font-size-md",
+    "--ak-font-weight-medium",
+    "--ak-line-height-normal",
+  ],
+  spacing: ["--ak-space-xs", "--ak-space-md", "--ak-space-xl", "--ak-space-1"],
+  density: ["--ak-density-control-height-md", "--ak-density-control-padding-x-md"],
+  layout: ["--ak-layout-navbar-height", "--ak-layout-sidebar-width", "--ak-layout-page-gutter"],
+  elevation: ["--ak-shadow-sm", "--ak-shadow-md", "--ak-shadow-lg"],
+  focus: ["--ak-focus-ring-width", "--ak-focus-ring-offset", "--ak-color-focus-ring"],
+  motion: ["--ak-duration-fast", "--ak-duration-normal", "--ak-ease-standard"],
+  zIndex: ["--ak-z-dropdown", "--ak-z-modal", "--ak-z-tooltip"],
+  state: [
+    "--ak-color-hover",
+    "--ak-color-active",
+    "--ak-color-selected",
+    "--ak-color-disabled-bg",
+    "--ak-color-disabled-text",
+  ],
+} as const;
+
 function parseBlocks(css: string): Array<{ selectors: string[]; body: string }> {
   const blocks: Array<{ selectors: string[]; body: string }> = [];
   const pattern = /([^{}]+)\{([^{}]*)\}/gms;
@@ -255,6 +279,13 @@ function getComponentCss(): string {
     .join("\n");
 }
 
+function getComponentCssFiles(): Array<{ file: string; css: string }> {
+  return listCssFiles(COMPONENTS_DIR).map((file) => ({
+    file,
+    css: readFileSync(file, "utf-8"),
+  }));
+}
+
 function getAllThemeComponentCss(): string {
   const cssParts: string[] = [];
   const componentDirs = [TEMPLATE_COMPONENTS_DIR];
@@ -328,6 +359,35 @@ describe("token completeness", () => {
         [],
       );
     }
+  });
+
+  it("should cover every semantic token category in the default theme", () => {
+    for (const [category, tokens] of Object.entries(REQUIRED_TOKEN_CATEGORIES)) {
+      const missing = tokens.filter((token) => !defaultSets.allDefinedTokens.has(token));
+
+      expect(missing, `${category} token category is missing: ${missing.join(", ")}`).toEqual([]);
+    }
+  });
+
+  it("should keep raw visual constants out of component CSS except explicit one-offs", () => {
+    const allowedDurationLiterals = new Set(["1.4s"]);
+    const failures: string[] = [];
+
+    for (const { file, css } of getComponentCssFiles()) {
+      const rawColors = css.match(/#[0-9a-f]{3,8}\b|(?:rgb|hsl)a?\(/gi) ?? [];
+      for (const rawColor of rawColors) {
+        failures.push(`${file}: raw color ${rawColor}`);
+      }
+
+      const rawDurations = css.match(/\b\d+(?:\.\d+)?m?s\b/g) ?? [];
+      for (const duration of rawDurations) {
+        if (!allowedDurationLiterals.has(duration)) {
+          failures.push(`${file}: raw duration ${duration}`);
+        }
+      }
+    }
+
+    expect(failures).toEqual([]);
   });
 
   it("should define every design token referenced by default components in default tokens.css", () => {

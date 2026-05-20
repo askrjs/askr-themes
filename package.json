@@ -64,6 +64,10 @@
       "types": "./dist/navs.d.ts",
       "import": "./dist/navs.js"
     },
+    "./overlays": {
+      "types": "./dist/overlays.d.ts",
+      "import": "./dist/overlays.js"
+    },
     "./default/card.css": "./src/themes/default/styles/display/card.css",
     "./default/tokens.css": "./src/themes/default/tokens.css",
     "./default/accordion.css": "./src/themes/default/styles/disclosure/accordion.css",
@@ -142,7 +146,7 @@
     "jsdom": "^29.1.1",
     "playwright": "^1.60.0",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.1.21"
+    "vite-plus": "^0.1.22"
   },
   "peerDependencies": {
     "@askrjs/askr": ">=0.0.1 <0.1.0",

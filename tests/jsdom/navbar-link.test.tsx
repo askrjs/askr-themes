@@ -4,6 +4,7 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { NavItem, NavLink, Pagination, PaginationLink } from "../../src/navs";
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
 
 type ElementLike = {
   props: Record<string, unknown>;
@@ -160,6 +161,50 @@ describe("navbar link jsdom regression", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
   });
 
+  it("does not intercept modified clicks or explicit targets", async () => {
+    window.history.replaceState({}, "", "/");
+    route("/", () => (
+      <nav aria-label="Primary">
+        <NavLink href="/docs">Docs</NavLink>
+        <NavLink href="/settings" target="_blank">
+          Settings
+        </NavLink>
+      </nav>
+    ));
+    route("/docs", () => <div id="page">Docs page</div>);
+    route("/settings", () => <div id="page">Settings page</div>);
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const docsLink = container?.querySelector('a[href="/docs"]') as HTMLAnchorElement | null;
+    const settingsLink = container?.querySelector(
+      'a[href="/settings"]',
+    ) as HTMLAnchorElement | null;
+
+    const modifiedClickWasNotCancelled = docsLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+        metaKey: true,
+      }),
+    );
+    const targetClickWasNotCancelled = settingsLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+
+    await settle();
+
+    expect(modifiedClickWasNotCancelled).toBe(true);
+    expect(targetClickWasNotCancelled).toBe(true);
+    expect(window.location.pathname).toBe("/");
+  });
+
   it("leaves external links to native browser navigation", async () => {
     let wasDefaultPreventedByNavLink: boolean | undefined;
 
@@ -304,6 +349,116 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/docs");
   });
 
+  it("preserves route behavior through DropdownItem asChild with NavLink", async () => {
+    window.history.replaceState({}, "", "/");
+    route("/", () => (
+      <nav aria-label="Primary">
+        <Dropdown defaultOpen>
+          <DropdownTrigger>Workspace</DropdownTrigger>
+          <DropdownContent forceMount aria-label="Workspace menu">
+            <DropdownItem asChild>
+              <NavLink href="/docs" match="exact">
+                Docs
+              </NavLink>
+            </DropdownItem>
+            <DropdownItem>Copy link</DropdownItem>
+          </DropdownContent>
+        </Dropdown>
+      </nav>
+    ));
+    route("/docs", () => <div id="page">Docs page</div>);
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const docsLink = document.body.querySelector(
+      '[data-slot="dropdown-item"][href="/docs"]',
+    ) as HTMLAnchorElement | null;
+    const action = document.body.querySelector(
+      '[data-slot="dropdown-item"]:not([href])',
+    ) as HTMLButtonElement | null;
+
+    expect(docsLink).not.toBeNull();
+    expect(docsLink?.tagName).toBe("A");
+    expect(docsLink?.getAttribute("role")).toBe("menuitem");
+    expect(docsLink?.getAttribute("match")).toBeNull();
+    expect(action?.tagName).toBe("BUTTON");
+
+    const wasNotCancelled = docsLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    await settle();
+
+    expect(wasNotCancelled).toBe(false);
+    expect(window.location.pathname).toBe("/docs");
+    expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
+  });
+
+  it("keeps DropdownItem asChild NavLink native behavior for non-SPA link clicks", async () => {
+    let externalDefaultPrevented: boolean | undefined;
+    let modifiedWasNotCancelled: boolean | undefined;
+
+    window.history.replaceState({}, "", "/");
+    route("/", () => (
+      <nav aria-label="Primary">
+        <Dropdown defaultOpen>
+          <DropdownTrigger>Workspace</DropdownTrigger>
+          <DropdownContent forceMount aria-label="Workspace menu">
+            <DropdownItem asChild>
+              <NavLink href="/docs">Docs</NavLink>
+            </DropdownItem>
+            <DropdownItem asChild>
+              <NavLink href="https://example.com/docs">External docs</NavLink>
+            </DropdownItem>
+          </DropdownContent>
+        </Dropdown>
+      </nav>
+    ));
+    route("/docs", () => <div id="page">Docs page</div>);
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const docsLink = document.body.querySelector(
+      '[data-slot="dropdown-item"][href="/docs"]',
+    ) as HTMLAnchorElement | null;
+    const externalLink = document.body.querySelector(
+      '[data-slot="dropdown-item"][href="https://example.com/docs"]',
+    ) as HTMLAnchorElement | null;
+    externalLink?.addEventListener(
+      "click",
+      (event) => {
+        externalDefaultPrevented = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true },
+    );
+
+    modifiedWasNotCancelled = docsLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+        metaKey: true,
+      }),
+    );
+    externalLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+
+    expect(modifiedWasNotCancelled).toBe(true);
+    expect(externalDefaultPrevented).toBe(false);
+    expect(window.location.pathname).toBe("/");
+  });
+
   it("keeps route matching props off plain NavItem anchors", () => {
     const item = NavItem({
       href: "/docs",
@@ -313,5 +468,25 @@ describe("navbar link jsdom regression", () => {
 
     expect(item.props.match).toBeUndefined();
     expect(item.props.href).toBe("/docs");
+  });
+
+  it("passes NavItem styling and props through asChild without leaking match", () => {
+    const item = NavItem({
+      asChild: true,
+      children: {
+        type: "button",
+        props: {
+          type: "button",
+          children: "Workspace",
+        },
+      },
+      match: "exact",
+      variant: "icon",
+    } as unknown as Parameters<typeof NavItem>[0]) as ElementLike;
+
+    expect(item.props.match).toBeUndefined();
+    expect(item.props["data-slot"]).toBe("nav-item");
+    expect(item.props["data-variant"]).toBe("icon");
+    expect(String(item.props.class)).toContain("navbar-item-icon");
   });
 });

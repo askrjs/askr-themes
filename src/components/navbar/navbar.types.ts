@@ -11,6 +11,9 @@ export type NavGroupAlign = "start" | "center" | "end";
 export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
   breakpoint?: CollapseBreakpoint;
+  collapseIcon?: unknown;
+  collapseIconPlacement?: CollapseIconPlacement;
+  collapseLabel?: string;
 };
 export type NavBrandProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
   children?: unknown;

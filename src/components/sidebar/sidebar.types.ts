@@ -1,8 +1,14 @@
-import type { CollapseBreakpoint, Collapsible } from "../shell/shell-nav.types";
+import type {
+  CollapseBreakpoint,
+  CollapseIconPlacement,
+  Collapsible,
+} from "../shell/shell-nav.types";
 
 export type SidebarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
   children?: unknown;
   breakpoint?: CollapseBreakpoint;
+  collapseIcon?: unknown;
+  collapseIconPlacement?: CollapseIconPlacement;
   collapsed?: boolean;
   collapseLabel?: string;
   collapsible?: Collapsible;

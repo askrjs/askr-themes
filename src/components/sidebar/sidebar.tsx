@@ -15,6 +15,7 @@ import { SidebarPanel } from "./sidebar-panel";
 import { SidebarToggle } from "./sidebar-toggle";
 import { isSidebarCollapsed, resolveSidebarCollapsible } from "./sidebar.shared";
 import type { SidebarProps } from "./sidebar.types";
+import type { CollapseIconPlacement } from "../shell/shell-nav.types";
 
 type SidebarChildren = {
   brand?: unknown;
@@ -61,19 +62,41 @@ function splitSidebarToggle(children: unknown[]): {
   };
 }
 
-function renderSidebarMenuContents(label: string): JSX.Element {
-  return (
-    <>
-      <span class="sidebar-toggle-icon" data-slot="sidebar-toggle-icon" aria-hidden="true">
+function renderSidebarMenuContents(
+  label: string,
+  icon: unknown,
+  iconPlacement: CollapseIconPlacement,
+): JSX.Element {
+  const renderedIcon = (
+    <span class="sidebar-toggle-icon" data-slot="sidebar-toggle-icon" aria-hidden="true">
+      {icon ?? (
         <span class="sidebar-toggle-glyph sidebar-toggle-glyph--menu">
           <span />
           <span />
           <span />
         </span>
-      </span>
-      <span class="sidebar-toggle-label" data-slot="sidebar-toggle-label">
-        {label}
-      </span>
+      )}
+    </span>
+  );
+  const renderedLabel = (
+    <span class="sidebar-toggle-label" data-slot="sidebar-toggle-label">
+      {label}
+    </span>
+  );
+
+  if (iconPlacement === "end") {
+    return (
+      <>
+        {renderedLabel}
+        {renderedIcon}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {renderedIcon}
+      {renderedLabel}
     </>
   );
 }
@@ -114,6 +137,8 @@ export function Sidebar(props: SidebarProps): JSX.Element {
     children,
     collapsed: controlledCollapsed,
     breakpoint,
+    collapseIcon,
+    collapseIconPlacement = "start",
     collapseLabel,
     collapsible,
     defaultCollapsed = false,
@@ -145,6 +170,17 @@ export function Sidebar(props: SidebarProps): JSX.Element {
     ? (controlledCollapsed ?? internalRailCollapsed ?? false)
     : false;
   const closeDrawer = () => drawerOpenState.set(false);
+  const closeDrawerOnNavActivation = (event: MouseEvent) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    if (target.closest('a[data-slot="nav-link"], a[data-slot="nav-item"], a.navbar-item')) {
+      closeDrawer();
+    }
+  };
   const toggleDrawer = () => {
     drawerOpenState.set(!drawerOpenState());
   };
@@ -199,6 +235,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
         brand={drawerBrand}
         collapseLabel={effectiveCollapseLabel}
         onClose={closeDrawer}
+        onClick={closeDrawerOnNavActivation}
         open={isDrawerOpen}
         panelId={panelId}
       >
@@ -236,13 +273,17 @@ export function Sidebar(props: SidebarProps): JSX.Element {
                 type="button"
                 onClick={toggleDrawer}
               >
-                {renderSidebarMenuContents(effectiveCollapseLabel)}
+                {renderSidebarMenuContents(
+                  effectiveCollapseLabel,
+                  collapseIcon,
+                  collapseIconPlacement,
+                )}
               </button>
             </div>
           ) : null}
 
           <div class="sidebar-shell" data-orientation="vertical" data-slot="sidebar-shell">
-            {isRailCollapsible && railToggleConfig !== undefined && !isMobile ? (
+            {isRailCollapsible && !isMobile ? (
               <div
                 class="sidebar-rail"
                 data-slot="sidebar-rail"
