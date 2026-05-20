@@ -47,6 +47,8 @@ See [Architecture](./architecture.md) for the package boundary between
 - Use `@askrjs/themes/shells` for the overall app frame and shell layout.
 - Use `@askrjs/themes/navs` for navigational building blocks such as
   `Navbar`, `Nav`, `NavLink`, and `Breadcrumb`.
+- Use `@askrjs/themes/overlays` for themed headless overlay primitives from
+  `@askrjs/ui`, including `Dropdown`, `Menu`, and `Menubar`.
 - Keep app-specific asset helpers in userland so the package stays focused.
 
 ## Layout primitive roles
@@ -110,6 +112,19 @@ import {
 } from "@askrjs/themes/navs";
 ```
 
+For overlay chrome:
+
+```ts
+import {
+  Dropdown,
+  DropdownContent,
+  DropdownItem,
+  DropdownTrigger,
+  Menu,
+  Menubar,
+} from "@askrjs/themes/overlays";
+```
+
 For navigation chrome, prefer the typed grouping props over raw data
 attributes. Use `align` for horizontal bars and for vertical bottom grouping:
 
@@ -170,6 +185,36 @@ export function AppChrome() {
 Use `Nav` for standalone navigation patterns where you want the themed route
 link treatment without the shell-specific layout responsibilities of `Navbar`.
 `Nav` currently supports `default`, `tabs`, and `pills` variants.
+
+Use `Sidebar` when the navigation is the vertical app frame. Its common path is
+brand plus groups, with `breakpoint` generating the mobile drawer from the same
+children. `collapsible="icon"` enables the desktop icon rail and now renders a
+default rail toggle by itself; add `SidebarToggle` only to replace that glyph
+with app-specific expanded/collapsed icons. For the mobile drawer trigger, use
+`collapseLabel`, `collapseIcon`, and `collapseIconPlacement` when the default
+menu treatment needs product-specific copy or icon treatment. Button-style
+drawer controls stay open, while `NavLink` route items close the generated
+drawer after client navigation.
+
+`NavGroup` is the sidebar grouping primitive as well as the navbar grouping
+primitive. Use `label` for section names, `align="center"` for centered visual
+groups, and `align="end"` for bottom-positioned sidebar groups such as account,
+settings, help, or sign-out actions. The same `align="end"` prop maps to the
+far edge in a horizontal navbar and the bottom edge in a vertical sidebar.
+
+For dropdowns and menu surfaces inside `Navbar` or `Sidebar`, use the
+`@askrjs/themes/overlays` exports. Those components come from `@askrjs/ui`, so
+behavior such as focus, dismissal, keyboard handling, and ARIA stays in the
+headless UI layer while the theme package supplies the visual slots.
+
+Use `Navbar` when the navigation is the horizontal topbar itself. The surface
+area is intentionally small: `NavBrand` names the product or workspace,
+`NavGroup` organizes children with optional `align`, and `NavLink` handles
+route-aware links. Add `breakpoint` to derive the mobile panel from the same
+children. Add `collapseLabel`, `collapseIcon`, or `collapseIconPlacement` only
+when the generated responsive toggle needs custom copy or icon placement.
+Dropdown triggers, account menus, and command buttons compose as normal
+children inside `NavGroup`; use `NavLink` for menu items that should navigate.
 
 Theme controls are also available from the same entrypoint. `ThemeToggle`
 does not ship icons; pass your own visual content:

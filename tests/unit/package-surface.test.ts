@@ -36,6 +36,17 @@ import {
   SidebarPanel,
 } from "../../src/navs";
 import {
+  DROPDOWN_A11Y_CONTRACT,
+  Dropdown,
+  DropdownContent,
+  DropdownItem,
+  DropdownTrigger,
+  MENUBAR_A11Y_CONTRACT,
+  MENU_A11Y_CONTRACT,
+  Menu,
+  Menubar,
+} from "../../src/overlays";
+import {
   Shell as BarrelShell,
   ShellMain as BarrelShellMain,
   ShellNav as BarrelShellNav,
@@ -74,6 +85,12 @@ describe("package surface", () => {
     expect(typeof PaginationItem).toBe("function");
     expect(typeof PaginationLink).toBe("function");
     expect(typeof PaginationEllipsis).toBe("function");
+    expect(typeof Dropdown).toBe("function");
+    expect(typeof DropdownTrigger).toBe("function");
+    expect(typeof DropdownContent).toBe("function");
+    expect(typeof DropdownItem).toBe("function");
+    expect(typeof Menu).toBe("function");
+    expect(typeof Menubar).toBe("function");
     expect(typeof Shell).toBe("function");
     expect(typeof ShellNav).toBe("function");
     expect(typeof ShellMain).toBe("function");
@@ -92,6 +109,9 @@ describe("package surface", () => {
     expect(typeof Card).toBe("function");
     expect(typeof CardActions).toBe("function");
     expect(BREADCRUMB_A11Y_CONTRACT).toBeTruthy();
+    expect(DROPDOWN_A11Y_CONTRACT).toBeTruthy();
+    expect(MENU_A11Y_CONTRACT).toBeTruthy();
+    expect(MENUBAR_A11Y_CONTRACT).toBeTruthy();
     expect(HEADER_A11Y_CONTRACT).toBeTruthy();
     expect(SHELL_A11Y_CONTRACT).toBeTruthy();
     expect(SEPARATOR_A11Y_CONTRACT).toBeTruthy();
@@ -109,6 +129,7 @@ describe("package surface", () => {
     expect(pkg.exports?.["./feedback"]).toBeTruthy();
     expect(pkg.exports?.["./shells"]).toBeTruthy();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
+    expect(pkg.exports?.["./overlays"]).toBeTruthy();
     expect(pkg.exports?.["./logos"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
     expect(pkg.exports?.["./default/navbar.css"]).toBeTruthy();

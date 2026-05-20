@@ -11,6 +11,7 @@ async function settle(): Promise<void> {
   await Promise.resolve();
   await Promise.resolve();
   await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
 let innerWidthSpy: { mockReturnValue(value: number): unknown } | undefined;
@@ -135,6 +136,200 @@ describe("navbar browser smoke", () => {
     } else {
       expect(getComputedStyle(shell!).display).toBe("flex");
     }
+  });
+
+  it("closes the mobile panel from close button, Escape, and nav item activation", async () => {
+    route("/docs", () => (
+      <Navbar id="interaction-navbar" aria-label="Docs navigation" breakpoint="md">
+        <NavBrand>
+          <a href="/">Askr</a>
+        </NavBrand>
+        <NavGroup label="Docs">
+          <NavLink href="/docs" match="exact">
+            Overview
+          </NavLink>
+          <NavLink href="/docs/components">Components</NavLink>
+        </NavGroup>
+      </Navbar>
+    ));
+    route("/docs/components", () => (
+      <Navbar id="interaction-navbar" aria-label="Docs navigation" breakpoint="md">
+        <NavBrand>
+          <a href="/">Askr</a>
+        </NavBrand>
+        <NavGroup label="Docs">
+          <NavLink href="/docs" match="exact">
+            Overview
+          </NavLink>
+          <NavLink href="/docs/components">Components</NavLink>
+        </NavGroup>
+      </Navbar>
+    ));
+
+    setViewport(375);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const toggle = container?.querySelector(
+      '[data-slot="navbar-toggle"]',
+    ) as HTMLButtonElement | null;
+
+    toggle?.click();
+    await settle();
+
+    let panel = container?.querySelector('[data-slot="navbar-panel"]') as HTMLElement | null;
+    expect(panel).not.toBeNull();
+    expect(document.activeElement).toBe(panel);
+
+    const closeButton = container?.querySelector(
+      '[data-slot="navbar-panel-close"]',
+    ) as HTMLButtonElement | null;
+    closeButton?.click();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).toBeNull();
+    expect(toggle?.getAttribute("aria-expanded")).toBe("false");
+
+    toggle?.click();
+    await settle();
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).not.toBeNull();
+
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    await settle();
+
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).toBeNull();
+
+    toggle?.click();
+    await settle();
+
+    const componentsLink = container?.querySelector(
+      '[data-slot="navbar-panel"] a[href="/docs/components"]',
+    ) as HTMLAnchorElement | null;
+    componentsLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    await settle();
+
+    panel = container?.querySelector('[data-slot="navbar-panel"]') as HTMLElement | null;
+    expect(window.location.pathname).toBe("/docs/components");
+    expect(panel).toBeNull();
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
+  });
+
+  it("keeps dropdown-style navbar controls open while still closing for menu links", async () => {
+    route("/docs", () => (
+      <Navbar id="dropdown-navbar" aria-label="Docs navigation" breakpoint="md">
+        <NavBrand>
+          <a href="/">Askr</a>
+        </NavBrand>
+        <NavGroup label="Docs">
+          <button class="navbar-item" data-slot="dropdown-trigger" type="button">
+            Workspace
+          </button>
+          <div data-slot="dropdown-content">
+            <button class="navbar-item" data-slot="dropdown-item" type="button">
+              Switch workspace
+            </button>
+            <NavLink class="dropdown-item" href="/docs/audit">
+              Audit log
+            </NavLink>
+          </div>
+        </NavGroup>
+      </Navbar>
+    ));
+    route("/docs/audit", () => <div id="page">Audit log</div>);
+
+    setViewport(375);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const toggle = container?.querySelector(
+      '[data-slot="navbar-toggle"]',
+    ) as HTMLButtonElement | null;
+    toggle?.click();
+    await settle();
+
+    const trigger = container?.querySelector(
+      '[data-slot="navbar-panel"] [data-slot="dropdown-trigger"]',
+    ) as HTMLButtonElement | null;
+    trigger?.click();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).not.toBeNull();
+    expect(toggle?.getAttribute("aria-expanded")).toBe("true");
+
+    const dropdownButton = container?.querySelector(
+      '[data-slot="navbar-panel"] [data-slot="dropdown-item"]',
+    ) as HTMLButtonElement | null;
+    dropdownButton?.click();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).not.toBeNull();
+
+    const dropdownLink = container?.querySelector(
+      '[data-slot="navbar-panel"] a[href="/docs/audit"]',
+    ) as HTMLAnchorElement | null;
+    dropdownLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    await settle();
+
+    expect(window.location.pathname).toBe("/docs/audit");
+    expect(container?.querySelector('[data-slot="navbar-panel"]')).toBeNull();
+  });
+
+  it("supports an explicit responsive toggle label and icon without extra composition", async () => {
+    route("/docs", () => (
+      <Navbar
+        id="custom-toggle-navbar"
+        aria-label="Primary navigation"
+        breakpoint="md"
+        collapseIcon={<span data-slot="icon">N</span>}
+        collapseIconPlacement="end"
+        collapseLabel="Navigation"
+      >
+        <NavBrand>
+          <a href="/">Askr</a>
+        </NavBrand>
+        <NavGroup>
+          <NavLink href="/docs">Docs</NavLink>
+        </NavGroup>
+      </Navbar>
+    ));
+
+    setViewport(375);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const toggle = container?.querySelector(
+      '[data-slot="navbar-toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(toggle?.getAttribute("aria-label")).toBe("Navigation");
+    expect(toggle?.textContent).toBe("NavigationN");
+
+    toggle?.click();
+    await settle();
+
+    const panel = container?.querySelector('[data-slot="navbar-panel"]') as HTMLElement | null;
+    const closeButton = container?.querySelector(
+      '[data-slot="navbar-panel-close"]',
+    ) as HTMLButtonElement | null;
+    const backdrop = container?.querySelector(
+      '[data-slot="navbar-backdrop"]',
+    ) as HTMLButtonElement | null;
+
+    expect(panel?.getAttribute("aria-label")).toBe("Navigation");
+    expect(closeButton?.getAttribute("aria-label")).toBe("Close Navigation");
+    expect(backdrop?.getAttribute("aria-label")).toBe("Close Navigation");
   });
 
   it("keeps production navbar chrome stable with long labels and a mobile panel", async () => {

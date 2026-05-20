@@ -30,6 +30,12 @@ For navigation primitives:
 import { Nav, NavBrand, NavGroup, NavItem, NavLink, Navbar } from "@askrjs/themes/navs";
 ```
 
+For overlay primitives:
+
+```ts
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@askrjs/themes/overlays";
+```
+
 For form helpers:
 
 ```ts
@@ -52,10 +58,12 @@ them as interchangeable:
 
 The detailed rationale and composition guidance lives in [Overview](./askr-themes.md).
 
-`Sidebar` is the vertical shell wrapper. Compose the brand, rail toggle, and nav
-groups inline; the mobile drawer is generated from that same content when
-`breakpoint` is set. `Navbar` is for horizontal topbars. Use `align="end"` when a
-group should sit at the far edge in either shell orientation:
+`Sidebar` is the vertical shell wrapper. Compose the brand and nav groups
+inline; the mobile drawer is generated from that same content when `breakpoint`
+is set. Add `collapsible="icon"` for a desktop icon rail with a default rail
+toggle, and add `SidebarToggle` only when you want custom rail icons. `Navbar`
+is for horizontal topbars. Use `align="end"` when a group should sit at the far
+edge in either shell orientation:
 
 ```tsx
 import { NavBrand, NavGroup, NavLink, Sidebar, SidebarToggle } from "@askrjs/themes/shells";
@@ -100,17 +108,33 @@ export function DocsSidebar() {
 }
 ```
 
+`NavGroup` keeps grouping consistent across `Navbar` and `Sidebar`. A plain
+group stacks naturally in a sidebar. Add `label` for an accessible grouped
+section, `align="center"` when a group should visually center its items, and
+`align="end"` for secondary actions such as settings, help, or account links
+that should sit at the bottom of the sidebar and drawer:
+
+```tsx
+<Sidebar aria-label="Workspace navigation" breakpoint="md">
+  <NavBrand>
+    <a href="/">Workspace</a>
+  </NavBrand>
+  <NavGroup label="Primary">
+    <NavLink href="/dashboard">Dashboard</NavLink>
+    <NavLink href="/projects">Projects</NavLink>
+  </NavGroup>
+  <NavGroup label="Account" align="end">
+    <NavLink href="/settings">Settings</NavLink>
+  </NavGroup>
+</Sidebar>
+```
+
 Sidebars can opt into the common desktop icon rail while still using a drawer
-below the responsive breakpoint. Add `SidebarToggle` to configure the rail
-icons, and provide icon-plus-label nav items so the rail has a compact visual
-target and the label remains available to assistive tech:
+below the responsive breakpoint. Provide icon-plus-label nav items so the rail
+has a compact visual target and the label remains available to assistive tech:
 
 ```tsx
 <Sidebar collapsible="icon" breakpoint="md" aria-label="Docs navigation">
-  <SidebarToggle
-    expandedIcon={<PanelLeftCloseIcon data-slot="icon" aria-hidden="true" />}
-    collapsedIcon={<PanelLeftOpenIcon data-slot="icon" aria-hidden="true" />}
-  />
   <NavBrand>
     <a href="/">
       <span data-slot="icon" aria-hidden="true">
@@ -128,6 +152,16 @@ target and the label remains available to assistive tech:
 </Sidebar>
 ```
 
+Use `SidebarToggle` as a marker child when the default rail glyph should be
+replaced:
+
+```tsx
+<SidebarToggle
+  expandedIcon={<PanelLeftCloseIcon data-slot="icon" aria-hidden="true" />}
+  collapsedIcon={<PanelLeftOpenIcon data-slot="icon" aria-hidden="true" />}
+/>
+```
+
 For horizontal topbars, use `Navbar` with aligned groups directly:
 
 ```tsx
@@ -135,7 +169,7 @@ import { NavBrand, NavGroup, NavLink, Navbar } from "@askrjs/themes/navs";
 
 export function PrimaryNav() {
   return (
-    <Navbar aria-label="Primary navigation">
+    <Navbar aria-label="Primary navigation" breakpoint="md" collapseLabel="Navigation">
       <NavBrand>
         <a href="/">Docs</a>
       </NavBrand>
@@ -148,6 +182,56 @@ export function PrimaryNav() {
     </Navbar>
   );
 }
+```
+
+`Navbar` keeps the common path small: children are the API. Add `breakpoint`
+to generate the mobile toggle, panel, backdrop, Escape handling, focus, and
+scroll lock from the same `NavBrand` and `NavGroup` content. Use
+`collapseLabel`, `collapseIcon`, and `collapseIconPlacement` only when the
+default responsive toggle needs product-specific copy or icon treatment.
+
+Dropdowns and account menus compose inside a `NavGroup`. The behavior comes
+from `@askrjs/ui` and is re-exported through `@askrjs/themes/overlays` so the
+theme CSS is present. In the responsive panel, button-style menu controls stay
+open while route links close the panel after navigation:
+
+```tsx
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@askrjs/themes/overlays";
+
+<Navbar aria-label="Workspace navigation" breakpoint="md">
+  <NavBrand>
+    <a href="/">Workspace</a>
+  </NavBrand>
+  <NavGroup align="end">
+    <Dropdown>
+      <DropdownTrigger class="navbar-item">Account</DropdownTrigger>
+      <DropdownContent>
+        <DropdownItem asChild>
+          <NavLink href="/settings">Settings</NavLink>
+        </DropdownItem>
+        <DropdownItem>Sign out</DropdownItem>
+      </DropdownContent>
+    </Dropdown>
+  </NavGroup>
+</Navbar>;
+```
+
+The same pattern works in `Sidebar` groups:
+
+```tsx
+<Sidebar aria-label="Workspace navigation" breakpoint="md">
+  <NavGroup label="Account" align="end">
+    <Dropdown>
+      <DropdownTrigger class="navbar-item">Account</DropdownTrigger>
+      <DropdownContent>
+        <DropdownItem asChild>
+          <NavLink href="/settings">Settings</NavLink>
+        </DropdownItem>
+        <DropdownItem>Switch workspace</DropdownItem>
+      </DropdownContent>
+    </Dropdown>
+  </NavGroup>
+</Sidebar>
 ```
 
 `NavLink` uses prefix matching by default, which is useful for section links

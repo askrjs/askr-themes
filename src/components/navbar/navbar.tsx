@@ -45,7 +45,19 @@ function withoutNavbarBrand(children: unknown): unknown[] {
  * </Navbar>
  */
 export function Navbar(props: NavbarProps): JSX.Element {
-  const { children, breakpoint, ref, class: className, id, ...rest } = props;
+  const {
+    children,
+    breakpoint,
+    collapseIcon,
+    collapseIconPlacement = "start",
+    collapseLabel,
+    ref,
+    class: className,
+    id,
+    "aria-label": ariaLabel,
+    ...rest
+  } = props;
+  const effectiveCollapseLabel = collapseLabel ?? "Menu";
   const responsiveChildren = toChildArray(children);
   const desktopChildren = renderKeyedShellChildren(responsiveChildren, "navbar-desktop");
   const panelChildren = renderKeyedShellChildren(
@@ -61,12 +73,23 @@ export function Navbar(props: NavbarProps): JSX.Element {
   const responsiveCollapsed = breakpoint !== undefined ? responsiveCollapsedState?.() : false;
   const panelOpen = Boolean(responsiveCollapsed && mobileMenuOpen);
   const closePanel = () => mobileMenuState.set(false);
+  const closePanelOnNavActivation = (event: MouseEvent) => {
+    const target = event.target;
+
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    if (target.closest('a[data-slot="nav-link"], a[data-slot="nav-item"], a.navbar-item')) {
+      closePanel();
+    }
+  };
   const togglePanel = () => {
     mobileMenuState.set(!mobileMenuState());
   };
   const contextValue = {
     active: () => breakpoint !== undefined,
-    collapseLabel: () => "Menu",
+    collapseLabel: () => effectiveCollapseLabel,
     closePanel,
     panelId: () => panelId,
     panelOpen: () => Boolean(responsiveCollapsedState?.() && mobileMenuOpen),
@@ -74,6 +97,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
   };
   const panelBrand = findNavbarBrand(responsiveChildren);
   const finalProps = mergeProps(rest, {
+    "aria-label": ariaLabel,
     ref,
     class: classes("navbar", className),
     "data-collapse-below": breakpoint,
@@ -89,9 +113,10 @@ export function Navbar(props: NavbarProps): JSX.Element {
             <NavToggle
               active={breakpoint !== undefined}
               aria-controls={panelId}
-              aria-label="Menu"
-              iconPlacement="start"
-              label="Menu"
+              aria-label={effectiveCollapseLabel}
+              icon={collapseIcon}
+              iconPlacement={collapseIconPlacement}
+              label={effectiveCollapseLabel}
               onToggle={togglePanel}
               open={panelOpen}
               panelId={panelId}
@@ -107,8 +132,9 @@ export function Navbar(props: NavbarProps): JSX.Element {
           <NavbarPanel
             active={breakpoint !== undefined}
             brand={panelBrand}
-            collapseLabel="Menu"
+            collapseLabel={effectiveCollapseLabel}
             onClose={closePanel}
+            onClick={closePanelOnNavActivation}
             open={panelOpen}
             panelId={panelId}
           >
@@ -118,7 +144,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
 
         {responsiveCollapsed && mobileMenuOpen ? (
           <button
-            aria-label="Close Menu"
+            aria-label={`Close ${effectiveCollapseLabel}`}
             class="navbar-backdrop"
             data-slot="navbar-backdrop"
             data-state="open"

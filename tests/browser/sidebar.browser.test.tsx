@@ -20,6 +20,7 @@ async function settle(): Promise<void> {
   await Promise.resolve();
   await Promise.resolve();
   await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
 let innerWidthSpy: { mockReturnValue(value: number): unknown } | undefined;
@@ -298,6 +299,158 @@ describe("sidebar browser smoke", () => {
     expect(sidebar?.getAttribute("data-icon-collapsed")).toBe("true");
   });
 
+  it("renders a default rail toggle for icon-collapsible sidebars", async () => {
+    const collapsedChanges: boolean[] = [];
+
+    route("/docs", () => (
+      <Sidebar
+        aria-label="Default rail navigation"
+        collapsible="icon"
+        defaultCollapsed
+        onCollapsedChange={(nextCollapsed) => {
+          collapsedChanges.push(nextCollapsed);
+        }}
+      >
+        <NavBrand>
+          <a href="/">
+            <TestIcon label="Askr" />
+            <strong>Askr</strong>
+          </a>
+        </NavBrand>
+        <NavGroup label="Guides">
+          <NavLink href="/docs" match="exact">
+            <TestIcon label="Overview" />
+            <span>Overview</span>
+          </NavLink>
+        </NavGroup>
+      </Sidebar>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement | null;
+    const railToggle = container?.querySelector(
+      '[data-slot="sidebar-rail-toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(sidebar?.getAttribute("data-icon-collapsed")).toBe("true");
+    expect(railToggle).not.toBeNull();
+    expect(railToggle?.querySelector(".sidebar-toggle-glyph--rail")).not.toBeNull();
+    expect(railToggle?.getAttribute("aria-label")).toBe("Expand Default rail navigation");
+
+    railToggle?.click();
+    await settle();
+
+    expect(collapsedChanges).toEqual([false]);
+    expect(sidebar?.getAttribute("data-icon-collapsed")).toBe("false");
+  });
+
+  it("supports explicit mobile toggle copy and icon placement", async () => {
+    route("/docs", () => (
+      <Sidebar
+        id="custom-sidebar"
+        aria-label="Primary sidebar"
+        breakpoint="md"
+        collapseIcon={<span data-slot="icon">S</span>}
+        collapseIconPlacement="end"
+        collapseLabel="Sections"
+      >
+        <NavGroup>
+          <NavLink href="/docs">Docs</NavLink>
+        </NavGroup>
+      </Sidebar>
+    ));
+
+    setViewport(375);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const mobileToggle = container?.querySelector(
+      '[data-slot="sidebar-toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(mobileToggle?.getAttribute("aria-label")).toBe("Sections");
+    expect(mobileToggle?.textContent).toBe("SectionsS");
+
+    mobileToggle?.click();
+    await settle();
+
+    const panel = container?.querySelector('[data-slot="sidebar-panel"]') as HTMLElement | null;
+    const closeButton = container?.querySelector(
+      '[data-slot="sidebar-panel-close"]',
+    ) as HTMLButtonElement | null;
+    const backdrop = container?.querySelector(
+      '[data-slot="sidebar-backdrop"]',
+    ) as HTMLButtonElement | null;
+
+    expect(panel?.getAttribute("aria-label")).toBe("Sections");
+    expect(closeButton?.getAttribute("aria-label")).toBe("Close Sections");
+    expect(backdrop?.getAttribute("aria-label")).toBe("Close Sections");
+  });
+
+  it("keeps drawer controls open while closing for route links", async () => {
+    route("/docs", () => (
+      <Sidebar id="drawer-sidebar" aria-label="Drawer navigation" breakpoint="md">
+        <NavBrand>
+          <a href="/">Askr</a>
+        </NavBrand>
+        <NavGroup label="Workspace">
+          <button class="navbar-item" data-slot="dropdown-trigger" type="button">
+            Workspace
+          </button>
+          <button class="navbar-item" data-slot="dropdown-item" type="button">
+            Switch workspace
+          </button>
+          <NavLink href="/docs/audit">Audit log</NavLink>
+        </NavGroup>
+      </Sidebar>
+    ));
+    route("/docs/audit", () => <div id="page">Audit log</div>);
+
+    setViewport(375);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const mobileToggle = container?.querySelector(
+      '[data-slot="sidebar-toggle"]',
+    ) as HTMLButtonElement | null;
+    mobileToggle?.click();
+    await settle();
+
+    const trigger = container?.querySelector(
+      '[data-slot="sidebar-panel"] [data-slot="dropdown-trigger"]',
+    ) as HTMLButtonElement | null;
+    trigger?.click();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="sidebar-panel"]')).not.toBeNull();
+
+    const dropdownButton = container?.querySelector(
+      '[data-slot="sidebar-panel"] [data-slot="dropdown-item"]',
+    ) as HTMLButtonElement | null;
+    dropdownButton?.click();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="sidebar-panel"]')).not.toBeNull();
+
+    const routeLink = container?.querySelector(
+      '[data-slot="sidebar-panel"] a[href="/docs/audit"]',
+    ) as HTMLAnchorElement | null;
+    routeLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    await settle();
+
+    expect(window.location.pathname).toBe("/docs/audit");
+    expect(container?.querySelector('[data-slot="sidebar-panel"]')).toBeNull();
+    expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
+  });
+
   it("keeps centered sidebar groups explicit in full view", async () => {
     route("/docs", () => (
       <Sidebar aria-label="Centered docs navigation">
@@ -320,6 +473,86 @@ describe("sidebar browser smoke", () => {
 
     expect(getComputedStyle(centeredLabel!).textAlign).toBe("center");
     expect(getComputedStyle(centeredLink!).justifyContent).toBe("center");
+  });
+
+  it("positions end-aligned sidebar groups at the bottom in full and drawer layouts", async () => {
+    route("/docs", () => (
+      <Shell variant="sidebar">
+        <ShellNav>
+          <Sidebar id="aligned-sidebar" aria-label="Aligned navigation" breakpoint="md">
+            <NavBrand>
+              <a href="/">Askr</a>
+            </NavBrand>
+            <NavGroup id="primary-sidebar-group" label="Primary">
+              <NavLink href="/docs" match="exact">
+                <TestIcon label="Overview" />
+                <span>Overview</span>
+              </NavLink>
+            </NavGroup>
+            <NavGroup id="secondary-sidebar-group" label="Secondary" align="end">
+              <NavLink href="/settings">
+                <TestIcon label="Settings" />
+                <span>Settings</span>
+              </NavLink>
+            </NavGroup>
+          </Sidebar>
+        </ShellNav>
+        <ShellMain>Docs content</ShellMain>
+      </Shell>
+    ));
+
+    setViewport(1200);
+    container!.style.height = "640px";
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const sidebarShell = container?.querySelector(
+      '[data-slot="sidebar-shell"]',
+    ) as HTMLElement | null;
+    const primaryGroup = container?.querySelector("#primary-sidebar-group") as HTMLElement | null;
+    const secondaryGroup = container?.querySelector(
+      "#secondary-sidebar-group",
+    ) as HTMLElement | null;
+    const secondaryLabel = container?.querySelector(
+      "#secondary-sidebar-group-label",
+    ) as HTMLElement | null;
+    const secondaryBody = secondaryGroup?.querySelector(
+      '[data-slot="navbar-group-body"]',
+    ) as HTMLElement | null;
+
+    expect(primaryGroup?.getAttribute("data-align")).toBeNull();
+    expect(secondaryGroup?.getAttribute("data-align")).toBe("end");
+    expect(secondaryGroup?.getAttribute("aria-labelledby")).toBe("secondary-sidebar-group-label");
+    expect(secondaryLabel?.textContent).toBe("Secondary");
+    expect(getComputedStyle(secondaryGroup!).marginLeft).toBe("0px");
+    expect(getComputedStyle(secondaryBody!).display).toBe("grid");
+    expect(secondaryGroup!.getBoundingClientRect().top).toBeGreaterThan(
+      primaryGroup!.getBoundingClientRect().top,
+    );
+    expect(secondaryGroup!.getBoundingClientRect().bottom).toBeGreaterThan(
+      sidebarShell!.getBoundingClientRect().bottom - 96,
+    );
+
+    setViewport(375);
+    await settle();
+
+    const mobileToggle = container?.querySelector(
+      '[data-slot="sidebar-toggle"]',
+    ) as HTMLButtonElement | null;
+    mobileToggle?.click();
+    await settle();
+
+    const drawerPrimaryGroup = container?.querySelector(
+      '[data-slot="sidebar-panel"] #primary-sidebar-group',
+    ) as HTMLElement | null;
+    const drawerSecondaryGroup = container?.querySelector(
+      '[data-slot="sidebar-panel"] #secondary-sidebar-group',
+    ) as HTMLElement | null;
+
+    expect(drawerSecondaryGroup?.getAttribute("data-align")).toBe("end");
+    expect(drawerSecondaryGroup!.getBoundingClientRect().top).toBeGreaterThan(
+      drawerPrimaryGroup!.getBoundingClientRect().top,
+    );
   });
 
   it("does not apply desktop rail width to responsive mobile sidebars", async () => {

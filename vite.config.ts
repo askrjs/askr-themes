@@ -1,6 +1,6 @@
 import { defineConfig } from "vite-plus";
 
-const externalPackagePattern = /^@askrjs\/(?:askr|askr-ui)(?:\/.*)?$/;
+const externalPackagePattern = /^@askrjs\/(?:askr|ui)(?:\/.*)?$/;
 
 export default defineConfig({
   esbuild: {
@@ -13,6 +13,7 @@ export default defineConfig({
       feedback: "src/feedback.ts",
       layouts: "src/layouts.ts",
       navs: "src/navs.ts",
+      overlays: "src/overlays.ts",
       shells: "src/shells.ts",
       surfaces: "src/surfaces.ts",
       theme: "src/theme.ts",
@@ -25,7 +26,7 @@ export default defineConfig({
     sourcemap: true,
     unbundle: true,
     deps: {
-      neverBundle: [/^@askrjs\/(?:askr|askr-ui)(?:\/.*)?$/],
+      neverBundle: [/^@askrjs\/(?:askr|ui)(?:\/.*)?$/],
     },
   },
   build: {
@@ -37,6 +38,7 @@ export default defineConfig({
         feedback: "src/feedback.ts",
         layouts: "src/layouts.ts",
         navs: "src/navs.ts",
+        overlays: "src/overlays.ts",
         shells: "src/shells.ts",
         surfaces: "src/surfaces.ts",
         theme: "src/theme.ts",

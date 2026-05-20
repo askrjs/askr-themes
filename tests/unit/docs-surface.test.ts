@@ -7,6 +7,7 @@ import { DOCS_DIR, PACKAGE_JSON } from "./test-paths";
 const THEMES_DOC = join(DOCS_DIR, "askr-themes.md");
 const THEMING_DOC = join(DOCS_DIR, "theming.md");
 const README_DOC = join(DOCS_DIR, "README.md");
+const TOKENS_DOC = join(DOCS_DIR, "tokens.md");
 
 describe("docs surface", () => {
   it("documents curated entrypoints instead of a components catch-all", () => {
@@ -21,6 +22,7 @@ describe("docs surface", () => {
     expect(pkg.exports?.["./feedback"]).toBeTruthy();
     expect(pkg.exports?.["./shells"]).toBeTruthy();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
+    expect(pkg.exports?.["./overlays"]).toBeTruthy();
     expect(pkg.exports?.["./logos"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
   });
@@ -29,6 +31,7 @@ describe("docs surface", () => {
     const themesDoc = readFileSync(THEMES_DOC, "utf-8");
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
     const readmeDoc = readFileSync(README_DOC, "utf-8");
+    const tokensDoc = readFileSync(TOKENS_DOC, "utf-8");
 
     expect(themesDoc).toContain("## What askr-themes is");
     expect(themesDoc).toContain("## When to reach for what");
@@ -39,6 +42,7 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("@askrjs/themes/feedback");
     expect(themesDoc).toContain("@askrjs/themes/shells");
     expect(themesDoc).toContain("@askrjs/themes/navs");
+    expect(themesDoc).toContain("@askrjs/themes/overlays");
     expect(themesDoc).not.toContain("@askrjs/themes/logos");
     expect(themesDoc).toContain("AspectRatio");
     expect(themesDoc).toContain("Alert");
@@ -51,6 +55,9 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Header");
     expect(themesDoc).toContain("Breadcrumb");
     expect(themesDoc).toContain("Spinner");
+    expect(themesDoc).toContain("Dropdown");
+    expect(themesDoc).toContain("Menu");
+    expect(themesDoc).toContain("Menubar");
 
     expect(themingDoc).toContain("## Selector Contract");
     expect(themingDoc).toContain("theme`, `layouts`, `controls`, `surfaces`");
@@ -70,11 +77,26 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("@askrjs/themes/surfaces");
     expect(readmeDoc).toContain("@askrjs/themes/feedback");
     expect(readmeDoc).toContain("@askrjs/themes/theme");
+    expect(readmeDoc).toContain("@askrjs/themes/overlays");
     expect(readmeDoc).not.toContain("@askrjs/themes/logos");
     expect(readmeDoc).toContain("ButtonGroup");
     expect(readmeDoc).toContain("InputGroup");
     expect(readmeDoc).toContain("Field");
     expect(readmeDoc).toContain("Pagination");
     expect(readmeDoc).toContain("CardActions");
+    expect(readmeDoc).toContain("DropdownItem asChild");
+
+    expect(tokensDoc).toContain("## Semantic Registry");
+    expect(tokensDoc).toContain("component-specific token");
+    expect(tokensDoc).toContain("Color");
+    expect(tokensDoc).toContain("Typography");
+    expect(tokensDoc).toContain("Spacing");
+    expect(tokensDoc).toContain("Density");
+    expect(tokensDoc).toContain("Layout");
+    expect(tokensDoc).toContain("Elevation");
+    expect(tokensDoc).toContain("Focus");
+    expect(tokensDoc).toContain("Motion");
+    expect(tokensDoc).toContain("Z-index");
+    expect(tokensDoc).toContain("State");
   });
 });
