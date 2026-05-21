@@ -320,15 +320,23 @@
         border: 1px solid var(--ak-color-border-subtle);
         border-radius: var(--ak-radius-lg);
         overflow: hidden;
+        overflow-wrap: anywhere;
         background: var(--ak-color-surface);
       }
 
+      .layout-demo * {
+        max-inline-size: 100%;
+      }
+
       .layout-shell {
+        inline-size: 100%;
+        max-inline-size: 100%;
         min-inline-size: 0;
         display: block;
       }
 
       .layout-shell > * {
+        max-inline-size: 100%;
         min-inline-size: 0;
       }
 
@@ -349,6 +357,9 @@
       .layout-main {
         display: grid;
         gap: var(--ak-space-sm);
+        inline-size: 100%;
+        max-inline-size: 100%;
+        min-inline-size: 0;
         padding: var(--ak-space-md);
       }
 

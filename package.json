@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/themes",
-  "version": "0.0.5",
+  "version": "0.0.4",
   "description": "Default theme tokens, styles, and themed layout wrappers for Askr apps.",
   "keywords": [
     "askr",
@@ -155,5 +155,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@11.14.1"
+  "packageManager": "npm@11.15.0"
 }
