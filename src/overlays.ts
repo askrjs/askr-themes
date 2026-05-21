@@ -3,7 +3,6 @@ import "./themes/default/index.css";
 export {
   DROPDOWN_A11Y_CONTRACT,
   Dropdown,
-  DropdownContent,
   DropdownGroup,
   DropdownItem,
   DropdownLabel,
@@ -31,6 +30,7 @@ export {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@askrjs/ui";
+export { DropdownContent } from "./components/overlays/dropdown-content";
 export type {
   DropdownA11yContract,
   DropdownContentAsChildProps,

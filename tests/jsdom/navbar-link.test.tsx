@@ -353,7 +353,7 @@ describe("navbar link jsdom regression", () => {
     window.history.replaceState({}, "", "/");
     route("/", () => (
       <nav aria-label="Primary">
-        <Dropdown defaultOpen>
+        <Dropdown id="route-dropdown" defaultOpen>
           <DropdownTrigger>Workspace</DropdownTrigger>
           <DropdownContent forceMount aria-label="Workspace menu">
             <DropdownItem asChild>
@@ -405,7 +405,7 @@ describe("navbar link jsdom regression", () => {
     window.history.replaceState({}, "", "/");
     route("/", () => (
       <nav aria-label="Primary">
-        <Dropdown defaultOpen>
+        <Dropdown id="native-dropdown" defaultOpen>
           <DropdownTrigger>Workspace</DropdownTrigger>
           <DropdownContent forceMount aria-label="Workspace menu">
             <DropdownItem asChild>
