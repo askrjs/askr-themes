@@ -60,6 +60,13 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Menubar");
 
     expect(themingDoc).toContain("## Selector Contract");
+    expect(themingDoc).toContain("## Cat Presets");
+    expect(themingDoc).toContain("@askrjs/themes/presets");
+    expect(themingDoc).toContain("`tabby`");
+    expect(themingDoc).toContain("`ginger`");
+    expect(themingDoc).toContain("`tuxedo`");
+    expect(themingDoc).toContain("`calico`");
+    expect(themingDoc).toContain("`torty`");
     expect(themingDoc).toContain("theme`, `layouts`, `controls`, `surfaces`");
     expect(themingDoc).toContain("AspectRatio");
     expect(themingDoc).toContain("Alert");
@@ -77,6 +84,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("@askrjs/themes/surfaces");
     expect(readmeDoc).toContain("@askrjs/themes/feedback");
     expect(readmeDoc).toContain("@askrjs/themes/theme");
+    expect(readmeDoc).toContain("@askrjs/themes/presets");
     expect(readmeDoc).toContain("@askrjs/themes/overlays");
     expect(readmeDoc).not.toContain("@askrjs/themes/logos");
     expect(readmeDoc).toContain("ButtonGroup");
@@ -87,6 +95,11 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("DropdownItem asChild");
 
     expect(tokensDoc).toContain("## Semantic Registry");
+    expect(tokensDoc).toContain("tabby");
+    expect(tokensDoc).toContain("ginger");
+    expect(tokensDoc).toContain("tuxedo");
+    expect(tokensDoc).toContain("calico");
+    expect(tokensDoc).toContain("torty");
     expect(tokensDoc).toContain("component-specific token");
     expect(tokensDoc).toContain("Color");
     expect(tokensDoc).toContain("Typography");

@@ -23,4 +23,13 @@ describe("default themed layout wrappers", () => {
       }),
     ).toBeTruthy();
   });
+
+  it("should expose a real rail shell variant", () => {
+    expect(
+      Shell({
+        variant: "rail",
+        children: [ShellNav({ children: "rail" }), ShellMain({ children: "main" })],
+      }),
+    ).toBeTruthy();
+  });
 });

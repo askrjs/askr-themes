@@ -1,7 +1,7 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
-export type ShellVariant = "sidebar" | "topbar";
+export type ShellVariant = "sidebar" | "topbar" | "rail";
 
 export type ShellOwnProps = {
   variant?: ShellVariant;

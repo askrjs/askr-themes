@@ -96,8 +96,8 @@ describe("template parity", () => {
   });
 
   it("official theme entrypoints use the same canonical layout imports", () => {
-    const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
-      existsSync(join(THEMES_DIR, entry, "index.css")),
+    const themeNames = readdirSync(THEMES_DIR).filter(
+      (entry) => entry !== "presets" && existsSync(join(THEMES_DIR, entry, "index.css")),
     );
 
     const importsByTheme = new Map<string, string[]>();

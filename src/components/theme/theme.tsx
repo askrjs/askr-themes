@@ -3,7 +3,10 @@ import { resource } from "@askrjs/askr/resources";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
-export type ThemeName = "light" | "dark" | "system" | (string & {});
+export const CAT_THEME_NAMES = ["tabby", "ginger", "tuxedo", "calico", "torty"] as const;
+
+export type CatThemeName = (typeof CAT_THEME_NAMES)[number];
+export type ThemeName = "light" | "dark" | "system" | CatThemeName | (string & {});
 
 export type ThemeOption = {
   value: ThemeName;
@@ -50,6 +53,14 @@ export const DEFAULT_THEME_OPTIONS: readonly ThemeOption[] = [
   { value: "system", label: "System" },
   { value: "light", label: "Light" },
   { value: "dark", label: "Dark" },
+];
+
+export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
+  { value: "tabby", label: "Tabby" },
+  { value: "ginger", label: "Ginger" },
+  { value: "tuxedo", label: "Tuxedo" },
+  { value: "calico", label: "Calico" },
+  { value: "torty", label: "Torty" },
 ];
 
 const DEFAULT_STORAGE_KEY = "askr-theme";

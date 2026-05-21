@@ -10,6 +10,11 @@ export const SHELL_A11Y_CONTRACT = {
     nav: "shell-nav" as const,
     main: "shell-main" as const,
   },
+  VARIANT_VALUES: {
+    sidebar: "sidebar" as const,
+    topbar: "topbar" as const,
+    rail: "rail" as const,
+  },
 } as const;
 
 export type ShellA11yContract = typeof SHELL_A11Y_CONTRACT;

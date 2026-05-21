@@ -45,6 +45,11 @@ The default token set is tuned for admin and internal tools: neutral surfaces,
 one primary accent, compact density, restrained radius values, and border-led
 separation.
 
+The optional cat preset layer keeps the same semantic token contract while
+changing only the color surface. Import `@askrjs/themes/presets` after the
+default theme to enable `tabby`, `ginger`, `tuxedo`, `calico`, and `torty` as
+`data-theme` values.
+
 ## Override Tokens
 
 Place app overrides after the theme import:

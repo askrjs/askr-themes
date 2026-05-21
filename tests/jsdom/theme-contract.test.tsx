@@ -4,6 +4,8 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
 
 import {
+  CAT_THEME_NAMES,
+  CAT_THEME_OPTIONS,
   DEFAULT_THEME_OPTIONS,
   ThemePicker,
   ThemeProvider,
@@ -134,5 +136,68 @@ describe("theme contracts", () => {
     expect(toggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
+  });
+
+  it("exposes cat preset options for provider and picker composition", async () => {
+    expect(CAT_THEME_NAMES).toEqual(["tabby", "ginger", "tuxedo", "calico", "torty"]);
+    expect(CAT_THEME_OPTIONS).toEqual([
+      { value: "tabby", label: "Tabby" },
+      { value: "ginger", label: "Ginger" },
+      { value: "tuxedo", label: "Tuxedo" },
+      { value: "calico", label: "Calico" },
+      { value: "torty", label: "Torty" },
+    ]);
+
+    const AppLayout = ({ children }: { children?: unknown }) => (
+      <ThemeProvider
+        defaultTheme="tabby"
+        storageKey="askr-theme"
+        themes={[...DEFAULT_THEME_OPTIONS, ...CAT_THEME_OPTIONS]}
+      >
+        <ThemePicker />
+        <ThemeToggle themes={CAT_THEME_NAMES} />
+        <ThemeProbe />
+        {children}
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/theme", () => <div id="page">Cat themes</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
+    const picker = container?.querySelector(
+      '[data-slot="theme-picker"]',
+    ) as HTMLSelectElement | null;
+    const toggle = container?.querySelector(
+      '[data-theme-control="toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(probe?.getAttribute("data-theme")).toBe("tabby");
+    expect(probe?.getAttribute("data-themes")).toBe(
+      "system,light,dark,tabby,ginger,tuxedo,calico,torty",
+    );
+    expect(Array.from(picker?.options ?? []).map((option) => option.value)).toEqual([
+      "system",
+      "light",
+      "dark",
+      "tabby",
+      "ginger",
+      "tuxedo",
+      "calico",
+      "torty",
+    ]);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("tabby");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("tabby");
+    expect(toggle?.getAttribute("data-next-theme")).toBe("ginger");
+
+    toggle?.click();
+    await settle();
+
+    expect(document.documentElement.getAttribute("data-theme")).toBe("ginger");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("ginger");
   });
 });

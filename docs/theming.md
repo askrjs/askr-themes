@@ -77,6 +77,55 @@ Import the full default theme when you want the standard admin UI baseline:
 import "@askrjs/themes/default";
 ```
 
+## Cat Presets
+
+The optional cat preset layer adds five curated product palettes without
+duplicating component CSS. Import it after the default theme, then select a
+preset with `data-theme` or a custom `ThemeProvider` option:
+
+```css
+@import "@askrjs/themes/default";
+@import "@askrjs/themes/presets";
+```
+
+```html
+<html data-theme="tabby"></html>
+```
+
+```tsx
+import {
+  CAT_THEME_NAMES,
+  CAT_THEME_OPTIONS,
+  ThemePicker,
+  ThemeProvider,
+} from "@askrjs/themes/theme";
+
+export function AppTheme({ children }: { children?: unknown }) {
+  return (
+    <ThemeProvider defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
+      <ThemePicker />
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+Use `CAT_THEME_NAMES` for compact toggles that cycle only through the preset
+family.
+
+| Preset   | Use when                                                                    |
+| -------- | --------------------------------------------------------------------------- |
+| `tabby`  | You want a warm neutral SaaS/admin baseline close to the default density.   |
+| `ginger` | You want a restrained amber/copper accent for energetic operations screens. |
+| `tuxedo` | You want a crisp high-contrast dark product shell.                          |
+| `calico` | You want a balanced multi-accent dashboard palette for status-heavy UIs.    |
+| `torty`  | You want a deep warm dark surface for dense, long-lived workspaces.         |
+
+Presets primarily override the semantic color surface. Dark presets may also
+tune elevation tokens for contrast, while component selectors, shell chrome,
+density, radius, spacing, and responsive behavior continue to come from the
+default theme contract.
+
 ## Token Overrides
 
 Override tokens after importing the default theme:
@@ -141,6 +190,7 @@ For shell chrome, keep the orientation-specific API intent explicit:
 - Use `align="center" | "end"` for horizontal topbar grouping.
 - Use `align="end"` when a vertical sidebar group should pin to the bottom.
 - Use `label` when a nav section needs a visible and semantic section heading.
+- Use `Shell variant="rail"` when the primary app frame should reserve a persistent compact, icon-only navigation rail on desktop; keep text labels in the DOM so links retain accessible names.
 - Use `Sidebar` when vertical navigation should collapse into an icon rail and generated drawer.
 - Use `Navbar` for horizontal topbars.
 - Use `collapsible="icon"` for desktop vertical sidebars that should shrink to an icon rail.

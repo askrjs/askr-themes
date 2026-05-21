@@ -130,6 +130,8 @@ describe("package surface", () => {
     expect(pkg.exports?.["./shells"]).toBeTruthy();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
     expect(pkg.exports?.["./overlays"]).toBeTruthy();
+    expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
+    expect(pkg.exports?.["./cat-presets"]).toBe("./src/themes/presets/index.css");
     expect(pkg.exports?.["./logos"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
     expect(pkg.exports?.["./default/navbar.css"]).toBeTruthy();
@@ -156,6 +158,23 @@ describe("package surface", () => {
       }
 
       expect(existsSync(join(ROOT_DIR, target)), `${entrypoint} points at ${target}`).toBe(true);
+    }
+  });
+
+  it("keeps preset CSS package exports pointed at real files", () => {
+    const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
+      exports?: Record<string, unknown>;
+    };
+
+    const presetExports = ["./presets", "./cat-presets"] as const;
+    for (const entrypoint of presetExports) {
+      const target = pkg.exports?.[entrypoint];
+
+      expect(typeof target).toBe("string");
+      expect(
+        existsSync(join(ROOT_DIR, target as string)),
+        `${entrypoint} points at ${target}`,
+      ).toBe(true);
     }
   });
 

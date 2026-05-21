@@ -36,6 +36,8 @@
   "exports": {
     ".": "./src/index.css",
     "./default": "./src/themes/default/index.css",
+    "./presets": "./src/themes/presets/index.css",
+    "./cat-presets": "./src/themes/presets/index.css",
     "./theme": {
       "types": "./dist/theme.d.ts",
       "import": "./dist/theme.js"
