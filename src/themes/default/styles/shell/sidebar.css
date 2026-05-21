@@ -59,6 +59,7 @@
     inline-size: 100%;
     min-inline-size: 0;
     min-block-size: var(--ak-density-control-height-md);
+    overflow: hidden;
     padding-inline: var(--ak-space-sm);
   }
 
@@ -77,6 +78,7 @@
     padding-inline: var(--ak-density-control-padding-x-sm);
     border-radius: var(--ak-radius-md);
     line-height: var(--ak-line-height-tight);
+    overflow: hidden;
     overflow-wrap: anywhere;
     color: var(--ak-color-text);
     font-weight: var(--ak-font-weight-semibold);
