@@ -205,8 +205,16 @@ const COVERAGE = {
   ],
   theme: [
     {
-      exports: ["ThemePicker", "ThemeProvider", "ThemeToggle", "useTheme"],
+      exports: [
+        "CAT_THEME_NAMES",
+        "CAT_THEME_OPTIONS",
+        "ThemePicker",
+        "ThemeProvider",
+        "ThemeToggle",
+        "useTheme",
+      ],
       directTests: [
+        "tests/browser/theme-route-persistence.browser.test.tsx",
         "tests/jsdom/theme-contract.test.tsx",
         "tests/jsdom/theme-route-persistence.test.tsx",
         "tests/unit/package-surface.test.ts",

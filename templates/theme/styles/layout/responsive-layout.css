@@ -16,7 +16,7 @@
   flex-direction: column;
 }
 
-:where([data-slot="shell"][data-variant="sidebar"]) {
+:where([data-slot="shell"][data-variant="sidebar"], [data-slot="shell"][data-variant="rail"]) {
   flex-direction: column;
   gap: var(--ak-space-lg);
 }
@@ -33,7 +33,8 @@
   background: color-mix(in srgb, var(--ak-color-surface) 98%, transparent);
 }
 
-:where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"]) {
+:where([data-slot="shell"][data-variant="sidebar"], [data-slot="shell"][data-variant="rail"])
+  > :where([data-slot="shell-nav"]) {
   display: grid;
   align-content: start;
   padding: var(--ak-layout-page-gutter);
@@ -52,6 +53,19 @@
   padding: var(--ak-layout-page-gutter);
 }
 
+[data-slot="shell"][data-variant="rail"]
+  > [data-slot="shell-nav"]
+  :where([data-slot="nav-item"], [data-slot="nav-link"]) {
+  font-size: 0;
+}
+
+[data-slot="shell"][data-variant="rail"]
+  > [data-slot="shell-nav"]
+  :where([data-slot="nav-item"], [data-slot="nav-link"])
+  > :where([data-slot="icon"], svg) {
+  font-size: var(--ak-font-size-sm);
+}
+
 :where([data-slot="flex"][data-collapse-below="sm"]),
 :where([data-slot="flex"][data-collapse-below="md"]),
 :where([data-slot="flex"][data-collapse-below="lg"]),
@@ -66,7 +80,7 @@
     align-items: center;
   }
 
-  :where([data-slot="shell"][data-variant="sidebar"]) {
+  :where([data-slot="shell"][data-variant="sidebar"], [data-slot="shell"][data-variant="rail"]) {
     flex-direction: row;
     align-items: stretch;
   }
@@ -82,6 +96,77 @@
     overflow: hidden;
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
+  }
+
+  :where([data-slot="shell"][data-variant="rail"]) > :where([data-slot="shell-nav"]) {
+    inline-size: var(--ak-layout-sidebar-rail-width);
+    flex: 0 0 var(--ak-layout-sidebar-rail-width);
+    align-self: stretch;
+    min-block-size: 100vh;
+    max-block-size: 100dvh;
+    padding-inline: 0;
+    position: sticky;
+    inset-block-start: 0;
+    overflow: hidden;
+    border-block-end: 0;
+    border-inline-end: 1px solid var(--ak-color-border);
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="sidebar"]) {
+    inline-size: var(--ak-layout-sidebar-rail-width);
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="sidebar-shell"]) {
+    align-items: center;
+    gap: var(--ak-space-sm);
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="sidebar-rail"]) {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where(
+      [data-slot="navbar-group"],
+      [data-slot="sidebar-group"],
+      [data-slot="navbar-group-body"],
+      [data-slot="sidebar-group-body"]
+    ) {
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="navbar-group-label"], [data-slot="sidebar-group-label"]),
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="nav-item"], [data-slot="nav-link"])
+    > :where(:not([data-slot="icon"]):not(svg)) {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :where([data-slot="shell"][data-variant="rail"])
+    > :where([data-slot="shell-nav"])
+    :where([data-slot="nav-item"], [data-slot="nav-link"]) {
+    justify-content: center;
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding-inline: 0;
   }
 }
 
@@ -102,6 +187,11 @@
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
   }
+
+  :where([data-slot="shell"][data-variant="rail"]) > :where([data-slot="shell-nav"]) {
+    inline-size: var(--ak-layout-sidebar-rail-width);
+    flex-basis: var(--ak-layout-sidebar-rail-width);
+  }
 }
 
 @media (min-width: 80rem) {
@@ -110,6 +200,11 @@
     flex-basis: var(--ak-layout-sidebar-width);
     border-block-end: 0;
     border-inline-end: 1px solid var(--ak-color-border);
+  }
+
+  :where([data-slot="shell"][data-variant="rail"]) > :where([data-slot="shell-nav"]) {
+    inline-size: var(--ak-layout-sidebar-rail-width);
+    flex-basis: var(--ak-layout-sidebar-rail-width);
   }
 }
 

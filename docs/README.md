@@ -18,6 +18,17 @@ npm install @askrjs/themes
 import "@askrjs/themes/default";
 ```
 
+For the optional cat preset palette family:
+
+```ts
+import "@askrjs/themes/presets";
+```
+
+Use `tabby`, `ginger`, `tuxedo`, `calico`, or `torty` as `data-theme` values
+after importing the preset layer. Import `CAT_THEME_OPTIONS` and
+`CAT_THEME_NAMES` from `@askrjs/themes/theme` when wiring a picker or toggle to
+the preset family.
+
 For reusable shell chrome:
 
 ```ts

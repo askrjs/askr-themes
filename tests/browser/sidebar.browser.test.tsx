@@ -259,6 +259,45 @@ describe("sidebar browser smoke", () => {
     expect(container?.querySelector('[data-slot="sidebar-panel"]')).toBeNull();
   });
 
+  it("keeps rail navigation icon-only while preserving text labels", async () => {
+    route("/docs", () => (
+      <Shell variant="rail">
+        <ShellNav>
+          <Sidebar id="docs-rail" aria-label="Docs navigation">
+            <NavBrand>
+              <a href="/">
+                <TestIcon label="Askr" />
+                <strong>Askr</strong>
+              </a>
+            </NavBrand>
+            <NavGroup label="Guides">
+              <NavLink href="/docs" match="exact">
+                <TestIcon label="Docs" />
+                Docs
+              </NavLink>
+            </NavGroup>
+          </Sidebar>
+        </ShellNav>
+        <ShellMain>Docs content</ShellMain>
+      </Shell>
+    ));
+
+    setViewport(1200);
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const shell = container?.querySelector('[data-slot="shell"]') as HTMLElement | null;
+    const shellNav = container?.querySelector('[data-slot="shell-nav"]') as HTMLElement | null;
+    const link = container?.querySelector('[data-slot="nav-link"]') as HTMLElement | null;
+    const icon = link?.querySelector('[data-slot="icon"]') as HTMLElement | null;
+
+    expect(shell?.getAttribute("data-variant")).toBe("rail");
+    expect(shellNav).not.toBeNull();
+    expect(link?.textContent).toContain("Docs");
+    expect(getComputedStyle(link!).fontSize).toBe("0px");
+    expect(getComputedStyle(icon!).fontSize).not.toBe("0px");
+  });
+
   it("supports controlled icon rail collapse", async () => {
     const collapsedChanges: boolean[] = [];
 

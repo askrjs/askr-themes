@@ -39,6 +39,7 @@ const REQUIRED_RESPONSIVE_SNIPPETS = [
   ':where([data-slot="shell"])',
   ':where([data-slot="shell"][data-variant="sidebar"])',
   ':where([data-slot="shell"][data-variant="sidebar"]) > :where([data-slot="shell-nav"])',
+  ':where([data-slot="shell"][data-variant="rail"]) > :where([data-slot="shell-nav"])',
   ':where([data-slot="shell"][data-variant="topbar"]) > :where([data-slot="shell-nav"])',
   ':where([data-slot="shell"]) > :where([data-slot="shell-main"])',
   "@media (min-width: 40rem)",

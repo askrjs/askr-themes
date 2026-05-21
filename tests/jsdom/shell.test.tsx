@@ -27,6 +27,19 @@ describe("shell primitive", () => {
     expect(shell.props.style).toBeUndefined();
   });
 
+  it("supports the compact rail shell variant", () => {
+    const shell = asElement(
+      Shell({
+        variant: "rail",
+        children: [ShellNav({ children: "nav" }), ShellMain({ children: "main" })],
+      }),
+    );
+
+    expect(shell.props["data-slot"]).toBe("shell");
+    expect(shell.props["data-variant"]).toBe("rail");
+    expect(shell.props.class).toBe("shell");
+  });
+
   it("exposes shell parts with stable slot names", () => {
     const nav = asElement(ShellNav({ children: "nav", class: "shell-nav-custom" }));
     const main = asElement(ShellMain({ children: "main", class: "shell-main-custom" }));

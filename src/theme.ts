@@ -1,6 +1,8 @@
 import "./themes/default/index.css";
 
 export {
+  CAT_THEME_NAMES,
+  CAT_THEME_OPTIONS,
   DEFAULT_THEME_OPTIONS,
   ThemePicker,
   ThemeProvider,
@@ -8,6 +10,7 @@ export {
   useTheme,
 } from "./components/theme";
 export type {
+  CatThemeName,
   ThemeContextValue,
   ThemeName,
   ThemeOption,

@@ -28,7 +28,14 @@ import {
 } from "../../src/overlays";
 import { Alert, Badge, Card, ListGroup, ListGroupItem } from "../../src/surfaces";
 import { Header } from "../../src/shells";
-import { ThemePicker, ThemeProvider, ThemeToggle, useTheme } from "../../src/theme";
+import {
+  CAT_THEME_NAMES,
+  CAT_THEME_OPTIONS,
+  ThemePicker,
+  ThemeProvider,
+  ThemeToggle,
+  useTheme,
+} from "../../src/theme";
 
 type ElementLike = {
   type: unknown;
@@ -46,6 +53,8 @@ describe("curated entrypoints", () => {
     expect(typeof ThemePicker).toBe("function");
     expect(typeof ThemeToggle).toBe("function");
     expect(typeof useTheme).toBe("function");
+    expect(CAT_THEME_NAMES).toEqual(["tabby", "ginger", "tuxedo", "calico", "torty"]);
+    expect(CAT_THEME_OPTIONS.map((option) => option.value)).toEqual(CAT_THEME_NAMES);
   });
 
   it("exposes layout, surface, feedback, nav, and shell families", () => {

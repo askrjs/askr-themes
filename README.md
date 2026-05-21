@@ -21,6 +21,18 @@ Import the default theme CSS in your app stylesheet:
 @import "@askrjs/themes/default";
 ```
 
+Add the optional cat preset layer after the default theme when you want the
+curated preset family:
+
+```css
+@import "@askrjs/themes/default";
+@import "@askrjs/themes/presets";
+```
+
+Then set `data-theme` to `tabby`, `ginger`, `tuxedo`, `calico`, or `torty`.
+For picker/toggle composition, import `CAT_THEME_OPTIONS` and `CAT_THEME_NAMES`
+from `@askrjs/themes/theme`.
+
 Then use the theme helpers and curated component surfaces:
 
 ```tsx
@@ -32,7 +44,7 @@ export function AppShell() {
     <ThemeProvider>
       <ButtonGroup>
         <Button variant="primary">Save</Button>
-        <ThemeToggle />
+        <ThemeToggle>{({ nextTheme }) => nextTheme}</ThemeToggle>
       </ButtonGroup>
 
       <Field>
