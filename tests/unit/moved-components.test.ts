@@ -26,15 +26,15 @@ describe("moved visual components", () => {
     expect(Spacer({ basis: "1rem" })).toBeTruthy();
   });
 
-  it("keeps default and fluid containers on data attributes", () => {
+  it("keeps default and fluid container sizes on data attributes", () => {
     const constrained = asElement(Container({ children: "container" }));
-    const fluid = asElement(Container({ children: "container", fluid: true }));
+    const fluid = asElement(Container({ children: "container", size: "fluid" }));
 
     expect(constrained.props["data-slot"]).toBe("container");
     expect(constrained.props["data-variant"]).toBe("default");
     expect(constrained.props.style).toBeUndefined();
-    expect(fluid.props["data-variant"]).toBe("fluid");
-    expect(fluid.props["data-fluid"]).toBe("true");
+    expect(fluid.props["data-variant"]).toBeUndefined();
+    expect(fluid.props["data-size"]).toBe("initial:fluid");
     expect(fluid.props.style).toBeUndefined();
   });
 

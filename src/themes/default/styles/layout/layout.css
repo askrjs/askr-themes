@@ -64,7 +64,7 @@
   padding-right: var(--ak-pr-initial, var(--ak-px-initial, var(--ak-layout-page-gutter)));
 }
 
-:where([data-slot="container"][data-fluid="true"]) {
+:where([data-slot="container"][data-size="initial:fluid"]) {
   --ak-container-inline-size: 100%;
 }
 

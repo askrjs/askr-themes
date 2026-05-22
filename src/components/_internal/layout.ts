@@ -39,6 +39,7 @@ const CONTAINER_SIZE_MAP: Record<string, string> = {
   md: "var(--ak-container-2)",
   lg: "var(--ak-container-3)",
   xl: "var(--ak-container-4)",
+  fluid: "100%",
 };
 
 const SECTION_SIZE_MAP: Record<string, string> = {
