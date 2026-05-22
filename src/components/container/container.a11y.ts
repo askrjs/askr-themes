@@ -3,7 +3,6 @@ export const CONTAINER_A11Y_CONTRACT = {
     slot: "data-slot" as const,
     layout: "data-ak-layout" as const,
     variant: "data-variant" as const,
-    fluid: "data-fluid" as const,
     maxWidth: "data-max-width" as const,
     padding: "data-padding" as const,
     size: "data-size" as const,

@@ -15,7 +15,17 @@ import {
 } from "../_internal/layout";
 import type { ContainerAsChildProps, ContainerNativeProps } from "./container.types";
 
-const CONTAINER_WIDTH_TOKENS = new Set(["1", "2", "3", "4", "sm", "md", "lg", "xl"]);
+const CONTAINER_WIDTH_TOKENS = new Set([
+  "1",
+  "2",
+  "3",
+  "4",
+  "sm",
+  "md",
+  "lg",
+  "xl",
+  "fluid",
+]);
 
 function isContainerWidthToken(value: unknown): value is string {
   return typeof value === "string" && CONTAINER_WIDTH_TOKENS.has(value.trim());
@@ -45,7 +55,6 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     asChild,
     children,
     variant,
-    fluid = false,
     maxWidth,
     padding,
     size,
@@ -56,11 +65,7 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
   } = props;
 
   const responsiveVariant =
-    fluid || (size === undefined && maxWidth === undefined)
-      ? fluid
-        ? "fluid"
-        : (variant ?? "default")
-      : undefined;
+    size === undefined && maxWidth === undefined ? (variant ?? "default") : undefined;
 
   const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
   const layoutStyle: Record<string, string | number> = {
@@ -69,7 +74,7 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
   };
   applyBoxLayoutStyles(layoutStyle, boxProps);
 
-  const widthValue = fluid ? undefined : (maxWidth ?? size);
+  const widthValue = maxWidth ?? size;
   const usesInlineMaxWidth =
     boxProps.maxWidth === undefined &&
     widthValue !== undefined &&
@@ -114,20 +119,15 @@ export function Container(props: ContainerNativeProps | ContainerAsChildProps) {
     "data-slot": "container",
     "data-ak-layout": "true",
     "data-variant": responsiveVariant,
-    "data-fluid": fluid ? "true" : undefined,
-    "data-size": fluid
-      ? undefined
-      : isStaticValue(size)
-        ? serializeResponsiveValueIf(size, isContainerWidthToken)
-        : undefined,
+    "data-size": isStaticValue(size)
+      ? serializeResponsiveValueIf(size, isContainerWidthToken)
+      : undefined,
     "data-align": isStaticValue(align)
       ? serializeResponsiveValueIf(align, isContainerAlignToken)
       : undefined,
-    "data-max-width": fluid
-      ? undefined
-      : isStaticValue(maxWidth)
-        ? serializeResponsiveValueIf(maxWidth, isContainerWidthToken)
-        : undefined,
+    "data-max-width": isStaticValue(maxWidth)
+      ? serializeResponsiveValueIf(maxWidth, isContainerWidthToken)
+      : undefined,
     ...(layoutClass ? { class: layoutClass } : {}),
   });
 

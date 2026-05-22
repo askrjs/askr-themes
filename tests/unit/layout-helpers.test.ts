@@ -65,6 +65,7 @@ describe("layout helpers", () => {
     expect(resolveSpaceValue("sm")).toBe("var(--ak-space-sm)");
     expect(resolveSpaceValue(12)).toBe("12");
     expect(resolveContainerSizeValue("lg")).toBe("var(--ak-container-3)");
+    expect(resolveContainerSizeValue("fluid")).toBe("100%");
     expect(resolveSectionSizeValue("3")).toBe("var(--ak-section-3)");
     expect(resolveJustifyValue("between")).toBe("space-between");
     expect(resolveJustifyValue("end")).toBe("flex-end");
