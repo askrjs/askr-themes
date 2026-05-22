@@ -492,26 +492,39 @@ describe("sidebar browser smoke", () => {
 
   it("keeps centered sidebar groups explicit in full view", async () => {
     route("/docs", () => (
-      <Sidebar aria-label="Centered docs navigation">
-        <NavGroup label="Centered" align="center">
-          <NavLink href="/docs" match="exact">
-            <TestIcon label="Overview" />
-            <span>Overview</span>
-          </NavLink>
-        </NavGroup>
-      </Sidebar>
+      <Shell variant="sidebar">
+        <ShellNav>
+          <Sidebar aria-label="Centered docs navigation">
+            <NavGroup id="centered-sidebar-group" label="Centered" align="center">
+              <NavLink href="/docs" match="exact">
+                <TestIcon label="Overview" />
+                <span>Overview</span>
+              </NavLink>
+            </NavGroup>
+          </Sidebar>
+        </ShellNav>
+        <ShellMain>Docs content</ShellMain>
+      </Shell>
     ));
 
+    container!.style.width = "20rem";
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
+    const centeredGroup = container?.querySelector("#centered-sidebar-group") as HTMLElement | null;
     const centeredLabel = container?.querySelector(
       '[data-slot="navbar-group-label"]',
     ) as HTMLElement | null;
     const centeredLink = container?.querySelector('[data-slot="nav-link"]') as HTMLElement | null;
+    const groupRect = centeredGroup!.getBoundingClientRect();
+    const linkRect = centeredLink!.getBoundingClientRect();
+    const leftGutter = linkRect.left - groupRect.left;
+    const rightGutter = groupRect.right - linkRect.right;
 
     expect(getComputedStyle(centeredLabel!).textAlign).toBe("center");
     expect(getComputedStyle(centeredLink!).justifyContent).toBe("center");
+    expect(linkRect.width).toBeLessThan(groupRect.width);
+    expect(Math.abs(leftGutter - rightGutter)).toBeLessThanOrEqual(2);
   });
 
   it("positions end-aligned sidebar groups at the bottom in full and drawer layouts", async () => {

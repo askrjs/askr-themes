@@ -125,7 +125,7 @@
       .sidebar-group[data-align="center"],
       [data-slot="sidebar-group"][data-align="center"]
     ) {
-    justify-items: stretch;
+    justify-items: center;
   }
 
   :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
@@ -141,7 +141,25 @@
       .sidebar-group-label,
       [data-slot="sidebar-group-label"]
     ) {
+    inline-size: 100%;
     text-align: center;
+  }
+
+  :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
+    :where(
+      .navbar-group[data-align="center"],
+      [data-slot="navbar-group"][data-align="center"],
+      .sidebar-group[data-align="center"],
+      [data-slot="sidebar-group"][data-align="center"]
+    )
+    > :where(
+      .navbar-group-body,
+      [data-slot="navbar-group-body"],
+      .sidebar-group-body,
+      [data-slot="sidebar-group-body"]
+    ) {
+    inline-size: 100%;
+    justify-items: center;
   }
 
   :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
@@ -207,7 +225,10 @@
       [data-slot="sidebar-group"][data-align="center"]
     )
     :where(.nav-item, .navbar-item, [data-slot="nav-item"], [data-slot="nav-link"], .sidebar-item) {
+    inline-size: auto;
+    max-inline-size: 100%;
     justify-content: center;
+    justify-self: center;
   }
 
   :where(.sidebar-shell, [data-slot="sidebar-shell"], .sidebar-panel, [data-slot="sidebar-panel"])
