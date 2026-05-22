@@ -15,17 +15,7 @@ import {
 } from "../_internal/layout";
 import type { ContainerAsChildProps, ContainerNativeProps } from "./container.types";
 
-const CONTAINER_WIDTH_TOKENS = new Set([
-  "1",
-  "2",
-  "3",
-  "4",
-  "sm",
-  "md",
-  "lg",
-  "xl",
-  "fluid",
-]);
+const CONTAINER_WIDTH_TOKENS = new Set(["1", "2", "3", "4", "sm", "md", "lg", "xl", "fluid"]);
 
 function isContainerWidthToken(value: unknown): value is string {
   return typeof value === "string" && CONTAINER_WIDTH_TOKENS.has(value.trim());
