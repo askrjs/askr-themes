@@ -607,6 +607,57 @@ describe("sidebar browser smoke", () => {
     );
   });
 
+  it("keeps end-aligned sidebar groups pinned when the shell stays stacked", async () => {
+    route("/docs", () => (
+      <Shell variant="sidebar">
+        <ShellNav>
+          <Sidebar id="stacked-sidebar" aria-label="Stacked navigation">
+            <NavBrand>
+              <a href="/">Askr</a>
+            </NavBrand>
+            <NavGroup id="stacked-primary-group" label="Primary">
+              <NavLink href="/docs" match="exact">
+                <TestIcon label="Overview" />
+                <span>Overview</span>
+              </NavLink>
+            </NavGroup>
+            <NavGroup id="stacked-secondary-group" label="Secondary" align="end">
+              <NavLink href="/settings">
+                <TestIcon label="Settings" />
+                <span>Settings</span>
+              </NavLink>
+            </NavGroup>
+          </Sidebar>
+        </ShellNav>
+        <ShellMain>Docs content</ShellMain>
+      </Shell>
+    ));
+
+    setViewport(375);
+    container!.style.height = "640px";
+    container!.style.width = "20rem";
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const shell = container?.querySelector('[data-slot="shell"]') as HTMLElement | null;
+    const shellNav = container?.querySelector('[data-slot="shell-nav"]') as HTMLElement | null;
+    const primaryGroup = container?.querySelector("#stacked-primary-group") as HTMLElement | null;
+    const secondaryGroup = container?.querySelector(
+      "#stacked-secondary-group",
+    ) as HTMLElement | null;
+
+    expect(primaryGroup?.getAttribute("data-align")).toBeNull();
+    expect(secondaryGroup?.getAttribute("data-align")).toBe("end");
+    expect(shellNav).not.toBeNull();
+    expect(shell).not.toBeNull();
+    expect(shellNav!.getBoundingClientRect().bottom).toBeGreaterThan(
+      shell!.getBoundingClientRect().bottom - 96,
+    );
+    expect(secondaryGroup!.getBoundingClientRect().bottom).toBeGreaterThan(
+      shellNav!.getBoundingClientRect().bottom - 96,
+    );
+  });
+
   it("does not apply desktop rail width to responsive mobile sidebars", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">

@@ -36,7 +36,9 @@
 :where([data-slot="shell"][data-variant="sidebar"], [data-slot="shell"][data-variant="rail"])
   > :where([data-slot="shell-nav"]) {
   display: grid;
-  align-content: start;
+  align-content: stretch;
+  flex: 0 0 100vh;
+  min-block-size: 100vh;
   padding: var(--ak-layout-page-gutter);
   inline-size: 100%;
   max-inline-size: 100%;

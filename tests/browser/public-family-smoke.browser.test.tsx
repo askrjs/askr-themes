@@ -96,10 +96,14 @@ describe("public family browser smoke", () => {
           <Block gap="2">Block</Block>
           <Box>Box</Box>
           <Container size="lg">Container</Container>
-          <Flex gap="2" direction="column">
-            Flex
+          <Flex gap="3" direction="column">
+            <span>Flex A</span>
+            <span>Flex B</span>
           </Flex>
-          <Inline gap="2">Inline</Inline>
+          <Inline gap="3" wrap="nowrap">
+            <span>Inline A</span>
+            <span>Inline B</span>
+          </Inline>
           <Section size="2">Section</Section>
           <Spacer basis="1rem" />
           <Stack gap="2">Stack</Stack>
@@ -172,7 +176,7 @@ describe("public family browser smoke", () => {
     const spacerEl = container?.querySelector('[data-slot="spacer"]') as HTMLElement | null;
 
     expect(containerEl?.getAttribute("data-size")).toBe("initial:lg");
-    expect(flexEl?.getAttribute("data-gap")).toBe("initial:2");
+    expect(flexEl?.getAttribute("data-gap")).toBe("initial:3");
     expect(inlineEl?.getAttribute("data-slot")).toBe("inline");
     for (const element of [
       containerEl,
@@ -187,7 +191,14 @@ describe("public family browser smoke", () => {
       expect(element?.getAttribute("style")).toBeNull();
     }
 
+    const flexGap = px(getComputedStyle(flexEl!).columnGap);
+    const inlineGap = px(getComputedStyle(inlineEl!).columnGap);
+
     expect(getComputedStyle(aspectRatioEl!).aspectRatio).not.toBe("auto");
     expect(px(getComputedStyle(spacerEl!).flexBasis)).toBeGreaterThan(0);
+    expect(getComputedStyle(inlineEl!).display).toBe("flex");
+    expect(getComputedStyle(inlineEl!).flexWrap).toBe("nowrap");
+    expect(inlineGap).toBe(flexGap);
+    expect(inlineGap).toBeGreaterThan(0);
   });
 });

@@ -139,7 +139,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@askrjs/askr": "^0.0.37",
+    "@askrjs/askr": "^0.0.39",
     "@askrjs/ui": "^0.0.7",
     "@askrjs/vite": "^0.0.2",
     "@tsdown/css": "0.22.0",

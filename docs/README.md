@@ -74,7 +74,7 @@ inline; the mobile drawer is generated from that same content when `breakpoint`
 is set. Add `collapsible="icon"` for a desktop icon rail with a default rail
 toggle, and add `SidebarToggle` only when you want custom rail icons. `Navbar`
 is for horizontal topbars. Use `align="end"` when a group should sit at the far
-edge in either shell orientation:
+edge in a topbar or at the bottom of a full-height sidebar column or drawer:
 
 ```tsx
 import { NavBrand, NavGroup, NavLink, Sidebar, SidebarToggle } from "@askrjs/themes/shells";
