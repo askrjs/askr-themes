@@ -200,7 +200,8 @@ drawer after client navigation.
 primitive. Use `label` for section names, `align="center"` for centered visual
 groups, and `align="end"` for bottom-positioned sidebar groups such as account,
 settings, help, or sign-out actions. The same `align="end"` prop maps to the
-far edge in a horizontal navbar and the bottom edge in a vertical sidebar.
+far edge in a horizontal navbar and the bottom edge in a full-height vertical
+sidebar column or drawer.
 
 For dropdowns and menu surfaces inside `Navbar` or `Sidebar`, use the
 `@askrjs/themes/overlays` exports. Those components come from `@askrjs/ui`, so

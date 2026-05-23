@@ -188,7 +188,7 @@ Density modifiers are available on the shared control classes, including
 For shell chrome, keep the orientation-specific API intent explicit:
 
 - Use `align="center" | "end"` for horizontal topbar grouping.
-- Use `align="end"` when a vertical sidebar group should pin to the bottom.
+- Use `align="end"` when a vertical sidebar group sits in a full-height sidebar column or drawer and should pin to the bottom.
 - Use `label` when a nav section needs a visible and semantic section heading.
 - Use `Shell variant="rail"` when the primary app frame should reserve a persistent compact, icon-only navigation rail on desktop; keep text labels in the DOM so links retain accessible names.
 - Use `Sidebar` when vertical navigation should collapse into an icon rail and generated drawer.

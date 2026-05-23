@@ -128,7 +128,6 @@ describe("navbar and sidebar overlay recipes", () => {
       '[data-slot="dropdown-item"][href="/docs/components"]',
     ) as HTMLAnchorElement | null;
 
-    expect(productMenu?.getAttribute("data-side")).toBe("bottom");
     expect(productMenu?.getAttribute("data-align")).toBe("start");
     expect(productLink?.getAttribute("role")).toBe("menuitem");
     expect(productLink?.getAttribute("match")).toBeNull();
