@@ -20,7 +20,7 @@ describe("visual quality contract", () => {
   const docsTheming = read(DOCS_THEMING_FILE);
   const docsOverview = read(DOCS_OVERVIEW_FILE);
 
-  it("keeps the manual audit page broad enough for polish work", () => {
+  it("should keeps the manual audit page broad enough for polish work", () => {
     const requiredAuditCopy = [
       "Component audit, one family at a time.",
       "Quality checklist",
@@ -43,7 +43,7 @@ describe("visual quality contract", () => {
     expect(visualCheck).toContain('data-theme="dark"');
   });
 
-  it("documents the visual audit standard and responsive widths", () => {
+  it("should documents the visual audit standard and responsive widths", () => {
     const requiredDocs = [
       "Visual Quality Standard",
       "visual-check.html",
@@ -65,7 +65,7 @@ describe("visual quality contract", () => {
     expect(docsOverview).toContain("Theming](./theming.md#visual-quality-standard)");
   });
 
-  it("documents that default theme CSS and templates move together", () => {
+  it("should documents that default theme CSS and templates move together", () => {
     const requiredTemplateSync = [
       "src/themes/default/styles",
       "templates/theme/styles",

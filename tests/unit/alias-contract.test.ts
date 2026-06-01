@@ -162,7 +162,7 @@ describe("daisy-like class aliases", () => {
     const label = root.includes(`${join("templates", "theme")}`) ? "template" : "default";
 
     for (const [relativePath, alias, canonical] of ALIAS_CONTRACTS) {
-      it(`${label} ${relativePath}: ${alias} aliases ${canonical}`, () => {
+      it(`should ${label} ${relativePath}: ${alias} aliases ${canonical}`, () => {
         const css = readFileSync(join(root, relativePath), "utf-8");
         const hasSharedBlock = selectorBlocks(css).some(
           (selector) => selector.includes(alias) && selector.includes(canonical),
@@ -173,7 +173,7 @@ describe("daisy-like class aliases", () => {
     }
   }
 
-  it("documents raw class authoring examples in the alias contract", () => {
+  it("should documents raw class authoring examples in the alias contract", () => {
     const examples = [
       '<button class="btn btn-primary btn-sm">Save</button>',
       '<section class="card"><div class="card-header"></div><div class="card-content"></div></section>',

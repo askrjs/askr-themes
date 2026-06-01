@@ -69,7 +69,7 @@ describe("public family browser smoke", () => {
     clearRoutes();
   });
 
-  it("renders the remaining public families in a browser mount", async () => {
+  it("should renders the remaining public families in a browser mount", async () => {
     route("/families", () => (
       <div>
         <section>

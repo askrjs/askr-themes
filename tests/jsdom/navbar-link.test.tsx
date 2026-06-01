@@ -57,7 +57,7 @@ describe("navbar link jsdom regression", () => {
     clearRoutes();
   });
 
-  it("marks the exact current route active", async () => {
+  it("should marks the exact current route active", async () => {
     window.history.replaceState({}, "", "/docs");
     registerNavRoutes();
 
@@ -79,7 +79,7 @@ describe("navbar link jsdom regression", () => {
     expect(childLink?.getAttribute("data-active")).toBeNull();
   });
 
-  it("keeps parent NavLink active on child routes by default", async () => {
+  it("should keeps parent NavLink active on child routes by default", async () => {
     window.history.replaceState({}, "", "/docs/getting-started");
     registerNavRoutes();
 
@@ -101,7 +101,7 @@ describe("navbar link jsdom regression", () => {
     expect(childLink?.getAttribute("data-active")).toBe("true");
   });
 
-  it("supports exact and prefix matching in the same nav", async () => {
+  it("should supports exact and prefix matching in the same nav", async () => {
     window.history.replaceState({}, "", "/docs/components");
     registerNavRoutes();
 
@@ -120,7 +120,7 @@ describe("navbar link jsdom regression", () => {
     expect(componentsLink?.getAttribute("data-active")).toBe("true");
   });
 
-  it("preserves custom click handlers before client-side navigation", async () => {
+  it("should preserves custom click handlers before client-side navigation", async () => {
     let clicks = 0;
 
     window.history.replaceState({}, "", "/");
@@ -161,7 +161,7 @@ describe("navbar link jsdom regression", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
   });
 
-  it("does not intercept modified clicks or explicit targets", async () => {
+  it("should does not intercept modified clicks or explicit targets", async () => {
     window.history.replaceState({}, "", "/");
     route("/", () => (
       <nav aria-label="Primary">
@@ -205,7 +205,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/");
   });
 
-  it("leaves external links to native browser navigation", async () => {
+  it("should leaves external links to native browser navigation", async () => {
     let wasDefaultPreventedByNavLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/");
@@ -242,7 +242,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/");
   });
 
-  it("leaves same-page hash links to native browser navigation", async () => {
+  it("should leaves same-page hash links to native browser navigation", async () => {
     let wasDefaultPreventedByNavLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/docs");
@@ -277,7 +277,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/docs");
   });
 
-  it("leaves external PaginationLink targets to native browser navigation", async () => {
+  it("should leaves external PaginationLink targets to native browser navigation", async () => {
     let wasDefaultPreventedByPaginationLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/");
@@ -314,7 +314,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/");
   });
 
-  it("leaves same-page hash PaginationLink targets to native browser navigation", async () => {
+  it("should leaves same-page hash PaginationLink targets to native browser navigation", async () => {
     let wasDefaultPreventedByPaginationLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/docs");
@@ -349,7 +349,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/docs");
   });
 
-  it("preserves route behavior through DropdownItem asChild with NavLink", async () => {
+  it("should preserves route behavior through DropdownItem asChild with NavLink", async () => {
     window.history.replaceState({}, "", "/");
     route("/", () => (
       <nav aria-label="Primary">
@@ -398,7 +398,7 @@ describe("navbar link jsdom regression", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
   });
 
-  it("keeps DropdownItem asChild NavLink native behavior for non-SPA link clicks", async () => {
+  it("should keeps DropdownItem asChild NavLink native behavior for non-SPA link clicks", async () => {
     let externalDefaultPrevented: boolean | undefined;
     let modifiedWasNotCancelled: boolean | undefined;
 
@@ -459,7 +459,7 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/");
   });
 
-  it("keeps route matching props off plain NavItem anchors", () => {
+  it("should keeps route matching props off plain NavItem anchors", () => {
     const item = NavItem({
       href: "/docs",
       children: "Docs",
@@ -470,7 +470,7 @@ describe("navbar link jsdom regression", () => {
     expect(item.props.href).toBe("/docs");
   });
 
-  it("passes NavItem styling and props through asChild without leaking match", () => {
+  it("should passes NavItem styling and props through asChild without leaking match", () => {
     const item = NavItem({
       asChild: true,
       children: {

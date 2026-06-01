@@ -57,7 +57,7 @@ describe("template parity", () => {
     expect(templateFiles.length).toBeGreaterThan(0);
   });
 
-  it("template covers every component in the default theme", () => {
+  it("should template covers every component in the default theme", () => {
     const missingInTemplate = defaultFiles.filter((f) => !templateFiles.includes(f));
     expect(
       missingInTemplate,
@@ -65,7 +65,7 @@ describe("template parity", () => {
     ).toEqual([]);
   });
 
-  it("template has no extra files not in the default theme", () => {
+  it("should template has no extra files not in the default theme", () => {
     const extraInTemplate = templateFiles.filter((f) => !defaultFiles.includes(f));
     expect(
       extraInTemplate,
@@ -73,18 +73,18 @@ describe("template parity", () => {
     ).toEqual([]);
   });
 
-  it("template tokens expose the same canonical token names as the default theme", () => {
+  it("should template tokens expose the same canonical token names as the default theme", () => {
     const defaultTokens = extractTokenNames(readFileSync(DEFAULT_TOKENS, "utf-8"));
     const templateTokens = extractTokenNames(readFileSync(TEMPLATE_TOKENS, "utf-8"));
 
     expect(templateTokens).toEqual(defaultTokens);
   });
 
-  it("template entrypoint imports the same component CSS as the default theme", () => {
+  it("should template entrypoint imports the same component CSS as the default theme", () => {
     expect(readFileSync(TEMPLATE_INDEX, "utf-8")).toEqual(readFileSync(DEFAULT_INDEX, "utf-8"));
   });
 
-  it("template keeps Nav and Navbar styles aligned with the default theme", () => {
+  it("should template keeps Nav and Navbar styles aligned with the default theme", () => {
     const navFiles = ["navigation/nav.css", "shell/navbar.css"];
 
     for (const file of navFiles) {
@@ -95,7 +95,7 @@ describe("template parity", () => {
     }
   });
 
-  it("official theme entrypoints use the same canonical layout imports", () => {
+  it("should official theme entrypoints use the same canonical layout imports", () => {
     const themeNames = readdirSync(THEMES_DIR).filter(
       (entry) => entry !== "presets" && existsSync(join(THEMES_DIR, entry, "index.css")),
     );
@@ -116,7 +116,7 @@ describe("template parity", () => {
     }
   });
 
-  it("official theme token files keep the same canonical token names as default", () => {
+  it("should official theme token files keep the same canonical token names as default", () => {
     const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
       existsSync(join(THEMES_DIR, entry, "tokens.css")),
     );
@@ -133,7 +133,7 @@ describe("template parity", () => {
     }
   });
 
-  it("official theme component directories keep the same canonical files as default", () => {
+  it("should official theme component directories keep the same canonical files as default", () => {
     const themeNames = readdirSync(THEMES_DIR).filter((entry) =>
       existsSync(join(THEMES_DIR, entry, "components")),
     );

@@ -29,7 +29,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("navigation contracts", () => {
-  it("renders breadcrumb primitives with stable slots", () => {
+  it("should renders breadcrumb primitives with stable slots", () => {
     const breadcrumb = asElement(Breadcrumb({ children: "trail" }));
     const list = asElement(BreadcrumbList({ children: "items" }));
     const item = asElement(BreadcrumbItem({ children: "item" }));
@@ -55,7 +55,7 @@ describe("navigation contracts", () => {
     expect(separator.props.children).toBe("/");
   });
 
-  it("renders nav and pagination primitives with canonical slot contracts", () => {
+  it("should renders nav and pagination primitives with canonical slot contracts", () => {
     const nav = asElement(Nav({ children: "nav" }));
     const brand = asElement(NavBrand({ children: "brand" }));
     const group = asElement(NavGroup({ label: "Docs", children: "links" }));
@@ -104,7 +104,7 @@ describe("navigation contracts", () => {
     expect(ellipsis.props["data-slot"]).toBe("pagination-ellipsis");
   });
 
-  it("renders sidebar panels from explicit props without requiring responsive context", () => {
+  it("should renders sidebar panels from explicit props without requiring responsive context", () => {
     const sidebarPanel = asElement(
       SidebarPanel({
         active: true,

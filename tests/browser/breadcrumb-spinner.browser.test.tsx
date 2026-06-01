@@ -38,7 +38,7 @@ describe("breadcrumb and spinner browser smoke", () => {
     clearRoutes();
   });
 
-  it("renders the themed breadcrumb structure and spinner sizing", async () => {
+  it("should renders the themed breadcrumb structure and spinner sizing", async () => {
     route("/status", () => (
       <div>
         <Breadcrumb>

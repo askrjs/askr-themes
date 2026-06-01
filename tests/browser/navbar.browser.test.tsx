@@ -46,7 +46,7 @@ describe("navbar browser smoke", () => {
     innerWidthSpy = undefined;
   });
 
-  it("collapses into a top-right panel and closes on backdrop or resize", async () => {
+  it("should collapses into a top-right panel and closes on backdrop or resize", async () => {
     route("/docs", () => (
       <Navbar id="docs-navbar" aria-label="Docs navigation" breakpoint="md">
         <NavBrand>
@@ -138,7 +138,7 @@ describe("navbar browser smoke", () => {
     }
   });
 
-  it("closes the mobile panel from close button, Escape, and nav item activation", async () => {
+  it("should closes the mobile panel from close button, Escape, and nav item activation", async () => {
     route("/docs", () => (
       <Navbar id="interaction-navbar" aria-label="Docs navigation" breakpoint="md">
         <NavBrand>
@@ -220,7 +220,7 @@ describe("navbar browser smoke", () => {
     expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
   });
 
-  it("keeps dropdown-style navbar controls open while still closing for menu links", async () => {
+  it("should keeps dropdown-style navbar controls open while still closing for menu links", async () => {
     route("/docs", () => (
       <Navbar id="dropdown-navbar" aria-label="Docs navigation" breakpoint="md">
         <NavBrand>
@@ -286,7 +286,7 @@ describe("navbar browser smoke", () => {
     expect(container?.querySelector('[data-slot="navbar-panel"]')).toBeNull();
   });
 
-  it("supports an explicit responsive toggle label and icon without extra composition", async () => {
+  it("should supports an explicit responsive toggle label and icon without extra composition", async () => {
     route("/docs", () => (
       <Navbar
         id="custom-toggle-navbar"
@@ -332,7 +332,7 @@ describe("navbar browser smoke", () => {
     expect(backdrop?.getAttribute("aria-label")).toBe("Close Navigation");
   });
 
-  it("keeps production navbar chrome stable with long labels and a mobile panel", async () => {
+  it("should keeps production navbar chrome stable with long labels and a mobile panel", async () => {
     route("/docs", () => (
       <Navbar
         id="production-navbar"

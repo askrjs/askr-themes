@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { mergeProps } from "../../src/components/_internal/merge-props";
 
 describe("mergeProps", () => {
-  it("composes refs without dropping either target", () => {
+  it("should composes refs without dropping either target", () => {
     const injectedRef = { current: null as HTMLDivElement | null };
     let baseRefValue: HTMLDivElement | null = null;
 
@@ -23,7 +23,7 @@ describe("mergeProps", () => {
     expect(baseRefValue).toBe(node);
   });
 
-  it("runs injected handlers first and respects preventDefault", () => {
+  it("should runs injected handlers first and respects preventDefault", () => {
     const calls: string[] = [];
     const event = {
       defaultPrevented: false,
@@ -51,7 +51,7 @@ describe("mergeProps", () => {
     expect(calls).toEqual(["injected"]);
   });
 
-  it("composes class names instead of dropping defaults", () => {
+  it("should composes class names instead of dropping defaults", () => {
     const merged = mergeProps(
       {
         class: "my-badge",

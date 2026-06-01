@@ -6,7 +6,7 @@ import { Stack } from "../../src/layouts";
 import { Card, CardContent } from "../../src/surfaces";
 
 describe("product SaaS composition patterns", () => {
-  it("builds dashboard content while leaving the shell in userland", () => {
+  it("should builds dashboard content while leaving the shell in userland", () => {
     const page = (
       <div class="ops-app-shell">
         <aside class="ops-app-shell-nav">
@@ -47,7 +47,7 @@ describe("product SaaS composition patterns", () => {
     expect(page).toBeTruthy();
   });
 
-  it("builds settings and empty states from reusable pattern primitives", () => {
+  it("should builds settings and empty states from reusable pattern primitives", () => {
     const settings = Stack({
       gap: "5",
       children: [

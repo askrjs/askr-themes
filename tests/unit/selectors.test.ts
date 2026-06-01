@@ -448,7 +448,7 @@ describe("CSS selector contract", () => {
   for (const file of files) {
     const filename = file.split(/[/\\]/).pop()!;
 
-    it(`${filename}: uses only data-attribute selectors (no classes, IDs, or elements)`, () => {
+    it(`should ${filename}: uses only data-attribute selectors (no classes, IDs, or elements)`, () => {
       if (CLASS_UTILITY_FILES.has(filename)) {
         return;
       }
@@ -481,7 +481,7 @@ describe("plain class contract", () => {
   for (const file of files) {
     const filename = file.split(/[/\\]/).pop()!;
 
-    it(`${filename}: uses plain kebab-case classes without an ak class prefix`, () => {
+    it(`should ${filename}: uses plain kebab-case classes without an ak class prefix`, () => {
       const css = readFileSync(file, "utf-8");
       const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map((match) => match[1]);
       const violations = classNames.filter(
@@ -492,7 +492,7 @@ describe("plain class contract", () => {
       expect(violations).toEqual([]);
     });
 
-    it(`${filename}: only exposes approved public classes`, () => {
+    it(`should ${filename}: only exposes approved public classes`, () => {
       const css = readFileSync(file, "utf-8");
       const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map((match) => match[1]);
       const allowed = new Set(ALLOWED_ALIAS_CLASSES[filename] ?? []);
@@ -510,7 +510,7 @@ describe("layout selector scoping", () => {
   for (const file of files) {
     const filename = file.split(/[/\\]/).pop()!;
 
-    it(`${filename}: anchors broad layout slots to a public layout root`, () => {
+    it(`should ${filename}: anchors broad layout slots to a public layout root`, () => {
       const css = readFileSync(file, "utf-8");
       const selectors = extractSelectors(css);
 
@@ -529,7 +529,7 @@ describe("layout selector scoping", () => {
 });
 
 describe("tokens.css selector contract", () => {
-  it("uses only :root and [data-theme] selectors", () => {
+  it("should uses only :root and [data-theme] selectors", () => {
     const css = readFileSync(TOKENS_FILE, "utf-8");
     const selectors = extractSelectors(css);
 

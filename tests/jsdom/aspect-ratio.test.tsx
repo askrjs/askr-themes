@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("AspectRatio", () => {
-  it("renders a canonical wrapper with a generated ratio class", () => {
+  it("should renders a canonical wrapper with a generated ratio class", () => {
     const element = asElement(AspectRatio({ ratio: 16 / 9, children: "media" }));
 
     expect(element.type).toBe("div");
@@ -21,7 +21,7 @@ describe("AspectRatio", () => {
     expect(String(element.props.class)).toContain("ak-style-");
   });
 
-  it("supports asChild composition", () => {
+  it("should supports asChild composition", () => {
     const element = asElement(
       AspectRatio({
         asChild: true,

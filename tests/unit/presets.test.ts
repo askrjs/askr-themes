@@ -57,7 +57,7 @@ function extractDefinedTokens(css: string): Set<string> {
 }
 
 describe("cat theme presets", () => {
-  it("publishes the combined cat preset stylesheet", () => {
+  it("should publishes the combined cat preset stylesheet", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -66,7 +66,7 @@ describe("cat theme presets", () => {
     expect(existsSync(PRESETS_INDEX_FILE)).toBe(true);
   });
 
-  it("collects every cat preset in the combined stylesheet", () => {
+  it("should collects every cat preset in the combined stylesheet", () => {
     const css = readFileSync(PRESETS_INDEX_FILE, "utf-8");
 
     for (const preset of PRESET_NAMES) {
@@ -75,7 +75,7 @@ describe("cat theme presets", () => {
   });
 
   for (const preset of PRESET_NAMES) {
-    it(`${preset} defines the required semantic color token surface`, () => {
+    it(`should ${preset} defines the required semantic color token surface`, () => {
       const css = readFileSync(join(PRESET_DIR, `${preset}.css`), "utf-8");
       const tokens = extractDefinedTokens(css);
       const missing = REQUIRED_PRESET_TOKENS.filter((token) => !tokens.has(token));

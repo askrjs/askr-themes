@@ -77,7 +77,7 @@ describe("responsive theme contract", () => {
   const normalizedDefaultResponsive = defaultResponsive.replace(/'/g, '"');
   const normalizedDefaultLayout = defaultLayout.replace(/'/g, '"');
 
-  it("keeps the default theme responsive layout contract in place", () => {
+  it("should keeps the default theme responsive layout contract in place", () => {
     expect(defaultIndex).toMatch(RESPONSIVE_IMPORT_PATTERN);
 
     for (const forbiddenImport of FORBIDDEN_LEGACY_IMPORTS) {
@@ -97,7 +97,7 @@ describe("responsive theme contract", () => {
     }
   });
 
-  it("keeps the generated theme template aligned with the default responsive layout contract", () => {
+  it("should keeps the generated theme template aligned with the default responsive layout contract", () => {
     expect(templateIndex).toMatch(RESPONSIVE_IMPORT_PATTERN);
 
     for (const forbiddenImport of FORBIDDEN_LEGACY_IMPORTS) {
@@ -112,7 +112,7 @@ describe("responsive theme contract", () => {
     expect(templateLayout).toContain("Layout primitive contract placeholders");
   });
 
-  it("documents responsive theming guidance", () => {
+  it("should documents responsive theming guidance", () => {
     const requiredDocs = [
       "Build mobile first.",
       "`sm`, `md`, `lg`, and `xl`",

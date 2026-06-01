@@ -11,7 +11,7 @@ import {
 import { Spinner } from "../../src/feedback";
 
 describe("breadcrumb and spinner wrappers", () => {
-  it("renders deterministic breadcrumb and spinner element trees", () => {
+  it("should renders deterministic breadcrumb and spinner element trees", () => {
     const breadcrumbOne = Breadcrumb({
       children: (
         <BreadcrumbList>

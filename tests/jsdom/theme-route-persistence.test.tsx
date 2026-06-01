@@ -79,7 +79,7 @@ describe("theme route persistence", () => {
     restoreLocalStorage = undefined;
   });
 
-  it("preserves the active theme across route navigation", async () => {
+  it("should preserves the active theme across route navigation", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
       <ThemeProvider defaultTheme="light">
         <header>
@@ -177,7 +177,7 @@ describe("theme route persistence", () => {
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
   });
 
-  it("mounts theme controls without render-time state errors", async () => {
+  it("should mounts theme controls without render-time state errors", async () => {
     const AppLayout = () => (
       <ThemeProvider defaultTheme="light">
         <header>

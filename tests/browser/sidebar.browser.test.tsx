@@ -79,7 +79,7 @@ describe("sidebar browser smoke", () => {
     innerWidthSpy = undefined;
   });
 
-  it("collapses into an icon rail and opens a drawer panel", async () => {
+  it("should collapses into an icon rail and opens a drawer panel", async () => {
     const collapsedChanges: boolean[] = [];
 
     route("/docs", () => (
@@ -259,7 +259,7 @@ describe("sidebar browser smoke", () => {
     expect(container?.querySelector('[data-slot="sidebar-panel"]')).toBeNull();
   });
 
-  it("keeps rail navigation icon-only while preserving text labels", async () => {
+  it("should keeps rail navigation icon-only while preserving text labels", async () => {
     route("/docs", () => (
       <Shell variant="rail">
         <ShellNav>
@@ -298,7 +298,7 @@ describe("sidebar browser smoke", () => {
     expect(getComputedStyle(icon!).fontSize).not.toBe("0px");
   });
 
-  it("supports controlled icon rail collapse", async () => {
+  it("should supports controlled icon rail collapse", async () => {
     const collapsedChanges: boolean[] = [];
 
     route("/docs", () => (
@@ -338,7 +338,7 @@ describe("sidebar browser smoke", () => {
     expect(sidebar?.getAttribute("data-icon-collapsed")).toBe("true");
   });
 
-  it("renders a default rail toggle for icon-collapsible sidebars", async () => {
+  it("should renders a default rail toggle for icon-collapsible sidebars", async () => {
     const collapsedChanges: boolean[] = [];
 
     route("/docs", () => (
@@ -385,7 +385,7 @@ describe("sidebar browser smoke", () => {
     expect(sidebar?.getAttribute("data-icon-collapsed")).toBe("false");
   });
 
-  it("supports explicit mobile toggle copy and icon placement", async () => {
+  it("should supports explicit mobile toggle copy and icon placement", async () => {
     route("/docs", () => (
       <Sidebar
         id="custom-sidebar"
@@ -428,7 +428,7 @@ describe("sidebar browser smoke", () => {
     expect(backdrop?.getAttribute("aria-label")).toBe("Close Sections");
   });
 
-  it("keeps drawer controls open while closing for route links", async () => {
+  it("should keeps drawer controls open while closing for route links", async () => {
     route("/docs", () => (
       <Sidebar id="drawer-sidebar" aria-label="Drawer navigation" breakpoint="md">
         <NavBrand>
@@ -490,7 +490,7 @@ describe("sidebar browser smoke", () => {
     expect(document.body.getAttribute("data-shell-scroll-lock")).toBeNull();
   });
 
-  it("keeps centered sidebar groups explicit in full view", async () => {
+  it("should keeps centered sidebar groups explicit in full view", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>
@@ -527,7 +527,7 @@ describe("sidebar browser smoke", () => {
     expect(Math.abs(leftGutter - rightGutter)).toBeLessThanOrEqual(2);
   });
 
-  it("positions end-aligned sidebar groups at the bottom in full and drawer layouts", async () => {
+  it("should positions end-aligned sidebar groups at the bottom in full and drawer layouts", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>
@@ -607,7 +607,7 @@ describe("sidebar browser smoke", () => {
     );
   });
 
-  it("keeps end-aligned sidebar groups pinned when the shell stays stacked", async () => {
+  it("should keeps end-aligned sidebar groups pinned when the shell stays stacked", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>
@@ -658,7 +658,7 @@ describe("sidebar browser smoke", () => {
     );
   });
 
-  it("does not apply desktop rail width to responsive mobile sidebars", async () => {
+  it("should does not apply desktop rail width to responsive mobile sidebars", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>
@@ -705,7 +705,7 @@ describe("sidebar browser smoke", () => {
     expect(getComputedStyle(sidebar!).width).not.toBe("72px");
   });
 
-  it("keeps production sidebar chrome stable with long labels and mobile drawers", async () => {
+  it("should keeps production sidebar chrome stable with long labels and mobile drawers", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>

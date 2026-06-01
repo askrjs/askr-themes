@@ -64,7 +64,7 @@ const DEFAULT_INDEX = DEFAULT_THEME_INDEX_FILE;
 const TEMPLATE_INDEX = TEMPLATE_THEME_INDEX_FILE;
 
 describe("package surface", () => {
-  it("keeps the reusable shell chrome and theme controls public", () => {
+  it("should keeps the reusable shell chrome and theme controls public", () => {
     expect(typeof Button).toBe("function");
     expect(typeof ThemeProvider).toBe("function");
     expect(typeof ThemePicker).toBe("function");
@@ -117,7 +117,7 @@ describe("package surface", () => {
     expect(SEPARATOR_A11Y_CONTRACT).toBeTruthy();
   });
 
-  it("publishes curated entrypoints instead of a components catch-all", () => {
+  it("should publishes curated entrypoints instead of a components catch-all", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -147,7 +147,7 @@ describe("package surface", () => {
     expect(pkg.exports?.["./default/product-shell.css"]).toBeUndefined();
   });
 
-  it("keeps default CSS package exports pointed at real files", () => {
+  it("should keeps default CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -161,7 +161,7 @@ describe("package surface", () => {
     }
   });
 
-  it("keeps preset CSS package exports pointed at real files", () => {
+  it("should keeps preset CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -178,7 +178,7 @@ describe("package surface", () => {
     }
   });
 
-  it("does not wire recipe shell imports into the shipped bundles", () => {
+  it("should does not wire recipe shell imports into the shipped bundles", () => {
     const defaultIndex = readFileSync(DEFAULT_INDEX, "utf-8");
     const templateIndex = readFileSync(TEMPLATE_INDEX, "utf-8");
 
