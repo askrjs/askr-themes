@@ -143,13 +143,13 @@
     "@askrjs/askr": "^0.0.40",
     "@askrjs/ui": "^0.0.7",
     "@askrjs/vite": "^0.0.2",
-    "@tsdown/css": "0.22.0",
+    "@tsdown/css": "0.22.1",
     "@types/node": "^25.9.1",
     "cross-env": "^10.1.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.60.0",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.1.22"
+    "vite-plus": "^0.1.24"
   },
   "peerDependencies": {
     "@askrjs/askr": ">=0.0.1 <0.1.0",
@@ -158,5 +158,5 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@11.15.0"
+  "packageManager": "npm@11.16.0"
 }
