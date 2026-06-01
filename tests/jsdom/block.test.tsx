@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("Block", () => {
-  it("renders a canonical wrapper with CSS-driven block sizing", () => {
+  it("should renders a canonical wrapper with CSS-driven block sizing", () => {
     const element = asElement(Block({ size: "md", children: "content" }));
 
     expect(element.type).toBe("div");
@@ -21,7 +21,7 @@ describe("Block", () => {
     expect(element.props.style).toBeUndefined();
   });
 
-  it("keeps CSS-covered spacing on data attributes and supports asChild composition", () => {
+  it("should keeps CSS-covered spacing on data attributes and supports asChild composition", () => {
     const spaced = asElement(Block({ gap: "sm", children: "content" }));
     const asChild = asElement(
       Block({

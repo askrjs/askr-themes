@@ -73,7 +73,7 @@ describe("theme contracts", () => {
     document.documentElement.removeAttribute("data-theme-choice");
   });
 
-  it("exposes the default theme options and provider hook state", async () => {
+  it("should exposes the default theme options and provider hook state", async () => {
     expect(DEFAULT_THEME_OPTIONS).toEqual([
       { value: "system", label: "System" },
       { value: "light", label: "Light" },
@@ -138,7 +138,7 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
   });
 
-  it("exposes cat preset options for provider and picker composition", async () => {
+  it("should exposes cat preset options for provider and picker composition", async () => {
     expect(CAT_THEME_NAMES).toEqual(["tabby", "ginger", "tuxedo", "calico", "torty"]);
     expect(CAT_THEME_OPTIONS).toEqual([
       { value: "tabby", label: "Tabby" },

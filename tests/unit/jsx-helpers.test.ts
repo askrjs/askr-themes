@@ -19,7 +19,7 @@ const AnonymousWidget = function (props: WidgetProps): JSX.Element {
 Object.defineProperty(AnonymousWidget, "name", { value: "" });
 
 describe("JSX serialization helpers", () => {
-  it("serializes arrays, nested trees, and stable prop filters", () => {
+  it("should serializes arrays, nested trees, and stable prop filters", () => {
     const value = jsxs("section", {
       "data-slot": "root",
       children: [
@@ -56,7 +56,7 @@ describe("JSX serialization helpers", () => {
     ).toBe("div[data-state:idle]()");
   });
 
-  it("returns stable fallbacks for unsupported values", () => {
+  it("should returns stable fallbacks for unsupported values", () => {
     expect(serializeForId(undefined)).toBe("");
     expect(serializeForId(null)).toBe("");
     expect(serializeForId(false)).toBe("");

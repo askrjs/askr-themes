@@ -31,7 +31,7 @@ describe("empty state slot contract", () => {
     clearRoutes();
   });
 
-  it("emits canonical data-slot hooks alongside ergonomic classes", async () => {
+  it("should emits canonical data-slot hooks alongside ergonomic classes", async () => {
     route("/example", () => (
       <div class="dashboard-page">
         <EmptyState

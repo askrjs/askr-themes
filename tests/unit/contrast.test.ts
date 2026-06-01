@@ -219,7 +219,7 @@ describe("WCAG AA contrast", () => {
             : null;
 
           for (const [fgToken, bgToken, minRatio, label] of CONTRAST_PAIRS) {
-            it(`${label} (${minRatio}:1)`, () => {
+            it(`should ${label} (${minRatio}:1)`, () => {
               const fgValue = tokens.get(fgToken);
               const bgValue = tokens.get(bgToken);
 

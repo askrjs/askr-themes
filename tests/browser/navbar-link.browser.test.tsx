@@ -30,7 +30,7 @@ describe("navbar link browser smoke", () => {
     clearRoutes();
   });
 
-  it("updates active NavLink state across client-side navigation inside a persistent layout", async () => {
+  it("should updates active NavLink state across client-side navigation inside a persistent layout", async () => {
     function DocsLayout({ children }: { children?: unknown }) {
       return (
         <>

@@ -34,7 +34,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("theme alias classes", () => {
-  it("emits the familiar surface aliases by default", () => {
+  it("should emits the familiar surface aliases by default", () => {
     expect(asElement(Card({ children: "body" })).props.class).toBe("card");
     expect(asElement(Card({ children: "body" })).props["data-padding"]).toBeUndefined();
     expect(
@@ -66,7 +66,7 @@ describe("theme alias classes", () => {
     ).toBe("alert alert-info alert-dismissible");
   });
 
-  it("emits the familiar control aliases by default", () => {
+  it("should emits the familiar control aliases by default", () => {
     expect(asElement(ButtonGroup({ children: "group" })).props.class).toBe("btn-group");
     expect(asElement(ButtonGroup({ children: "group", orientation: "vertical" })).props.class).toBe(
       "btn-group btn-group-vertical",
@@ -79,7 +79,7 @@ describe("theme alias classes", () => {
     expect(asElement(ControlFieldError({ children: "error" })).props.class).toBe("field-error");
   });
 
-  it("emits the familiar list and pagination aliases by default", () => {
+  it("should emits the familiar list and pagination aliases by default", () => {
     expect(asElement(ListGroup({ children: "items" })).props.class).toBe("list-group");
     expect(
       asElement(ListGroup({ children: "items", flush: true, orientation: "horizontal" })).props

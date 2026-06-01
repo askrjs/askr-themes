@@ -14,7 +14,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("moved visual components", () => {
-  it("exposes layout and composition primitives from themes", () => {
+  it("should exposes layout and composition primitives from themes", () => {
     expect(Box({ children: "box", p: "2" })).toBeTruthy();
     expect(Block({ children: "block", gap: "2" })).toBeTruthy();
     expect(Flex({ children: "flex", gap: "2" })).toBeTruthy();
@@ -26,7 +26,7 @@ describe("moved visual components", () => {
     expect(Spacer({ basis: "1rem" })).toBeTruthy();
   });
 
-  it("keeps default and fluid container sizes on data attributes", () => {
+  it("should keeps default and fluid container sizes on data attributes", () => {
     const constrained = asElement(Container({ children: "container" }));
     const fluid = asElement(Container({ children: "container", size: "fluid" }));
 
@@ -38,7 +38,7 @@ describe("moved visual components", () => {
     expect(fluid.props.style).toBeUndefined();
   });
 
-  it("supports bootstrap-like responsive container variants", () => {
+  it("should supports bootstrap-like responsive container variants", () => {
     const containerSm = asElement(Container({ children: "container", variant: "sm" }));
     const containerMd = asElement(Container({ children: "container", variant: "md" }));
     const containerLg = asElement(Container({ children: "container", variant: "lg" }));
@@ -54,7 +54,7 @@ describe("moved visual components", () => {
     expect(containerXxl.props.style).toBeUndefined();
   });
 
-  it("uses generated classes for explicit width overrides", () => {
+  it("should uses generated classes for explicit width overrides", () => {
     const fixed = asElement(Container({ children: "container", size: "lg" }));
     const custom = asElement(Container({ children: "container", maxWidth: "68rem" }));
 
@@ -65,7 +65,7 @@ describe("moved visual components", () => {
     expect(String(custom.props.class)).toContain("ak-style-");
   });
 
-  it("keeps CSS-covered layout defaults off the style attribute", () => {
+  it("should keeps CSS-covered layout defaults off the style attribute", () => {
     const box = asElement(Box({ children: "box" }));
     const block = asElement(Block({ children: "block", gap: "sm", size: "md" }));
     const paddedBox = asElement(Box({ children: "box", p: "2" }));
@@ -101,7 +101,7 @@ describe("moved visual components", () => {
     expect(topbarShell.props.style).toBeUndefined();
   });
 
-  it("uses generated classes for uncovered flex overrides", () => {
+  it("should uses generated classes for uncovered flex overrides", () => {
     const responsiveFlex = asElement(Flex({ children: "flex", gap: { initial: "sm", md: "lg" } }));
     const customFlex = asElement(Flex({ children: "flex", gap: "1.5rem" }));
 
@@ -113,7 +113,7 @@ describe("moved visual components", () => {
     expect(String(customFlex.props.class)).toContain("ak-style-");
   });
 
-  it("uses generated classes for explicit spacer overrides", () => {
+  it("should uses generated classes for explicit spacer overrides", () => {
     const flexBasisSpacer = asElement(Spacer({ basis: "1rem" }));
     const widthSpacer = asElement(Spacer({ axis: "inline", basis: "2rem" }));
     const growSpacer = asElement(Spacer({ grow: 2 }));
@@ -126,14 +126,14 @@ describe("moved visual components", () => {
     expect(String(growSpacer.props.class)).toContain("ak-style-");
   });
 
-  it("exposes visual display primitives and divider aliases", () => {
+  it("should exposes visual display primitives and divider aliases", () => {
     expect(Badge({ children: "new", variant: "secondary" })).toBeTruthy();
     expect(Skeleton({})).toBeTruthy();
     expect(Separator({ orientation: "vertical" })).toBeTruthy();
     expect(Divider({ decorative: true })).toBeTruthy();
   });
 
-  it("keeps layout patterns in themes", () => {
+  it("should keeps layout patterns in themes", () => {
     expect(Shell({ variant: "sidebar", children: "main" })).toBeTruthy();
     expect(
       Shell({

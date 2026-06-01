@@ -264,31 +264,31 @@ function assertCoverage(
 }
 
 describe("component coverage matrix", () => {
-  it("keeps the controls family covered by direct tests and tier2 benches", () => {
+  it("should keeps the controls family covered by direct tests and tier2 benches", () => {
     assertCoverage("controls", controls, IGNORED_EXPORTS.controls, COVERAGE.controls);
   });
 
-  it("keeps the feedback family covered by direct tests and tier2 benches", () => {
+  it("should keeps the feedback family covered by direct tests and tier2 benches", () => {
     assertCoverage("feedback", feedback, [], COVERAGE.feedback);
   });
 
-  it("keeps the layouts family covered by direct tests and tier2 benches", () => {
+  it("should keeps the layouts family covered by direct tests and tier2 benches", () => {
     assertCoverage("layouts", layouts, [], COVERAGE.layouts);
   });
 
-  it("keeps the nav family covered by direct tests and the correct bench tiers", () => {
+  it("should keeps the nav family covered by direct tests and the correct bench tiers", () => {
     assertCoverage("navs", navs, IGNORED_EXPORTS.navs, COVERAGE.navs);
   });
 
-  it("keeps the shell family covered by direct tests and the correct bench tiers", () => {
+  it("should keeps the shell family covered by direct tests and the correct bench tiers", () => {
     assertCoverage("shells", shells, IGNORED_EXPORTS.shells, COVERAGE.shells);
   });
 
-  it("keeps the surfaces family covered by direct tests and tier2 benches", () => {
+  it("should keeps the surfaces family covered by direct tests and tier2 benches", () => {
     assertCoverage("surfaces", surfaces, IGNORED_EXPORTS.surfaces, COVERAGE.surfaces);
   });
 
-  it("keeps the theme family covered by direct tests and tier3 benches", () => {
+  it("should keeps the theme family covered by direct tests and tier3 benches", () => {
     assertCoverage("theme", theme, IGNORED_EXPORTS.theme, COVERAGE.theme);
   });
 });

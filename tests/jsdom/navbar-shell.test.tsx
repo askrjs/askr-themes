@@ -31,7 +31,7 @@ describe("navbar and sidebar shell contracts", () => {
     clearRoutes();
   });
 
-  it("renders the navbar and sidebar chrome with stable shell slots", async () => {
+  it("should renders the navbar and sidebar chrome with stable shell slots", async () => {
     route("/docs", () => (
       <>
         <Navbar aria-label="Docs navigation" id="docs-navbar">

@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("header component", () => {
-  it("renders the shell slot contract with a position variant", () => {
+  it("should renders the shell slot contract with a position variant", () => {
     const element = asElement(
       Header({ children: "content", position: "sticky", class: "app-header" }),
     );
@@ -23,7 +23,7 @@ describe("header component", () => {
     expect(element.props["data-position"]).toBe("sticky");
   });
 
-  it("defaults to a static header when no position is provided", () => {
+  it("should defaults to a static header when no position is provided", () => {
     const element = asElement(Header({ children: "content" }));
 
     expect(element.props["data-position"]).toBe("static");

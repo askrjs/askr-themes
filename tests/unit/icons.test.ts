@@ -11,13 +11,13 @@ import {
 const TOKENS_FILE = DEFAULT_THEME_TOKENS_FILE;
 
 describe("icon theme contract", () => {
-  it("ships the same icon baseline in default and template themes", () => {
+  it("should ships the same icon baseline in default and template themes", () => {
     const defaultCss = readFileSync(DEFAULT_ICON_CSS, "utf-8");
     const templateCss = readFileSync(TEMPLATE_ICON_CSS, "utf-8");
     expect(templateCss).toBe(defaultCss);
   });
 
-  it("documents the icon public hooks", () => {
+  it("should documents the icon public hooks", () => {
     const docs = readFileSync(THEMING_FILE, "utf-8");
     expect(docs).toContain("`@askrjs/ui` owns the canonical icon hooks");
     expect(docs).toContain('`data-slot="icon"`');
@@ -26,7 +26,7 @@ describe("icon theme contract", () => {
     expect(docs).toContain("--ak-icon-size-sm");
   });
 
-  it("defines icon size and stroke tokens", () => {
+  it("should defines icon size and stroke tokens", () => {
     const tokens = readFileSync(TOKENS_FILE, "utf-8");
     expect(tokens).toContain("--ak-icon-size-sm");
     expect(tokens).toContain("--ak-icon-size-md");

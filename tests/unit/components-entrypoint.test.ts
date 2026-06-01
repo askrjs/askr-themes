@@ -47,7 +47,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("curated entrypoints", () => {
-  it("exposes theme and control families", () => {
+  it("should exposes theme and control families", () => {
     expect(typeof Button).toBe("function");
     expect(typeof ThemeProvider).toBe("function");
     expect(typeof ThemePicker).toBe("function");
@@ -57,7 +57,7 @@ describe("curated entrypoints", () => {
     expect(CAT_THEME_OPTIONS.map((option) => option.value)).toEqual(CAT_THEME_NAMES);
   });
 
-  it("exposes layout, surface, feedback, nav, and shell families", () => {
+  it("should exposes layout, surface, feedback, nav, and shell families", () => {
     expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
     expect(Block({ children: "block", gap: "2" })).toBeTruthy();
     expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
@@ -94,7 +94,7 @@ describe("curated entrypoints", () => {
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
   });
 
-  it("lets the empty state override heading level", () => {
+  it("should lets the empty state override heading level", () => {
     const emptyState = asElement(EmptyState({ title: "No projects", titleAs: "h3" }));
 
     expect((emptyState.props.children as ElementLike[])[1].type).toBe("h3");

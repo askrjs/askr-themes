@@ -27,7 +27,7 @@ describe("no !important", () => {
   for (const file of files) {
     const relative = file.replace(SRC_DIR, "src");
 
-    it(`${relative}: does not use !important`, () => {
+    it(`should ${relative}: does not use !important`, () => {
       const css = readFileSync(file, "utf-8");
       // Strip comments before checking
       const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "");

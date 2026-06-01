@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("shell edge components", () => {
-  it("renders NavToggle as a stable button contract", () => {
+  it("should renders NavToggle as a stable button contract", () => {
     const toggle = asElement(
       NavToggle({
         active: true,
@@ -31,11 +31,11 @@ describe("shell edge components", () => {
     expect(toggle.props["aria-label"]).toBe("Menu");
   });
 
-  it("returns null when NavToggle is inactive", () => {
+  it("should returns null when NavToggle is inactive", () => {
     expect(NavToggle({ active: false })).toBeNull();
   });
 
-  it("returns null for the SidebarToggle marker component", () => {
+  it("should returns null for the SidebarToggle marker component", () => {
     expect(
       SidebarToggle({
         collapsedIcon: "collapsed",
@@ -44,7 +44,7 @@ describe("shell edge components", () => {
     ).toBeNull();
   });
 
-  it("renders SidebarPanel with the expected shell panel contract", () => {
+  it("should renders SidebarPanel with the expected shell panel contract", () => {
     const panel = asElement(
       SidebarPanel({
         active: true,

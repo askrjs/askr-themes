@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("shell primitive", () => {
-  it("renders an explicit shell root contract", () => {
+  it("should renders an explicit shell root contract", () => {
     const shell = asElement(
       Shell({
         variant: "sidebar",
@@ -27,7 +27,7 @@ describe("shell primitive", () => {
     expect(shell.props.style).toBeUndefined();
   });
 
-  it("supports the compact rail shell variant", () => {
+  it("should supports the compact rail shell variant", () => {
     const shell = asElement(
       Shell({
         variant: "rail",
@@ -40,7 +40,7 @@ describe("shell primitive", () => {
     expect(shell.props.class).toBe("shell");
   });
 
-  it("exposes shell parts with stable slot names", () => {
+  it("should exposes shell parts with stable slot names", () => {
     const nav = asElement(ShellNav({ children: "nav", class: "shell-nav-custom" }));
     const main = asElement(ShellMain({ children: "main", class: "shell-main-custom" }));
 

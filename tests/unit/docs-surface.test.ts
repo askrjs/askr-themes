@@ -10,7 +10,7 @@ const README_DOC = join(DOCS_DIR, "README.md");
 const TOKENS_DOC = join(DOCS_DIR, "tokens.md");
 
 describe("docs surface", () => {
-  it("documents curated entrypoints instead of a components catch-all", () => {
+  it("should documents curated entrypoints instead of a components catch-all", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -27,7 +27,7 @@ describe("docs surface", () => {
     expect(pkg.exports?.["./components"]).toBeUndefined();
   });
 
-  it("documents the same curated families and canonical names", () => {
+  it("should documents the same curated families and canonical names", () => {
     const themesDoc = readFileSync(THEMES_DOC, "utf-8");
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
     const readmeDoc = readFileSync(README_DOC, "utf-8");

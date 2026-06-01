@@ -15,7 +15,7 @@ import {
 import { mergeCssVar } from "../../src/components/_internal/style";
 
 describe("layout helpers", () => {
-  it("serializes layout declarations with user overrides", () => {
+  it("should serializes layout declarations with user overrides", () => {
     expect(
       mergeLayoutStyles(
         {
@@ -34,7 +34,7 @@ describe("layout helpers", () => {
     );
   });
 
-  it("splits box layout props from passthrough props", () => {
+  it("should splits box layout props from passthrough props", () => {
     const { boxProps, rest } = splitBoxLayoutProps({
       display: "flex",
       m: "sm",
@@ -47,7 +47,7 @@ describe("layout helpers", () => {
     expect(rest).toEqual({ class: "shell", title: "Layout shell" });
   });
 
-  it("maps box layout props to css custom properties", () => {
+  it("should maps box layout props to css custom properties", () => {
     const styles: Record<string, string | number> = {};
 
     applyBoxLayoutStyles(styles, {
@@ -61,7 +61,7 @@ describe("layout helpers", () => {
     expect(styles["--ak-flex-grow-initial"]).toBe(2);
   });
 
-  it("resolves the canonical layout size helpers", () => {
+  it("should resolves the canonical layout size helpers", () => {
     expect(resolveSpaceValue("sm")).toBe("var(--ak-space-sm)");
     expect(resolveSpaceValue(12)).toBe("12");
     expect(resolveContainerSizeValue("lg")).toBe("var(--ak-container-3)");
@@ -75,7 +75,7 @@ describe("layout helpers", () => {
 });
 
 describe("style helpers", () => {
-  it("appends css custom properties to string and object styles", () => {
+  it("should appends css custom properties to string and object styles", () => {
     expect(mergeCssVar("color:red", "--ak-test", "1rem")).toBe("color:red;--ak-test:1rem");
     expect(mergeCssVar({ backgroundColor: "red", opacity: 0.5 }, "--ak-test", "1rem")).toBe(
       "background-color:red;opacity:0.5;--ak-test:1rem",

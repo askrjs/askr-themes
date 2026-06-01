@@ -54,7 +54,7 @@ describe("navbar and sidebar overlay recipes", () => {
     innerWidthSpy = undefined;
   });
 
-  it("uses real Dropdown primitives in navbar and sidebar recipes", async () => {
+  it("should uses real Dropdown primitives in navbar and sidebar recipes", async () => {
     route("/docs", () => (
       <Shell variant="sidebar">
         <ShellNav>
