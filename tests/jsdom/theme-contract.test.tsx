@@ -22,7 +22,12 @@ async function settle(): Promise<void> {
 function clearStoredThemes(): void {
   const storage = window.localStorage as
     | { removeItem?: (key: string) => void }
-    | Record<string, unknown>;
+    | Record<string, unknown>
+    | undefined;
+
+  if (!storage) {
+    return;
+  }
 
   if (typeof storage.removeItem === "function") {
     storage.removeItem("askr-theme");

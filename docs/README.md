@@ -7,6 +7,7 @@ Default theme tokens, styles, and visual components for askr-ui applications.
 - [Overview](./askr-themes.md) - What askr-themes is and when to use it
 - [Tokens](./tokens.md) - Design token reference and overrides
 - [Theming](./theming.md) - Layered CSS architecture, visual quality, and dark mode
+- [Regression coverage](./regression-coverage.md) - permanent coverage matrix
 
 ## Quick start
 

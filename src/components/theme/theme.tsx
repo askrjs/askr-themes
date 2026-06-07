@@ -247,7 +247,7 @@ function cloneThemeToggleIcon(icon: unknown): unknown {
 
   return {
     ...icon,
-    props: { ...((icon.props as Record<string, unknown> | undefined) ?? {}) },
+    props: { ...(icon.props as Record<string, unknown> | undefined) },
   };
 }
 

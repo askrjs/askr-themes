@@ -33,8 +33,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Checks tests
+        run: npm run test:checks
+
       - name: Unit tests
         run: npm run test:unit
+
+      - name: jsdom tests
+        run: npm run test:jsdom
 
   browser:
     name: Browser Integration (${{ matrix.os }})
