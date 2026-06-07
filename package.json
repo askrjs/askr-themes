@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/themes",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Default theme tokens, styles, and themed layout wrappers for Askr apps.",
   "keywords": [
     "askr",
@@ -140,9 +140,9 @@
     "test:checks": "vp test run -c vitest.test.checks.config.ts"
   },
   "devDependencies": {
-    "@askrjs/askr": "^0.0.40",
-    "@askrjs/ui": "^0.0.7",
-    "@askrjs/vite": "^0.0.2",
+    "@askrjs/askr": "^0.0.41",
+    "@askrjs/ui": "^0.0.8",
+    "@askrjs/vite": "^0.0.3",
     "@tsdown/css": "0.22.2",
     "@types/node": "^25.9.2",
     "cross-env": "^10.1.0",
