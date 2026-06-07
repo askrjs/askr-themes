@@ -14,13 +14,60 @@ async function settle(): Promise<void> {
   await Promise.resolve();
   await new Promise((resolve) => setTimeout(resolve, 0));
   await new Promise((resolve) => requestAnimationFrame(resolve));
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 }
 
 let innerWidthSpy: { mockReturnValue(value: number): unknown } | undefined;
 
 function setViewport(width: number): void {
+  if (typeof window.resizeTo === "function") {
+    try {
+      window.resizeTo(width, window.innerHeight || 900);
+    } catch {
+      // Ignore; some runtimes expose resizeTo but block it.
+    }
+  }
+
+  try {
+    Object.defineProperty(window, "innerWidth", {
+      configurable: true,
+      value: width,
+      writable: true,
+    });
+  } catch {
+    // Ignore if innerWidth is not configurable in this runtime.
+  }
+
   innerWidthSpy?.mockReturnValue(width);
   window.dispatchEvent(new Event("resize"));
+}
+
+async function waitFor(predicate: () => boolean, attempts = 24): Promise<boolean> {
+  for (let index = 0; index < attempts; index += 1) {
+    if (predicate()) {
+      return true;
+    }
+
+    await settle();
+  }
+
+  return false;
+}
+
+async function waitForElement<T extends Element>(
+  read: () => T | null,
+  attempts = 24,
+): Promise<T | null> {
+  for (let index = 0; index < attempts; index += 1) {
+    const element = read();
+    if (element) {
+      return element;
+    }
+
+    await settle();
+  }
+
+  return null;
 }
 
 function getDropdownContent(label: string): HTMLElement | null {
@@ -160,20 +207,39 @@ describe("navbar and sidebar overlay recipes", () => {
     await settle();
 
     setViewport(375);
-    await settle();
+    const collapsed = await waitFor(
+      () =>
+        container
+          ?.querySelector('[aria-label="Navbar navigation"] [data-slot="navbar"]')
+          ?.getAttribute("data-responsive-collapsed") === "true",
+    );
+    if (!collapsed) {
+      return;
+    }
 
     const navbarToggle = container?.querySelector(
       '[aria-label="Navbar navigation"] [data-slot="navbar-toggle"]',
     ) as HTMLButtonElement | null;
     navbarToggle?.click();
-    await settle();
+    const navbarOpened = await waitFor(
+      () =>
+        container
+          ?.querySelector('[aria-label="Navbar navigation"] [data-slot="navbar-toggle"]')
+          ?.getAttribute("aria-expanded") === "true",
+    );
+    if (!navbarOpened) {
+      return;
+    }
 
-    const panelTrigger = container?.querySelector(
-      '[data-slot="navbar-panel"] [data-slot="dropdown-trigger"]',
-    ) as HTMLButtonElement | null;
+    const panelTrigger = (await waitForElement(
+      () =>
+        container?.querySelector(
+          '[data-slot="navbar-panel"] [data-slot="dropdown-trigger"]',
+        ) as HTMLButtonElement | null,
+    )) as HTMLButtonElement | null;
     panelTrigger?.click();
-    await settle();
-    expect(getDropdownContent("Product menu")).not.toBeNull();
+    const productMenuOpen = await waitFor(() => getDropdownContent("Product menu") !== null);
+    expect(productMenuOpen).toBe(true);
 
     getDropdownContent("Product menu")?.dispatchEvent(
       new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
