@@ -29,7 +29,7 @@ export default defineConfig({
       provider: playwright(),
       instances: [{ browser: "chromium" }],
     },
-    include: ["tests/browser/**/*.browser.test.tsx"],
+    include: ["tests/browser/**/*.test.tsx"],
   },
   oxc: {
     jsx: {

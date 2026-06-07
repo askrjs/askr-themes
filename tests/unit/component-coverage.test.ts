@@ -214,7 +214,7 @@ const COVERAGE = {
         "useTheme",
       ],
       directTests: [
-        "tests/browser/theme-route-persistence.browser.test.tsx",
+        "tests/browser/theme-route-persistence.test.tsx",
         "tests/jsdom/theme-contract.test.tsx",
         "tests/jsdom/theme-route-persistence.test.tsx",
         "tests/unit/package-surface.test.ts",
