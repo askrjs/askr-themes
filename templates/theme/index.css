@@ -2,9 +2,9 @@
 @import "./styles/base/reset.css";
 @import "./styles/base/typography.css";
 @import "./styles/base/icon.css";
-@import "./styles/base/utilities.css";
 @import "./styles/layout/layout.css";
 @import "./styles/layout/responsive-layout.css";
+@import "./styles/base/utilities.css";
 @import "./styles/layout/block.css";
 @import "./styles/layout/patterns.css";
 @import "./styles/layout/aspect-ratio.css";
