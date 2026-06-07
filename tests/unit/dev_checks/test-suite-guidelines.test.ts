@@ -103,14 +103,9 @@ describe("Test suite guidelines", () => {
             message: "Assertions must not use `|| true`; assert the specific behavior instead",
           });
         }
-        if (
-          /behavior\.test\.(ts|tsx)$/.test(file) &&
-          /\b(setTimeout|sleep)\s*\(/.test(line)
-        ) {
+        if (/behavior\.test\.(ts|tsx)$/.test(file) && /\b(setTimeout|sleep)\s*\(/.test(line)) {
           const usesFakeTimers =
-            /\bvi\.(useFakeTimers|advanceTimers|runAllTimers|runOnlyPendingTimers)/.test(
-              content,
-            );
+            /\bvi\.(useFakeTimers|advanceTimers|runAllTimers|runOnlyPendingTimers)/.test(content);
           if (!usesFakeTimers) {
             failures.push({
               file,
@@ -173,9 +168,7 @@ describe("Test suite guidelines", () => {
 
   it("should keep browser tests on public themed behavior", () => {
     const browserDir = path.join(testsDir, "browser");
-    const files = readAllTestFiles(browserDir).filter((file) =>
-      /\.test\.(ts|tsx)$/.test(file),
-    );
+    const files = readAllTestFiles(browserDir).filter((file) => /\.test\.(ts|tsx)$/.test(file));
     const failures: string[] = [];
     const privateImportPattern =
       /from\s+['"][^'"]*\/src\/components\/(?:_internal|[^'"]+\.(?:shared|types))['"]/;
