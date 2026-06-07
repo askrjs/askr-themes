@@ -147,21 +147,34 @@
   row-gap: var(--ak-space-lg);
 }
 
-:where(.flex-col, [data-slot="flex"][data-direction="initial:column"]) {
+:where(
+  .flex-col,
+  [data-slot="flex"][data-direction="initial:column"],
+  [data-slot="inline"][data-direction="initial:column"]
+) {
   flex-direction: column;
 }
 
-:where(.flex-row-reverse, [data-slot="flex"][data-direction="initial:row-reverse"]) {
+:where(
+  .flex-row-reverse,
+  [data-slot="flex"][data-direction="initial:row-reverse"],
+  [data-slot="inline"][data-direction="initial:row-reverse"]
+) {
   flex-direction: row-reverse;
 }
 
-:where(.flex-col-reverse, [data-slot="flex"][data-direction="initial:column-reverse"]) {
+:where(
+  .flex-col-reverse,
+  [data-slot="flex"][data-direction="initial:column-reverse"],
+  [data-slot="inline"][data-direction="initial:column-reverse"]
+) {
   flex-direction: column-reverse;
 }
 
 :where(
   .items-start,
   [data-slot="flex"][data-align="initial:start"],
+  [data-slot="inline"][data-align="initial:start"],
   [data-slot="block"][data-align="initial:start"]
 ) {
   align-items: flex-start;
@@ -170,6 +183,7 @@
 :where(
   .items-end,
   [data-slot="flex"][data-align="initial:end"],
+  [data-slot="inline"][data-align="initial:end"],
   [data-slot="block"][data-align="initial:end"]
 ) {
   align-items: flex-end;
@@ -178,6 +192,7 @@
 :where(
   .items-center,
   [data-slot="flex"][data-align="initial:center"],
+  [data-slot="inline"][data-align="initial:center"],
   [data-slot="block"][data-align="initial:center"]
 ) {
   align-items: center;
@@ -186,6 +201,7 @@
 :where(
   .items-stretch,
   [data-slot="flex"][data-align="initial:stretch"],
+  [data-slot="inline"][data-align="initial:stretch"],
   [data-slot="block"][data-align="initial:stretch"]
 ) {
   align-items: stretch;
@@ -194,6 +210,7 @@
 :where(
   .items-baseline,
   [data-slot="flex"][data-align="initial:baseline"],
+  [data-slot="inline"][data-align="initial:baseline"],
   [data-slot="block"][data-align="initial:baseline"]
 ) {
   align-items: baseline;
@@ -202,6 +219,7 @@
 :where(
   .justify-start,
   [data-slot="flex"][data-justify="initial:start"],
+  [data-slot="inline"][data-justify="initial:start"],
   [data-slot="block"][data-justify="initial:start"]
 ) {
   justify-content: flex-start;
@@ -210,6 +228,7 @@
 :where(
   .justify-end,
   [data-slot="flex"][data-justify="initial:end"],
+  [data-slot="inline"][data-justify="initial:end"],
   [data-slot="block"][data-justify="initial:end"]
 ) {
   justify-content: flex-end;
@@ -218,6 +237,7 @@
 :where(
   .justify-center,
   [data-slot="flex"][data-justify="initial:center"],
+  [data-slot="inline"][data-justify="initial:center"],
   [data-slot="block"][data-justify="initial:center"]
 ) {
   justify-content: center;
@@ -226,15 +246,24 @@
 :where(
   .justify-between,
   [data-slot="flex"][data-justify="initial:between"],
+  [data-slot="inline"][data-justify="initial:between"],
   [data-slot="block"][data-justify="initial:between"]
 ) {
   justify-content: space-between;
 }
 
-:where(.flex-nowrap, [data-slot="flex"][data-wrap="initial:nowrap"]) {
+:where(
+  .flex-nowrap,
+  [data-slot="flex"][data-wrap="initial:nowrap"],
+  [data-slot="inline"][data-wrap="initial:nowrap"]
+) {
   flex-wrap: nowrap;
 }
 
-:where(.flex-wrap-reverse, [data-slot="flex"][data-wrap="initial:wrap-reverse"]) {
+:where(
+  .flex-wrap-reverse,
+  [data-slot="flex"][data-wrap="initial:wrap-reverse"],
+  [data-slot="inline"][data-wrap="initial:wrap-reverse"]
+) {
   flex-wrap: wrap-reverse;
 }

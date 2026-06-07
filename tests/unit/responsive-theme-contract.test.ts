@@ -16,6 +16,7 @@ const DEFAULT_RESPONSIVE_LAYOUT_FILE = join(
   "responsive-layout.css",
 );
 const DEFAULT_LAYOUT_FILE = join(DEFAULT_THEME_STYLES_DIR, "layout", "layout.css");
+const DEFAULT_UTILITIES_FILE = join(DEFAULT_THEME_STYLES_DIR, "base", "utilities.css");
 const TEMPLATE_RESPONSIVE_LAYOUT_FILE = join(
   TEMPLATE_THEME_STYLES_DIR,
   "layout",
@@ -71,11 +72,13 @@ describe("responsive theme contract", () => {
   const templateIndex = read(TEMPLATE_THEME_INDEX_FILE);
   const defaultResponsive = read(DEFAULT_RESPONSIVE_LAYOUT_FILE);
   const defaultLayout = read(DEFAULT_LAYOUT_FILE);
+  const defaultUtilities = read(DEFAULT_UTILITIES_FILE);
   const templateResponsive = read(TEMPLATE_RESPONSIVE_LAYOUT_FILE);
   const templateLayout = read(TEMPLATE_LAYOUT_FILE);
   const theming = read(THEMING_FILE);
   const normalizedDefaultResponsive = defaultResponsive.replace(/'/g, '"');
   const normalizedDefaultLayout = defaultLayout.replace(/'/g, '"');
+  const normalizedDefaultUtilities = defaultUtilities.replace(/'/g, '"');
 
   it("should keeps the default theme responsive layout contract in place", () => {
     expect(defaultIndex).toMatch(RESPONSIVE_IMPORT_PATTERN);
@@ -110,6 +113,35 @@ describe("responsive theme contract", () => {
 
     expect(templateResponsive).toBe(defaultResponsive);
     expect(templateLayout).toContain("Layout primitive contract placeholders");
+  });
+
+  it("should applies static layout utilities after the responsive layout reset", () => {
+    expect(defaultIndex.indexOf("./styles/layout/layout.css")).toBeLessThan(
+      defaultIndex.indexOf("./styles/base/utilities.css"),
+    );
+    expect(defaultIndex.indexOf("./styles/layout/responsive-layout.css")).toBeLessThan(
+      defaultIndex.indexOf("./styles/base/utilities.css"),
+    );
+    expect(templateIndex.indexOf("./styles/layout/layout.css")).toBeLessThan(
+      templateIndex.indexOf("./styles/base/utilities.css"),
+    );
+    expect(templateIndex.indexOf("./styles/layout/responsive-layout.css")).toBeLessThan(
+      templateIndex.indexOf("./styles/base/utilities.css"),
+    );
+  });
+
+  it("should covers Inline with the same static flex alignment utilities", () => {
+    const requiredInlineSelectors = [
+      '[data-slot="inline"][data-direction="initial:column"]',
+      '[data-slot="inline"][data-align="initial:center"]',
+      '[data-slot="inline"][data-align="initial:end"]',
+      '[data-slot="inline"][data-justify="initial:between"]',
+      '[data-slot="inline"][data-wrap="initial:nowrap"]',
+    ] as const;
+
+    for (const selector of requiredInlineSelectors) {
+      expect(normalizedDefaultUtilities).toContain(selector);
+    }
   });
 
   it("should documents responsive theming guidance", () => {

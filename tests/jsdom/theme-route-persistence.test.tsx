@@ -161,20 +161,31 @@ describe("theme route persistence", () => {
 
     const getToggle = () =>
       container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
+    const getIcon = () => getToggle()?.querySelector("svg") as SVGElement | null;
 
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+    expect(getIcon()?.getAttribute("data-icon")).toBe("sun");
 
     getToggle()?.click();
     await settle();
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("dark");
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+    expect(getIcon()?.getAttribute("data-icon")).toBe("moon");
 
     getToggle()?.click();
     await settle();
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
     expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+    expect(getIcon()?.getAttribute("data-icon")).toBe("sun");
+
+    getToggle()?.click();
+    await settle();
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
+    expect(getIcon()?.getAttribute("data-icon")).toBe("moon");
   });
 
   it("should mounts theme controls without render-time state errors", async () => {

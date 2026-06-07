@@ -96,11 +96,11 @@ describe("public family browser smoke", () => {
           <Block gap="2">Block</Block>
           <Box>Box</Box>
           <Container size="lg">Container</Container>
-          <Flex gap="3" direction="column">
+          <Flex gap="3" direction="column" align="start" justify="between">
             <span>Flex A</span>
             <span>Flex B</span>
           </Flex>
-          <Inline gap="3" wrap="nowrap">
+          <Inline gap="3" wrap="nowrap" align="center" justify="between">
             <span>Inline A</span>
             <span>Inline B</span>
           </Inline>
@@ -198,6 +198,10 @@ describe("public family browser smoke", () => {
     expect(px(getComputedStyle(spacerEl!).flexBasis)).toBeGreaterThan(0);
     expect(getComputedStyle(inlineEl!).display).toBe("flex");
     expect(getComputedStyle(inlineEl!).flexWrap).toBe("nowrap");
+    expect(getComputedStyle(flexEl!).alignItems).toBe("flex-start");
+    expect(getComputedStyle(flexEl!).justifyContent).toBe("space-between");
+    expect(getComputedStyle(inlineEl!).alignItems).toBe("center");
+    expect(getComputedStyle(inlineEl!).justifyContent).toBe("space-between");
     expect(inlineGap).toBe(flexGap);
     expect(inlineGap).toBeGreaterThan(0);
   });

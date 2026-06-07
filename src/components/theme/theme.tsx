@@ -1,4 +1,5 @@
 import { defineContext, readContext, state } from "@askrjs/askr";
+import type { JSXElement } from "@askrjs/askr/foundations/structures";
 import { resource } from "@askrjs/askr/resources";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
@@ -186,8 +187,9 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
     darkIcon,
     systemIcon,
   });
+  const renderedIcon = cloneThemeToggleIcon(themedIcon);
   const content =
-    typeof children === "function" ? children(renderContext) : (children ?? themedIcon);
+    typeof children === "function" ? children(renderContext) : (children ?? renderedIcon);
 
   return (
     <Button
@@ -228,6 +230,25 @@ export function resolveThemeToggleIcon(
   icons: Pick<ThemeToggleProps, "lightIcon" | "darkIcon" | "systemIcon">,
 ): unknown {
   return getThemeIcon(theme, icons) ?? getThemeIcon(nextTheme, icons);
+}
+
+function isJSXElement(value: unknown): value is JSXElement {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "$$typeof" in value &&
+    "type" in value &&
+    "props" in value
+  );
+}
+
+function cloneThemeToggleIcon(icon: unknown): unknown {
+  if (!isJSXElement(icon)) return icon;
+
+  return {
+    ...icon,
+    props: { ...((icon.props as Record<string, unknown> | undefined) ?? {}) },
+  };
 }
 
 function syncThemeRoot(themeChoice: ThemeName | null | undefined): void {
