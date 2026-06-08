@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test"
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
-// Use the sibling repo build output so this regression tracks current askr-ui state.
 import {
   AlertDialog,
   AlertDialogContent,
@@ -18,7 +17,7 @@ import {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "../../../askr-ui/dist/index.js";
+} from "@askrjs/ui";
 
 import "../../src/themes/default/index.css";
 
