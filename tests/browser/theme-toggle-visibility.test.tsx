@@ -23,6 +23,8 @@ describe("theme toggle visibility", () => {
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/theme-visibility");
     clearRoutes();
+    window.localStorage.removeItem("askr-theme");
+    window.localStorage.removeItem("askr-theme-toggle-visibility");
   });
 
   afterEach(() => {
@@ -33,13 +35,16 @@ describe("theme toggle visibility", () => {
     }
 
     clearRoutes();
+    window.localStorage.removeItem("askr-theme");
+    window.localStorage.removeItem("askr-theme-toggle-visibility");
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-theme-choice");
+    document.documentElement.style.removeProperty("--ak-theme-toggle-icon-size");
   });
 
   it("should keep toggle content visible after switching to dark mode", async () => {
     route("/theme-visibility", () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider defaultTheme="light" storageKey="askr-theme-toggle-visibility">
         <Shell variant="topbar">
           <ShellNav>
             <Navbar aria-label="Theme visibility">
@@ -108,6 +113,9 @@ describe("theme toggle visibility", () => {
     expect(icon?.getAttribute("data-icon")).toBe("sun");
     expect(getComputedStyle(icon!).inlineSize).toBe("14px");
     expect(getComputedStyle(icon!).blockSize).toBe("14px");
+    document.documentElement.style.setProperty("--ak-theme-toggle-icon-size", "22px");
+    expect(getComputedStyle(icon!).inlineSize).toBe("22px");
+    expect(getComputedStyle(icon!).blockSize).toBe("22px");
     expect(textToggle?.textContent).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
 
