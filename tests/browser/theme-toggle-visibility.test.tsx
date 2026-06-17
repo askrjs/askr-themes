@@ -5,7 +5,7 @@ import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { NavBrand, NavGroup, Navbar } from "../../src/navs";
 import { Shell, ShellMain, ShellNav } from "../../src/shells";
-import { ThemeProvider, ThemeToggle } from "../../src/theme";
+import { ThemeProvider, ThemeToggle, type ThemeToggleRenderContext } from "../../src/theme";
 
 import "../../src/themes/default/index.css";
 
@@ -84,7 +84,7 @@ describe("theme toggle visibility", () => {
                     </svg>
                   }
                 />
-                <ThemeToggle>{({ nextTheme }) => nextTheme}</ThemeToggle>
+                <ThemeToggle>{({ nextTheme }: ThemeToggleRenderContext) => nextTheme}</ThemeToggle>
               </NavGroup>
             </Navbar>
           </ShellNav>
@@ -124,10 +124,9 @@ describe("theme toggle visibility", () => {
     iconToggle?.click();
     await settle();
 
-    const togglesAfter = [...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? [])] as [
-      HTMLButtonElement,
-      HTMLButtonElement,
-    ];
+    const togglesAfter = [
+      ...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? []),
+    ] as [HTMLButtonElement, HTMLButtonElement];
     expect(togglesAfter).toHaveLength(2);
     const [iconToggleAfter, textToggleAfter] = togglesAfter;
     const iconAfter = iconToggleAfter?.querySelector("svg");

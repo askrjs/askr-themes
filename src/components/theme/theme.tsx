@@ -86,6 +86,7 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
   } = props;
 
   const themeState = state<ThemeName>(readStoredTheme(storageKey) ?? defaultTheme);
+  const currentTheme = themeState();
 
   const setTheme = (nextTheme: ThemeName) => {
     themeState.set(nextTheme);
@@ -99,8 +100,6 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
     themes,
     storageKey,
   };
-
-  const currentTheme = themeState();
 
   return (
     <ThemeContext.Scope value={value}>
@@ -245,9 +244,14 @@ function isJSXElement(value: unknown): value is JSXElement {
 function cloneThemeToggleIcon(icon: unknown): unknown {
   if (!isJSXElement(icon)) return icon;
 
+  const props = icon.props as Record<string, unknown> | undefined;
+  if (!props || Object.keys(props).length === 0) {
+    return icon;
+  }
+
   return {
     ...icon,
-    props: { ...(icon.props as Record<string, unknown> | undefined) },
+    props: { ...props },
   };
 }
 
