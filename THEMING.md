@@ -117,7 +117,11 @@ ShellNav, ShellMain, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
-icons; applications pass their own icon/content props.
+icons; applications pass their own icon/content props. The rendered content is
+wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
+be styled consistently across themes. If you use icon children, the direct child
+icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em))`,
+so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
 The common wrapper components also emit familiar alias classes such as
 `alert`, `btn-group`, `btn-close`, `input-group`, `list-group`, and
 `pagination` so app-level CSS can stay close to the Bootstrap mental model

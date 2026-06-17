@@ -35,6 +35,22 @@
     opacity var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+:where([data-slot="theme-toggle-content"]) {
+  --_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-inline-size: 0;
+}
+
+:where([data-slot="theme-toggle-content"]) > :where([data-slot="icon"], svg) {
+  flex: none;
+  inline-size: var(--_ak-theme-toggle-icon-size);
+  block-size: var(--_ak-theme-toggle-icon-size);
+  color: currentColor;
+}
+
 :where(.btn) > :where([data-slot="icon"], svg),
 :where([data-slot="button"]) > :where([data-slot="icon"], svg) {
   flex: none;
