@@ -98,44 +98,48 @@ describe("theme toggle visibility", () => {
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    const toggles = [
-      ...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? []),
-    ] as HTMLButtonElement[];
-    const iconToggle = toggles[0];
-    const textToggle = toggles[1];
+    const toggles = [...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? [])] as [
+      HTMLButtonElement,
+      HTMLButtonElement,
+    ];
+    expect(toggles).toHaveLength(2);
+    const [iconToggle, textToggle] = toggles;
     const iconContent = iconToggle?.querySelector('[data-slot="theme-toggle-content"]');
-    const icon = iconToggle?.querySelector("svg") as SVGElement | null;
+    const icon = iconToggle?.querySelector("svg");
 
     expect(iconToggle).not.toBeNull();
     expect(textToggle).not.toBeNull();
+    expect(icon).not.toBeNull();
     expect(iconContent).not.toBeNull();
     expect(iconToggle?.querySelectorAll("svg")).toHaveLength(1);
     expect(icon?.getAttribute("data-icon")).toBe("sun");
-    expect(getComputedStyle(icon!).inlineSize).toBe("14px");
-    expect(getComputedStyle(icon!).blockSize).toBe("14px");
+    expect(getComputedStyle(icon as SVGElement).inlineSize).toBe("14px");
+    expect(getComputedStyle(icon as SVGElement).blockSize).toBe("14px");
     document.documentElement.style.setProperty("--ak-theme-toggle-icon-size", "22px");
-    expect(getComputedStyle(icon!).inlineSize).toBe("22px");
-    expect(getComputedStyle(icon!).blockSize).toBe("22px");
+    expect(getComputedStyle(icon as SVGElement).inlineSize).toBe("22px");
+    expect(getComputedStyle(icon as SVGElement).blockSize).toBe("22px");
     expect(textToggle?.textContent).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
 
     iconToggle?.click();
     await settle();
 
-    const togglesAfter = [
-      ...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? []),
-    ] as HTMLButtonElement[];
-    const iconToggleAfter = togglesAfter[0];
-    const textToggleAfter = togglesAfter[1];
-    const iconAfter = iconToggleAfter?.querySelector("svg") as SVGElement | null;
+    const togglesAfter = [...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? [])] as [
+      HTMLButtonElement,
+      HTMLButtonElement,
+    ];
+    expect(togglesAfter).toHaveLength(2);
+    const [iconToggleAfter, textToggleAfter] = togglesAfter;
+    const iconAfter = iconToggleAfter?.querySelector("svg");
 
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(iconToggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(iconToggleAfter?.querySelector('[data-slot="theme-toggle-content"]')).not.toBeNull();
     expect(iconToggleAfter?.querySelectorAll("svg")).toHaveLength(1);
+    expect(iconAfter).not.toBeNull();
     expect(iconAfter?.getAttribute("data-icon")).toBe("moon");
-    expect(getComputedStyle(iconAfter!).inlineSize).toBe("22px");
-    expect(getComputedStyle(iconAfter!).blockSize).toBe("22px");
+    expect(getComputedStyle(iconAfter as SVGElement).inlineSize).toBe("22px");
+    expect(getComputedStyle(iconAfter as SVGElement).blockSize).toBe("22px");
     expect(textToggleAfter?.textContent).toBe("light");
     expect(textToggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(textToggleAfter?.getAttribute("data-next-theme")).toBe("light");
