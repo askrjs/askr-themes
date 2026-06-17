@@ -3,6 +3,15 @@ import { renderShellPanel } from "../shell/shell-panel";
 import { NavbarResponsiveContext } from "./navbar.context";
 import type { NavbarPanelProps } from "./navbar.types";
 
+const DEFAULT_NAVBAR_RESPONSIVE_CONTEXT = {
+  active: () => false,
+  collapseLabel: () => "Menu",
+  closePanel: () => undefined,
+  panelId: () => undefined,
+  panelOpen: () => false,
+  togglePanel: () => undefined,
+};
+
 export function NavbarPanel(props: NavbarPanelProps): JSX.Element | null {
   const {
     active: activeProp,
@@ -27,24 +36,10 @@ export function NavbarPanel(props: NavbarPanelProps): JSX.Element | null {
         try {
           return readContext(NavbarResponsiveContext);
         } catch {
-          return {
-            active: () => false,
-            collapseLabel: () => "Menu",
-            closePanel: () => undefined,
-            panelId: () => undefined,
-            panelOpen: () => false,
-            togglePanel: () => undefined,
-          };
+          return DEFAULT_NAVBAR_RESPONSIVE_CONTEXT;
         }
       })()
-    : {
-        active: () => false,
-        collapseLabel: () => "Menu",
-        closePanel: () => undefined,
-        panelId: () => undefined,
-        panelOpen: () => false,
-        togglePanel: () => undefined,
-      };
+    : DEFAULT_NAVBAR_RESPONSIVE_CONTEXT;
   const active = activeProp ?? responsive.active();
   const open = openProp ?? responsive.panelOpen();
   const panelId = panelIdProp ?? responsive.panelId();

@@ -3,6 +3,19 @@ import { renderShellPanel } from "../shell/shell-panel";
 import { SidebarResponsiveContext } from "./sidebar.context";
 import type { SidebarPanelProps } from "./sidebar.types";
 
+const DEFAULT_SIDEBAR_RESPONSIVE_CONTEXT = {
+  active: () => false,
+  collapseLabel: () => "Menu",
+  closePanel: () => undefined,
+  iconCollapsed: () => false,
+  isRailCollapsible: () => false,
+  orientation: () => "vertical" as const,
+  panelId: () => undefined,
+  panelOpen: () => false,
+  togglePanel: () => undefined,
+  toggleRail: () => undefined,
+};
+
 export function SidebarPanel(props: SidebarPanelProps): JSX.Element | null {
   const {
     active: activeProp,
@@ -27,32 +40,10 @@ export function SidebarPanel(props: SidebarPanelProps): JSX.Element | null {
         try {
           return readContext(SidebarResponsiveContext);
         } catch {
-          return {
-            active: () => false,
-            collapseLabel: () => "Menu",
-            closePanel: () => undefined,
-            iconCollapsed: () => false,
-            isRailCollapsible: () => false,
-            orientation: () => "vertical" as const,
-            panelId: () => undefined,
-            panelOpen: () => false,
-            togglePanel: () => undefined,
-            toggleRail: () => undefined,
-          };
+          return DEFAULT_SIDEBAR_RESPONSIVE_CONTEXT;
         }
       })()
-    : {
-        active: () => false,
-        collapseLabel: () => "Menu",
-        closePanel: () => undefined,
-        iconCollapsed: () => false,
-        isRailCollapsible: () => false,
-        orientation: () => "vertical" as const,
-        panelId: () => undefined,
-        panelOpen: () => false,
-        togglePanel: () => undefined,
-        toggleRail: () => undefined,
-      };
+    : DEFAULT_SIDEBAR_RESPONSIVE_CONTEXT;
   const active = activeProp ?? responsive.active();
   const open = openProp ?? responsive.panelOpen();
   const panelId = panelIdProp ?? responsive.panelId();

@@ -47,16 +47,20 @@ export function isShellPanelChild(child: unknown, panelComponent: unknown): chil
 }
 
 export function renderKeyedShellChildren(children: unknown, keyPrefix: string): JSX.Element {
-  const keyedChildren = toChildArray(children).map((child, index) => {
-    if (!isJsxElement(child) || child.key != null) {
-      return child;
-    }
+  const childList = toChildArray(children);
+  const needsKeying = childList.some((child) => isJsxElement(child) && child.key == null);
+  const keyedChildren = needsKeying
+    ? childList.map((child, index) => {
+        if (!isJsxElement(child) || child.key != null) {
+          return child;
+        }
 
-    return {
-      ...child,
-      key: `${keyPrefix}-${index}`,
-    };
-  });
+        return {
+          ...child,
+          key: `${keyPrefix}-${index}`,
+        };
+      })
+    : childList;
 
   return (
     <For
@@ -75,24 +79,54 @@ export function renderKeyedShellPanelChildren(
   keyPrefix: string,
   panelProps: ShellResponsivePanelProps,
 ): JSX.Element {
-  const keyedChildren = toChildArray(children).map((child, index) => {
+  const childList = toChildArray(children);
+  const needsPanelProps = childList.some((child) => {
     if (!isJsxElement(child)) {
-      return child;
+      return false;
     }
 
-    return {
-      ...child,
-      key: child.key != null ? child.key : `${keyPrefix}-${index}`,
-      props: {
-        ...child.props,
-        active: panelProps.active,
-        collapseLabel: panelProps.collapseLabel,
-        onClose: panelProps.onClose,
-        open: panelProps.open,
-        panelId: panelProps.panelId,
-      },
-    };
+    const props = child.props as Record<string, unknown> | undefined;
+
+    return (
+      props?.active !== panelProps.active ||
+      props?.collapseLabel !== panelProps.collapseLabel ||
+      props?.onClose !== panelProps.onClose ||
+      props?.open !== panelProps.open ||
+      props?.panelId !== panelProps.panelId
+    );
   });
+  const keyedChildren = needsPanelProps
+    ? childList.map((child, index) => {
+        if (!isJsxElement(child)) {
+          return child;
+        }
+
+        const props = child.props as Record<string, unknown> | undefined;
+
+        if (
+          props?.active === panelProps.active &&
+          props?.collapseLabel === panelProps.collapseLabel &&
+          props?.onClose === panelProps.onClose &&
+          props?.open === panelProps.open &&
+          props?.panelId === panelProps.panelId
+        ) {
+          return child;
+        }
+
+        return {
+          ...child,
+          key: child.key != null ? child.key : `${keyPrefix}-${index}`,
+          props: {
+            ...props,
+            active: panelProps.active,
+            collapseLabel: panelProps.collapseLabel,
+            onClose: panelProps.onClose,
+            open: panelProps.open,
+            panelId: panelProps.panelId,
+          },
+        };
+      })
+    : childList;
 
   return (
     <For
