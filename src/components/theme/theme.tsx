@@ -203,7 +203,7 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
         if (!event.defaultPrevented) theme.setTheme(nextTheme);
       }}
     >
-      {content}
+      <span data-slot="theme-toggle-content">{content}</span>
     </Button>
   );
 }
