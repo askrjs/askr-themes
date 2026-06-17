@@ -134,8 +134,8 @@ describe("theme toggle visibility", () => {
     expect(iconToggleAfter?.querySelector('[data-slot="theme-toggle-content"]')).not.toBeNull();
     expect(iconToggleAfter?.querySelectorAll("svg")).toHaveLength(1);
     expect(iconAfter?.getAttribute("data-icon")).toBe("moon");
-    expect(getComputedStyle(iconAfter!).inlineSize).toBe("14px");
-    expect(getComputedStyle(iconAfter!).blockSize).toBe("14px");
+    expect(getComputedStyle(iconAfter!).inlineSize).toBe("22px");
+    expect(getComputedStyle(iconAfter!).blockSize).toBe("22px");
     expect(textToggleAfter?.textContent).toBe("light");
     expect(textToggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(textToggleAfter?.getAttribute("data-next-theme")).toBe("light");
