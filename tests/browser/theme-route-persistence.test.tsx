@@ -1,8 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
+import { createQuery } from "@askrjs/askr/data";
 import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
 
+import { NavBrand, NavGroup, Navbar } from "../../src/navs";
+import { Shell, ShellMain, ShellNav } from "../../src/shells";
 import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemeProvider, ThemeToggle } from "../../src/theme";
 
 async function settle(): Promise<void> {
@@ -168,5 +171,82 @@ describe("theme route persistence in the browser", () => {
     expect(html.getAttribute("data-theme")).toBe("ginger");
     expect(html.getAttribute("data-theme-choice")).toBe("ginger");
     expect(window.localStorage.getItem("askr-theme")).toBe("ginger");
+  });
+
+  it("should keep pending routed content recoverable after repeated theme toggles", async () => {
+    let resolveTopology: (() => void) | undefined;
+    let topologyFetchCount = 0;
+
+    async function fetchTopology(): Promise<{ name: string }> {
+      topologyFetchCount += 1;
+      await new Promise<void>((resolve) => {
+        resolveTopology = resolve;
+      });
+      return { name: "Messaging topology" };
+    }
+
+    function TopologyPage(): JSX.Element {
+      const topology = createQuery({
+        key: "topology",
+        fetch: fetchTopology,
+      });
+
+      return (
+        <section data-slot="topology-page">
+          {topology.loading ? "Loading messaging topology..." : topology.data?.name}
+        </section>
+      );
+    }
+
+    const AppLayout = ({ children }: { children?: unknown }) => (
+      <ThemeProvider defaultTheme="light">
+        <Shell variant="topbar">
+          <ShellNav>
+            <Navbar aria-label="Navigation">
+              <NavBrand>
+                <a href="/">
+                  <strong>Fitz</strong>
+                </a>
+              </NavBrand>
+              <NavGroup align="end">
+                <ThemeToggle />
+              </NavGroup>
+            </Navbar>
+          </ShellNav>
+          <ShellMain>{children}</ShellMain>
+        </Shell>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/theme-stall", () => <TopologyPage />);
+    });
+
+    window.history.replaceState({}, "", "/theme-stall");
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggle = () =>
+      container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
+    const page = () =>
+      container?.querySelector('[data-slot="topology-page"]')?.textContent?.trim() ?? "";
+
+    expect(page()).toBe("Loading messaging topology...");
+    expect(topologyFetchCount).toBe(1);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+
+    getToggle()?.click();
+    await settle();
+    getToggle()?.click();
+    await settle();
+
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(topologyFetchCount).toBe(1);
+
+    resolveTopology?.();
+    await settle();
+
+    expect(page()).toBe("Messaging topology");
+    expect(container?.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
   });
 });
