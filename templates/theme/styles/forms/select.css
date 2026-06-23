@@ -125,16 +125,22 @@
 }
 
 :where(.select-item, [data-slot="select-item"]) {
+  appearance: none;
   display: flex;
   align-items: center;
+  inline-size: 100%;
   min-height: var(--ak-density-control-height-md);
   padding: 0 var(--ak-density-control-padding-x-md);
+  border: 0;
   border-radius: var(--ak-radius-md);
+  background: transparent;
   color: var(--ak-color-text);
   cursor: pointer;
+  font-family: inherit;
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
   overflow-wrap: anywhere;
+  text-align: start;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     color var(--ak-duration-fast) var(--ak-ease-standard);

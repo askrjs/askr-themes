@@ -128,7 +128,7 @@
     "bench:tier1": "cross-env NODE_ENV=production vp test bench --run --reporter=default --config vitest.bench.tier1.config.ts",
     "bench:tier2": "cross-env NODE_ENV=production vp test bench --run --reporter=default --config vitest.bench.tier2.config.ts",
     "bench:tier3": "cross-env NODE_ENV=production vp test bench --run --reporter=default --config vitest.bench.tier3.config.ts",
-    "bench:tier4": "cross-env NODE_ENV=production vp test bench --run --reporter=default --config vitest.bench.tier4.config.ts",
+    "bench:tier4": "cross-env NODE_ENV=production vp test bench --run --reporter=default --config vitest.bench.tier4.config.ts --mode production",
     "test": "npm run test:unit && npm run test:checks && npm run test:jsdom && npm run test:browser",
     "test:unit": "vp test run -c vitest.test.unit.config.ts",
     "test:jsdom": "cross-env NODE_ENV=production vp test run -c vitest.test.jsdom.config.ts",
@@ -144,13 +144,13 @@
     "@askrjs/ui": ">=0.0.1 <0.1.0",
     "@askrjs/vite": ">=0.0.1 <0.1.0",
     "@tsdown/css": "0.22.3",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.0.0",
     "@vitest/browser-playwright": "^4.1.9",
     "cross-env": "^10.1.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.61.0",
     "typescript": "^6.0.3",
-    "vite-plus": "^0.2.0"
+    "vite-plus": "^0.2.1"
   },
   "peerDependencies": {
     "@askrjs/askr": ">=0.0.1 <0.1.0",

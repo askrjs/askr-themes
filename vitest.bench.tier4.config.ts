@@ -2,9 +2,14 @@ import { askr } from "@askrjs/vite";
 import { playwright } from "vite-plus/test/browser-playwright";
 import { defineConfig } from "vite-plus";
 
+const include = ["benches/tier4/**/*.bench.ts", "benches/tier4/**/*.bench.tsx"];
+
 export default defineConfig({
   plugins: [askr()],
   test: {
+    benchmark: {
+      include,
+    },
     globals: true,
     browser: {
       enabled: true,
@@ -12,7 +17,7 @@ export default defineConfig({
       provider: playwright(),
       instances: [{ browser: "chromium" }],
     },
-    include: ["benches/tier4/**/*.bench.ts", "benches/tier4/**/*.bench.tsx"],
+    include,
   },
   oxc: {
     jsx: {

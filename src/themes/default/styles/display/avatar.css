@@ -19,12 +19,18 @@
 }
 
 :where(.avatar-fallback, [data-slot="avatar-fallback"]) {
+  box-sizing: border-box;
   display: inline-grid;
   place-items: center;
   inline-size: 100%;
   block-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
