@@ -127,6 +127,26 @@ describe("visual polish contracts", () => {
     }
   });
 
+  it("should reset select popup items so native button chrome does not leak through", () => {
+    document.documentElement.setAttribute("data-theme", "dark");
+    document.body.innerHTML = `
+      <div data-slot="select-content">
+        <button data-slot="select-item" data-state="checked">Production</button>
+        <button data-slot="select-item">Preview</button>
+      </div>
+    `;
+
+    const selectItem = document.querySelector(
+      '[data-slot="select-item"]:not([data-state="checked"])',
+    ) as HTMLElement;
+    const style = getComputedStyle(selectItem);
+
+    expect(style.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(style.borderTopStyle).toBe("none");
+    expect(px(style.borderTopWidth)).toBe(0);
+    expect(style.textAlign).toBe("start");
+  });
+
   it("should keeps dark overlay surfaces dark, elevated, and readable", () => {
     document.documentElement.setAttribute("data-theme", "dark");
     document.body.innerHTML = `
@@ -169,6 +189,13 @@ describe("visual polish contracts", () => {
         </li>
       </ul>
       <table data-slot="table">
+        <thead data-slot="table-head">
+          <tr data-slot="table-row">
+            <th data-slot="table-header-cell">Name</th>
+            <th data-slot="table-header-cell">Role</th>
+            <th data-slot="table-header-cell">Status</th>
+          </tr>
+        </thead>
         <tbody data-slot="table-body">
           <tr data-slot="table-row"><td data-slot="table-cell">Cell</td></tr>
         </tbody>
@@ -178,11 +205,19 @@ describe("visual polish contracts", () => {
     const card = document.querySelector('[data-slot="card"]') as HTMLElement;
     const listItem = document.querySelector('[data-slot="list-group-item"]') as HTMLElement;
     const tableCell = document.querySelector('[data-slot="table-cell"]') as HTMLElement;
+    const tableHeaders = [
+      ...document.querySelectorAll('[data-slot="table-header-cell"]'),
+    ] as HTMLElement[];
 
     expect(px(getComputedStyle(card).gap)).toBeGreaterThanOrEqual(12);
     expect(px(getComputedStyle(listItem).minHeight)).toBeGreaterThanOrEqual(42);
     expect(px(getComputedStyle(tableCell).paddingBlockStart)).toBeGreaterThanOrEqual(10);
     expect(px(getComputedStyle(tableCell).paddingInlineStart)).toBeGreaterThanOrEqual(12);
+
+    for (const header of tableHeaders) {
+      expect(getComputedStyle(header).overflowWrap, header.textContent ?? "").toBe("normal");
+      expect(header.scrollWidth, header.textContent ?? "").toBeLessThanOrEqual(header.clientWidth);
+    }
   });
 
   it("should keeps supporting primitives compact, responsive, and aligned", () => {
@@ -226,6 +261,10 @@ describe("visual polish contracts", () => {
     expect(px(getComputedStyle(avatar).height)).toBe(40);
     expect(getComputedStyle(avatar).flexShrink).toBe("0");
     expect(getComputedStyle(avatarFallback).lineHeight).toBe("14px");
+    expect(getComputedStyle(avatarFallback).overflow).toBe("hidden");
+    expect(getComputedStyle(avatarFallback).textOverflow).toBe("ellipsis");
+    expect(getComputedStyle(avatarFallback).whiteSpace).toBe("nowrap");
+    expect(avatarFallback.scrollHeight).toBeLessThanOrEqual(avatarFallback.clientHeight);
 
     expect(px(getComputedStyle(progress).height)).toBe(8);
     expect(progress.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
@@ -305,6 +344,7 @@ describe("visual polish contracts", () => {
     }
 
     expect(getComputedStyle(badge).maxWidth).toBe("100%");
+    expect(getComputedStyle(badge).overflowWrap).toBe("normal");
     expect(px(getComputedStyle(badgeIcon).width)).toBe(16);
     expect(getComputedStyle(alert).minWidth).toBe("0px");
     expect(getComputedStyle(alertTitle).overflowWrap).toBe("anywhere");
@@ -339,6 +379,23 @@ describe("visual polish contracts", () => {
       expect(overflowing, `element overflow at ${width}px`).toEqual([]);
       expect(doc.querySelectorAll(".component-card").length).toBeGreaterThanOrEqual(22);
     }
+  });
+
+  it("should keeps constrained desktop navbar brand and actions visible", async () => {
+    document.body.innerHTML = "";
+    const iframe = await loadAuditFrame(1024);
+    const doc = iframe.contentDocument!;
+    const shell = doc.querySelector(
+      '#shell .preview[data-theme="light"] [data-slot="navbar-shell"]',
+    ) as HTMLElement;
+    const brand = shell.querySelector('[data-slot="navbar-brand"]') as HTMLElement;
+    const endGroup = shell.querySelector('[data-align="end"]') as HTMLElement;
+    const action = endGroup.querySelector('[data-slot="button"]') as HTMLElement;
+
+    expect(shell.getBoundingClientRect().width).toBeLessThan(480);
+    expect(brand.getBoundingClientRect().width).toBeGreaterThan(20);
+    expect(endGroup.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
+    expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
   });
 
   it("should keeps oversized block presets inside narrow containers", () => {

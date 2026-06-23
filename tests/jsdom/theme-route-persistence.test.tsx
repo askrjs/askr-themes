@@ -3,7 +3,12 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
 
-import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
+import {
+  ThemePicker,
+  ThemeProvider,
+  ThemeToggle,
+  type ThemeToggleRenderContext,
+} from "../../src/theme";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -211,5 +216,224 @@ describe("theme route persistence", () => {
     expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
     expect(container.querySelector('[data-slot="theme-picker"]')).not.toBeNull();
     expect(container.querySelector('[data-theme-control="toggle"]')).not.toBeNull();
+  });
+
+  it("should keep multiple toggles synchronized after repeated presses", async () => {
+    const renderLog: string[] = [];
+    const renderLabel = ({ theme, nextTheme }: ThemeToggleRenderContext) => {
+      renderLog.push(`${theme}->${nextTheme}`);
+      return `${theme}->${nextTheme}`;
+    };
+
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="light">
+        <ThemeToggle aria-label="Icon toggle" />
+        <ThemeToggle aria-label="Text toggle">{renderLabel}</ThemeToggle>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggles = () =>
+      [...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? [])] as [
+        HTMLButtonElement,
+        HTMLButtonElement,
+      ];
+
+    let [iconToggle, textToggle] = getToggles();
+
+    expect(iconToggle?.getAttribute("data-theme-choice")).toBe("light");
+    expect(iconToggle?.getAttribute("data-next-theme")).toBe("dark");
+    expect(textToggle?.getAttribute("data-theme-choice")).toBe("light");
+    expect(textToggle?.textContent).toBe("light->dark");
+
+    iconToggle?.click();
+    await settle();
+
+    [iconToggle, textToggle] = getToggles();
+
+    expect(iconToggle?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(iconToggle?.getAttribute("data-next-theme")).toBe("light");
+    expect(textToggle?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(textToggle?.textContent).toBe("dark->light");
+
+    textToggle?.click();
+    await settle();
+
+    [iconToggle, textToggle] = getToggles();
+
+    expect(iconToggle?.getAttribute("data-theme-choice")).toBe("light");
+    expect(iconToggle?.getAttribute("data-next-theme")).toBe("dark");
+    expect(textToggle?.getAttribute("data-theme-choice")).toBe("light");
+    expect(textToggle?.textContent).toBe("light->dark");
+    expect(window.localStorage.getItem("askr-theme")).toBe("light");
+    expect(renderLog).toContain("light->dark");
+    expect(renderLog).toContain("dark->light");
+  });
+
+  it("should let onPress cancel theme changes before storage or root mutation", async () => {
+    const events: string[] = [];
+
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="light">
+        <ThemeToggle
+          onPress={(event) => {
+            events.push(
+              `${document.documentElement.getAttribute("data-theme")}:${String(
+                event.defaultPrevented ?? false,
+              )}`,
+            );
+            event.preventDefault?.();
+            events.push(`after:${String(event.defaultPrevented ?? false)}`);
+          }}
+        />
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const toggle = container?.querySelector(
+      '[data-theme-control="toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(window.localStorage.getItem("askr-theme")).toBeNull();
+
+    toggle?.click();
+    await settle();
+
+    const toggleAfter = container?.querySelector(
+      '[data-theme-control="toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(events).toEqual(["light:false", "after:true"]);
+    expect(toggleAfter?.getAttribute("data-theme-choice")).toBe("light");
+    expect(toggleAfter?.getAttribute("data-next-theme")).toBe("dark");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("light");
+    expect(window.localStorage.getItem("askr-theme")).toBeNull();
+  });
+
+  it("should treat an empty toggle cycle as a no-op", async () => {
+    let pressCount = 0;
+
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="light">
+        <ThemeToggle themes={[]} onPress={() => (pressCount += 1)}>
+          {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
+        </ThemeToggle>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggle = () =>
+      container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("light");
+    expect(getToggle()?.textContent).toBe("light->light");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(window.localStorage.getItem("askr-theme")).toBeNull();
+
+    getToggle()?.click();
+    await settle();
+
+    expect(pressCount).toBe(1);
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("light");
+    expect(getToggle()?.textContent).toBe("light->light");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("light");
+    expect(window.localStorage.getItem("askr-theme")).toBeNull();
+  });
+
+  it("should recover custom cycles when the current theme is outside the cycle", async () => {
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="system">
+        <ThemeToggle themes={["tabby", "ginger"]}>
+          {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
+        </ThemeToggle>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggle = () =>
+      container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("system");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("tabby");
+    expect(getToggle()?.textContent).toBe("system->tabby");
+    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
+
+    getToggle()?.click();
+    await settle();
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("tabby");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("ginger");
+    expect(getToggle()?.textContent).toBe("tabby->ginger");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("tabby");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("tabby");
+    expect(window.localStorage.getItem("askr-theme")).toBe("tabby");
+  });
+
+  it("should recover stored custom themes that are outside a toggle cycle", async () => {
+    window.localStorage.setItem("askr-theme", "neon");
+
+    const AppLayout = () => (
+      <ThemeProvider defaultTheme="light">
+        <ThemeToggle themes={["tabby", "ginger"]}>
+          {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
+        </ThemeToggle>
+      </ThemeProvider>
+    );
+
+    group({ layout: AppLayout }, () => {
+      route("/example", () => <div id="page">Example</div>);
+    });
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const getToggle = () =>
+      container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("neon");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("tabby");
+    expect(getToggle()?.textContent).toBe("neon->tabby");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("neon");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("neon");
+
+    getToggle()?.click();
+    await settle();
+
+    expect(getToggle()?.getAttribute("data-theme-choice")).toBe("tabby");
+    expect(getToggle()?.getAttribute("data-next-theme")).toBe("ginger");
+    expect(getToggle()?.textContent).toBe("tabby->ginger");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("tabby");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("tabby");
+    expect(window.localStorage.getItem("askr-theme")).toBe("tabby");
   });
 });

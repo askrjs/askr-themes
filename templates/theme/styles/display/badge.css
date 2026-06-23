@@ -15,7 +15,8 @@
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
   letter-spacing: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 :where(.badge, [data-slot="badge"]) > :where([data-slot="icon"]) {

@@ -1,4 +1,4 @@
-import { defineContext, readContext, state } from "@askrjs/askr";
+import { defineContext, getSignal, readContext, state } from "@askrjs/askr";
 import type { JSXElement } from "@askrjs/askr/foundations/structures";
 import { resource } from "@askrjs/askr/resources";
 import { Button } from "@askrjs/ui";
@@ -65,6 +65,10 @@ export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
 ];
 
 const DEFAULT_STORAGE_KEY = "askr-theme";
+// Passive mount sync should not overwrite a newer user/provider-initiated change.
+let rootThemeRevision = 0;
+let explicitRootThemeOwner: symbol | undefined;
+const registeredProviderSignals = new WeakSet<AbortSignal>();
 
 const ThemeContext = defineContext<ThemeContextValue>({
   theme: () => "system",
@@ -85,12 +89,29 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
     storageKey = DEFAULT_STORAGE_KEY,
   } = props;
 
+  const providerId = state<symbol>(Symbol("ThemeProvider"))();
+  const providerSignal = getSignal();
   const themeState = state<ThemeName>(readStoredTheme(storageKey) ?? defaultTheme);
   const currentTheme = themeState();
+
+  if (!registeredProviderSignals.has(providerSignal)) {
+    registeredProviderSignals.add(providerSignal);
+    providerSignal.addEventListener(
+      "abort",
+      () => {
+        if (explicitRootThemeOwner === providerId) {
+          explicitRootThemeOwner = undefined;
+        }
+      },
+      { once: true },
+    );
+  }
 
   const setTheme = (nextTheme: ThemeName) => {
     themeState.set(nextTheme);
     writeStoredTheme(storageKey, nextTheme);
+    explicitRootThemeOwner = providerId;
+    rootThemeRevision += 1;
     syncThemeRoot(nextTheme);
   };
 
@@ -103,14 +124,15 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
 
   return (
     <ThemeContext.Scope value={value}>
-      <ThemeRootSync theme={currentTheme} />
+      <ThemeRootSync providerId={providerId} theme={currentTheme} />
       <div data-slot="theme-provider">{children}</div>
     </ThemeContext.Scope>
   );
 }
 
-function ThemeRootSync(props: { theme: ThemeName }): JSX.Element | null {
-  const { theme } = props;
+function ThemeRootSync(props: { providerId: symbol; theme: ThemeName }): JSX.Element | null {
+  const { providerId, theme } = props;
+  const expectedRootThemeRevision = rootThemeRevision;
 
   resource(
     ({ signal }: { signal: AbortSignal }) => {
@@ -121,7 +143,11 @@ function ThemeRootSync(props: { theme: ThemeName }): JSX.Element | null {
 
       const timeoutId = window.setTimeout(() => {
         if (!signal.aborted) {
-          syncThemeRoot(theme);
+          syncThemeRoot(theme, {
+            expectedRevision: expectedRootThemeRevision,
+            passive: true,
+            providerId,
+          });
         }
       }, 0);
 
@@ -144,25 +170,49 @@ function ThemeRootSync(props: { theme: ThemeName }): JSX.Element | null {
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
   const theme = useTheme();
   const { themes = theme.themes, label = "Theme", ...rest } = props;
+  const currentTheme = theme.theme();
 
   return (
     <select
       {...rest}
       aria-label={rest["aria-label"] ?? label}
       data-slot="theme-picker"
-      value={theme.theme()}
+      value={currentTheme}
       onChange={(event: Event) => {
-        const target = event.currentTarget as HTMLSelectElement;
-        theme.setTheme(target.value as ThemeName);
+        const target = getThemePickerTarget(event);
+        if (target) {
+          theme.setTheme(target.value as ThemeName);
+        }
       }}
     >
       {themes.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option
+          key={option.value}
+          value={option.value}
+          selected={option.value === currentTheme}
+        >
           {option.label}
         </option>
       ))}
     </select>
   );
+}
+
+function getThemePickerTarget(event: Event): HTMLSelectElement | null {
+  if (typeof HTMLSelectElement === "undefined") {
+    return null;
+  }
+
+  const path = typeof event.composedPath === "function" ? event.composedPath() : [];
+  const candidates = [event.target, event.currentTarget, ...path];
+
+  for (const candidate of candidates) {
+    if (candidate instanceof HTMLSelectElement) {
+      return candidate;
+    }
+  }
+
+  return null;
 }
 
 export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
@@ -199,7 +249,9 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
       data-next-theme={nextTheme}
       onPress={(event) => {
         onPress?.(event);
-        if (!event.defaultPrevented) theme.setTheme(nextTheme);
+        if (!event.defaultPrevented && !Object.is(nextTheme, currentTheme)) {
+          theme.setTheme(nextTheme);
+        }
       }}
     >
       <span data-slot="theme-toggle-content">{content}</span>
@@ -255,12 +307,31 @@ function cloneThemeToggleIcon(icon: unknown): unknown {
   };
 }
 
-function syncThemeRoot(themeChoice: ThemeName | null | undefined): void {
+function syncThemeRoot(
+  themeChoice: ThemeName | null | undefined,
+  options?: { expectedRevision?: number; passive?: boolean; providerId?: symbol },
+): void {
   if (typeof document === "undefined") {
     return;
   }
 
   const html = document.documentElement;
+
+  if (
+    options?.passive &&
+    options.expectedRevision !== undefined &&
+    options.expectedRevision !== rootThemeRevision
+  ) {
+    return;
+  }
+
+  if (
+    options?.passive &&
+    explicitRootThemeOwner !== undefined &&
+    explicitRootThemeOwner !== options.providerId
+  ) {
+    return;
+  }
 
   if (themeChoice == null) {
     html.removeAttribute("data-theme");
@@ -280,7 +351,8 @@ function syncThemeRoot(themeChoice: ThemeName | null | undefined): void {
 function readStoredTheme(storageKey: string): ThemeName | undefined {
   if (typeof window === "undefined") return undefined;
   try {
-    return (window.localStorage.getItem(storageKey) as ThemeName | null) ?? undefined;
+    const storedTheme = window.localStorage.getItem(storageKey);
+    return storedTheme ? (storedTheme as ThemeName) : undefined;
   } catch {
     return undefined;
   }
