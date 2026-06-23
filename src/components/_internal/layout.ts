@@ -1,3 +1,5 @@
+import { serializeCssDeclarations } from "./style";
+
 /**
  * Layout helpers shared by headless layout primitives.
  */
@@ -190,22 +192,11 @@ export function mergeLayoutStyles(
     Object.assign(merged, user as Record<string, unknown>);
   }
 
-  const mergedString = objectToCssString(merged);
+  const mergedString = serializeCssDeclarations(merged);
 
   if (typeof user === "string" && user.trim()) {
     return mergedString ? `${mergedString};${user.trim()}` : user.trim();
   }
 
   return mergedString || undefined;
-}
-
-function camelToKebab(s: string): string {
-  return s.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`);
-}
-
-function objectToCssString(styles: Record<string, unknown>): string {
-  return Object.entries(styles)
-    .filter(([, value]) => value !== undefined && value !== null)
-    .map(([key, value]) => `${camelToKebab(key)}:${String(value)}`)
-    .join(";");
 }
