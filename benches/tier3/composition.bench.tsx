@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
+import { afterAll, afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
 
 import { group, route, navigate, clearRoutes } from "@askrjs/askr/router";
 
@@ -22,67 +22,195 @@ import {
 
 describe("tier3 stateful composition benches", () => {
   describe("theme controls", () => {
-    let scenario: MountedScenario | undefined;
+    let themeControlFailure: string | undefined;
 
-    beforeEach(async () => {
+    function failThemeControlBench(message: string): void {
+      themeControlFailure ??= message;
+    }
+
+    function assertThemeState(theme: "dark" | "light"): boolean {
+      const rootTheme = document.documentElement.getAttribute("data-theme");
+      const rootChoice = document.documentElement.getAttribute("data-theme-choice");
+      const storedTheme = window.localStorage.getItem("askr-theme");
+
+      if (rootTheme !== theme || rootChoice !== theme || storedTheme !== theme) {
+        failThemeControlBench(
+          `theme bench expected ${theme}, got root=${String(rootTheme)} choice=${String(
+            rootChoice,
+          )} storage=${String(storedTheme)}`,
+        );
+        return false;
+      }
+
+      return true;
+    }
+
+    function resetThemeState(): void {
       window.localStorage.removeItem("askr-theme");
       document.documentElement.removeAttribute("data-theme");
       document.documentElement.removeAttribute("data-theme-choice");
-
-      scenario = await mountScenario("/example", () => {
-        group({ layout: ThemeBenchLayout }, () => {
-          route("/example", () => <div id="page">Example</div>);
-        });
-      });
-
-      expect(scenario.container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
-    });
-
-    afterEach(() => {
-      scenario?.cleanup();
-      scenario = undefined;
       clearRoutes();
-      window.localStorage.removeItem("askr-theme");
-      document.documentElement.removeAttribute("data-theme");
-      document.documentElement.removeAttribute("data-theme-choice");
+    }
+
+    async function mountThemeControlScenario(): Promise<MountedScenario | undefined> {
+      resetThemeState();
+
+      try {
+        const mounted = await mountScenario("/example", () => {
+          group({ layout: ThemeBenchLayout }, () => {
+            route("/example", () => <div id="page">Example</div>);
+          });
+        });
+
+        if (!mounted.container.querySelector('[data-slot="theme-provider"]')) {
+          failThemeControlBench("theme controls bench failed to mount the expected provider");
+          mounted.cleanup();
+          resetThemeState();
+          return undefined;
+        }
+
+        return mounted;
+      } catch (error) {
+        failThemeControlBench(
+          `theme controls bench failed to mount: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+        resetThemeState();
+        return undefined;
+      }
+    }
+
+    async function cleanupThemeControlScenario(mounted: MountedScenario): Promise<void> {
+      mounted.cleanup();
+      resetThemeState();
+      await settle();
+    }
+
+    afterAll(() => {
+      if (themeControlFailure) {
+        throw new Error(themeControlFailure);
+      }
     });
 
     bench("theme toggle cycle", async () => {
-      const toggle = scenario?.container.querySelector(
-        '[data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
+      const scenario = await mountThemeControlScenario();
 
-      toggle?.click();
-      await settle();
-
-      const toggleAfter = scenario?.container.querySelector(
-        '[data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
-
-      toggleAfter?.click();
-      await settle();
-    });
-
-    bench("theme picker cycle", async () => {
-      const picker = scenario?.container.querySelector(
-        '[data-slot="theme-picker"]',
-      ) as HTMLSelectElement | null;
-
-      if (!picker) {
+      if (!scenario) {
         return;
       }
 
-      picker.value = "dark";
-      picker.dispatchEvent(new Event("change", { bubbles: true }));
-      await settle();
+      try {
+        const toggle = scenario?.container.querySelector(
+          '[data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
 
-      const pickerAfter = scenario?.container.querySelector(
-        '[data-slot="theme-picker"]',
-      ) as HTMLSelectElement | null;
+        if (!toggle) {
+          failThemeControlBench("theme toggle bench failed to mount the expected toggle");
+          return;
+        }
 
-      pickerAfter.value = "light";
-      pickerAfter.dispatchEvent(new Event("change", { bubbles: true }));
-      await settle();
+        toggle.click();
+        await settle();
+
+        const toggleAfter = scenario?.container.querySelector(
+          '[data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
+
+        if (!toggleAfter) {
+          failThemeControlBench("theme toggle bench failed to retain the expected toggle");
+          return;
+        }
+
+        if (toggleAfter.getAttribute("data-theme-choice") !== "dark") {
+          failThemeControlBench("theme toggle bench failed to update the toggle to dark");
+          return;
+        }
+        if (!assertThemeState("dark")) {
+          return;
+        }
+
+        toggleAfter.click();
+        await settle();
+
+        const toggleFinal = scenario?.container.querySelector(
+          '[data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
+
+        if (!toggleFinal) {
+          failThemeControlBench("theme toggle bench failed to retain the expected toggle");
+          return;
+        }
+
+        if (toggleFinal.getAttribute("data-theme-choice") !== "light") {
+          failThemeControlBench("theme toggle bench failed to update the toggle to light");
+          return;
+        }
+        assertThemeState("light");
+      } finally {
+        await cleanupThemeControlScenario(scenario);
+      }
+    });
+
+    bench("theme picker cycle", async () => {
+      const scenario = await mountThemeControlScenario();
+
+      if (!scenario) {
+        return;
+      }
+
+      try {
+        const picker = scenario?.container.querySelector(
+          '[data-slot="theme-picker"]',
+        ) as HTMLSelectElement | null;
+
+        if (!picker) {
+          failThemeControlBench("theme picker bench failed to mount the expected picker");
+          return;
+        }
+
+        picker.value = "dark";
+        picker.dispatchEvent(new Event("change", { bubbles: true }));
+        await settle();
+
+        const pickerAfter = scenario?.container.querySelector(
+          '[data-slot="theme-picker"]',
+        ) as HTMLSelectElement | null;
+
+        if (!pickerAfter) {
+          failThemeControlBench("theme picker bench failed to retain the expected picker");
+          return;
+        }
+
+        if (pickerAfter.value !== "dark") {
+          failThemeControlBench("theme picker bench failed to update the picker to dark");
+          return;
+        }
+        if (!assertThemeState("dark")) {
+          return;
+        }
+
+        pickerAfter.value = "light";
+        pickerAfter.dispatchEvent(new Event("change", { bubbles: true }));
+        await settle();
+
+        const pickerFinal = scenario?.container.querySelector(
+          '[data-slot="theme-picker"]',
+        ) as HTMLSelectElement | null;
+
+        if (!pickerFinal) {
+          failThemeControlBench("theme picker bench failed to retain the expected picker");
+          return;
+        }
+
+        if (pickerFinal.value !== "light") {
+          failThemeControlBench("theme picker bench failed to update the picker to light");
+          return;
+        }
+        assertThemeState("light");
+      } finally {
+        await cleanupThemeControlScenario(scenario);
+      }
     });
   });
 

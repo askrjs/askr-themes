@@ -6,9 +6,19 @@ const include = ["benches/tier4/**/*.bench.ts", "benches/tier4/**/*.bench.tsx"];
 
 export default defineConfig({
   plugins: [askr()],
+  optimizeDeps: {
+    noDiscovery: true,
+  },
   test: {
     benchmark: {
       include,
+    },
+    deps: {
+      optimizer: {
+        client: {
+          enabled: false,
+        },
+      },
     },
     globals: true,
     browser: {

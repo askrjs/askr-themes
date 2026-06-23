@@ -71,9 +71,7 @@ function changePicker(
   picker!.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
-function replaceLocalStorage(
-  storage: Pick<Storage, "getItem" | "setItem" | "removeItem">,
-): void {
+function replaceLocalStorage(storage: Pick<Storage, "getItem" | "setItem" | "removeItem">): void {
   Object.defineProperty(window, "localStorage", {
     configurable: true,
     value: storage,
@@ -122,9 +120,7 @@ function ThemeProbe(props: { id?: string } = {}): JSX.Element {
 }
 
 function getThemeIcon(label: string): string | null {
-  return document
-    .querySelector(`[aria-label="${label}"] svg`)
-    ?.getAttribute("data-icon") ?? null;
+  return document.querySelector(`[aria-label="${label}"] svg`)?.getAttribute("data-icon") ?? null;
 }
 
 function getSelectedValues(picker: HTMLSelectElement | null): string[] {
@@ -553,7 +549,9 @@ describe("theme contracts", () => {
     await settle();
 
     const click = (label: string) => {
-      const button = container?.querySelector(`[aria-label="${label}"]`) as HTMLButtonElement | null;
+      const button = container?.querySelector(
+        `[aria-label="${label}"]`,
+      ) as HTMLButtonElement | null;
       expect(button).not.toBeNull();
       button!.click();
     };

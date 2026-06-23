@@ -1,3 +1,44 @@
+const cssPropertyNameCache = new Map<string, string>();
+
+function cssPropertyName(name: string): string {
+  let cached = cssPropertyNameCache.get(name);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  let result = "";
+
+  for (let index = 0; index < name.length; index += 1) {
+    const code = name.charCodeAt(index);
+
+    if (code >= 65 && code <= 90) {
+      result += `-${String.fromCharCode(code + 32)}`;
+    } else {
+      result += name[index];
+    }
+  }
+
+  cssPropertyNameCache.set(name, result);
+  return result;
+}
+
+export function serializeCssDeclarations(styles: Record<string, unknown>): string {
+  const keys = Object.keys(styles);
+  let result = "";
+
+  for (const key of keys) {
+    const value = styles[key];
+    if (value === undefined || value === null) {
+      continue;
+    }
+
+    const declaration = `${cssPropertyName(key)}:${String(value)}`;
+    result = result ? `${result};${declaration}` : declaration;
+  }
+
+  return result;
+}
+
 export function mergeCssVar(style: unknown, name: string, value: string): string {
   const decl = `${name}:${value}`;
 
@@ -7,10 +48,7 @@ export function mergeCssVar(style: unknown, name: string, value: string): string
   }
 
   if (style && typeof style === "object") {
-    const entries = Object.entries(style as Record<string, unknown>)
-      .filter(([, v]) => v !== undefined && v !== null)
-      .map(([k, v]) => `${k.replace(/([A-Z])/g, (c) => `-${c.toLowerCase()}`)}:${String(v)}`)
-      .join(";");
+    const entries = serializeCssDeclarations(style as Record<string, unknown>);
     return entries ? `${entries};${decl}` : decl;
   }
 

@@ -186,11 +186,7 @@ export function ThemePicker(props: ThemePickerProps): JSX.Element {
       }}
     >
       {themes.map((option) => (
-        <option
-          key={option.value}
-          value={option.value}
-          selected={option.value === currentTheme}
-        >
+        <option key={option.value} value={option.value} selected={option.value === currentTheme}>
           {option.label}
         </option>
       ))}

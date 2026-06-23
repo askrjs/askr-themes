@@ -53,9 +53,11 @@ export function collectJsxElements(
 ): JSXElement[] {
   const result: JSXElement[] = [];
 
-  const visit = (value: unknown) => {
+  function visit(value: unknown): void {
     if (Array.isArray(value)) {
-      value.forEach(visit);
+      for (let index = 0; index < value.length; index += 1) {
+        visit(value[index]);
+      }
       return;
     }
 
@@ -68,11 +70,21 @@ export function collectJsxElements(
     }
 
     visit(value.props?.children);
-  };
+  }
 
   visit(children);
 
   return result;
+}
+
+function isEventHandlerLikeKey(key: string): boolean {
+  return key.length >= 2 && key.charCodeAt(0) === 111 && key.charCodeAt(1) === 110;
+}
+
+function compareKeys(left: string, right: string): number {
+  if (left < right) return -1;
+  if (left > right) return 1;
+  return 0;
 }
 
 function serializeArray(value: readonly unknown[]): string {
@@ -101,7 +113,7 @@ function serializeSerializableProps(props: Record<string, unknown>): string {
   const keys: string[] = [];
 
   for (const key of Object.keys(props)) {
-    if (key === "children" || key === "ref" || key.startsWith("on")) {
+    if (key === "children" || key === "ref" || isEventHandlerLikeKey(key)) {
       continue;
     }
 
@@ -127,14 +139,14 @@ function serializeSerializableProps(props: Record<string, unknown>): string {
   }
 
   if (keys.length === 2) {
-    if (keys[1].localeCompare(keys[0]) < 0) {
+    if (keys[1] < keys[0]) {
       [keys[0], keys[1]] = [keys[1], keys[0]];
     }
 
     return `${keys[0]}:${String(props[keys[0]])},${keys[1]}:${String(props[keys[1]])}`;
   }
 
-  keys.sort((left, right) => left.localeCompare(right));
+  keys.sort(compareKeys);
 
   let result = `${keys[0]}:${String(props[keys[0]])}`;
 
