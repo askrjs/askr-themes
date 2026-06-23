@@ -19,7 +19,10 @@ import type { CollapseIconPlacement } from "../shell/shell-nav.types";
 
 type SidebarChildren = {
   brand?: unknown;
-  items: unknown[];
+  drawerItems: unknown[];
+  drawerSourceItems: unknown[];
+  explicitPanelItems: unknown[];
+  toggle?: SidebarToggleConfig;
 };
 
 type SidebarToggleConfig = {
@@ -27,38 +30,49 @@ type SidebarToggleConfig = {
   expandedIcon?: unknown;
 };
 
-function splitSidebarChildren(children: unknown[]): SidebarChildren {
-  const brandIndex = children.findIndex((child) => isJsxElement(child) && child.type === NavBrand);
-
-  if (brandIndex === -1) {
-    return { items: children };
-  }
-
-  return {
-    brand: children[brandIndex],
-    items: children.filter((_, index) => index !== brandIndex),
-  };
-}
-
 function isSidebarToggleChild(child: unknown): boolean {
   return isJsxElement(child) && child.type === SidebarToggle;
 }
 
-function splitSidebarToggle(children: unknown[]): {
-  items: unknown[];
-  toggle?: SidebarToggleConfig;
-} {
-  const toggleIndex = children.findIndex((child) => isSidebarToggleChild(child));
+function splitSidebarChildren(children: unknown[]): SidebarChildren {
+  const explicitPanelItems: unknown[] = [];
+  const drawerSourceItems: unknown[] = [];
+  let drawerItems: unknown[] | undefined;
+  let brand: unknown;
+  let hasBrand = false;
+  let hasToggle = false;
+  let toggle: SidebarToggleConfig | undefined;
 
-  if (toggleIndex === -1) {
-    return { items: children };
+  for (const child of children) {
+    if (isShellPanelChild(child, SidebarPanel)) {
+      explicitPanelItems.push(child);
+      continue;
+    }
+
+    if (!hasToggle && isSidebarToggleChild(child)) {
+      hasToggle = true;
+      toggle = (child as { props?: SidebarToggleConfig } | undefined)?.props;
+      continue;
+    }
+
+    drawerSourceItems.push(child);
+
+    if (!hasBrand && isJsxElement(child) && child.type === NavBrand) {
+      brand = child;
+      hasBrand = true;
+      drawerItems ??= drawerSourceItems.slice(0, drawerSourceItems.length - 1);
+      continue;
+    }
+
+    drawerItems?.push(child);
   }
 
-  const toggleChild = children[toggleIndex] as { props?: SidebarToggleConfig } | undefined;
-
   return {
-    items: children.filter((_, index) => index !== toggleIndex),
-    toggle: toggleChild?.props,
+    brand: hasBrand ? brand : undefined,
+    drawerItems: drawerItems ?? drawerSourceItems,
+    drawerSourceItems,
+    explicitPanelItems,
+    toggle,
   };
 }
 
@@ -152,8 +166,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
   const effectiveCollapseLabel =
     collapseLabel ?? (typeof ariaLabel === "string" ? ariaLabel : undefined) ?? "Menu";
   const childItems = toChildArray(children);
-  const explicitPanelItems = childItems.filter((child) => isShellPanelChild(child, SidebarPanel));
-  const contentItems = childItems.filter((child) => !isShellPanelChild(child, SidebarPanel));
+  const sidebarChildren = splitSidebarChildren(childItems);
   const isResponsive = breakpoint !== undefined;
   const responsiveCollapsedState = state(isResponsive ? isSidebarCollapsed(breakpoint) : false);
   const drawerOpenState = state(false);
@@ -202,10 +215,11 @@ export function Sidebar(props: SidebarProps): JSX.Element {
 
     setRailCollapsed(!isRailCollapsed);
   };
-  const { items: drawerSourceItems, toggle: railToggleConfig } = splitSidebarToggle(contentItems);
-  const { brand: drawerBrand, items: drawerItems } = splitSidebarChildren(drawerSourceItems);
-  const desktopChildren = renderKeyedShellChildren(drawerSourceItems, "sidebar-desktop");
-  const drawerChildren = renderKeyedShellChildren(drawerItems, "sidebar-drawer");
+  const desktopChildren = renderKeyedShellChildren(
+    sidebarChildren.drawerSourceItems,
+    "sidebar-desktop",
+  );
+  const drawerChildren = renderKeyedShellChildren(sidebarChildren.drawerItems, "sidebar-drawer");
 
   const contextValue = {
     active: () => isResponsive,
@@ -227,12 +241,16 @@ export function Sidebar(props: SidebarProps): JSX.Element {
     panelId,
   };
   const panels =
-    explicitPanelItems.length > 0 ? (
-      renderKeyedShellPanelChildren(explicitPanelItems, "sidebar-panel", panelContext)
+    sidebarChildren.explicitPanelItems.length > 0 ? (
+      renderKeyedShellPanelChildren(
+        sidebarChildren.explicitPanelItems,
+        "sidebar-panel",
+        panelContext,
+      )
     ) : isResponsive ? (
       <SidebarPanel
         active={isResponsive}
-        brand={drawerBrand}
+        brand={sidebarChildren.brand}
         collapseLabel={effectiveCollapseLabel}
         onClose={closeDrawer}
         onClick={closeDrawerOnNavActivation}
@@ -305,7 +323,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
                   {renderSidebarRailContents(
                     effectiveCollapseLabel,
                     isRailCollapsed,
-                    railToggleConfig,
+                    sidebarChildren.toggle,
                   )}
                 </button>
               </div>

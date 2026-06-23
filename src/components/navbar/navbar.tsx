@@ -13,18 +13,36 @@ import { NavbarResponsiveContext } from "./navbar.context";
 import { isNavbarCollapsed, resolveNavGroupAlign } from "./navbar.shared";
 import type { NavBrandProps, NavGroupProps, NavToggleProps, NavbarProps } from "./navbar.types";
 
-/**
- * Extracts the first NavBrand child to display in the mobile panel.
- * NavBrand should be the first child of Navbar for it to appear in the mobile menu.
- */
-function findNavbarBrand(children: unknown): unknown {
-  return toChildArray(children).find((child) => isJsxElement(child) && child.type === NavBrand);
-}
+type NavbarChildren = {
+  brand?: unknown;
+  panelItems: unknown[];
+};
 
-function withoutNavbarBrand(children: unknown): unknown[] {
-  return toChildArray(children).filter(
-    (child) => !(isJsxElement(child) && child.type === NavBrand),
-  );
+function splitNavbarChildren(children: unknown[]): NavbarChildren {
+  let brand: unknown;
+  let hasBrand = false;
+  let panelItems: unknown[] | undefined;
+
+  for (let index = 0; index < children.length; index += 1) {
+    const child = children[index];
+
+    if (isJsxElement(child) && child.type === NavBrand) {
+      if (!hasBrand) {
+        brand = child;
+        hasBrand = true;
+      }
+
+      panelItems ??= children.slice(0, index);
+      continue;
+    }
+
+    panelItems?.push(child);
+  }
+
+  return {
+    brand: hasBrand ? brand : undefined,
+    panelItems: panelItems ?? children,
+  };
 }
 
 /**
@@ -59,11 +77,9 @@ export function Navbar(props: NavbarProps): JSX.Element {
   } = props;
   const effectiveCollapseLabel = collapseLabel ?? "Menu";
   const responsiveChildren = toChildArray(children);
+  const navbarChildren = splitNavbarChildren(responsiveChildren);
   const desktopChildren = renderKeyedShellChildren(responsiveChildren, "navbar-desktop");
-  const panelChildren = renderKeyedShellChildren(
-    withoutNavbarBrand(responsiveChildren),
-    "navbar-panel",
-  );
+  const panelChildren = renderKeyedShellChildren(navbarChildren.panelItems, "navbar-panel");
   // Extract brand to display in mobile panel header
   const responsiveCollapsedState =
     breakpoint !== undefined ? state(isNavbarCollapsed(breakpoint)) : undefined;
@@ -95,7 +111,6 @@ export function Navbar(props: NavbarProps): JSX.Element {
     panelOpen: () => Boolean(responsiveCollapsedState?.() && mobileMenuOpen),
     togglePanel,
   };
-  const panelBrand = findNavbarBrand(responsiveChildren);
   const finalProps = mergeProps(rest, {
     "aria-label": ariaLabel,
     ref,
@@ -131,7 +146,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
         {breakpoint !== undefined ? (
           <NavbarPanel
             active={breakpoint !== undefined}
-            brand={panelBrand}
+            brand={navbarChildren.brand}
             collapseLabel={effectiveCollapseLabel}
             onClose={closePanel}
             onClick={closePanelOnNavActivation}

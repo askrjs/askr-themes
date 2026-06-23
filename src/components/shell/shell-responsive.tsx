@@ -46,28 +46,92 @@ export function isShellPanelChild(child: unknown, panelComponent: unknown): chil
   return isJsxElement(child) && child.type === panelComponent;
 }
 
+function renderShellChildKey(child: unknown, index: number, keyPrefix: string): string {
+  return isJsxElement(child) && child.key != null ? String(child.key) : `${keyPrefix}-${index}`;
+}
+
+function keyMissingShellChildren(children: unknown[], keyPrefix: string): unknown[] {
+  let keyedChildren: unknown[] | undefined;
+
+  for (let index = 0; index < children.length; index += 1) {
+    const child = children[index];
+
+    if (isJsxElement(child) && child.key == null) {
+      keyedChildren ??= children.slice(0, index);
+      keyedChildren.push({
+        ...child,
+        key: `${keyPrefix}-${index}`,
+      });
+      continue;
+    }
+
+    keyedChildren?.push(child);
+  }
+
+  return keyedChildren ?? children;
+}
+
+function hasPanelProps(
+  props: Record<string, unknown> | undefined,
+  panelProps: ShellResponsivePanelProps,
+): boolean {
+  return (
+    props?.active === panelProps.active &&
+    props?.collapseLabel === panelProps.collapseLabel &&
+    props?.onClose === panelProps.onClose &&
+    props?.open === panelProps.open &&
+    props?.panelId === panelProps.panelId
+  );
+}
+
+function applyShellPanelProps(
+  children: unknown[],
+  keyPrefix: string,
+  panelProps: ShellResponsivePanelProps,
+): unknown[] {
+  let panelChildren: unknown[] | undefined;
+
+  for (let index = 0; index < children.length; index += 1) {
+    const child = children[index];
+
+    if (!isJsxElement(child)) {
+      panelChildren?.push(child);
+      continue;
+    }
+
+    const props = child.props as Record<string, unknown> | undefined;
+
+    if (hasPanelProps(props, panelProps)) {
+      panelChildren?.push(child);
+      continue;
+    }
+
+    panelChildren ??= children.slice(0, index);
+    panelChildren.push({
+      ...child,
+      key: child.key != null ? child.key : `${keyPrefix}-${index}`,
+      props: {
+        ...props,
+        active: panelProps.active,
+        collapseLabel: panelProps.collapseLabel,
+        onClose: panelProps.onClose,
+        open: panelProps.open,
+        panelId: panelProps.panelId,
+      },
+    });
+  }
+
+  return panelChildren ?? children;
+}
+
 export function renderKeyedShellChildren(children: unknown, keyPrefix: string): JSX.Element {
   const childList = toChildArray(children);
-  const needsKeying = childList.some((child) => isJsxElement(child) && child.key == null);
-  const keyedChildren = needsKeying
-    ? childList.map((child, index) => {
-        if (!isJsxElement(child) || child.key != null) {
-          return child;
-        }
-
-        return {
-          ...child,
-          key: `${keyPrefix}-${index}`,
-        };
-      })
-    : childList;
+  const keyedChildren = keyMissingShellChildren(childList, keyPrefix);
 
   return (
     <For
       each={() => keyedChildren}
-      by={(child, index) =>
-        isJsxElement(child) && child.key != null ? String(child.key) : `${keyPrefix}-${index}`
-      }
+      by={(child, index) => renderShellChildKey(child, index, keyPrefix)}
     >
       {(child) => child as never}
     </For>
@@ -80,60 +144,12 @@ export function renderKeyedShellPanelChildren(
   panelProps: ShellResponsivePanelProps,
 ): JSX.Element {
   const childList = toChildArray(children);
-  const needsPanelProps = childList.some((child) => {
-    if (!isJsxElement(child)) {
-      return false;
-    }
-
-    const props = child.props as Record<string, unknown> | undefined;
-
-    return (
-      props?.active !== panelProps.active ||
-      props?.collapseLabel !== panelProps.collapseLabel ||
-      props?.onClose !== panelProps.onClose ||
-      props?.open !== panelProps.open ||
-      props?.panelId !== panelProps.panelId
-    );
-  });
-  const keyedChildren = needsPanelProps
-    ? childList.map((child, index) => {
-        if (!isJsxElement(child)) {
-          return child;
-        }
-
-        const props = child.props as Record<string, unknown> | undefined;
-
-        if (
-          props?.active === panelProps.active &&
-          props?.collapseLabel === panelProps.collapseLabel &&
-          props?.onClose === panelProps.onClose &&
-          props?.open === panelProps.open &&
-          props?.panelId === panelProps.panelId
-        ) {
-          return child;
-        }
-
-        return {
-          ...child,
-          key: child.key != null ? child.key : `${keyPrefix}-${index}`,
-          props: {
-            ...props,
-            active: panelProps.active,
-            collapseLabel: panelProps.collapseLabel,
-            onClose: panelProps.onClose,
-            open: panelProps.open,
-            panelId: panelProps.panelId,
-          },
-        };
-      })
-    : childList;
+  const keyedChildren = applyShellPanelProps(childList, keyPrefix, panelProps);
 
   return (
     <For
       each={() => keyedChildren}
-      by={(child, index) =>
-        isJsxElement(child) && child.key != null ? String(child.key) : `${keyPrefix}-${index}`
-      }
+      by={(child, index) => renderShellChildKey(child, index, keyPrefix)}
     >
       {(child) => child as never}
     </For>
