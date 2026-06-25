@@ -160,7 +160,7 @@ controls.
 
 | Component  | Shape                                                                   | Stable slots                                                                                                       | Aliases                                                                                                               | Style here                                                              | Avoid                                                                                             |
 | ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `Card`     | Bordered content surface.                                               | `card`, `card-header`, `card-title`, `card-description`, `card-content`, `card-footer`, `card-actions`             | `card`, `card-raised`, `card-header`, `card-title`, `card-description`, `card-content`, `card-footer`, `card-actions` | Use for repeated surfaces, settings groups, and contained summaries.    | Do not call every bordered block a `Card`; `Block border radius` is enough for one-off structure. |
+| `Card`     | Bordered content surface.                                               | `card`                                                                                                             | `card`, `card-raised`                                                                                                  | Use for repeated surfaces, settings groups, and contained summaries.    | Do not call every bordered block a `Card`; compose headers, content, and actions locally.         |
 | `Alert`    | Inline feedback with optional icon, title, description, actions, close. | `alert`, `alert-icon`, `alert-content`, `alert-title`, `alert-description`, `alert-actions`, `alert-close`         | `alert`, `alert-info`, `alert-success`, `alert-warning`, `alert-danger` and child aliases                             | Use variants for status.                                                | Do not use `Alert` as page chrome.                                                                |
 | `Badge`    | Small non-interactive status or metadata label.                         | `badge`                                                                                                            | `badge`, `badge-secondary`, `badge-outline`, `badge-success`, `badge-warning`, `badge-danger`, `badge-info`           | Use for state, plan, or metadata.                                       | Do not use for removable chips unless the interaction is composed locally.                        |
 | `AspectRatio` | Media frame with fixed ratio.                                        | `aspect-ratio`                                                                                                     | None                                                                                                                  | Use for images, video, and previews.                                    | Do not use as a general layout wrapper.                                                             |
@@ -174,8 +174,8 @@ controls.
 Safe override:
 
 ```css
-.project-card :where([data-slot="card-actions"]) {
-  justify-content: flex-end;
+.project-card :where([data-slot="card"]) {
+  border-color: var(--ak-color-border-strong);
 }
 
 .project-card :where([data-slot="badge"][data-variant="success"]) {

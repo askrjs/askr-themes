@@ -11,22 +11,7 @@ import {
   Navbar,
   Sidebar,
 } from "../../src/core";
-import {
-  Breadcrumb,
-  BreadcrumbCurrent,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-  Pill,
-  Pills,
-  Pagination,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  Tab,
-  Tabs,
-} from "../../src/navs";
+import { Pill, Pills, Tab, Tabs } from "../../src/navs";
 
 type ElementLike = {
   type: unknown;
@@ -54,28 +39,6 @@ function findElementBySlot(value: unknown, slot: string): ElementLike | undefine
 }
 
 describe("navigation contracts", () => {
-  it("should renders breadcrumb primitives with stable slots", () => {
-    const breadcrumb = asElement(Breadcrumb({ children: "trail" }));
-    const list = asElement(BreadcrumbList({ children: "items" }));
-    const item = asElement(BreadcrumbItem({ children: "item" }));
-    const link = asElement(BreadcrumbLink({ href: "/docs", children: "Docs" }));
-    const current = asElement(BreadcrumbCurrent({ children: "Overview" }));
-    const separator = asElement(BreadcrumbSeparator({}));
-
-    expect(breadcrumb.type).toBe("nav");
-    expect(breadcrumb.props["data-slot"]).toBe("breadcrumb");
-    expect(list.type).toBe("ol");
-    expect(list.props["data-slot"]).toBe("breadcrumb-list");
-    expect(item.type).toBe("li");
-    expect(item.props["data-slot"]).toBe("breadcrumb-item");
-    expect(link.type).toBe("a");
-    expect(link.props["data-slot"]).toBe("breadcrumb-link");
-    expect(current.type).toBe("span");
-    expect(current.props["aria-current"]).toBe("page");
-    expect(separator.type).toBe("span");
-    expect(separator.props["data-slot"]).toBe("breadcrumb-separator");
-  });
-
   it("should renders block-first nav primitives with canonical slots", () => {
     const tabs = asElement(Tabs({ children: "tabs" }));
     const tab = asElement(Tab({ href: "/settings/profile", active: true, children: "Profile" }));
@@ -163,30 +126,4 @@ describe("navigation contracts", () => {
     expect(sidebar.props["data-slot"]).toBe("sidebar");
   });
 
-  it("should renders pagination primitives with stable slots", () => {
-    const pagination = asElement(
-      Pagination({
-        children: PaginationItem({
-          children: PaginationLink({ href: "/docs", children: "1" }),
-        }),
-      }),
-    );
-    const paginationItem = asElement(
-      PaginationItem({ children: "item", active: true, disabled: true }),
-    );
-    const paginationLink = asElement(
-      PaginationLink({ href: "/docs", children: "1", active: true, disabled: true }),
-    );
-    const ellipsis = asElement(PaginationEllipsis({}));
-
-    expect(pagination.type).toBe("nav");
-    expect(pagination.props["data-slot"]).toBe("pagination");
-    expect(paginationItem.type).toBe("li");
-    expect(paginationItem.props["data-slot"]).toBe("pagination-item");
-    expect(paginationLink.type).toBe("a");
-    expect(paginationLink.props["data-slot"]).toBe("pagination-link");
-    expect(paginationLink.props["data-active"]).toBe("true");
-    expect(ellipsis.type).toBe("span");
-    expect(ellipsis.props["data-slot"]).toBe("pagination-ellipsis");
-  });
 });

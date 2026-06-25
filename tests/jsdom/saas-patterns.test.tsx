@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import { Button } from "../../src/controls";
 import { Block, EmptyState } from "../../src/core";
-import { Card, CardContent } from "../../src/surfaces";
+import { Card } from "../../src/surfaces";
 
 describe("product SaaS composition patterns", () => {
   it("should builds dashboard content while leaving app layout in userland", () => {
@@ -32,9 +32,9 @@ describe("product SaaS composition patterns", () => {
               Block({
                 gap: "lg",
                 children: [
-                  Card({ children: CardContent({ children: "Revenue" }) }),
-                  Card({ children: CardContent({ children: "Activation" }) }),
-                  Card({ children: CardContent({ children: "Retention" }) }),
+                  Card({ children: "Revenue" }),
+                  Card({ children: "Activation" }),
+                  Card({ children: "Retention" }),
                 ],
               }),
             ],
@@ -51,12 +51,10 @@ describe("product SaaS composition patterns", () => {
       gap: "xl",
       children: [
         Card({
-          children: CardContent({
-            children: EmptyState({
-              title: "No destructive actions configured",
-              description: "Add safeguards before enabling irreversible actions.",
-              action: Button({ children: "Review policies", variant: "secondary" }),
-            }),
+          children: EmptyState({
+            title: "No destructive actions configured",
+            description: "Add safeguards before enabling irreversible actions.",
+            action: Button({ children: "Review policies", variant: "secondary" }),
           }),
         }),
       ],

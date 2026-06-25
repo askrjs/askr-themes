@@ -129,7 +129,7 @@ import {
   Toolbar,
   EmptyState,
 } from "@askrjs/themes/core";
-import { Breadcrumb, Pagination, Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
+import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
 import {
   Button,
   ButtonGroup,
@@ -143,7 +143,6 @@ import {
   AspectRatio,
   Avatar,
   Card,
-  CardActions,
   Alert,
   Badge,
   Progress,
@@ -186,6 +185,10 @@ export {
 
 Themes re-exports the small set of styled primitives that are common in app
 code. Advanced behavior primitives stay in `@askrjs/ui`.
+
+breadcrumb-style trails, pagination controls, card headers, and card action rows are
+recipes. Compose them locally with `Block`, links, headings, and buttons until
+they prove they need a stable package API.
 
 ## Recipes
 

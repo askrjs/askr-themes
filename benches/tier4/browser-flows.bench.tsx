@@ -122,8 +122,8 @@ describe("tier4 browser benches", () => {
     try {
       void scenario.container.querySelectorAll('[data-slot="icon"]').length;
       void scenario.container.querySelector('[data-slot="button-group"]');
-      void scenario.container.querySelector('[data-slot="breadcrumb"]');
-      void scenario.container.querySelector('[data-slot="pagination"]');
+      void scenario.container.querySelector('[data-slot="tabs"]');
+      void scenario.container.querySelector('[data-slot="pills"]');
       void scenario.container.querySelector('[data-slot="card"]');
     } finally {
       scenario.cleanup();

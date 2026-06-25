@@ -4,12 +4,6 @@ import {
   Alert,
   Badge,
   Card,
-  CardActions,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "../../src/surfaces";
 import {
   ButtonGroup,
@@ -20,7 +14,6 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { Pagination, PaginationEllipsis, PaginationItem, PaginationLink } from "../../src/navs";
 
 type ElementLike = {
   type: unknown;
@@ -37,17 +30,6 @@ describe("theme alias classes", () => {
     expect(
       asElement(Card({ children: "body", variant: "raised" })).props.class,
     ).toBe("card card-raised");
-    expect(asElement(CardHeader({ children: "header" })).props.class).toBe("card-header");
-    expect(
-      asElement(CardHeader({ children: "header", class: "card-header-extra" })).props.class,
-    ).toBe("card-header card-header-extra");
-    expect(asElement(CardTitle({ children: "title" })).props.class).toBe("card-title");
-    expect(asElement(CardDescription({ children: "description" })).props.class).toBe(
-      "card-description",
-    );
-    expect(asElement(CardContent({ children: "content" })).props.class).toBe("card-content");
-    expect(asElement(CardFooter({ children: "footer" })).props.class).toBe("card-footer");
-    expect(asElement(CardActions({ children: "actions" })).props.class).toBe("card-actions");
     expect(asElement(Badge({ children: "new", variant: "success" })).props.class).toBe(
       "badge badge-success",
     );
@@ -70,27 +52,5 @@ describe("theme alias classes", () => {
     expect(asElement(ControlField({ children: "field" })).props.class).toBe("field");
     expect(asElement(ControlFieldHint({ children: "hint" })).props.class).toBe("field-hint");
     expect(asElement(ControlFieldError({ children: "error" })).props.class).toBe("field-error");
-  });
-
-  it("should emits the familiar pagination aliases by default", () => {
-    const pagination = asElement(
-      Pagination({
-        children: PaginationItem({
-          children: PaginationLink({ href: "/docs", children: "1" }),
-        }),
-      }),
-    );
-    const paginationList = asElement(pagination.props.children);
-
-    expect(pagination.props.class).toBe("pagination");
-    expect(paginationList.props.class).toBe("pagination-list");
-    expect(
-      asElement(PaginationItem({ children: "item", active: true, disabled: true })).props.class,
-    ).toBe("page-item active disabled");
-    expect(
-      asElement(PaginationLink({ href: "/docs", children: "1", active: true, disabled: true }))
-        .props.class,
-    ).toBe("page-link active disabled");
-    expect(asElement(PaginationEllipsis({})).props.class).toBe("pagination-ellipsis");
   });
 });

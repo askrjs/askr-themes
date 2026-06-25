@@ -19,33 +19,12 @@ import {
   Section,
   Sidebar,
 } from "../../src/core";
-import {
-  Breadcrumb,
-  BreadcrumbCurrent,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-  Nav,
-  Pagination,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from "../../src/navs";
+import { Pill, Pills, Tab, Tabs } from "../../src/navs";
 import {
   Alert,
+  AspectRatio,
   Badge,
   Card,
-  CardActions,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Divider,
-  AspectRatio,
-  ListGroup,
-  ListGroupItem,
   Separator,
   Skeleton,
   Spinner,
@@ -103,21 +82,15 @@ export function buildSurfacesFixture(): JSX.Element {
       <Alert title="Heads up" description="Something happened." />
       <Badge variant="success">New</Badge>
       <Card>
-        <CardHeader>
-          <CardTitle>Card title</CardTitle>
-          <CardDescription>Short supporting copy</CardDescription>
-        </CardHeader>
-        <CardContent>Card body</CardContent>
-        <CardFooter>Card footer</CardFooter>
-        <CardActions>
+        <Block gap="xs">
+          <h3>Card title</h3>
+          <p>Short supporting copy</p>
+        </Block>
+        <Block>Card body</Block>
+        <Block direction="row" gap="sm" justify="end">
           <button type="button">Primary action</button>
-        </CardActions>
+        </Block>
       </Card>
-      <ListGroup>
-        <ListGroupItem>First item</ListGroupItem>
-        <ListGroupItem>Second item</ListGroupItem>
-      </ListGroup>
-      <Divider />
       <Separator />
       <Skeleton />
     </section>
@@ -157,34 +130,18 @@ export function buildCoreFixture(): JSX.Element {
 export function buildNavsFixture(): JSX.Element {
   return (
     <section data-bench="navs">
-      <Breadcrumb aria-label="Docs breadcrumb">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbCurrent>Overview</BreadcrumbCurrent>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <Nav aria-label="Primary">
-        <NavGroup title="Docs">
-          <NavItem href="/docs">Overview</NavItem>
-          <NavLink href="/docs/components">Components</NavLink>
-        </NavGroup>
-      </Nav>
-      <Pagination>
-        <PaginationItem>
-          <PaginationLink href="/docs">1</PaginationLink>
-        </PaginationItem>
-        <PaginationEllipsis />
-        <PaginationItem>
-          <PaginationLink href="/docs/components" active>
-            2
-          </PaginationLink>
-        </PaginationItem>
-      </Pagination>
+      <Tabs aria-label="Sections">
+        <Tab href="/docs" active>
+          Overview
+        </Tab>
+        <Tab href="/docs/components">Components</Tab>
+      </Tabs>
+      <Pills aria-label="Filters">
+        <Pill href="/docs" active>
+          Docs
+        </Pill>
+        <Pill href="/settings">Settings</Pill>
+      </Pills>
     </section>
   );
 }
@@ -192,28 +149,18 @@ export function buildNavsFixture(): JSX.Element {
 export function buildBrowserNavsFixture(): JSX.Element {
   return (
     <section data-bench="navs-browser">
-      <Breadcrumb aria-label="Docs breadcrumb">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbCurrent>Overview</BreadcrumbCurrent>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <Nav aria-label="Primary">
-        <NavGroup title="Docs">
-          <NavItem href="/docs">Overview</NavItem>
-          <NavItem href="/docs/components">Components</NavItem>
-        </NavGroup>
-      </Nav>
-      <Pagination>
-        <PaginationItem active>1</PaginationItem>
-        <PaginationEllipsis />
-        <PaginationItem>2</PaginationItem>
-      </Pagination>
+      <Tabs aria-label="Sections">
+        <Tab href="/docs" active>
+          Overview
+        </Tab>
+        <Tab href="/docs/components">Components</Tab>
+      </Tabs>
+      <Pills aria-label="Filters">
+        <Pill href="/docs" active>
+          Docs
+        </Pill>
+        <Pill href="/settings">Settings</Pill>
+      </Pills>
     </section>
   );
 }
@@ -236,27 +183,21 @@ export function buildRouteTransitionPage(props: { title: string; rows?: number }
   return (
     <section data-bench="route-transition" data-title={title}>
       <Card>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>Route content</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Block gap="sm">
-            {Array.from({ length: rows }, (_, index) => (
-              <Card key={index} variant="raised">
-                <CardHeader>
-                  <CardTitle>Item {index + 1}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>Content {index + 1}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </Block>
-        </CardContent>
-        <CardFooter>
+        <Block gap="xs">
+          <h3>{title}</h3>
+          <p>Route content</p>
+        </Block>
+        <Block gap="sm">
+          {Array.from({ length: rows }, (_, index) => (
+            <Card key={index} variant="raised">
+              <h4>Item {index + 1}</h4>
+              <div>Content {index + 1}</div>
+            </Card>
+          ))}
+        </Block>
+        <Block direction="row" gap="sm">
           <Badge variant="info">{rows} records</Badge>
-        </CardFooter>
+        </Block>
       </Card>
     </section>
   );

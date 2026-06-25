@@ -29,12 +29,6 @@
     0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
 }
 
-[data-slot="breadcrumb-item"] {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ak-space-sm);
-}
-
 [data-slot="dialog-trigger"] {
   cursor: pointer;
 }

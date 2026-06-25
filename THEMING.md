@@ -113,7 +113,7 @@ Use the curated theme entrypoints such as `@askrjs/themes/controls`,
 `@askrjs/themes/core`, `@askrjs/themes/surfaces`, and `@askrjs/themes/navs`
 for styled components such as Button, ButtonGroup, Close, InputGroup, Block,
 Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert, Badge,
-Pagination, Tabs, Tab, Pills, Pill, Skeleton, Separator, and EmptyState.
+Tabs, Tab, Pills, Pill, Skeleton, Separator, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
@@ -123,8 +123,8 @@ be styled consistently across themes. If you use icon children, the direct child
 icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
 The common wrapper components also emit familiar alias classes such as
-`alert`, `btn-group`, `btn-close`, `input-group`, `pagination`, `tabs`, and
-`pills` so app-level CSS can stay close to familiar HTML authoring without
+`alert`, `btn-group`, `btn-close`, `input-group`, `tabs`, and `pills` so
+app-level CSS can stay close to familiar HTML authoring without
 giving up the canonical `data-slot` contract.
 
 Responsive rules:

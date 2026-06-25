@@ -40,12 +40,6 @@ const ALIAS_CONTRACTS = [
   ["display/avatar.css", ".avatar-fallback", '[data-slot="avatar-fallback"]'],
   ["display/card.css", ".card", '[data-slot="card"]'],
   ["display/card.css", ".card-raised", '[data-slot="card"][data-variant="raised"]'],
-  ["display/card.css", ".card-header", '[data-slot="card-header"]'],
-  ["display/card.css", ".card-title", '[data-slot="card-title"]'],
-  ["display/card.css", ".card-description", '[data-slot="card-description"]'],
-  ["display/card.css", ".card-content", '[data-slot="card-content"]'],
-  ["display/card.css", ".card-footer", '[data-slot="card-footer"]'],
-  ["display/card.css", ".card-actions", '[data-slot="card-actions"]'],
   ["forms/field.css", ".field", '[data-slot="field"]'],
   ["forms/field.css", ".field-hint", '[data-slot="field-hint"]'],
   ["forms/field.css", ".field-error", '[data-slot="field-error"]'],
@@ -86,31 +80,6 @@ const ALIAS_CONTRACTS = [
   ["navigation/nav.css", ".tab", '[data-slot="tab"]'],
   ["navigation/nav.css", ".pills", '[data-slot="pills"]'],
   ["navigation/nav.css", ".pill", '[data-slot="pill"]'],
-  ["navigation/pagination.css", ".pagination", '[data-slot="pagination"]'],
-  ["navigation/pagination.css", ".pagination-list", '[data-slot="pagination-list"]'],
-  ["navigation/pagination.css", ".page-item", '[data-slot="pagination-item"]'],
-  ["navigation/pagination.css", ".page-link", '[data-slot="pagination-link"]'],
-  ["navigation/pagination.css", ".pagination-ellipsis", '[data-slot="pagination-ellipsis"]'],
-  [
-    "navigation/pagination.css",
-    ".page-item.active > .page-link",
-    '[data-slot="pagination-item"][data-active="true"] > [data-slot="pagination-link"]',
-  ],
-  [
-    "navigation/pagination.css",
-    ".page-link.active",
-    '[data-slot="pagination-link"][data-active="true"]',
-  ],
-  [
-    "navigation/pagination.css",
-    ".page-item.disabled > .page-link",
-    '[data-slot="pagination-item"][data-disabled="true"] > [data-slot="pagination-link"]',
-  ],
-  [
-    "navigation/pagination.css",
-    ".page-link.disabled",
-    '[data-slot="pagination-link"][data-disabled="true"]',
-  ],
   ["forms/select.css", ".select-trigger", '[data-slot="select-trigger"]'],
   ["forms/select.css", ".select-trigger-sm", '[data-slot="select-trigger"][data-size="sm"]'],
   ["forms/select.css", ".select-trigger-lg", '[data-slot="select-trigger"][data-size="lg"]'],
@@ -147,7 +116,7 @@ describe("daisy-like class aliases", () => {
   it("should documents raw class authoring examples in the alias contract", () => {
     const examples = [
       '<button class="btn btn-primary btn-sm">Save</button>',
-      '<section class="card"><div class="card-header"></div><div class="card-content"></div></section>',
+      '<section class="card"><h3>Usage</h3><div>Current workspace metrics.</div></section>',
       '<input class="input" />',
       '<span class="badge badge-success">Live</span>',
     ];

@@ -46,9 +46,7 @@ styles/display/separator.css
 styles/display/table.css
 styles/display/spinner.css
 styles/display/coverage.css
-styles/navigation/breadcrumb.css
 styles/navigation/nav.css
-styles/navigation/pagination.css
 styles/overlays/alert-dialog.css
 styles/overlays/dropdown.css
 styles/overlays/toast.css
@@ -148,14 +146,13 @@ See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
 generic catch-all: use `core` for structure, `controls` for actions and forms,
-`surfaces` for display, `navs` for breadcrumb/standalone
-nav/pagination, and `overlays` for floating UI.
+`surfaces` for display, `navs` for tabs and pills, and `overlays` for floating UI.
 Themes re-exports the small set of styled primitives that are common in app
 code. `@askrjs/ui` owns advanced primitives and behavior details.
 Use `controls` for styled components such as Button, Input, Select, Checkbox,
 Switch, Field, and InputGroup. Use `surfaces` for styled components such as
-Alert, Badge, Card, CardActions, Table, Avatar, Progress, Spinner, and Skeleton.
-Use `navs` for Breadcrumb, Pagination, Tabs, Tab, Pills, and Pill.
+Alert, Badge, Card, Table, Avatar, Progress, Spinner, and Skeleton.
+Use `navs` for Tabs, Tab, Pills, and Pill.
 Use `overlays` for the styled overlay primitives shipped with the default CSS:
 Dialog, AlertDialog, Dropdown, Popover, Tooltip, and Toast. `Dialog` is the
 canonical modal surface name; a separate `Modal` component would duplicate the
@@ -167,10 +164,9 @@ while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
 theme-owned because they are visual composition only.
 The wrappers intentionally emit familiar alias classes for the common app
 surfaces they own, so the DOM stays easy to target with either `data-slot`
-hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
-`field`, `field-hint`, `field-error`, `input-group`, and `pagination`.
-Status surfaces such as `Spinner` and nav helpers such as `Breadcrumb` stay
-thin. Use `Badge` for small non-interactive labels and `Alert` for inline
+hooks or names like `alert`, `btn-group`, `btn-close`, `field`, `field-hint`,
+`field-error`, and `input-group`.
+Status surfaces such as `Spinner` stay thin. Use `Badge` for small non-interactive labels and `Alert` for inline
 feedback. Chips and tags should stay local recipes until they have a distinct
 interactive/removable contract that `Badge` does not cover. Structural chrome
 components such as `Header`, `Main`, `Section`,

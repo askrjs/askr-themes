@@ -33,13 +33,8 @@ import {
   Toolbar,
 } from "../../src/core";
 import {
-  Breadcrumb,
   Pill,
   Pills,
-  Pagination,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
   Tab,
   Tabs,
 } from "../../src/navs";
@@ -107,7 +102,6 @@ describe("curated entrypoints", () => {
     expect(typeof Avatar).toBe("function");
     expect(Badge({ children: "new" })).toBeTruthy();
     expect(Card({ children: "body" })).toBeTruthy();
-    expect(Breadcrumb({ children: "trail" })).toBeTruthy();
     expect(Tabs({ children: Tab({ href: "/settings/profile", children: "Profile" }) })).toBeTruthy();
     expect(Pills({ children: Pill({ href: "/settings/profile", children: "Profile" }) })).toBeTruthy();
     expect(typeof Progress).toBe("function");
@@ -127,10 +121,6 @@ describe("curated entrypoints", () => {
     expect(NavGroup({ title: "Workspace", children: "group" })).toBeTruthy();
     expect(NavItem({ href: "https://github.com/askrjs", children: "item" })).toBeTruthy();
     expect(NavLink({ href: "/docs", children: "link" })).toBeTruthy();
-    expect(Pagination({ children: "pages" })).toBeTruthy();
-    expect(PaginationEllipsis({})).toBeTruthy();
-    expect(PaginationItem({ children: "item" })).toBeTruthy();
-    expect(PaginationLink({ href: "/docs", children: "page 1" })).toBeTruthy();
     expect(typeof Dialog).toBe("function");
     expect(typeof AlertDialog).toBe("function");
     expect(typeof Dropdown).toBe("function");

@@ -64,21 +64,14 @@ markup changes.
   border-color: var(--ak-color-border-strong);
 }
 
-.settings-page :where([data-slot="card-actions"]) {
-  justify-content: flex-end;
-}
 ```
 
-Keep selectors app-scoped and low-specificity. Avoid child-order selectors:
+Compose card interiors with `Block`, headings, text, and actions. Keep selectors
+app-scoped and low-specificity. Avoid child-order selectors:
 
 ```css
 /* Avoid: brittle child order. */
 .settings-page .card > div:first-child {
-  padding-bottom: 0;
-}
-
-/* Prefer: stable public slot. */
-.settings-page :where([data-slot="card-header"]) {
   padding-bottom: 0;
 }
 ```
@@ -100,18 +93,15 @@ Common aliases:
   `badge-warning`, `badge-danger`, `badge-info`.
 - Navigation and overlays: `nav`, `nav-item`, `navbar-item`,
   `dropdown-trigger`, `dropdown-content`, `dropdown-item`,
-  `dropdown-label`, `dropdown-separator`, `pagination`, `page-item`,
-  `page-link`.
+  `dropdown-label`, `dropdown-separator`.
 
 Raw HTML example:
 
 ```html
 <button class="btn btn-primary btn-sm">Save</button>
 <section class="card">
-  <div class="card-header">
-    <h3 class="card-title">Usage</h3>
-  </div>
-  <div class="card-content">Current workspace metrics.</div>
+  <h3>Usage</h3>
+  <div>Current workspace metrics.</div>
 </section>
 ```
 
