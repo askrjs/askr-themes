@@ -66,8 +66,9 @@ export function AppShell() {
 - `@askrjs/themes/core` for `Block`, semantic structure, app chrome, and common
   page helpers
 - `@askrjs/themes/navs` for breadcrumb, standalone nav, and pagination
-- `@askrjs/themes/surfaces`, `@askrjs/themes/feedback`, and
-  `@askrjs/themes/overlays` for the matching visual composition surfaces
+- `@askrjs/themes/surfaces` for cards, badges, alerts, lists, and skeletons
+- `@askrjs/themes/feedback` for `Spinner`
+- `@askrjs/themes/overlays` for dropdown, menu, menubar, and overlay wrappers
 
 ## Theme Contract
 

@@ -13,11 +13,12 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { EmptyState, Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/feedback";
 import {
   Aside,
   Block,
   Container,
+  EmptyState,
   Header,
   Main,
   Page,

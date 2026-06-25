@@ -7,10 +7,11 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { EmptyState, Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/feedback";
 import {
   Block,
   Container,
+  EmptyState,
   NavBrand,
   NavGroup,
   NavItem,
@@ -86,12 +87,6 @@ export function buildControlsFixture(): JSX.Element {
 export function buildFeedbackFixture(): JSX.Element {
   return (
     <section data-bench="feedback">
-      <EmptyState
-        icon={<BenchIcon label="!" />}
-        title="No results"
-        description="Try changing the current filters."
-        action={<button type="button">Reset</button>}
-      />
       <Spinner label="Loading" />
     </section>
   );
@@ -141,6 +136,12 @@ export function buildCoreFixture(): JSX.Element {
             <Block gap="xs">
               <div>Nested block</div>
             </Block>
+            <EmptyState
+              icon={<BenchIcon label="!" />}
+              title="No results"
+              description="Try changing the current filters."
+              action={<button type="button">Reset</button>}
+            />
           </Block>
         </Container>
       </Block>

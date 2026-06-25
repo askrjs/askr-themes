@@ -87,11 +87,10 @@ const COVERAGE = {
   ],
   feedback: [
     {
-      exports: ["EmptyState", "Spinner"],
+      exports: ["Spinner"],
       directTests: [
         "tests/unit/components-entrypoint.test.ts",
         "tests/unit/package-surface.test.ts",
-        "tests/jsdom/saas-patterns.test.tsx",
         "tests/jsdom/breadcrumb-spinner.test.tsx",
       ],
       benchFiles: [

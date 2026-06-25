@@ -3,8 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { EmptyState } from "../../src/feedback";
-import { NavItem } from "../../src/core";
+import { EmptyState, NavItem } from "../../src/core";
 import { Nav } from "../../src/navs";
 
 async function settle(): Promise<void> {

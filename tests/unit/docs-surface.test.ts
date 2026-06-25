@@ -95,6 +95,7 @@ describe("docs surface", () => {
     expect(themingDoc).toContain("Header");
     expect(themingDoc).toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
+    expect(themingDoc).toContain("`EmptyState` belongs to `core`");
 
     expect(readmeDoc).toContain("@askrjs/themes/core");
     expect(readmeDoc).toContain("@askrjs/themes/navs");

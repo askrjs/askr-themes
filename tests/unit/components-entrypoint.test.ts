@@ -5,6 +5,7 @@ import {
   Aside,
   Block,
   Container,
+  EmptyState,
   Header,
   Main,
   NavBrand,
@@ -19,7 +20,7 @@ import {
   Sidebar,
   Toolbar,
 } from "../../src/core";
-import { EmptyState, Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/feedback";
 import {
   Breadcrumb,
   Nav,
