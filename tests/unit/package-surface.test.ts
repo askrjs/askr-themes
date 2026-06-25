@@ -156,6 +156,23 @@ describe("package surface", () => {
     expect(navTypes).not.toMatch(/NavItemOwnProps[^{]*{[^}]*variant\?/s);
   });
 
+  it("should keeps Block as the only public layout vocabulary", () => {
+    const removedLayoutHelper = join(ROOT_DIR, "src/components/_internal", "layout.ts");
+    const visualAudit = readFileSync(join(ROOT_DIR, "visual-check.html"), "utf-8");
+    const readme = readFileSync(join(ROOT_DIR, "docs/README.md"), "utf-8");
+    const guide = readFileSync(join(ROOT_DIR, "docs/askr-themes.md"), "utf-8");
+    const forbiddenBreakpoint = ["initial", ":"].join("");
+    const forbiddenSlot = (slot: string) => `data-slot="${slot}"`;
+
+    expect(existsSync(removedLayoutHelper)).toBe(false);
+
+    for (const source of [visualAudit, readme, guide]) {
+      expect(source).not.toContain(forbiddenBreakpoint);
+      expect(source).not.toContain(forbiddenSlot("stack"));
+      expect(source).not.toContain(forbiddenSlot("flex"));
+    }
+  });
+
   it("should keeps EmptyState owned by core instead of feedback", () => {
     const coreEntrypoint = readFileSync(join(ROOT_DIR, "src/core.ts"), "utf-8");
     const feedbackEntrypoint = readFileSync(join(ROOT_DIR, "src/feedback.ts"), "utf-8");

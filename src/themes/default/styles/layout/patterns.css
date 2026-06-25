@@ -170,7 +170,7 @@
   text-underline-offset: 0.18em;
 }
 
-:where(.site-footer) > :where([data-slot="container"]) > :where([data-slot="flex"]:last-child) {
+:where(.site-footer) > :where([data-slot="container"]) > :where([data-slot="block"]:last-child) {
   margin-top: 0.25rem;
   font-size: 0.92rem;
 }
@@ -180,7 +180,7 @@
     grid-template-columns: 1fr;
   }
 
-  :where(.site-footer) > :where([data-slot="container"]) > :where([data-slot="flex"]:last-child) {
+  :where(.site-footer) > :where([data-slot="container"]) > :where([data-slot="block"]:last-child) {
     justify-content: flex-start;
   }
 }

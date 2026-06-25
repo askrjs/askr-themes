@@ -580,7 +580,7 @@
                 </a>
               </div>
               <div data-slot="navbar-content">
-                <div class="nav-group" data-slot="nav-group" data-align="center">
+                <div class="nav-group" data-slot="nav-group">
                   <div data-slot="nav-group-body">
                     <a class="nav-item" data-slot="nav-item" href="#" aria-current="page">
                       <span>Components</span>
@@ -593,7 +593,7 @@
                     </a>
                   </div>
                 </div>
-                <div class="nav-group" data-slot="nav-group" data-align="end">
+                <div class="nav-group" data-slot="nav-group" data-visual-end-group="true">
                   <div data-slot="nav-group-body">
                     <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
                       Aa
@@ -618,7 +618,7 @@
       const layoutContent = `
         <div class="stack">
           <div class="layout-demo">
-            <div data-slot="block" data-columns="initial:2" class="layout-grid">
+            <div data-slot="block" class="layout-grid">
               <aside class="layout-sidebar sidebar" data-slot="sidebar" data-responsive-collapsed="false">
                 <div data-slot="nav-brand">
                   <a href="#">
@@ -641,12 +641,12 @@
                 </div>
               </aside>
               <main class="layout-main">
-                <div data-slot="container" data-size="initial:2">
-                  <section data-slot="section" data-size="2">
-                    <div data-slot="stack" data-gap="initial:2">
+                <div data-slot="container">
+                  <section data-slot="section">
+                    <div data-slot="block">
                       <h4>Responsive layout rhythm</h4>
                       <p>
-                        Containers, sections, blocks, stacks, inline rows, and aspect-ratio wrappers
+                        Containers, sections, blocks, and aspect-ratio wrappers
                         should keep their rhythm with realistic copy.
                       </p>
                     </div>
@@ -663,7 +663,7 @@
       const mobileStressContent = `
         <div class="mobile-frame">
           <div class="mobile-frame-surface">
-            <div data-slot="block" data-size="initial:xl">
+            <div data-slot="block">
               <article class="card" data-slot="card">
                 <h4 class="card-title" data-slot="card-title">Large block preset inside 320px</h4>
                 <p class="card-description" data-slot="card-description">
@@ -1231,7 +1231,7 @@
         {
           id: "layouts",
           title: "Layouts",
-          note: "Containers, sections, blocks, stacks, and responsive media wrappers.",
+          note: "Containers, sections, blocks, and responsive media wrappers.",
           cards: [
             {
               title: "Responsive composition",

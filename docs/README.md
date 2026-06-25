@@ -160,8 +160,8 @@ export {
 ## Recipes
 
 Navbar has one default shape: put `NavBrand` first, then links, groups, or a
-simple `NavDropdown`. Add `collapseAt` only when the inline content should move
-behind a menu below that breakpoint.
+simple `NavDropdown`. Add `collapseAt` only when the inline content should
+collapse behind a toggle below that breakpoint.
 Use `NavLink` for app routes. Use `NavItem` for external or manually active
 anchors. `NavItem` has one shape: use `active` for manual state and `class` or
 `style` for rare custom treatment.

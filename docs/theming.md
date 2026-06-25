@@ -193,7 +193,7 @@ For structural chrome, keep the API intent explicit:
 - Use `Block` when you need a wrapper.
 - Use `Container` when content needs page-width constraints and gutters.
 - Use `Header`, `Main`, `Section`, `Aside`, `Sidebar`, and `Navbar` for semantic readability.
-- Put `NavBrand` first in `Navbar`; add `collapseAt` when links should collapse behind a menu.
+- Put `NavBrand` first in `Navbar`; add `collapseAt` when links should collapse behind a toggle.
 - Use `NavGroup title` when a navigation section needs a visible heading.
 - Use `NavDropdown` for simple single-level menus.
 - Use `NavLink` for app routes and `NavItem active` for external or manually active anchors.

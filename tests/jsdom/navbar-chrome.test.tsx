@@ -119,6 +119,7 @@ describe("navbar and sidebar chrome contracts", () => {
     expect(brand?.textContent).toBe("Askr");
     expect(content).not.toBeNull();
     expect(content?.querySelector('[data-slot="nav-brand"]')).toBeNull();
+    expect(content?.querySelectorAll('[data-slot="nav-item"]').length).toBe(1);
     expect(toggle?.getAttribute("aria-label")).toBe("Menu");
     expect(dropdownTrigger?.textContent).toBe("More");
     expect(dropdownContent?.textContent).toContain("Components");

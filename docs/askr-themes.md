@@ -191,7 +191,7 @@ use `active` for manual state and `class` or `style` for rare custom treatment.
 ```
 
 Responsive Navbar uses one prop. At small widths the brand remains visible and
-the rest of the content moves into a menu.
+the rest of the content expands from a toggle.
 
 ```tsx
 <Navbar aria-label="Primary" collapseAt="md">

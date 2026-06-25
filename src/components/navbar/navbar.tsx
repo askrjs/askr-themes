@@ -1,4 +1,3 @@
-import { state } from "@askrjs/askr";
 import { Dropdown, DropdownTrigger } from "@askrjs/ui";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
@@ -7,13 +6,6 @@ import { DropdownContent } from "../overlays/dropdown-content";
 import type { NavBrandProps, NavDropdownProps, NavGroupProps, NavbarProps } from "./navbar.types";
 
 const ASKR_FRAGMENT = Symbol.for("askr.fragment");
-
-type NavbarMenuProps = {
-  children?: unknown;
-  collapseIcon?: unknown;
-  collapseLabel: string;
-  menuAlign: NonNullable<NavbarProps["menuAlign"]>;
-};
 
 function flattenNavbarChildren(children: unknown): unknown[] {
   return toChildArray(children).flatMap((child) => {
@@ -48,7 +40,6 @@ export function Navbar(props: NavbarProps): JSX.Element {
     collapseAt = false,
     collapseIcon,
     collapseLabel = "Menu",
-    menuAlign = "end",
     ...rest
   } = props;
 
@@ -70,7 +61,8 @@ export function Navbar(props: NavbarProps): JSX.Element {
 
   const navbarChildren = flattenNavbarChildren(children);
   const brandChildren = navbarChildren.filter(isNavBrandChild);
-  const menuChildren = navbarChildren.filter((child) => !isNavBrandChild(child));
+  const navChildren = navbarChildren.filter((child) => !isNavBrandChild(child));
+  const hasNavContent = hasRenderableChildren(navChildren);
   const content = (
     <Block
       direction="row"
@@ -79,17 +71,17 @@ export function Navbar(props: NavbarProps): JSX.Element {
       width="full"
       data-slot="navbar-content"
     >
-      {menuChildren}
+      {navChildren}
     </Block>
   );
-  const menu = hasRenderableChildren(menuChildren) ? (
-    <NavbarMenu
-      collapseIcon={collapseIcon}
-      collapseLabel={collapseLabel}
-      menuAlign={menuAlign}
-    >
-      {menuChildren}
-    </NavbarMenu>
+  const collapse = hasNavContent ? (
+    <details data-slot="navbar-collapse">
+      <summary aria-label={collapseLabel} data-slot="navbar-toggle">
+        {collapseIcon}
+        <span data-slot="navbar-toggle-label">{collapseLabel}</span>
+      </summary>
+      {content}
+    </details>
   ) : null;
 
   return (
@@ -103,45 +95,8 @@ export function Navbar(props: NavbarProps): JSX.Element {
       data-collapse-at={collapseAt}
       data-slot="navbar"
     >
-      {[...brandChildren, content, menu]}
+      {[...brandChildren, collapse]}
     </Block>
-  );
-}
-
-function NavbarMenu(props: NavbarMenuProps): JSX.Element {
-  const { children, collapseIcon, collapseLabel, menuAlign } = props;
-  const menuOpen = state(false);
-
-  const closeMenuOnLinkClick = (event: MouseEvent) => {
-    const target = event.target;
-
-    if (target instanceof Element && target.closest("a[href]")) {
-      menuOpen.set(false);
-    }
-  };
-
-  return (
-    <Dropdown open={menuOpen()} onOpenChange={menuOpen.set}>
-      <DropdownTrigger
-        aria-label={collapseLabel}
-        class={classes("nav-item")}
-        data-slot="navbar-toggle"
-      >
-        {collapseIcon}
-        <span data-slot="navbar-toggle-label">{collapseLabel}</span>
-      </DropdownTrigger>
-      <DropdownContent
-        align={menuAlign}
-        class={classes("dropdown-content")}
-        data-slot="navbar-menu"
-        side="bottom"
-        sideOffset={6}
-      >
-        <Block gap="xs" onClick={closeMenuOnLinkClick} data-slot="navbar-menu-content">
-          {children}
-        </Block>
-      </DropdownContent>
-    </Dropdown>
   );
 }
 

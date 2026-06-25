@@ -6,34 +6,26 @@ import type {
   CardDescriptionProps,
   CardFooterProps,
   CardHeaderProps,
-  CardPadding,
   CardProps,
   CardTitleProps,
   CardVariant,
 } from "./card.types";
-
-function normalizePadding(padding: CardPadding | undefined) {
-  return padding && padding !== "md" ? padding : undefined;
-}
 
 function normalizeVariant(variant: CardVariant | undefined) {
   return variant && variant !== "default" ? variant : undefined;
 }
 
 export function Card(props: CardProps): JSX.Element {
-  const { children, class: className, variant, padding = "md", ref, ...rest } = props;
+  const { children, class: className, variant, ref, ...rest } = props;
   const normalizedVariant = normalizeVariant(variant);
-  const normalizedPadding = normalizePadding(padding);
 
   const finalProps = mergeProps(rest, {
     ref,
     class: classes(
       "card",
       normalizedVariant && `card-${normalizedVariant}`,
-      normalizedPadding && `card-${normalizedPadding}`,
       className,
     ),
-    "data-padding": normalizedPadding,
     "data-slot": "card",
     "data-variant": normalizedVariant,
   });

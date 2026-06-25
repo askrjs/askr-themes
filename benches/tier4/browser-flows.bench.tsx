@@ -346,9 +346,12 @@ describe("tier4 browser benches", () => {
       ) as HTMLElement | null;
       const toggle = scenario?.container.querySelector(
         '[data-slot="navbar-toggle"]',
-      ) as HTMLButtonElement | null;
+      ) as HTMLElement | null;
+      const collapse = scenario?.container.querySelector(
+        '[data-slot="navbar-collapse"]',
+      ) as HTMLDetailsElement | null;
 
-      if (!navbar || !content || !toggle) {
+      if (!navbar || !content || !toggle || !collapse) {
         throw new Error("navbar bench failed to mount the responsive chrome");
       }
 
@@ -358,15 +361,11 @@ describe("tier4 browser benches", () => {
       toggle.click();
       await settle();
 
-      const menu = document.body.querySelector(
-        '[data-slot="navbar-menu"]',
-      ) as HTMLElement | null;
-
-      if (!menu) {
-        throw new Error("navbar bench failed to open the responsive menu");
+      if (!collapse.hasAttribute("open")) {
+        throw new Error("navbar bench failed to open the responsive content");
       }
 
-      void getComputedStyle(menu).display;
+      void getComputedStyle(content).display;
 
       window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
       await settle();

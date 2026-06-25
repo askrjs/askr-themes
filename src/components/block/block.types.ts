@@ -38,6 +38,9 @@ export type BlockElement =
   | "aside"
   | "nav"
   | "a"
+  | "ul"
+  | "ol"
+  | "li"
   | "form"
   | "article";
 

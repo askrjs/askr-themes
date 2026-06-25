@@ -389,7 +389,7 @@ describe("visual polish contracts", () => {
       '#chrome .preview[data-theme="light"] [data-slot="navbar"]',
     ) as HTMLElement;
     const brand = navbar.querySelector('[data-slot="nav-brand"]') as HTMLElement;
-    const endGroup = navbar.querySelector('[data-slot="nav-group"][data-align="end"]') as HTMLElement;
+    const endGroup = navbar.querySelector('[data-visual-end-group="true"]') as HTMLElement;
     const action = endGroup.querySelector('[data-slot="button"]') as HTMLElement;
 
     expect(navbar.getBoundingClientRect().width).toBeLessThan(480);
@@ -401,7 +401,7 @@ describe("visual polish contracts", () => {
   it("should keeps oversized block presets inside narrow containers", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
-        <div data-slot="block" data-size="initial:xl">
+        <div data-slot="block">
           <article class="card" data-slot="card">One</article>
           <article class="card" data-slot="card">Two</article>
         </div>
