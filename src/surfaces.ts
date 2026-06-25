@@ -23,3 +23,5 @@ export { SEPARATOR_A11Y_CONTRACT } from "./components/separator";
 export type * from "./components/separator";
 export { Skeleton } from "./components/skeleton";
 export type * from "./components/skeleton";
+export { Spinner } from "./components/spinner";
+export type * from "./components/spinner";

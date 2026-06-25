@@ -68,8 +68,7 @@ import {
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
 import { Button, Field, InputGroup } from "@askrjs/themes/controls";
-import { AspectRatio, Card, Alert, Badge, ListGroup } from "@askrjs/themes/surfaces";
-import { Spinner } from "@askrjs/themes/feedback";
+import { AspectRatio, Card, Alert, Badge, ListGroup, Spinner } from "@askrjs/themes/surfaces";
 import { DropdownItem } from "@askrjs/themes/overlays";
 ```
 
@@ -150,7 +149,7 @@ across applications:
 - `Page`: main plus centered page content.
 - `PageHeader`: title, optional description, and optional actions.
 - `Toolbar`: compact title plus actions row.
-- `EmptyState`: consistent empty or no-results feedback.
+- `EmptyState`: consistent empty or no-results messaging.
 
 Application-specific layouts stay as recipes. Compose centered pages, sidebar
 layouts, split pages, form pages, responsive rows, panel grids, card lists, and

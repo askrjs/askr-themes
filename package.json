@@ -54,10 +54,6 @@
       "types": "./dist/surfaces.d.ts",
       "import": "./dist/surfaces.js"
     },
-    "./feedback": {
-      "types": "./dist/feedback.d.ts",
-      "import": "./dist/feedback.js"
-    },
     "./navs": {
       "types": "./dist/navs.d.ts",
       "import": "./dist/navs.js"

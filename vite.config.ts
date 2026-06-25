@@ -11,7 +11,6 @@ export default defineConfig({
     entry: {
       core: "src/core.ts",
       controls: "src/controls.ts",
-      feedback: "src/feedback.ts",
       navs: "src/navs.ts",
       overlays: "src/overlays.ts",
       surfaces: "src/surfaces.ts",
@@ -35,7 +34,6 @@ export default defineConfig({
       entry: {
         core: "src/core.ts",
         controls: "src/controls.ts",
-        feedback: "src/feedback.ts",
         navs: "src/navs.ts",
         overlays: "src/overlays.ts",
         surfaces: "src/surfaces.ts",

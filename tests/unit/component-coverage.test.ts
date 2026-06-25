@@ -5,7 +5,6 @@ import { describe, expect, it } from "vite-plus/test";
 
 import * as controls from "../../src/controls";
 import * as core from "../../src/core";
-import * as feedback from "../../src/feedback";
 import * as navs from "../../src/navs";
 import * as surfaces from "../../src/surfaces";
 import * as theme from "../../src/theme";
@@ -85,21 +84,6 @@ const COVERAGE = {
       benchTier: 2,
     },
   ],
-  feedback: [
-    {
-      exports: ["Spinner"],
-      directTests: [
-        "tests/unit/components-entrypoint.test.ts",
-        "tests/unit/package-surface.test.ts",
-        "tests/jsdom/breadcrumb-spinner.test.tsx",
-      ],
-      benchFiles: [
-        "benches/tier2/public-families.bench.tsx",
-        "benches/tier4/browser-flows.bench.tsx",
-      ],
-      benchTier: 2,
-    },
-  ],
   navs: [
     {
       exports: [
@@ -147,6 +131,7 @@ const COVERAGE = {
         "Divider",
         "Separator",
         "Skeleton",
+        "Spinner",
       ],
       directTests: [
         "tests/unit/card-components.test.ts",
@@ -154,6 +139,7 @@ const COVERAGE = {
         "tests/unit/block-first-components.test.ts",
         "tests/unit/components-entrypoint.test.ts",
         "tests/unit/package-surface.test.ts",
+        "tests/jsdom/breadcrumb-spinner.test.tsx",
       ],
       benchFiles: [
         "benches/tier2/public-families.bench.tsx",
@@ -229,10 +215,6 @@ describe("component coverage matrix", () => {
 
   it("should keeps the controls family covered by direct tests and tier2 benches", () => {
     assertCoverage("controls", controls, IGNORED_EXPORTS.controls, COVERAGE.controls);
-  });
-
-  it("should keeps the feedback family covered by direct tests and tier2 benches", () => {
-    assertCoverage("feedback", feedback, [], COVERAGE.feedback);
   });
 
   it("should keeps the nav family covered by direct tests and the correct bench tiers", () => {

@@ -160,14 +160,14 @@ See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
 generic catch-all: use `core` for structure, `navs` for breadcrumb/standalone
-nav/pagination, and `theme`, `controls`, `surfaces`, `feedback`, or `overlays`
+nav/pagination, and `theme`, `controls`, `surfaces`, or `overlays`
 for the matching visual or behavioral family.
-Use the curated theme entrypoints such as `controls`, `surfaces`, `feedback`,
-and `navs` for styled components such as Button, ButtonGroup, Close,
+Use the curated theme entrypoints such as `controls`, `surfaces`, and `navs`
+for styled components such as Button, ButtonGroup, Close,
 InputGroup, Field, Alert, ListGroup, Pagination, Badge, Card, CardActions,
 AspectRatio, Spinner, and Skeleton.
 `EmptyState` belongs to `core` because it is a stable composition preset, not a
-separate feedback-family export.
+surface export.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
 theme-owned because they are visual composition only.
@@ -176,7 +176,7 @@ surfaces they own, so the DOM stays easy to target with either `data-slot`
 hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
 `field`, `field-hint`, `field-error`, `input-group`, `list-group`, and
 `pagination`.
-Feedback helpers such as `Spinner` and nav helpers such as `Breadcrumb` stay
+Status surfaces such as `Spinner` and nav helpers such as `Breadcrumb` stay
 thin. Structural chrome components such as `Header`, `Main`, `Section`,
 `Aside`, `Sidebar`, `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`,
 and `NavItem` are semantic presets built on `Block`; they do not introduce

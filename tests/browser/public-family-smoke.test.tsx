@@ -13,7 +13,6 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { Spinner } from "../../src/feedback";
 import {
   Aside,
   Block,
@@ -40,6 +39,7 @@ import {
   ListGroupItem,
   Separator,
   Skeleton,
+  Spinner,
 } from "../../src/surfaces";
 
 import "../../src/themes/default/index.css";

@@ -19,7 +19,7 @@ describe("docs surface", () => {
     expect(pkg.exports?.["./core"]).toBeTruthy();
     expect(pkg.exports?.["./controls"]).toBeTruthy();
     expect(pkg.exports?.["./surfaces"]).toBeTruthy();
-    expect(pkg.exports?.["./feedback"]).toBeTruthy();
+    expect(pkg.exports?.["./feedback"]).toBeUndefined();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
     expect(pkg.exports?.["./overlays"]).toBeTruthy();
     expect(pkg.exports?.["./layouts"]).toBeUndefined();
@@ -43,7 +43,7 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("@askrjs/themes/core");
     expect(themesDoc).toContain("@askrjs/themes/controls");
     expect(themesDoc).toContain("@askrjs/themes/surfaces");
-    expect(themesDoc).toContain("@askrjs/themes/feedback");
+    expect(themesDoc).not.toContain("@askrjs/themes/feedback");
     expect(themesDoc).toContain("@askrjs/themes/navs");
     expect(themesDoc).toContain("@askrjs/themes/overlays");
     expect(themesDoc).not.toContain("@askrjs/themes/layouts");
@@ -100,7 +100,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("@askrjs/themes/core");
     expect(readmeDoc).toContain("@askrjs/themes/navs");
     expect(readmeDoc).toContain("@askrjs/themes/surfaces");
-    expect(readmeDoc).toContain("@askrjs/themes/feedback");
+    expect(readmeDoc).not.toContain("@askrjs/themes/feedback");
     expect(readmeDoc).toContain("@askrjs/themes/theme");
     expect(readmeDoc).toContain("@askrjs/themes/overlays");
     expect(readmeDoc).not.toContain("@askrjs/themes/layouts");
@@ -112,6 +112,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("Pagination");
     expect(readmeDoc).toContain("Card");
     expect(readmeDoc).toContain("DropdownContent");
+    expect(themingDoc).not.toContain("@askrjs/themes/feedback");
 
     expect(tokensDoc).toContain("## Semantic Registry");
     expect(tokensDoc).toContain("tabby");
