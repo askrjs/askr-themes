@@ -6,7 +6,7 @@ import {
   Aside,
   Block,
   Container,
-  EmptyState as CoreEmptyState,
+  EmptyState,
   Header,
   Main,
   Navbar,
@@ -31,7 +31,7 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { EmptyState, Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/feedback";
 import { Breadcrumb, Pagination, PaginationEllipsis, PaginationItem, PaginationLink } from "../../src/navs";
 import {
   DROPDOWN_A11Y_CONTRACT,
@@ -84,7 +84,7 @@ describe("package surface", () => {
       Page,
       PageHeader,
       Toolbar,
-      CoreEmptyState,
+      EmptyState,
       Button,
       ThemeProvider,
       ThemePicker,
@@ -98,7 +98,6 @@ describe("package surface", () => {
       InputGroupText,
       Alert,
       AspectRatio,
-      EmptyState,
       Spinner,
       Breadcrumb,
       Pagination,
@@ -155,6 +154,14 @@ describe("package surface", () => {
     }
 
     expect(navTypes).not.toMatch(/NavItemOwnProps[^{]*{[^}]*variant\?/s);
+  });
+
+  it("should keeps EmptyState owned by core instead of feedback", () => {
+    const coreEntrypoint = readFileSync(join(ROOT_DIR, "src/core.ts"), "utf-8");
+    const feedbackEntrypoint = readFileSync(join(ROOT_DIR, "src/feedback.ts"), "utf-8");
+
+    expect(coreEntrypoint).toContain('export { EmptyState } from "./components/empty-state";');
+    expect(feedbackEntrypoint).not.toContain("EmptyState");
   });
 
   it("should keeps default CSS package exports pointed at real files", () => {

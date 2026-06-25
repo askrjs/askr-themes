@@ -124,11 +124,12 @@ import {
   Section,
   Sidebar,
   Toolbar,
+  EmptyState,
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
 import { Button, ButtonGroup, Field, InputGroup } from "@askrjs/themes/controls";
 import { AspectRatio, Card, CardActions, Alert, Badge, ListGroup } from "@askrjs/themes/surfaces";
-import { EmptyState, Spinner } from "@askrjs/themes/feedback";
+import { Spinner } from "@askrjs/themes/feedback";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@askrjs/themes/overlays";
 ```
 

@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import { Button } from "../../src/controls";
-import { EmptyState } from "../../src/feedback";
-import { Block } from "../../src/core";
+import { Block, EmptyState } from "../../src/core";
 import { Card, CardContent } from "../../src/surfaces";
 
 describe("product SaaS composition patterns", () => {

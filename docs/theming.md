@@ -166,6 +166,8 @@ Use the curated theme entrypoints such as `controls`, `surfaces`, `feedback`,
 and `navs` for styled components such as Button, ButtonGroup, Close,
 InputGroup, Field, Alert, ListGroup, Pagination, Badge, Card, CardActions,
 AspectRatio, Spinner, and Skeleton.
+`EmptyState` belongs to `core` because it is a stable composition preset, not a
+separate feedback-family export.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
 theme-owned because they are visual composition only.
