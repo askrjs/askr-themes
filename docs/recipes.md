@@ -38,7 +38,7 @@ Do not:
 import { Link } from "@askrjs/askr/router";
 import { Block, Container, Header, NavBrand } from "@askrjs/themes/core";
 import { Button, Field, FieldError, Input, Label } from "@askrjs/themes/controls";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@askrjs/themes/surfaces";
+import { Card } from "@askrjs/themes/surfaces";
 import { ThemeToggle } from "@askrjs/themes/theme";
 
 export function LoginPage({ error }: { error?: string }) {
@@ -58,11 +58,11 @@ export function LoginPage({ error }: { error?: string }) {
       <Block as="main" grow center padding="lg">
         <Block maxWidth="sm" width="full">
           <Card>
-            <CardHeader>
-              <CardTitle>Sign in</CardTitle>
-              <CardDescription>Use your workspace account.</CardDescription>
-            </CardHeader>
-            <CardContent>
+            <Block gap="lg">
+              <Block gap="xs">
+                <h1>Sign in</h1>
+                <p>Use your workspace account.</p>
+              </Block>
               <Block as="form" gap="md">
                 <Field>
                   <Label for="email">Email</Label>
@@ -83,7 +83,7 @@ export function LoginPage({ error }: { error?: string }) {
                   Continue
                 </Button>
               </Block>
-            </CardContent>
+            </Block>
           </Card>
         </Block>
       </Block>
@@ -100,7 +100,7 @@ Intended hooks:
 - `header`
 - `container`
 - `nav-brand`
-- `card`, `card-header`, `card-content`
+- `card`
 - `field`, `field-error`
 - `input`, `button`
 - `theme-toggle-content`
@@ -253,6 +253,40 @@ Optional app CSS:
 }
 ```
 
+## Local Nav Patterns
+
+Use when an app needs a path trail or paged links. These are recipes, not
+exports, because labels, separators, routing behavior, and disabled states vary
+quickly between products.
+
+```tsx
+import { Block } from "@askrjs/themes/core";
+
+export function PathTrail() {
+  return (
+    <Block as="nav" aria-label="Path" direction="row" align="center" gap="sm">
+      <a href="/dashboard">Dashboard</a>
+      <span aria-hidden="true">/</span>
+      <a href="/projects">Projects</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">Payments API</span>
+    </Block>
+  );
+}
+
+export function PagedLinks() {
+  return (
+    <Block as="nav" aria-label="Pages" direction="row" align="center" gap="sm">
+      <a href="/projects?page=1">Previous</a>
+      <a href="/projects?page=1">1</a>
+      <span aria-current="page">2</span>
+      <a href="/projects?page=3">3</a>
+      <a href="/projects?page=3">Next</a>
+    </Block>
+  );
+}
+```
+
 ## Settings Form Page
 
 Use for account, workspace, billing, and integration settings.
@@ -271,7 +305,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@askrjs/themes/controls";
-import { Card, CardActions, CardContent, CardHeader, CardTitle } from "@askrjs/themes/surfaces";
+import { Card } from "@askrjs/themes/surfaces";
 
 export function SettingsPage() {
   return (
@@ -279,38 +313,34 @@ export function SettingsPage() {
       <PageHeader title="Settings" description="Manage workspace defaults." />
 
       <Card>
-        <CardHeader>
-          <CardTitle>Workspace</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Block as="form" gap="md">
-            <Field>
-              <Label for="name">Workspace name</Label>
-              <Input id="name" name="name" />
-            </Field>
-            <Field>
-              <Label for="timezone">Timezone</Label>
-              <Select name="timezone">
-                <SelectTrigger id="timezone">
-                  <SelectValue placeholder="Select timezone" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="America/New_York">Eastern Time</SelectItem>
-                  <SelectItem value="America/Los_Angeles">Pacific Time</SelectItem>
-                </SelectContent>
-              </Select>
-              <FieldHint>Used for reports and notifications.</FieldHint>
-            </Field>
-            <CardActions>
-              <Button variant="ghost" type="button">
-                Cancel
-              </Button>
-              <Button variant="primary" type="submit">
-                Save
-              </Button>
-            </CardActions>
+        <Block as="form" gap="md">
+          <h2>Workspace</h2>
+          <Field>
+            <Label for="name">Workspace name</Label>
+            <Input id="name" name="name" />
+          </Field>
+          <Field>
+            <Label for="timezone">Timezone</Label>
+            <Select name="timezone">
+              <SelectTrigger id="timezone">
+                <SelectValue placeholder="Select timezone" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="America/New_York">Eastern Time</SelectItem>
+                <SelectItem value="America/Los_Angeles">Pacific Time</SelectItem>
+              </SelectContent>
+            </Select>
+            <FieldHint>Used for reports and notifications.</FieldHint>
+          </Field>
+          <Block direction="row" justify="end" gap="sm">
+            <Button variant="ghost" type="button">
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Save
+            </Button>
           </Block>
-        </CardContent>
+        </Block>
       </Card>
     </Page>
   );
@@ -320,14 +350,6 @@ export function SettingsPage() {
 Responsive behavior: the form remains one column. Use `Page` and `Card` for a
 quiet surface. Do not split settings forms into columns unless the product has
 enough stable content to justify it.
-
-Optional app CSS:
-
-```css
-.settings-page :where([data-slot="card-actions"]) {
-  justify-content: flex-end;
-}
-```
 
 ## Data Table Page
 
@@ -340,7 +362,6 @@ import {
   Alert,
   Badge,
   Card,
-  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -369,46 +390,44 @@ export function ProjectsTablePage({
       ) : null}
 
       <Card>
-        <CardContent>
-          <Block gap="md">
-            <Toolbar
-              title="All projects"
-              actions={
-                <Field>
-                  <Label for="project-filter">Filter</Label>
-                  <Input id="project-filter" name="filter" placeholder="Search projects" />
-                </Field>
-              }
-            />
+        <Block gap="md">
+          <Toolbar
+            title="All projects"
+            actions={
+              <Field>
+                <Label for="project-filter">Filter</Label>
+                <Input id="project-filter" name="filter" placeholder="Search projects" />
+              </Field>
+            }
+          />
 
-            {projects.length === 0 ? (
-              <EmptyState
-                title="No projects yet"
-                description="Create your first project to get started."
-                action={<Button variant="primary">Create project</Button>}
-              />
-            ) : (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableHeaderCell>Name</TableHeaderCell>
-                    <TableHeaderCell>Status</TableHeaderCell>
+          {projects.length === 0 ? (
+            <EmptyState
+              title="No projects yet"
+              description="Create your first project to get started."
+              action={<Button variant="primary">Create project</Button>}
+            />
+          ) : (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Name</TableHeaderCell>
+                  <TableHeaderCell>Status</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {projects.map((project) => (
+                  <TableRow key={project.id}>
+                    <TableCell>{project.name}</TableCell>
+                    <TableCell>
+                      <Badge variant="success">{project.status}</Badge>
+                    </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {projects.map((project) => (
-                    <TableRow key={project.id}>
-                      <TableCell>{project.name}</TableCell>
-                      <TableCell>
-                        <Badge variant="success">{project.status}</Badge>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </Block>
-        </CardContent>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </Block>
       </Card>
     </Page>
   );
@@ -423,7 +442,7 @@ Intended hooks:
 
 - `page-header`, `toolbar`, `toolbar-actions`
 - `alert`
-- `card`, `card-content`
+- `card`
 - `table`, `table-row`, `table-header-cell`, `table-cell`
 - `empty-state`
 
@@ -496,7 +515,7 @@ Use when a page has primary content plus stable secondary metadata.
 
 ```tsx
 import { Block, Page, PageHeader } from "@askrjs/themes/core";
-import { Badge, Card, CardContent, CardHeader, CardTitle } from "@askrjs/themes/surfaces";
+import { Badge, Card } from "@askrjs/themes/surfaces";
 
 export function ProjectDetailPage() {
   return (
@@ -505,23 +524,19 @@ export function ProjectDetailPage() {
       <Block direction={{ base: "column", lg: "row" }} gap="lg" align="start">
         <Block grow gap="lg">
           <Card>
-            <CardHeader>
-              <CardTitle>Overview</CardTitle>
-            </CardHeader>
-            <CardContent>Primary content goes here.</CardContent>
+            <Block gap="sm">
+              <h2>Overview</h2>
+              <p>Primary content goes here.</p>
+            </Block>
           </Card>
         </Block>
         <Block width={{ base: "full", lg: "sidebar" }} shrink={false}>
           <Card>
-            <CardHeader>
-              <CardTitle>Metadata</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Block gap="sm">
-                <Badge variant="success">Live</Badge>
-                <span>Owner: Platform</span>
-              </Block>
-            </CardContent>
+            <Block gap="sm">
+              <h2>Metadata</h2>
+              <Badge variant="success">Live</Badge>
+              <span>Owner: Platform</span>
+            </Block>
           </Card>
         </Block>
       </Block>
@@ -536,13 +551,5 @@ side panel product-specific; do not promote it to a core layout component yet.
 Intended hooks:
 
 - `page-header`
-- `card`, `card-header`, `card-title`, `card-content`
+- `card`
 - `badge`
-
-Optional app CSS:
-
-```css
-.project-detail :where([data-slot="card-content"]) {
-  color: var(--ak-color-text-muted);
-}
-```

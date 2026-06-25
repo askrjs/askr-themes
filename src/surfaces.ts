@@ -58,15 +58,7 @@ export { Alert } from "./components/alert";
 export type * from "./components/alert";
 export { Badge } from "./components/badge";
 export type * from "./components/badge";
-export {
-  Card,
-  CardActions,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./components/card";
+export { Card } from "./components/card";
 export type * from "./components/card";
 export { Separator } from "./components/separator";
 export type * from "./components/separator";

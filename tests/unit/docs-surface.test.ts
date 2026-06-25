@@ -83,8 +83,8 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Pills");
     expect(themesDoc).toContain("Pill");
     expect(themesDoc).not.toContain(REMOVED_LIST_SURFACE);
-    expect(themesDoc).toContain("Pagination");
-    expect(themesDoc).toContain("Breadcrumb");
+    expect(themesDoc).not.toContain("Pagination");
+    expect(themesDoc).not.toContain("Breadcrumb");
     expect(themesDoc).toContain("Spinner");
     expect(themesDoc).toContain("Themes re-exports the small set of styled primitives");
     expect(themesDoc).toContain("and advanced primitives");
@@ -110,16 +110,16 @@ describe("docs surface", () => {
     expect(themingDoc).toContain("Pills");
     expect(themingDoc).toContain("Pill");
     expect(themingDoc).not.toContain(REMOVED_LIST_SURFACE);
-    expect(themingDoc).toContain("Pagination");
-    expect(themingDoc).toContain("CardActions");
+    expect(themingDoc).not.toContain("Pagination");
+    expect(themingDoc).not.toContain("CardActions");
     expect(themingDoc).toContain("Header");
-    expect(themingDoc).toContain("Breadcrumb");
+    expect(themingDoc).not.toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
     expect(themingDoc).toContain("Themes re-exports the small set of styled primitives");
     expect(themingDoc).toContain(
       "Use `controls` for styled components such as Button, Input, Select",
     );
-    expect(themingDoc).toContain("Alert, Badge, Card, CardActions");
+    expect(themingDoc).toContain("Alert, Badge, Card, Table");
     expect(themingDoc).toContain("`EmptyState` belongs to `core`");
     expect(themingDoc).toContain("canonical modal surface name");
     expect(themingDoc).toContain("Chips and tags should stay local recipes");
@@ -136,7 +136,8 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("ButtonGroup");
     expect(readmeDoc).toContain("InputGroup");
     expect(readmeDoc).toContain("Field");
-    expect(readmeDoc).toContain("Pagination");
+    expect(readmeDoc).not.toContain("Pagination");
+    expect(readmeDoc).not.toContain("Breadcrumb");
     expect(readmeDoc).toContain("Card");
     expect(readmeDoc).toContain("DropdownContent");
     expect(readmeDoc).toContain("Themes re-exports the small set of styled primitives");
@@ -181,7 +182,7 @@ describe("docs surface", () => {
     expect(componentAnatomyDoc).toContain("`Pill`");
     expect(componentAnatomyDoc).toContain("`dropdown-content`");
     expect(componentAnatomyDoc).toContain("`theme-toggle-content`");
-    expect(componentAnatomyDoc).toContain("`card-actions`");
+    expect(componentAnatomyDoc).not.toContain("`card-actions`");
     expect(componentAnatomyDoc).toContain("`field-error`");
     expect(componentAnatomyDoc).toContain("`input`");
     expect(componentAnatomyDoc).toContain("`button`");
@@ -203,6 +204,7 @@ describe("docs surface", () => {
     expect(recipesDoc).toContain("# App Recipes");
     expect(recipesDoc).toContain("## Simple Login Page");
     expect(recipesDoc).toContain("## Admin Shell");
+    expect(recipesDoc).toContain("## Local Nav Patterns");
     expect(recipesDoc).toContain("## Settings Form Page");
     expect(recipesDoc).toContain("## Data Table Page");
     expect(recipesDoc).toContain("## Dropdown Action Menu");

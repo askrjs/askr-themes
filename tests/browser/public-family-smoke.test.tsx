@@ -31,10 +31,6 @@ import {
   AspectRatio,
   Badge,
   Card,
-  CardActions,
-  CardContent,
-  CardFooter,
-  CardHeader,
   Separator,
   Skeleton,
   Spinner,
@@ -119,10 +115,14 @@ describe("public family browser smoke", () => {
                 <figure>Media</figure>
               </AspectRatio>
               <Card>
-                <CardHeader>Card header</CardHeader>
-                <CardContent>Card body</CardContent>
-                <CardFooter>Card footer</CardFooter>
-                <CardActions>Card actions</CardActions>
+                <Block gap="xs">
+                  <h3>Card header</h3>
+                  <p>Card body</p>
+                </Block>
+                <Block direction="row" gap="sm">
+                  <span>Card footer</span>
+                  <button type="button">Card action</button>
+                </Block>
               </Card>
             </Block>
           </Main>

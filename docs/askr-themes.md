@@ -66,7 +66,7 @@ import {
   Toolbar,
   EmptyState,
 } from "@askrjs/themes/core";
-import { Breadcrumb, Pagination, Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
+import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
 import { Button, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
 import {
   AspectRatio,

@@ -38,13 +38,8 @@ import {
   Textarea,
 } from "../../src/controls";
 import {
-  Breadcrumb,
   Pill,
   Pills,
-  Pagination,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
   Tab,
   Tabs,
 } from "../../src/navs";
@@ -65,7 +60,6 @@ import {
   Avatar,
   Badge,
   Card,
-  CardActions,
   Progress,
   ProgressCircle,
   Separator,
@@ -136,15 +130,10 @@ describe("package surface", () => {
       Spinner,
       Progress,
       ProgressCircle,
-      Breadcrumb,
       Tabs,
       Tab,
       Pills,
       Pill,
-      Pagination,
-      PaginationItem,
-      PaginationLink,
-      PaginationEllipsis,
       Dialog,
       AlertDialog,
       Dropdown,
@@ -156,7 +145,6 @@ describe("package surface", () => {
       Toast,
       Badge,
       Card,
-      CardActions,
       Table,
     ]) {
       expect(typeof component).toBe("function");
@@ -196,7 +184,6 @@ describe("package surface", () => {
       "src/surfaces.ts",
       "src/components/badge/index.ts",
       "src/components/block/index.ts",
-      "src/components/breadcrumb/index.ts",
       "src/components/container/index.ts",
       "src/components/header/index.ts",
       "src/components/section/index.ts",
@@ -210,6 +197,28 @@ describe("package surface", () => {
       expect(source, `${barrel} should not re-export internal contract details`).not.toMatch(
         A11Y_EXPORT_PATTERN,
       );
+    }
+  });
+
+  it("should keeps weak anatomy helpers out of public barrels", () => {
+    const navsEntrypoint = readFileSync(join(ROOT_DIR, "src/navs.ts"), "utf-8");
+    const surfacesEntrypoint = readFileSync(join(ROOT_DIR, "src/surfaces.ts"), "utf-8");
+    const cardEntrypoint = readFileSync(join(ROOT_DIR, "src/components/card/index.ts"), "utf-8");
+
+    for (const removed of ["Breadcrumb", "Pagination"]) {
+      expect(navsEntrypoint).not.toContain(removed);
+    }
+
+    for (const removed of [
+      "CardHeader",
+      "CardTitle",
+      "CardDescription",
+      "CardContent",
+      "CardFooter",
+      "CardActions",
+    ]) {
+      expect(surfacesEntrypoint).not.toContain(removed);
+      expect(cardEntrypoint).not.toContain(removed);
     }
   });
 

@@ -4,7 +4,6 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, Link, route } from "@askrjs/askr/router";
 
 import { Block, NavBrand, NavItem, NavLink, Navbar } from "../../src/core";
-import { Pagination, PaginationLink } from "../../src/navs";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
 
 type ElementLike = {
@@ -315,78 +314,6 @@ describe("navbar link jsdom regression", () => {
     );
 
     expect(wasDefaultPreventedByNavLink).toBe(false);
-    expect(window.location.pathname).toBe("/docs");
-  });
-
-  it("should leaves external PaginationLink targets to native browser navigation", async () => {
-    let wasDefaultPreventedByPaginationLink: boolean | undefined;
-
-    window.history.replaceState({}, "", "/");
-    route("/", () => (
-      <Pagination aria-label="Pagination">
-        <PaginationLink href="https://example.com/docs">External docs</PaginationLink>
-      </Pagination>
-    ));
-
-    await createSPA({ root: container!, manifest: getManifest() });
-    await settle();
-
-    const externalLink = container?.querySelector(
-      'a[href="https://example.com/docs"]',
-    ) as HTMLAnchorElement | null;
-    externalLink?.addEventListener(
-      "click",
-      (event) => {
-        wasDefaultPreventedByPaginationLink = event.defaultPrevented;
-        event.preventDefault();
-      },
-      { once: true },
-    );
-
-    externalLink?.dispatchEvent(
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        button: 0,
-      }),
-    );
-
-    expect(wasDefaultPreventedByPaginationLink).toBe(false);
-    expect(window.location.pathname).toBe("/");
-  });
-
-  it("should leaves same-page hash PaginationLink targets to native browser navigation", async () => {
-    let wasDefaultPreventedByPaginationLink: boolean | undefined;
-
-    window.history.replaceState({}, "", "/docs");
-    route("/docs", () => (
-      <Pagination aria-label="Pagination">
-        <PaginationLink href="#api">API</PaginationLink>
-      </Pagination>
-    ));
-
-    await createSPA({ root: container!, manifest: getManifest() });
-    await settle();
-
-    const hashLink = container?.querySelector('a[href="#api"]') as HTMLAnchorElement | null;
-    hashLink?.addEventListener(
-      "click",
-      (event) => {
-        wasDefaultPreventedByPaginationLink = event.defaultPrevented;
-        event.preventDefault();
-      },
-      { once: true },
-    );
-
-    hashLink?.dispatchEvent(
-      new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        button: 0,
-      }),
-    );
-
-    expect(wasDefaultPreventedByPaginationLink).toBe(false);
     expect(window.location.pathname).toBe("/docs");
   });
 

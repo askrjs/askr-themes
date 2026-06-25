@@ -31,9 +31,7 @@
 @import "./styles/display/table.css";
 @import "./styles/display/spinner.css";
 @import "./styles/display/coverage.css";
-@import "./styles/navigation/breadcrumb.css";
 @import "./styles/navigation/nav.css";
-@import "./styles/navigation/pagination.css";
 @import "./styles/overlays/alert-dialog.css";
 @import "./styles/overlays/dropdown.css";
 @import "./styles/overlays/toast.css";

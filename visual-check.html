@@ -578,13 +578,13 @@
 
       const shellContent = `
         <div class="stack">
-          <nav data-slot="breadcrumb" aria-label="Breadcrumb">
-            <ol data-slot="breadcrumb-list">
-              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li>
-              <li data-slot="breadcrumb-separator">/</li>
-              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Admin</a></li>
-              <li data-slot="breadcrumb-separator">/</li>
-              <li data-slot="breadcrumb-current">Components</li>
+          <nav aria-label="Path trail">
+            <ol class="inline-list">
+              <li><a href="#">Home</a></li>
+              <li aria-hidden="true">/</li>
+              <li><a href="#">Admin</a></li>
+              <li aria-hidden="true">/</li>
+              <li aria-current="page">Components</li>
             </ol>
           </nav>
           <header class="header" data-slot="header">
@@ -700,8 +700,8 @@
           <div class="mobile-frame-surface">
             <div data-slot="block">
               <article class="card" data-slot="card">
-                <h4 class="card-title" data-slot="card-title">Large block preset inside 320px</h4>
-                <p class="card-description" data-slot="card-description">
+                <h4>Large block preset inside 320px</h4>
+                <p>
                   This should not create horizontal scroll even with the xl grid preset.
                 </p>
               </article>
@@ -715,12 +715,6 @@
               <a class="tab" data-slot="tab" aria-current="page" href="#">Compact</a>
               <a class="tab" data-slot="tab" href="#">Comfortable</a>
               <a class="tab" data-slot="tab" href="#">Expanded</a>
-            </nav>
-            <nav class="pagination" data-slot="pagination" aria-label="Mobile pagination">
-              <a data-slot="pagination-link" href="#">Previous report</a>
-              <a data-slot="pagination-link" data-active="true" href="#">12</a>
-              <span data-slot="pagination-ellipsis">...</span>
-              <a data-slot="pagination-link" href="#">Next report</a>
             </nav>
             <section data-slot="dialog-content">
               <h4 data-slot="dialog-title">Mobile dialog with a long title that wraps cleanly</h4>
@@ -839,15 +833,15 @@
 
       const cardContent = `
         <article class="card card-raised" data-slot="card" data-variant="raised">
-          <div class="card-header" data-slot="card-header">
+          <div class="stack">
             <p class="audit-kicker">Overview</p>
-            <h4 class="card-title" data-slot="card-title">Raised card</h4>
-            <p class="card-description" data-slot="card-description">Elevated but still restrained.</p>
+            <h4>Raised card</h4>
+            <p>Elevated but still restrained.</p>
           </div>
-          <div class="card-content" data-slot="card-content">
+          <div>
             <p>The body should stay calm while still reading as a discrete surface.</p>
           </div>
-          <div class="card-footer" data-slot="card-footer">
+          <div class="inline-list">
             <button class="btn btn-outline" data-slot="button">Review</button>
             <span class="badge badge-success" data-slot="badge" data-variant="success">Healthy</span>
           </div>
@@ -914,15 +908,15 @@
         <div class="stack">
           <div class="stack" aria-label="Card list recipe">
             <article class="card" data-slot="card">
-              <div class="card-content" data-slot="card-content">Default row with calm spacing</div>
+              <div>Default row with calm spacing</div>
             </article>
             <article class="card" data-slot="card">
-              <div class="card-content" data-slot="card-content">
+              <div>
               Interactive row with a longer label that still aligns to the same baseline
               </div>
             </article>
             <article class="card" data-slot="card" data-variant="raised">
-              <div class="card-content" data-slot="card-content">Selected row</div>
+              <div>Selected row</div>
             </article>
           </div>
           <div class="stack">
@@ -932,13 +926,6 @@
             <div data-slot="progress-circle" data-state="indeterminate"></div>
             <div class="skeleton" data-slot="skeleton" style="height: 2.5rem;"></div>
           </div>
-          <nav class="pagination" data-slot="pagination" aria-label="Pagination">
-            <a data-slot="pagination-link" href="#">Previous</a>
-            <a data-slot="pagination-link" data-active="true" href="#">1</a>
-            <span data-slot="pagination-ellipsis">...</span>
-            <a data-slot="pagination-link" href="#">8</a>
-            <a data-slot="pagination-link" href="#">Next</a>
-          </nav>
         </div>`;
 
       const primitivesContent = `
@@ -1242,7 +1229,7 @@
         {
           id: "surfaces",
           title: "Data surfaces",
-          note: "Cards, empty states, tables, lists, pagination, progress, and skeletons.",
+          note: "Cards, empty states, tables, lists, progress, and skeletons.",
           cards: [
             {
               title: "Card",
@@ -1261,7 +1248,7 @@
             },
             {
               title: "Display states",
-              note: "List rows, progress, skeleton, and pagination in one dense surface.",
+              note: "List rows, progress, and skeleton in one dense surface.",
               content: displayContent,
             },
             {

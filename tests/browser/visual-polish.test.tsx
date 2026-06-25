@@ -128,8 +128,8 @@ describe("visual polish contracts", () => {
   it("should protects dense surfaces from collapsed spacing and long-label overflow", () => {
     document.body.innerHTML = `
       <article class="card" data-slot="card">
-        <h3 class="card-title" data-slot="card-title">A long card title that needs polish</h3>
-        <p class="card-description" data-slot="card-description">
+        <h3>A long card title that needs polish</h3>
+        <p>
           Supporting copy should fit without losing rhythm.
         </p>
       </article>
@@ -437,10 +437,6 @@ describe("visual polish contracts", () => {
           <a class="tab" data-slot="tab" href="#">Overview</a>
           <a class="tab" data-slot="tab" href="#">Detailed operations</a>
         </nav>
-        <nav class="pagination" data-slot="pagination">
-          <a data-slot="pagination-link" href="#">Previous report</a>
-          <a data-slot="pagination-link" href="#">Next report</a>
-        </nav>
       </div>
     `;
 
@@ -453,7 +449,6 @@ describe("visual polish contracts", () => {
       '[data-slot="toast"]',
       '[data-slot="pills"]',
       '[data-slot="tabs"]',
-      '[data-slot="pagination"]',
     ];
 
     for (const selector of checked) {
