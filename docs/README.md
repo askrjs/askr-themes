@@ -5,6 +5,9 @@ Default theme tokens, styles, and visual components for Askr applications.
 ## Contents
 
 - [Overview](./askr-themes.md) - the public API and composition model
+- [Component anatomy](./component-anatomy.md) - stable slots, aliases, and styling contracts
+- [Safe customization](./customization.md) - tokens, slots, aliases, and escape hatches
+- [App recipes](./recipes.md) - copyable admin UI patterns
 - [Tokens](./tokens.md) - design token reference and overrides
 - [Theming](./theming.md) - CSS architecture, selector contracts, and visual QA
 - [Regression coverage](./regression-coverage.md) - permanent coverage matrix
@@ -127,7 +130,15 @@ import {
   EmptyState,
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
-import { Button, ButtonGroup, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
+import {
+  Button,
+  ButtonGroup,
+  Field,
+  Input,
+  InputGroup,
+  Label,
+  Select,
+} from "@askrjs/themes/controls";
 import {
   AspectRatio,
   Avatar,
@@ -221,8 +232,14 @@ export function AccountPage() {
         <Block paddingY="xl" gap="lg">
           <PageHeader title="Account" description="Edit your profile." />
           <Block as="form" gap="md">
-            <Field label="Name" name="name" />
-            <Field label="Email" name="email" />
+            <Field>
+              <Label for="name">Name</Label>
+              <Input id="name" name="name" />
+            </Field>
+            <Field>
+              <Label for="email">Email</Label>
+              <Input id="email" name="email" type="email" />
+            </Field>
             <Block direction="row" justify="end" gap="sm">
               <button type="button">Cancel</button>
               <button type="submit">Save</button>

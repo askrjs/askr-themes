@@ -37,7 +37,7 @@ Then use the theme helpers and curated component surfaces:
 
 ```tsx
 import { ThemeProvider, ThemeToggle } from "@askrjs/themes/theme";
-import { Button, ButtonGroup, Field, InputGroup } from "@askrjs/themes/controls";
+import { Button, ButtonGroup, Field, Input, InputGroup, Label } from "@askrjs/themes/controls";
 
 export function AppShell() {
   return (
@@ -48,8 +48,9 @@ export function AppShell() {
       </ButtonGroup>
 
       <Field>
+        <Label for="workspace">Workspace</Label>
         <InputGroup>
-          <input />
+          <Input id="workspace" name="workspace" />
         </InputGroup>
       </Field>
     </ThemeProvider>
@@ -66,8 +67,8 @@ export function AppShell() {
 - `@askrjs/themes/core` for `Block`, semantic structure, app chrome, and common
   page helpers
 - `@askrjs/themes/navs` for breadcrumb, standalone nav, and pagination
-- `@askrjs/themes/surfaces` for cards, badges, alerts, lists, and skeletons
-- `@askrjs/themes/feedback` for `Spinner`
+- `@askrjs/themes/surfaces` for cards, badges, alerts, lists, skeletons, and
+  spinners
 - `@askrjs/themes/overlays` for dropdown, menu, menubar, and overlay wrappers
 
 ## Theme Contract
@@ -77,5 +78,10 @@ export function AppShell() {
 - Keep selectors low specificity so downstream apps can customize them cleanly.
 - Use [THEMING.md](./THEMING.md) and [docs/architecture.md](./docs/architecture.md)
   for the full contract and package boundaries.
+- Use [docs/component-anatomy.md](./docs/component-anatomy.md) for stable slot
+  hooks and [docs/customization.md](./docs/customization.md) for the KISS
+  customization path.
+- Use [docs/recipes.md](./docs/recipes.md) for copyable login, admin shell,
+  settings form, table, dropdown, and detail-page patterns.
 
 - Use `visual-check.html` for manual QA across light and dark modes.
