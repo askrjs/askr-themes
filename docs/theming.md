@@ -115,12 +115,12 @@ family.
 | -------- | --------------------------------------------------------------------------- |
 | `tabby`  | You want a warm neutral SaaS/admin baseline close to the default density.   |
 | `ginger` | You want a restrained amber/copper accent for energetic operations screens. |
-| `tuxedo` | You want a crisp high-contrast dark product shell.                          |
+| `tuxedo` | You want a crisp high-contrast dark product frame.                          |
 | `calico` | You want a balanced multi-accent dashboard palette for status-heavy UIs.    |
 | `torty`  | You want a deep warm dark surface for dense, long-lived workspaces.         |
 
 Presets primarily override the semantic color surface. Dark presets may also
-tune elevation tokens for contrast, while component selectors, shell chrome,
+tune elevation tokens for contrast, while component selectors, app chrome,
 density, radius, spacing, and responsive behavior continue to come from the
 default theme contract.
 
@@ -178,7 +178,7 @@ Feedback helpers such as `Spinner` and nav helpers such as `Breadcrumb` stay
 thin. Structural chrome components such as `Header`, `Main`, `Section`,
 `Aside`, `Sidebar`, `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`,
 and `NavItem` are semantic presets built on `Block`; they do not introduce
-independent layout behavior. Recipe shells like marketing, product, sidebar,
+independent layout behavior. Recipe layouts like marketing, product, sidebar,
 split, or form pages should be composed in userland from these primitives
 rather than shipped as dedicated theme exports.
 
@@ -196,7 +196,7 @@ For structural chrome, keep the API intent explicit:
 - Use `NavDropdown` for simple single-level menus.
 - Use `NavLink` for app routes and `NavItem active` for external or manually active anchors.
 - Use `NavLink match="exact"` when route matching should not select child routes.
-- Keep generated drawers, rails, split pages, and app shells in recipes until a stable cross-app need emerges.
+- Keep generated drawers, rails, split pages, and app layouts in recipes until a stable cross-app need emerges.
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.

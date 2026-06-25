@@ -328,20 +328,20 @@
         max-inline-size: 100%;
       }
 
-      .layout-shell {
+      .layout-grid {
         inline-size: 100%;
         max-inline-size: 100%;
         min-inline-size: 0;
         display: block;
       }
 
-      .layout-shell > * {
+      .layout-grid > * {
         max-inline-size: 100%;
         min-inline-size: 0;
       }
 
       @media (min-width: 32rem) {
-        .layout-shell {
+        .layout-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -399,8 +399,7 @@
         background: var(--ak-color-bg);
       }
 
-      .mobile-drawer-demo [data-slot="sidebar-panel"],
-      .mobile-drawer-demo [data-slot="navbar-panel"] {
+      .mobile-drawer-demo [data-slot="sidebar"] {
         position: static;
         inline-size: 100%;
         max-block-size: 14rem;
@@ -574,28 +573,32 @@
           </nav>
           <header class="header" data-slot="header">
             <nav class="navbar" data-slot="navbar" data-orientation="horizontal" data-responsive-collapsed="false">
-              <div class="navbar-shell" data-slot="navbar-shell">
-                <div class="navbar-brand" data-slot="navbar-brand">
-                  <a href="#">
-                    <span data-slot="icon" aria-hidden="true">A</span>
-                    <strong>Askr Production Workspace</strong>
-                  </a>
+              <div class="nav-brand" data-slot="nav-brand">
+                <a href="#">
+                  <span data-slot="icon" aria-hidden="true">A</span>
+                  <strong>Askr Production Workspace</strong>
+                </a>
+              </div>
+              <div data-slot="navbar-content">
+                <div class="nav-group" data-slot="nav-group" data-align="center">
+                  <div data-slot="nav-group-body">
+                    <a class="nav-item" data-slot="nav-item" href="#" aria-current="page">
+                      <span>Components</span>
+                    </a>
+                    <a class="nav-item" data-slot="nav-item" href="#">
+                      <span>Usage analytics</span>
+                    </a>
+                    <a class="nav-item" data-slot="nav-item" href="#">
+                      <span>Long documentation destination</span>
+                    </a>
+                  </div>
                 </div>
-                <div class="navbar-group" data-slot="navbar-group" data-align="center">
-                  <a class="navbar-item" data-slot="nav-item" href="#" aria-current="page">
-                    <span>Components</span>
-                  </a>
-                  <a class="navbar-item" data-slot="nav-item" href="#">
-                    <span>Usage analytics</span>
-                  </a>
-                  <a class="navbar-item" data-slot="nav-item" href="#">
-                    <span>Long documentation destination</span>
-                  </a>
-                </div>
-                <div class="navbar-group" data-slot="navbar-group" data-align="end">
-                  <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
-                    Aa
-                  </button>
+                <div class="nav-group" data-slot="nav-group" data-align="end">
+                  <div data-slot="nav-group-body">
+                    <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
+                      Aa
+                    </button>
+                  </div>
                 </div>
               </div>
             </nav>
@@ -615,27 +618,25 @@
       const layoutContent = `
         <div class="stack">
           <div class="layout-demo">
-            <div data-slot="block" data-columns="initial:2" class="layout-shell">
+            <div data-slot="block" data-columns="initial:2" class="layout-grid">
               <aside class="layout-sidebar sidebar" data-slot="sidebar" data-responsive-collapsed="false">
-                <div class="sidebar-shell" data-slot="sidebar-shell" data-orientation="vertical">
-                  <div data-slot="navbar-brand">
-                    <a href="#">
-                      <span data-slot="icon" aria-hidden="true">A</span>
-                      <strong>Askr Production Workspace</strong>
+                <div data-slot="nav-brand">
+                  <a href="#">
+                    <span data-slot="icon" aria-hidden="true">A</span>
+                    <strong>Askr Production Workspace</strong>
+                  </a>
+                </div>
+                <div data-slot="nav-group">
+                  <span data-slot="nav-group-label">Operations and reporting</span>
+                  <div data-slot="nav-group-body">
+                    <a class="nav-item" data-slot="nav-item" href="#" aria-current="page">
+                      <span data-slot="icon" aria-hidden="true">D</span>
+                      <span>Dashboard</span>
                     </a>
-                  </div>
-                  <div data-slot="navbar-group">
-                    <span data-slot="navbar-group-label">Operations and reporting</span>
-                    <div data-slot="navbar-group-body">
-                      <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">
-                        <span data-slot="icon" aria-hidden="true">D</span>
-                        <span>Dashboard</span>
-                      </a>
-                      <a class="nav-item long-label" data-slot="nav-link" href="#">
-                        <span data-slot="icon" aria-hidden="true">R</span>
-                        <span>A very long navigation destination name for production readiness</span>
-                      </a>
-                    </div>
+                    <a class="nav-item long-label" data-slot="nav-item" href="#">
+                      <span data-slot="icon" aria-hidden="true">R</span>
+                      <span>A very long navigation destination name for production readiness</span>
+                    </a>
                   </div>
                 </div>
               </aside>
@@ -738,17 +739,12 @@
                 </tbody>
               </table>
             </div>
-            <div class="mobile-drawer-demo" data-slot="sidebar" data-responsive-collapsed="true">
-              <aside data-slot="sidebar-panel">
-                <header data-slot="sidebar-panel-header">
-                  <div data-slot="navbar-brand"><a href="#">Long workspace navigation</a></div>
-                  <button data-slot="sidebar-panel-close" aria-label="Close sidebar">
-                    <span aria-hidden="true">x</span>
-                  </button>
-                </header>
-                <div data-slot="navbar-group">
-                  <div data-slot="navbar-group-body">
-                    <a class="nav-item long-label" data-slot="nav-link" href="#">
+            <div class="mobile-drawer-demo">
+              <aside data-slot="sidebar">
+                <div data-slot="nav-brand"><a href="#">Long workspace navigation</a></div>
+                <div data-slot="nav-group">
+                  <div data-slot="nav-group-body">
+                    <a class="nav-item long-label" data-slot="nav-item" href="#">
                       <span>Deeply nested operational dashboard navigation item</span>
                     </a>
                   </div>
@@ -1259,9 +1255,9 @@
           ],
         },
         {
-          id: "shell",
-          title: "Shell and navigation",
-          note: "Header, navbar, tabs, and pills in one isolated shell sample.",
+          id: "chrome",
+          title: "Chrome and navigation",
+          note: "Header, navbar, tabs, and pills in one isolated chrome sample.",
           cards: [
             {
               title: "Navbar and navs",
@@ -1479,7 +1475,7 @@
             <a href="#foundations">Foundations</a>
             <a href="#layouts">Layouts</a>
             <a href="#mobile">Mobile</a>
-            <a href="#shell">Shell</a>
+            <a href="#chrome">Chrome</a>
             <a href="#actions">Actions</a>
             <a href="#forms">Forms</a>
             <a href="#surfaces">Surfaces</a>

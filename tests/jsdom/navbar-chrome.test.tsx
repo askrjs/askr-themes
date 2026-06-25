@@ -12,7 +12,7 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe("navbar and sidebar shell contracts", () => {
+describe("navbar and sidebar chrome contracts", () => {
   let container: HTMLDivElement | undefined;
 
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe("navbar and sidebar shell contracts", () => {
     clearRoutes();
   });
 
-  it("should renders the navbar and sidebar chrome with stable shell slots", async () => {
+  it("should renders the navbar and sidebar chrome with stable slots", async () => {
     route("/docs", () => (
       <>
         <Navbar aria-label="Docs navigation" id="docs-navbar">

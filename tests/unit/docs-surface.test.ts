@@ -66,7 +66,7 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Toolbar,");
     expect(themesDoc).toContain("EmptyState,");
     expect(themesDoc).toContain("Use explicit prop names.");
-    expect(themesDoc).toContain("Application-specific shells stay as recipes");
+    expect(themesDoc).toContain("Application-specific layouts stay as recipes");
     expect(themesDoc).toContain("NavLink");
     expect(themesDoc).toContain("InputGroup");
     expect(themesDoc).toContain("Field");

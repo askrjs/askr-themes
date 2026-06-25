@@ -385,14 +385,14 @@ describe("visual polish contracts", () => {
     document.body.innerHTML = "";
     const iframe = await loadAuditFrame(1024);
     const doc = iframe.contentDocument!;
-    const shell = doc.querySelector(
-      '#shell .preview[data-theme="light"] [data-slot="navbar-shell"]',
+    const navbar = doc.querySelector(
+      '#chrome .preview[data-theme="light"] [data-slot="navbar"]',
     ) as HTMLElement;
-    const brand = shell.querySelector('[data-slot="navbar-brand"]') as HTMLElement;
-    const endGroup = shell.querySelector('[data-align="end"]') as HTMLElement;
+    const brand = navbar.querySelector('[data-slot="nav-brand"]') as HTMLElement;
+    const endGroup = navbar.querySelector('[data-slot="nav-group"][data-align="end"]') as HTMLElement;
     const action = endGroup.querySelector('[data-slot="button"]') as HTMLElement;
 
-    expect(shell.getBoundingClientRect().width).toBeLessThan(480);
+    expect(navbar.getBoundingClientRect().width).toBeLessThan(480);
     expect(brand.getBoundingClientRect().width).toBeGreaterThan(20);
     expect(endGroup.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
     expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);

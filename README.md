@@ -1,11 +1,11 @@
 # @askrjs/themes
 
-CSS tokens, shell chrome, and styled composition helpers for Askr apps.
+CSS tokens, structural presets, and styled composition helpers for Askr apps.
 
 `@askrjs/themes` is the visual companion to `@askrjs/ui` and
-`@askrjs/charts`. It owns the default theme, shared layout wrappers, and
-theme-aware component styling while behavior and data contracts stay in the
-other packages.
+`@askrjs/charts`. It owns the default theme, Block-first structural presets,
+and theme-aware component styling while behavior and data contracts stay in
+the other packages.
 
 ## Install
 
@@ -63,9 +63,11 @@ export function AppShell() {
   and `useTheme`
 - `@askrjs/themes/controls` for theme-styled controls such as `Button`,
   `ButtonGroup`, `Close`, `Field`, and `InputGroup`
-- `@askrjs/themes/layouts`, `@askrjs/themes/shells`, `@askrjs/themes/navs`,
-  `@askrjs/themes/surfaces`, `@askrjs/themes/feedback`, and
-  `@askrjs/themes/overlays` for the curated visual composition surfaces
+- `@askrjs/themes/core` for `Block`, semantic structure, app chrome, and common
+  page helpers
+- `@askrjs/themes/navs` for breadcrumb, standalone nav, and pagination
+- `@askrjs/themes/surfaces`, `@askrjs/themes/feedback`, and
+  `@askrjs/themes/overlays` for the matching visual composition surfaces
 
 ## Theme Contract
 

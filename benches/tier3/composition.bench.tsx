@@ -11,7 +11,10 @@ import {
 } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
 import {
+  Block,
+  Container,
   Header,
+  Main,
   Sidebar,
 } from "../../src/core";
 
@@ -209,10 +212,10 @@ describe("tier3 stateful composition benches", () => {
     });
   });
 
-  describe("navbar shell render", () => {
+  describe("navbar render", () => {
     const BATCH = 64;
 
-    bench("navbar shell render", () => {
+    bench("navbar render", () => {
       let result: JSX.Element | undefined;
 
       for (let i = 0; i < BATCH; i += 1) {
@@ -225,7 +228,7 @@ describe("tier3 stateful composition benches", () => {
     });
   });
 
-  describe("shell primitives", () => {
+  describe("structural presets", () => {
     const BATCH = 64;
 
     bench("header render", () => {
@@ -254,7 +257,7 @@ describe("tier3 stateful composition benches", () => {
     });
   });
 
-  describe("sidebar shell updates", () => {
+  describe("sidebar updates", () => {
     let scenario: MountedScenario | undefined;
     let viewport: ReturnType<typeof stubViewport> | undefined;
 
@@ -319,29 +322,34 @@ describe("tier3 stateful composition benches", () => {
     });
   });
 
-  describe("shell remounts", () => {
-    function RemountShellLayout(props: { children?: unknown }): JSX.Element {
+  describe("core remounts", () => {
+    function RemountCoreLayout(props: { children?: unknown }): JSX.Element {
       const { children } = props;
 
       return (
-        <Shell variant="topbar">
-          <ShellNav>
-            <div data-bench="remount-shell-nav">Docs</div>
-          </ShellNav>
-          <ShellMain>{children}</ShellMain>
-        </Shell>
+        <Block minHeight="screen">
+          <Header>
+            <Container paddingY="md">
+              <div data-bench="remount-header">Docs</div>
+            </Container>
+          </Header>
+          <Main>
+            <Container paddingY="xl">{children}</Container>
+          </Main>
+        </Block>
       );
     }
 
-    bench("shell remount cycle", async () => {
+    bench("core remount cycle", async () => {
       const scenario = await mountScenario("/docs", () => {
-        group({ layout: RemountShellLayout }, () => {
+        group({ layout: RemountCoreLayout }, () => {
           route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 8 }));
         });
       });
 
       try {
-        expect(scenario.container.querySelector('[data-slot="shell"]')).not.toBeNull();
+        expect(scenario.container.querySelector('[data-slot="header"]')).not.toBeNull();
+        expect(scenario.container.querySelector('[data-slot="main"]')).not.toBeNull();
       } finally {
         scenario.cleanup();
         clearRoutes();

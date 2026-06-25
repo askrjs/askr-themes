@@ -57,7 +57,7 @@ describe("curated entrypoints", () => {
     expect(CAT_THEME_OPTIONS.map((option) => option.value)).toEqual(CAT_THEME_NAMES);
   });
 
-  it("should exposes layout, surface, feedback, nav, and shell families", () => {
+  it("should exposes core, surface, feedback, nav, and overlay families", () => {
     expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
     expect(Block({ children: "block", gap: "md" })).toBeTruthy();
     expect(Container({ children: "container" })).toBeTruthy();
