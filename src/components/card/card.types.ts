@@ -1,7 +1,6 @@
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 export type CardVariant = "default" | "raised";
-export type CardPadding = "sm" | "md" | "lg";
 
 type DivProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref">;
 type HeadingProps = Omit<JSX.IntrinsicElements["h3"], "children" | "ref">;
@@ -10,7 +9,6 @@ type ParagraphProps = Omit<JSX.IntrinsicElements["p"], "children" | "ref">;
 export type CardProps = DivProps & {
   children?: unknown;
   variant?: CardVariant;
-  padding?: CardPadding;
   ref?: Ref<HTMLDivElement>;
 };
 

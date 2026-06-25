@@ -34,6 +34,22 @@ function asElement(value: unknown): ElementLike {
   return value as ElementLike;
 }
 
+function findElementBySlot(value: unknown, slot: string): ElementLike | undefined {
+  if (Array.isArray(value)) {
+    for (const child of value) {
+      const found = findElementBySlot(child, slot);
+      if (found) return found;
+    }
+
+    return undefined;
+  }
+
+  const element = asElement(value);
+  if (!element || typeof element !== "object" || !("props" in element)) return undefined;
+  if (element.props?.["data-slot"] === slot) return element;
+  return findElementBySlot(element.props?.children, slot);
+}
+
 describe("navigation contracts", () => {
   it("should renders breadcrumb primitives with stable slots", () => {
     const breadcrumb = asElement(Breadcrumb({ children: "trail" }));
@@ -73,7 +89,8 @@ describe("navigation contracts", () => {
       }),
     );
     const responsiveNavbarChildren = responsiveNavbar.props.children as ElementLike[];
-    const responsiveNavbarContent = asElement(responsiveNavbarChildren[1]);
+    const responsiveNavbarContent = findElementBySlot(responsiveNavbarChildren, "navbar-content");
+    const responsiveNavbarToggle = findElementBySlot(responsiveNavbarChildren, "navbar-toggle");
     const group = asElement(NavGroup({ title: "Docs", children: "links" }));
     const dropdown = asElement(NavDropdown({ label: "More", children: "items" }));
     const item = asElement(
@@ -104,8 +121,10 @@ describe("navigation contracts", () => {
     expect(brandRouterLink.props.asChild).toBe(true);
     expect(brandRouterLink.props["data-slot"]).toBe("nav-brand");
     expect(responsiveNavbarChildren[0]).toBe(brand);
-    expect(responsiveNavbarContent.props["data-slot"]).toBe("navbar-content");
-    expect(responsiveNavbarContent.props.children).toEqual([docsItem]);
+    expect(findElementBySlot(responsiveNavbarChildren, "navbar-collapse")).toBeTruthy();
+    expect(responsiveNavbarToggle?.props["aria-label"]).toBe("Menu");
+    expect(responsiveNavbarContent?.props["data-slot"]).toBe("navbar-content");
+    expect(responsiveNavbarContent?.props.children).toEqual([docsItem]);
     expect(group.type).toBe(Block);
     expect(group.props["data-slot"]).toBe("nav-group");
     expect(dropdown.props.children).toBeTruthy();

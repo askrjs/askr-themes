@@ -40,8 +40,6 @@ const ALIAS_CONTRACTS = [
   ["display/avatar.css", ".avatar-fallback", '[data-slot="avatar-fallback"]'],
   ["display/card.css", ".card", '[data-slot="card"]'],
   ["display/card.css", ".card-raised", '[data-slot="card"][data-variant="raised"]'],
-  ["display/card.css", ".card-sm", '[data-slot="card"][data-padding="sm"]'],
-  ["display/card.css", ".card-lg", '[data-slot="card"][data-padding="lg"]'],
   ["display/card.css", ".card-header", '[data-slot="card-header"]'],
   ["display/card.css", ".card-title", '[data-slot="card-title"]'],
   ["display/card.css", ".card-description", '[data-slot="card-description"]'],

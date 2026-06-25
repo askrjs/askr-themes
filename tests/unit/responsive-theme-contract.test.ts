@@ -46,9 +46,9 @@ const REQUIRED_LAYOUT_SNIPPETS = [
 
 const REQUIRED_NAVBAR_SNIPPETS = [
   '[data-slot="navbar"][data-collapse-at]',
+  '[data-slot="navbar-collapse"]',
   '[data-slot="navbar-content"]',
   '[data-slot="navbar-toggle"]',
-  '[data-slot="navbar-menu"]',
   '[data-slot="nav-dropdown-content"]',
   'data-collapse-at="sm"',
   "@media (min-width: 40rem)",

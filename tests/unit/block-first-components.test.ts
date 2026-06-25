@@ -30,6 +30,22 @@ function asElement(value: unknown): ElementLike {
   return value as ElementLike;
 }
 
+function findElementBySlot(value: unknown, slot: string): ElementLike | undefined {
+  if (Array.isArray(value)) {
+    for (const child of value) {
+      const found = findElementBySlot(child, slot);
+      if (found) return found;
+    }
+
+    return undefined;
+  }
+
+  const element = asElement(value);
+  if (!element || typeof element !== "object" || !("props" in element)) return undefined;
+  if (element.props?.["data-slot"] === slot) return element;
+  return findElementBySlot(element.props?.children, slot);
+}
+
 describe("block-first components", () => {
   it("should exposes the stable core surface", () => {
     for (const component of [
@@ -96,7 +112,7 @@ describe("block-first components", () => {
       Navbar({ collapseAt: "lg", children: [brand, docsItem] }),
     );
     const responsiveNavbarChildren = responsiveNavbar.props.children as ElementLike[];
-    const responsiveNavbarContent = asElement(responsiveNavbarChildren[1]);
+    const responsiveNavbarContent = findElementBySlot(responsiveNavbarChildren, "navbar-content");
 
     expect(container.type).toBe(Block);
     expect(container.props["data-slot"]).toBe("container");
@@ -113,8 +129,9 @@ describe("block-first components", () => {
     expect(navbar.props.direction).toBe("row");
     expect(responsiveNavbar.props["data-collapse-at"]).toBe("lg");
     expect(responsiveNavbarChildren[0]).toBe(brand);
-    expect(responsiveNavbarContent.props["data-slot"]).toBe("navbar-content");
-    expect(responsiveNavbarContent.props.children).toEqual([docsItem]);
+    expect(findElementBySlot(responsiveNavbarChildren, "navbar-collapse")).toBeTruthy();
+    expect(responsiveNavbarContent?.props["data-slot"]).toBe("navbar-content");
+    expect(responsiveNavbarContent?.props.children).toEqual([docsItem]);
     expect(brand.props["data-slot"]).toBe("nav-brand");
   });
 

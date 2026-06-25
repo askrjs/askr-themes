@@ -113,7 +113,7 @@ describe("navbar browser smoke", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Components");
   });
 
-  it("should switches responsive navbar between dropdown menu and inline content", async () => {
+  it("should switches responsive navbar between collapsed and inline content", async () => {
     const ResponsiveNav = () => (
       <Navbar aria-label="Responsive docs navigation" collapseAt="md">
         <NavBrand asChild>
@@ -151,23 +151,28 @@ describe("navbar browser smoke", () => {
 
     const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement | null;
     const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLElement | null;
+    const collapse = container?.querySelector(
+      '[data-slot="navbar-collapse"]',
+    ) as HTMLDetailsElement | null;
     const content = container?.querySelector('[data-slot="navbar-content"]') as HTMLElement | null;
-    const toggle = container?.querySelector('[data-slot="navbar-toggle"]') as HTMLButtonElement | null;
+    const toggle = container?.querySelector('[data-slot="navbar-toggle"]') as HTMLElement | null;
 
     expect(navbar?.getAttribute("data-collapse-at")).toBe("md");
     expect(brand?.textContent).toBe("Askr");
+    expect(collapse).not.toBeNull();
     expect(content?.querySelector('[data-slot="nav-brand"]')).toBeNull();
     expect(getComputedStyle(brand!).display).not.toBe("none");
     expect(getComputedStyle(content!).display).toBe("none");
-    expect(getComputedStyle(toggle!).display).toBe("inline-flex");
+    expect(getComputedStyle(toggle!).display).not.toBe("none");
 
     toggle?.click();
     await settle();
 
-    const menu = document.body.querySelector('[data-slot="navbar-menu"]') as HTMLElement | null;
-    const menuLink = menu?.querySelector('a[href="/docs/components"]') as HTMLAnchorElement | null;
+    const menuLink = content?.querySelector('a[href="/docs/components"]') as HTMLAnchorElement | null;
 
-    expect(menu?.textContent).toContain("Components");
+    expect(collapse?.hasAttribute("open")).toBe(true);
+    expect(getComputedStyle(content!).display).toBe("flex");
+    expect(content?.textContent).toContain("Components");
     menuLink?.dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
@@ -178,7 +183,9 @@ describe("navbar browser smoke", () => {
     await settle();
 
     expect(window.location.pathname).toBe("/docs/components");
-    expect(document.body.querySelector('[data-slot="navbar-menu"]')).toBeNull();
+    expect(container?.querySelector('[data-slot="navbar-collapse"]')?.hasAttribute("open")).toBe(
+      false,
+    );
 
     expect(container?.querySelector('[data-slot="navbar"]')?.getAttribute("data-collapse-at")).toBe(
       "md",

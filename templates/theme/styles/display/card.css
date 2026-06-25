@@ -16,14 +16,6 @@
   box-shadow: var(--ak-shadow-md);
 }
 
-:where(.card-sm, [data-slot="card"][data-padding="sm"]) {
-  padding: var(--ak-space-md);
-}
-
-:where(.card-lg, [data-slot="card"][data-padding="lg"]) {
-  padding: var(--ak-space-xl);
-}
-
 :where(.card-header, [data-slot="card-header"]) {
   display: grid;
   gap: 0.375rem;

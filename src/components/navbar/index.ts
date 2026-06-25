@@ -5,7 +5,6 @@ export type {
   NavDropdownProps,
   NavGroupProps,
   NavbarCollapseBreakpoint,
-  NavbarMenuAlign,
   NavbarProps,
 } from "./navbar.types";
 export type { NavItemAsChildProps, NavItemProps, NavLinkProps } from "../nav";

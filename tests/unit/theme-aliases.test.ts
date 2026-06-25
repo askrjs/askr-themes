@@ -36,13 +36,9 @@ function asElement(value: unknown): ElementLike {
 describe("theme alias classes", () => {
   it("should emits the familiar surface aliases by default", () => {
     expect(asElement(Card({ children: "body" })).props.class).toBe("card");
-    expect(asElement(Card({ children: "body" })).props["data-padding"]).toBeUndefined();
     expect(
-      asElement(Card({ children: "body", variant: "raised", padding: "lg" })).props.class,
-    ).toBe("card card-raised card-lg");
-    expect(
-      asElement(Card({ children: "body", variant: "raised", padding: "lg" })).props["data-padding"],
-    ).toBe("lg");
+      asElement(Card({ children: "body", variant: "raised" })).props.class,
+    ).toBe("card card-raised");
     expect(asElement(CardHeader({ children: "header" })).props.class).toBe("card-header");
     expect(
       asElement(CardHeader({ children: "header", class: "card-header-extra" })).props.class,

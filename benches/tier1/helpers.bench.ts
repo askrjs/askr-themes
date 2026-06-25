@@ -4,7 +4,7 @@ import { bench, describe } from "vite-plus/test";
 import { consume } from "../_shared/sink";
 import { collectJsxElements, serializeForId } from "../../src/components/_internal/jsx";
 import { mergeProps } from "../../src/components/_internal/merge-props";
-import { mergeLayoutStyles } from "../../src/components/_internal/layout";
+import { mergeLayoutStyles } from "../../src/components/_internal/block-layout";
 import { mergeCssVar } from "../../src/components/_internal/style";
 
 const WORK = 256;

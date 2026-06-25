@@ -1,6 +1,6 @@
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
-import { mergeLayoutStyles } from "../_internal/layout";
+import { mergeLayoutStyles } from "../_internal/block-layout";
 import { styleDeclarationsToClass } from "../_internal/style";
 import type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio.types";
 

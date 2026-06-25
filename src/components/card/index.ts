@@ -14,7 +14,6 @@ export type {
   CardDescriptionProps,
   CardFooterProps,
   CardHeaderProps,
-  CardPadding,
   CardProps,
   CardTitleProps,
   CardVariant,
