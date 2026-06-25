@@ -145,6 +145,18 @@ describe("package surface", () => {
     expect(pkg.exports?.["./components"]).toBeUndefined();
   });
 
+  it("should keeps NavItem as a single link preset without dead variants", () => {
+    const navTypes = readFileSync(join(ROOT_DIR, "src/components/nav/nav.types.ts"), "utf-8");
+    const navIndex = readFileSync(join(ROOT_DIR, "src/components/nav/index.ts"), "utf-8");
+    const navbarIndex = readFileSync(join(ROOT_DIR, "src/components/navbar/index.ts"), "utf-8");
+
+    for (const source of [navTypes, navIndex, navbarIndex]) {
+      expect(source).not.toContain("NavItemVariant");
+    }
+
+    expect(navTypes).not.toMatch(/NavItemOwnProps[^{]*{[^}]*variant\?/s);
+  });
+
   it("should keeps default CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;

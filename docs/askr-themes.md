@@ -174,7 +174,8 @@ export function ProjectsPage() {
 
 Use `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`, and `NavItem`
 for stable semantic navigation chrome. Use `NavLink` for app routes. Use
-`NavItem` for external or manually active anchors.
+`NavItem` for external or manually active anchors. `NavItem` has one shape:
+use `active` for manual state and `class` or `style` for rare custom treatment.
 
 ```tsx
 <Navbar aria-label="Primary">

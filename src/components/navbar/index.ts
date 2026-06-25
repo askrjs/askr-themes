@@ -8,4 +8,4 @@ export type {
   NavbarMenuAlign,
   NavbarProps,
 } from "./navbar.types";
-export type { NavItemAsChildProps, NavItemProps, NavItemVariant, NavLinkProps } from "../nav";
+export type { NavItemAsChildProps, NavItemProps, NavLinkProps } from "../nav";

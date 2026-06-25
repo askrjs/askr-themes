@@ -4,7 +4,6 @@ import type { LinkProps } from "@askrjs/askr/router";
 
 export type NavOrientation = "horizontal" | "vertical";
 export type NavVariant = "default" | "tabs" | "pills";
-export type NavItemVariant = "default" | "icon";
 export type NavLinkMatch = "prefix" | "exact";
 
 export type NavOwnProps = {
