@@ -75,6 +75,8 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("Pagination");
     expect(themesDoc).toContain("Breadcrumb");
     expect(themesDoc).toContain("Spinner");
+    expect(themesDoc).toContain("If the default theme styles a `@askrjs/ui` primitive");
+    expect(themesDoc).toContain("app-facing import path for styled components");
     expect(themesDoc).toContain("Do not create a second `Modal` abstraction.");
     expect(themesDoc).toContain("Chips and tags stay as recipes for now.");
 
@@ -98,6 +100,9 @@ describe("docs surface", () => {
     expect(themingDoc).toContain("Header");
     expect(themingDoc).toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
+    expect(themingDoc).toContain("If the default theme styles a `@askrjs/ui` primitive");
+    expect(themingDoc).toContain("Use `controls` for styled components such as Button, Input, Select");
+    expect(themingDoc).toContain("as Alert, Badge, Card, CardActions");
     expect(themingDoc).toContain("`EmptyState` belongs to `core`");
     expect(themingDoc).toContain("`Dialog` is the canonical modal surface name");
     expect(themingDoc).toContain("Chips and tags should stay local recipes");
@@ -117,6 +122,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("Pagination");
     expect(readmeDoc).toContain("Card");
     expect(readmeDoc).toContain("DropdownContent");
+    expect(readmeDoc).toContain("KISS import path for styled app components");
     expect(readmeDoc).toContain("Keep chips/tags as recipes");
     expect(themingDoc).not.toContain("@askrjs/themes/feedback");
 

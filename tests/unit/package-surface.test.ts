@@ -22,14 +22,26 @@ import {
   Toolbar,
 } from "../../src/core";
 import {
+  BUTTON_A11Y_CONTRACT,
   Button,
   ButtonGroup,
+  CHECKBOX_A11Y_CONTRACT,
+  Checkbox,
   Close,
   Field,
   FieldError,
   FieldHint,
+  INPUT_A11Y_CONTRACT,
+  Input,
   InputGroup,
   InputGroupText,
+  LABEL_A11Y_CONTRACT,
+  Label,
+  SELECT_A11Y_CONTRACT,
+  Select,
+  SWITCH_A11Y_CONTRACT,
+  Switch,
+  Toggle,
 } from "../../src/controls";
 import {
   Breadcrumb,
@@ -61,15 +73,27 @@ import {
   Tooltip,
 } from "../../src/overlays";
 import {
+  ACCORDION_A11Y_CONTRACT,
+  AVATAR_A11Y_CONTRACT,
+  Accordion,
   Alert,
   AspectRatio,
+  Avatar,
   Badge,
+  COLLAPSIBLE_A11Y_CONTRACT,
   Card,
   CardActions,
+  Collapsible,
   ListGroup,
   ListGroupItem,
+  PROGRESS_A11Y_CONTRACT,
+  PROGRESS_CIRCLE_A11Y_CONTRACT,
+  Progress,
+  ProgressCircle,
   SEPARATOR_A11Y_CONTRACT,
   Spinner,
+  Table,
+  VirtualList,
 } from "../../src/surfaces";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import {
@@ -107,15 +131,26 @@ describe("package surface", () => {
       ThemePicker,
       ThemeToggle,
       ButtonGroup,
+      Checkbox,
       Close,
       Field,
       FieldHint,
       FieldError,
+      Input,
       InputGroup,
       InputGroupText,
+      Label,
+      Select,
+      Switch,
+      Toggle,
+      Accordion,
       Alert,
       AspectRatio,
+      Avatar,
       Spinner,
+      Collapsible,
+      Progress,
+      ProgressCircle,
       Breadcrumb,
       Pagination,
       PaginationItem,
@@ -138,10 +173,18 @@ describe("package surface", () => {
       Badge,
       Card,
       CardActions,
+      Table,
+      VirtualList,
     ]) {
       expect(typeof component).toBe("function");
     }
 
+    expect(BUTTON_A11Y_CONTRACT).toBeTruthy();
+    expect(CHECKBOX_A11Y_CONTRACT).toBeTruthy();
+    expect(INPUT_A11Y_CONTRACT).toBeTruthy();
+    expect(LABEL_A11Y_CONTRACT).toBeTruthy();
+    expect(SELECT_A11Y_CONTRACT).toBeTruthy();
+    expect(SWITCH_A11Y_CONTRACT).toBeTruthy();
     expect(DIALOG_A11Y_CONTRACT).toBeTruthy();
     expect(ALERT_DIALOG_A11Y_CONTRACT).toBeTruthy();
     expect(DROPDOWN_A11Y_CONTRACT).toBeTruthy();
@@ -150,6 +193,11 @@ describe("package surface", () => {
     expect(TOAST_A11Y_CONTRACT).toBeTruthy();
     expect(MENU_A11Y_CONTRACT).toBeTruthy();
     expect(MENUBAR_A11Y_CONTRACT).toBeTruthy();
+    expect(ACCORDION_A11Y_CONTRACT).toBeTruthy();
+    expect(AVATAR_A11Y_CONTRACT).toBeTruthy();
+    expect(COLLAPSIBLE_A11Y_CONTRACT).toBeTruthy();
+    expect(PROGRESS_A11Y_CONTRACT).toBeTruthy();
+    expect(PROGRESS_CIRCLE_A11Y_CONTRACT).toBeTruthy();
     expect(SEPARATOR_A11Y_CONTRACT).toBeTruthy();
   });
 

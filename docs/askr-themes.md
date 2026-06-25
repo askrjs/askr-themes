@@ -67,8 +67,18 @@ import {
   EmptyState,
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
-import { Button, Field, InputGroup } from "@askrjs/themes/controls";
-import { AspectRatio, Card, Alert, Badge, ListGroup, Spinner } from "@askrjs/themes/surfaces";
+import { Button, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
+import {
+  AspectRatio,
+  Avatar,
+  Card,
+  Alert,
+  Badge,
+  ListGroup,
+  Progress,
+  Spinner,
+  Table,
+} from "@askrjs/themes/surfaces";
 import {
   Dialog,
   DialogContent,
@@ -80,6 +90,11 @@ import {
   DropdownItem,
 } from "@askrjs/themes/overlays";
 ```
+
+If the default theme styles a `@askrjs/ui` primitive, import that primitive from
+the matching `@askrjs/themes/*` family. `@askrjs/ui` still owns behavior,
+keyboard handling, focus management, and ARIA. `@askrjs/themes` is the
+app-facing import path for styled components.
 
 ## Block
 
