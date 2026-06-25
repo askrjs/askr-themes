@@ -159,13 +159,17 @@ default theme also provides a small set of class aliases for raw HTML.
 See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
-generic catch-all: use `core` for structure, `navs` for breadcrumb/standalone
-nav/pagination, and `theme`, `controls`, `surfaces`, or `overlays`
-for the matching visual or behavioral family.
-Use the curated theme entrypoints such as `controls`, `surfaces`, and `navs`
-for styled components such as Button, ButtonGroup, Close,
-InputGroup, Field, Alert, ListGroup, Pagination, Badge, Card, CardActions,
-AspectRatio, Spinner, and Skeleton.
+generic catch-all: use `core` for structure, `controls` for actions and forms,
+`surfaces` for display and disclosure, `navs` for breadcrumb/standalone
+nav/pagination, and `overlays` for floating UI.
+If the default theme styles a `@askrjs/ui` primitive, import it from the matching
+`@askrjs/themes/*` family. `@askrjs/ui` owns behavior; `@askrjs/themes` is the
+app-facing import path for styled components.
+Use `controls` for styled components such as Button, Input, Select, Checkbox,
+Switch, Toggle, Field, and InputGroup. Use `surfaces` for styled components such
+as Alert, Badge, Card, CardActions, ListGroup, Table, Avatar, Progress,
+Accordion, Spinner, and Skeleton. Use `navs` for Breadcrumb, Nav, and
+Pagination.
 Use `overlays` for the styled overlay primitives shipped with the default CSS:
 Dialog, AlertDialog, Dropdown, Popover, Tooltip, HoverCard, Toast, Menu, and
 Menubar. `Dialog` is the canonical modal surface name; a separate `Modal`

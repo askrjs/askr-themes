@@ -2,7 +2,7 @@ import { afterEach, beforeEach, bench, describe, expect, vi } from "vite-plus/te
 
 import { state } from "@askrjs/askr";
 import { group, navigate, route, clearRoutes } from "@askrjs/askr/router";
-import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "../../src/surfaces";
 
 import "../../src/themes/default/index.css";
 

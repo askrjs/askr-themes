@@ -49,9 +49,14 @@ import {
   Separator,
   Skeleton,
   Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
 } from "../../src/surfaces";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
-import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
 
 function BenchIcon(props: { label: string; state?: string }): JSX.Element {
   const { label, state } = props;

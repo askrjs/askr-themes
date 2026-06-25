@@ -127,15 +127,18 @@ import {
   EmptyState,
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
-import { Button, ButtonGroup, Field, InputGroup } from "@askrjs/themes/controls";
+import { Button, ButtonGroup, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
 import {
   AspectRatio,
+  Avatar,
   Card,
   CardActions,
   Alert,
   Badge,
   ListGroup,
+  Progress,
   Spinner,
+  Table,
 } from "@askrjs/themes/surfaces";
 import {
   Dialog,
@@ -170,6 +173,10 @@ export {
   EmptyState,
 };
 ```
+
+If the default theme styles a `@askrjs/ui` primitive, import it from the matching
+`@askrjs/themes/*` family. `@askrjs/ui` owns behavior; `@askrjs/themes` is the
+KISS import path for styled app components.
 
 ## Recipes
 

@@ -14,7 +14,9 @@ the theme package easy to extend without forcing apps to fight prop soup.
 
 `Button` is a behavior-rich control: it needs keyboard handling, disabled state,
 and `asChild` composition support. Those responsibilities belong in `@askrjs/ui`,
-so `@askrjs/themes` re-exports it and styles it.
+so `@askrjs/themes` re-exports it and styles it. That is the package rule: when
+the default theme styles a `@askrjs/ui` primitive, apps import that styled
+primitive from the matching `@askrjs/themes/*` family.
 
 ## Why ButtonGroup, Close, Field, and InputGroup Live Here
 
@@ -29,6 +31,6 @@ When a surface needs behavior:
 1. Add the primitive or control behavior in `@askrjs/ui`.
 2. Add the visual treatment in `@askrjs/themes`.
 3. Re-export from the theme entrypoint that matches the concern: `controls`,
-   `surfaces`, `navs`, or `core`.
+   `surfaces`, `navs`, `overlays`, or `core`.
 
 When a surface only needs layout or styling, keep it in `@askrjs/themes`.

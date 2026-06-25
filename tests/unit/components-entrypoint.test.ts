@@ -1,6 +1,23 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { Button, ButtonGroup, Close, InputGroup, InputGroupText } from "../../src/controls";
+import {
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Close,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupText,
+  Label,
+  RadioGroup,
+  Select,
+  Slider,
+  Switch,
+  Textarea,
+  Toggle,
+  ToggleGroup,
+} from "../../src/controls";
 import {
   Aside,
   Block,
@@ -44,12 +61,21 @@ import {
 } from "../../src/overlays";
 import {
   Alert,
+  Accordion,
   AspectRatio,
+  Avatar,
   Badge,
   Card,
+  Collapsible,
   ListGroup,
   ListGroupItem,
+  Progress,
+  ProgressCircle,
+  ScrollArea,
   Spinner,
+  Table,
+  VirtualList,
+  VirtualTable,
 } from "../../src/surfaces";
 import {
   CAT_THEME_NAMES,
@@ -81,14 +107,34 @@ describe("curated entrypoints", () => {
     expect(Toolbar({ title: "Projects" })).toBeTruthy();
     expect(ButtonGroup({ children: "group" })).toBeTruthy();
     expect(Close({ children: "x" })).toBeTruthy();
+    expect(typeof Checkbox).toBe("function");
+    expect(typeof Form).toBe("function");
+    expect(typeof Input).toBe("function");
     expect(InputGroup({ children: "input-group" })).toBeTruthy();
     expect(InputGroupText({ children: "USD" })).toBeTruthy();
+    expect(typeof Label).toBe("function");
+    expect(typeof RadioGroup).toBe("function");
+    expect(typeof Select).toBe("function");
+    expect(typeof Slider).toBe("function");
+    expect(typeof Switch).toBe("function");
+    expect(typeof Textarea).toBe("function");
+    expect(typeof Toggle).toBe("function");
+    expect(typeof ToggleGroup).toBe("function");
+    expect(typeof Accordion).toBe("function");
     expect(Alert({ title: "Notice" })).toBeTruthy();
+    expect(typeof Avatar).toBe("function");
     expect(Badge({ children: "new" })).toBeTruthy();
     expect(Card({ children: "body" })).toBeTruthy();
+    expect(typeof Collapsible).toBe("function");
     expect(Breadcrumb({ children: "trail" })).toBeTruthy();
     expect(Nav({ children: "nav" })).toBeTruthy();
+    expect(typeof Progress).toBe("function");
+    expect(typeof ProgressCircle).toBe("function");
+    expect(typeof ScrollArea).toBe("function");
     expect(Spinner({ label: "Working" })).toBeTruthy();
+    expect(typeof Table).toBe("function");
+    expect(typeof VirtualList).toBe("function");
+    expect(typeof VirtualTable).toBe("function");
     expect(EmptyState({ title: "No projects" })).toBeTruthy();
     expect(Header({ children: "header" })).toBeTruthy();
     expect(Main({ children: "main" })).toBeTruthy();
