@@ -511,7 +511,7 @@ describe("navbar link jsdom regression", () => {
     expect(item.props.href).toBe("/docs");
   });
 
-  it("should passes NavItem layout props through asChild without leaking removed route or variant props", () => {
+  it("should passes NavItem layout props through asChild without leaking route-only props", () => {
     const item = NavItem({
       asChild: true,
       children: {
@@ -522,12 +522,10 @@ describe("navbar link jsdom regression", () => {
         },
       },
       match: "exact",
-      variant: "icon",
       active: true,
     } as unknown as Parameters<typeof NavItem>[0]) as ElementLike;
 
     expect(item.props.match).toBeUndefined();
-    expect(item.props.variant).toBeUndefined();
     expect(item.type).toBe(Block);
     expect(item.props["data-slot"]).toBe("nav-item");
     expect(item.props["data-active"]).toBe("true");

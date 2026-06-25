@@ -4,7 +4,6 @@ export type {
   NavDivProps,
   NavItemAsChildProps,
   NavItemProps,
-  NavItemVariant,
   NavLinkProps,
   NavListProps,
   NavNavProps,

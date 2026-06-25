@@ -162,7 +162,8 @@ Navbar has one default shape: put `NavBrand` first, then links, groups, or a
 simple `NavDropdown`. Add `collapseAt` only when the inline content should move
 behind a menu below that breakpoint.
 Use `NavLink` for app routes. Use `NavItem` for external or manually active
-anchors.
+anchors. `NavItem` has one shape: use `active` for manual state and `class` or
+`style` for rare custom treatment.
 
 ```tsx
 <Navbar aria-label="Primary" collapseAt="md">

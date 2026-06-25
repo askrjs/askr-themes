@@ -195,6 +195,7 @@ For structural chrome, keep the API intent explicit:
 - Use `NavGroup title` when a navigation section needs a visible heading.
 - Use `NavDropdown` for simple single-level menus.
 - Use `NavLink` for app routes and `NavItem active` for external or manually active anchors.
+- Keep `NavItem` variant-free; custom one-off treatment belongs in `class` or `style`.
 - Use `NavLink match="exact"` when route matching should not select child routes.
 - Keep generated drawers, rails, split pages, and app layouts in recipes until a stable cross-app need emerges.
 

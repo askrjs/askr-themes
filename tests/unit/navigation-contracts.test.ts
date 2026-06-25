@@ -79,6 +79,13 @@ describe("navigation contracts", () => {
     const item = asElement(
       NavItem({ href: "https://example.com/docs", active: true, children: "Docs" }),
     );
+    const itemWithRouteOnlyProp = asElement(
+      NavItem({
+        href: "https://example.com/docs",
+        match: "exact",
+        children: "Docs",
+      } as never),
+    );
     const link = asElement(NavLink({ href: "/docs/components", children: "Components" }));
     const linkChild = asElement(link.props.children);
     const sidebar = asElement(Sidebar({ children: "sidebar" }));
@@ -106,6 +113,7 @@ describe("navigation contracts", () => {
     expect(item.props.as).toBe("a");
     expect(item.props["data-slot"]).toBe("nav-item");
     expect(item.props["data-active"]).toBe("true");
+    expect(itemWithRouteOnlyProp.props.match).toBeUndefined();
     expect(link.type).toBe(Block);
     expect(link.props.asChild).toBe(true);
     expect(link.props["data-slot"]).toBe("nav-item");

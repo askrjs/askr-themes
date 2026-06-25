@@ -118,11 +118,9 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
     ref,
     class: className,
     match: _match,
-    variant: _variant,
     ...rest
-  } = props as (NavItemProps | NavItemAsChildProps) & { match?: unknown; variant?: unknown };
+  } = props as (NavItemProps | NavItemAsChildProps) & { match?: unknown };
   void _match;
-  void _variant;
 
   if (asChild) {
     return (
