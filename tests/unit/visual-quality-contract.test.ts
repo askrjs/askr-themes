@@ -59,10 +59,10 @@ describe("visual quality contract", () => {
       expect(docsTheming).toContain(snippet);
     }
 
-    expect(docsReadme).toContain("Visual quality");
+    expect(docsReadme).toContain("Visual Quality");
     expect(docsReadme).toContain("visual-check.html");
-    expect(docsOverview).toContain("product-app oriented");
-    expect(docsOverview).toContain("Theming](./theming.md#visual-quality-standard)");
+    expect(docsOverview).toContain("product and admin");
+    expect(docsOverview).toContain("[Theming](./theming.md)");
   });
 
   it("should documents that default theme CSS and templates move together", () => {

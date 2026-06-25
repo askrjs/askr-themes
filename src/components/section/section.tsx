@@ -1,38 +1,12 @@
-import { Slot } from "@askrjs/askr/foundations";
-import { mergeProps } from "../_internal/merge-props";
-import {
-  applyBoxLayoutStyles,
-  splitBoxLayoutProps,
-  withBoxLayoutClass,
-} from "../_internal/box-layout";
-import { serializeResponsiveValueIf } from "../_internal/layout";
-import type { SectionAsChildProps, SectionElementProps } from "./section.types";
+import { Block } from "../block";
+import type { SectionProps } from "./section.types";
 
-function isSectionSizeToken(value: unknown): value is string {
-  return typeof value === "string" && ["1", "2", "3", "4"].includes(value.trim());
-}
+export function Section(props: SectionProps): JSX.Element {
+  const { children, ...rest } = props;
 
-export function Section(props: SectionElementProps): JSX.Element;
-export function Section(props: SectionAsChildProps): JSX.Element;
-export function Section(props: SectionElementProps | SectionAsChildProps) {
-  const { asChild, children, size = "3", ref, style: userStyle, ...rest } = props;
-
-  const { boxProps, rest: passthroughProps } = splitBoxLayoutProps(rest);
-  const layoutStyle: Record<string, string | number> = {};
-  applyBoxLayoutStyles(layoutStyle, boxProps);
-  const layoutClass = withBoxLayoutClass(layoutStyle, userStyle);
-
-  const finalProps = mergeProps(passthroughProps, {
-    ref,
-    "data-slot": "section",
-    "data-ak-layout": "true",
-    "data-size": serializeResponsiveValueIf(size, isSectionSizeToken),
-    ...(layoutClass ? { class: layoutClass } : {}),
-  });
-
-  if (asChild) {
-    return <Slot asChild {...finalProps} children={children} />;
-  }
-
-  return <section {...finalProps}>{children}</section>;
+  return (
+    <Block as="section" gap="lg" paddingY="xl" {...rest} data-slot="section">
+      {children}
+    </Block>
+  );
 }

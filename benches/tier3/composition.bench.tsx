@@ -12,13 +12,8 @@ import {
 import { consume } from "../_shared/sink";
 import {
   Header,
-  NavToggle,
-  Shell,
-  ShellMain,
-  ShellNav,
-  SidebarPanel,
-  SidebarToggle,
-} from "../../src/shells";
+  Sidebar,
+} from "../../src/core";
 
 describe("tier3 stateful composition benches", () => {
   describe("theme controls", () => {
@@ -239,54 +234,19 @@ describe("tier3 stateful composition benches", () => {
       for (let i = 0; i < BATCH; i += 1) {
         result = Header({
           children: "Docs",
-          position: i % 2 === 0 ? "sticky" : "static",
+          sticky: i % 2 === 0,
         });
       }
 
       consume(result);
     });
 
-    bench("navbar toggle render", () => {
-      let result: JSX.Element | null | undefined;
+    bench("sidebar render", () => {
+      let result: JSX.Element | undefined;
 
       for (let i = 0; i < BATCH; i += 1) {
-        result = NavToggle({
-          active: true,
-          label: "Menu",
-          open: i % 2 === 0,
-          panelId: "docs-navbar-panel",
-          onToggle: () => undefined,
-        });
-      }
-
-      consume(result);
-    });
-
-    bench("sidebar panel render", () => {
-      let result: JSX.Element | null | undefined;
-
-      for (let i = 0; i < BATCH; i += 1) {
-        result = SidebarPanel({
-          active: true,
-          brand: <strong>Askr</strong>,
+        result = Sidebar({
           children: <div>Docs</div>,
-          collapseLabel: "Docs navigation",
-          onClose: () => undefined,
-          open: true,
-          panelId: "docs-sidebar-panel",
-        });
-      }
-
-      consume(result);
-    });
-
-    bench("sidebar toggle marker render", () => {
-      let result: JSX.Element | null | undefined;
-
-      for (let i = 0; i < BATCH; i += 1) {
-        result = SidebarToggle({
-          collapsedIcon: "collapsed",
-          expandedIcon: "expanded",
         });
       }
 
@@ -318,19 +278,12 @@ describe("tier3 stateful composition benches", () => {
       clearRoutes();
     });
 
-    bench("sidebar rail cycle", async () => {
-      const railToggle = scenario?.container.querySelector(
-        '[data-slot="sidebar-rail-toggle"]',
-      ) as HTMLButtonElement | null;
+    bench("sidebar link cycle", async () => {
+      const link = scenario?.container.querySelector(
+        '[data-slot="nav-item"][href="/docs/components"]',
+      ) as HTMLAnchorElement | null;
 
-      railToggle?.click();
-      await settle();
-
-      const railToggleAfter = scenario?.container.querySelector(
-        '[data-slot="sidebar-rail-toggle"]',
-      ) as HTMLButtonElement | null;
-
-      railToggleAfter?.click();
+      link?.click();
       await settle();
     });
   });

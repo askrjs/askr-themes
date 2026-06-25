@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { AspectRatio } from "../../src/layouts";
+import { AspectRatio } from "../../src/surfaces";
 
 type ElementLike = {
   type: unknown;

@@ -1,6 +1,5 @@
-export type HeaderPosition = "static" | "relative" | "sticky" | "absolute" | "fixed";
+import type { BlockElementProps } from "../block";
 
-export type HeaderProps = Omit<JSX.IntrinsicElements["header"], "children"> & {
-  position?: HeaderPosition;
-  children?: unknown;
+export type HeaderProps = Omit<BlockElementProps<"header">, "as" | "sticky"> & {
+  sticky?: boolean;
 };

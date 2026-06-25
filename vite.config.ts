@@ -9,12 +9,11 @@ export default defineConfig({
   },
   pack: {
     entry: {
+      core: "src/core.ts",
       controls: "src/controls.ts",
       feedback: "src/feedback.ts",
-      layouts: "src/layouts.ts",
       navs: "src/navs.ts",
       overlays: "src/overlays.ts",
-      shells: "src/shells.ts",
       surfaces: "src/surfaces.ts",
       theme: "src/theme.ts",
     },
@@ -34,12 +33,11 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
+        core: "src/core.ts",
         controls: "src/controls.ts",
         feedback: "src/feedback.ts",
-        layouts: "src/layouts.ts",
         navs: "src/navs.ts",
         overlays: "src/overlays.ts",
-        shells: "src/shells.ts",
         surfaces: "src/surfaces.ts",
         theme: "src/theme.ts",
       },

@@ -44,8 +44,8 @@ export type NavAsChildProps = Omit<NavOwnProps, "as"> & {
 export type NavProps = NavNavProps | NavDivProps | NavListProps | NavAsChildProps;
 
 export type NavItemOwnProps = {
+  active?: boolean;
   children?: unknown;
-  variant?: NavItemVariant;
 };
 
 export type NavItemProps = Omit<JSX.IntrinsicElements["a"], "children" | "ref"> &

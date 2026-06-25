@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
 
-import { NavLink, Navbar } from "../../src/navs";
+import { NavLink, Navbar } from "../../src/core";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -61,7 +61,8 @@ describe("navbar link browser smoke", () => {
     expect(overviewLink?.getAttribute("aria-current")).toBe("page");
     expect(aboutLink?.getAttribute("aria-current")).toBeNull();
     expect(aboutLink?.tagName).toBe("A");
-    expect(aboutLink?.classList.contains("navbar-item")).toBe(true);
+    expect(aboutLink?.getAttribute("data-slot")).toBe("nav-item");
+    expect(aboutLink?.getAttribute("data-ak-layout")).toBe("true");
     expect(aboutLink?.getAttribute("href")).toBe("/docs/about");
 
     aboutLink?.dispatchEvent(

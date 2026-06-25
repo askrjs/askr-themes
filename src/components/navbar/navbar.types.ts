@@ -1,50 +1,24 @@
-export type {
-  NavItemAsChildProps,
-  NavItemProps,
-  NavItemVariant,
-  NavLinkProps,
-} from "../nav/nav.types";
-import type { CollapseBreakpoint, CollapseIconPlacement } from "../shell/shell-nav.types";
+import type { BlockAsChildProps, BlockDivProps, BlockElementProps } from "../block";
+import type { DropdownContentOwnProps, DropdownProps } from "@askrjs/ui";
 
-export type NavGroupAlign = "start" | "center" | "end";
+export type NavbarCollapseBreakpoint = "sm" | "md" | "lg" | "xl";
+export type NavbarMenuAlign = "start" | "center" | "end";
 
-export type NavbarProps = Omit<JSX.IntrinsicElements["nav"], "children"> & {
-  children?: unknown;
-  breakpoint?: CollapseBreakpoint;
+export type NavbarProps = Omit<BlockElementProps<"nav">, "as" | "direction" | "align"> & {
+  collapseAt?: NavbarCollapseBreakpoint | false;
+  collapseLabel?: string;
   collapseIcon?: unknown;
-  collapseIconPlacement?: CollapseIconPlacement;
-  collapseLabel?: string;
-};
-export type NavBrandProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
-  children?: unknown;
+  menuAlign?: NavbarMenuAlign;
 };
 
-export type NavToggleProps = Omit<
-  JSX.IntrinsicElements["button"],
-  "children" | "type" | "onClick"
-> & {
-  children?: unknown;
-  active?: boolean;
-  icon?: unknown;
-  iconPlacement?: CollapseIconPlacement;
-  label?: string;
-  onToggle?: () => void;
-  open?: boolean;
-  panelId?: string;
+export type NavBrandProps = BlockDivProps | BlockElementProps<"a"> | BlockAsChildProps;
+
+export type NavGroupProps = Omit<BlockDivProps, "title"> & {
+  title?: unknown;
 };
 
-export type NavbarPanelProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
-  active?: boolean;
-  brand?: unknown;
-  children?: unknown;
-  collapseLabel?: string;
-  onClose?: () => void;
-  open?: boolean;
-  panelId?: string;
-};
-
-export type NavGroupProps = Omit<JSX.IntrinsicElements["div"], "children"> & {
-  align?: NavGroupAlign;
-  children?: unknown;
-  label?: unknown;
-};
+export type NavDropdownProps = Omit<DropdownProps, "children"> &
+  Pick<DropdownContentOwnProps, "align" | "side" | "sideOffset"> & {
+    label: unknown;
+    children?: unknown;
+  };

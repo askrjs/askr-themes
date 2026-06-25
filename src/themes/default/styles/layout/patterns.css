@@ -1,13 +1,4 @@
 :where(.empty-state, [data-slot="empty-state"]) {
-  display: grid;
-  place-items: center;
-  gap: var(--ak-space-sm);
-  min-inline-size: 0;
-  min-block-size: min(18rem, 52dvh);
-  padding: clamp(var(--ak-space-lg), 7vw, var(--ak-space-6)) var(--ak-space-4);
-  border: 1px dashed var(--ak-color-border);
-  border-radius: var(--ak-radius-lg);
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 80%, transparent);
   text-align: center;
 }
 

@@ -1,303 +1,203 @@
 import { state } from "@askrjs/askr";
+import { Dropdown, DropdownTrigger } from "@askrjs/ui";
+import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { isJsxElement, toChildArray } from "../_internal/jsx";
-import { mergeProps } from "../_internal/merge-props";
-import {
-  renderKeyedShellChildren,
-  ShellPanelWatcher,
-  ShellResponsiveWatcher,
-} from "../shell/shell-responsive";
-import { renderNavbarCollapseContents } from "./navbar.render";
-import { NavbarPanel } from "./navbar-panel";
-import { NavbarResponsiveContext } from "./navbar.context";
-import { isNavbarCollapsed, resolveNavGroupAlign } from "./navbar.shared";
-import type { NavBrandProps, NavGroupProps, NavToggleProps, NavbarProps } from "./navbar.types";
+import { DropdownContent } from "../overlays/dropdown-content";
+import type { NavBrandProps, NavDropdownProps, NavGroupProps, NavbarProps } from "./navbar.types";
 
-type NavbarChildren = {
-  brand?: unknown;
-  panelItems: unknown[];
+const ASKR_FRAGMENT = Symbol.for("askr.fragment");
+
+type NavbarMenuProps = {
+  children?: unknown;
+  collapseIcon?: unknown;
+  collapseLabel: string;
+  menuAlign: NonNullable<NavbarProps["menuAlign"]>;
 };
 
-function splitNavbarChildren(children: unknown[]): NavbarChildren {
-  let brand: unknown;
-  let hasBrand = false;
-  let panelItems: unknown[] | undefined;
-
-  for (let index = 0; index < children.length; index += 1) {
-    const child = children[index];
-
-    if (isJsxElement(child) && child.type === NavBrand) {
-      if (!hasBrand) {
-        brand = child;
-        hasBrand = true;
-      }
-
-      panelItems ??= children.slice(0, index);
-      continue;
+function flattenNavbarChildren(children: unknown): unknown[] {
+  return toChildArray(children).flatMap((child) => {
+    if (isJsxElement(child) && child.type === ASKR_FRAGMENT) {
+      return flattenNavbarChildren(child.props?.children);
     }
 
-    panelItems?.push(child);
-  }
-
-  return {
-    brand: hasBrand ? brand : undefined,
-    panelItems: panelItems ?? children,
-  };
+    return [child];
+  });
 }
 
-/**
- * Responsive mobile-first navbar component.
- *
- * Composition: Navbar should contain NavBrand (extracted to mobile panel), NavGroup items with optional align,
- * and NavLink children. Brand must be first child to appear in mobile menu.
- *
- * @example
- * <Navbar breakpoint="md" aria-label="Main navigation">
- *   <NavBrand><a href="/">Logo</a></NavBrand>
- *   <NavGroup align="center">
- *     <NavLink href="/docs">Docs</NavLink>
- *   </NavGroup>
- *   <NavGroup align="end">
- *     <NavLink href="/settings">Settings</NavLink>
- *   </NavGroup>
- * </Navbar>
- */
+function isNavBrandChild(child: unknown): boolean {
+  return (
+    isJsxElement(child) &&
+    (child.type === NavBrand || child.props?.["data-slot"] === "nav-brand")
+  );
+}
+
+function hasRenderableChildren(children: readonly unknown[]): boolean {
+  return children.some((child) => {
+    if (Array.isArray(child)) {
+      return hasRenderableChildren(child);
+    }
+
+    return child !== undefined && child !== null && typeof child !== "boolean";
+  });
+}
+
 export function Navbar(props: NavbarProps): JSX.Element {
   const {
     children,
-    breakpoint,
+    collapseAt = false,
     collapseIcon,
-    collapseIconPlacement = "start",
-    collapseLabel,
-    ref,
-    class: className,
-    id,
-    "aria-label": ariaLabel,
-    ...rest
-  } = props;
-  const effectiveCollapseLabel = collapseLabel ?? "Menu";
-  const responsiveChildren = toChildArray(children);
-  const navbarChildren = splitNavbarChildren(responsiveChildren);
-  const desktopChildren = renderKeyedShellChildren(responsiveChildren, "navbar-desktop");
-  const panelChildren = renderKeyedShellChildren(navbarChildren.panelItems, "navbar-panel");
-  // Extract brand to display in mobile panel header
-  const responsiveCollapsedState =
-    breakpoint !== undefined ? state(isNavbarCollapsed(breakpoint)) : undefined;
-  const mobileMenuState = state(false);
-  const mobileMenuOpen = mobileMenuState();
-  const panelId = typeof id === "string" ? `${id}-panel` : undefined;
-  const responsiveCollapsed = breakpoint !== undefined ? responsiveCollapsedState?.() : false;
-  const panelOpen = Boolean(responsiveCollapsed && mobileMenuOpen);
-  const closePanel = () => mobileMenuState.set(false);
-  const closePanelOnNavActivation = (event: MouseEvent) => {
-    const target = event.target;
-
-    if (!(target instanceof Element)) {
-      return;
-    }
-
-    if (target.closest('a[data-slot="nav-link"], a[data-slot="nav-item"], a.navbar-item')) {
-      closePanel();
-    }
-  };
-  const togglePanel = () => {
-    mobileMenuState.set(!mobileMenuState());
-  };
-  const contextValue = {
-    active: () => breakpoint !== undefined,
-    collapseLabel: () => effectiveCollapseLabel,
-    closePanel,
-    panelId: () => panelId,
-    panelOpen: () => Boolean(responsiveCollapsedState?.() && mobileMenuOpen),
-    togglePanel,
-  };
-  const finalProps = mergeProps(rest, {
-    "aria-label": ariaLabel,
-    ref,
-    class: classes("navbar", className),
-    "data-collapse-below": breakpoint,
-    "data-responsive-collapsed": responsiveCollapsed ? "true" : "false",
-    "data-slot": "navbar",
-  });
-
-  return (
-    <NavbarResponsiveContext.Scope value={contextValue}>
-      <nav {...finalProps}>
-        {breakpoint !== undefined ? (
-          <div class="navbar-mobile" data-slot="navbar-mobile">
-            <NavToggle
-              active={breakpoint !== undefined}
-              aria-controls={panelId}
-              aria-label={effectiveCollapseLabel}
-              icon={collapseIcon}
-              iconPlacement={collapseIconPlacement}
-              label={effectiveCollapseLabel}
-              onToggle={togglePanel}
-              open={panelOpen}
-              panelId={panelId}
-            />
-          </div>
-        ) : null}
-
-        <div class="navbar-shell" data-slot="navbar-shell">
-          {desktopChildren}
-        </div>
-
-        {breakpoint !== undefined ? (
-          <NavbarPanel
-            active={breakpoint !== undefined}
-            brand={navbarChildren.brand}
-            collapseLabel={effectiveCollapseLabel}
-            onClose={closePanel}
-            onClick={closePanelOnNavActivation}
-            open={panelOpen}
-            panelId={panelId}
-          >
-            {panelChildren}
-          </NavbarPanel>
-        ) : null}
-
-        {responsiveCollapsed && mobileMenuOpen ? (
-          <button
-            aria-label={`Close ${effectiveCollapseLabel}`}
-            class="navbar-backdrop"
-            data-slot="navbar-backdrop"
-            data-state="open"
-            tabIndex={-1}
-            type="button"
-            onClick={closePanel}
-          />
-        ) : null}
-
-        {breakpoint !== undefined ? (
-          <ShellResponsiveWatcher
-            breakpoint={breakpoint}
-            isCollapsed={isNavbarCollapsed}
-            onResize={(nextCollapsed) => {
-              responsiveCollapsedState?.set(nextCollapsed);
-            }}
-            onExpand={() => {
-              mobileMenuState?.set(false);
-            }}
-          />
-        ) : null}
-
-        <ShellPanelWatcher
-          contentId={panelId}
-          open={panelOpen}
-          panelSlot="navbar-panel"
-          onClose={closePanel}
-        />
-      </nav>
-    </NavbarResponsiveContext.Scope>
-  );
-}
-
-/**
- * Menu toggle button for responsive navbar collapse.
- * Auto-renders when navbar is responsive (collapseBelow set).
- */
-export function NavToggle(props: NavToggleProps): JSX.Element | null {
-  const {
-    children,
-    class: className,
-    active,
-    icon,
-    iconPlacement = "start",
-    label = "Menu",
-    ref,
-    onToggle,
-    open,
-    panelId,
+    collapseLabel = "Menu",
+    menuAlign = "end",
     ...rest
   } = props;
 
-  if (active === false) {
-    return null;
+  if (!collapseAt) {
+    return (
+      <Block
+        as="nav"
+        direction="row"
+        align="center"
+        gap="md"
+        width="full"
+        {...rest}
+        data-slot="navbar"
+      >
+        {children}
+      </Block>
+    );
   }
 
-  const isOpen = open === true;
-
-  const finalProps = mergeProps(rest, {
-    ref,
-    class: classes("navbar-toggle", className),
-    "aria-controls": panelId,
-    "aria-expanded": isOpen ? "true" : "false",
-    "aria-label": label,
-    "data-slot": "navbar-toggle",
-    "data-state": isOpen ? "open" : "closed",
-    type: "button",
-    onClick: () => onToggle?.(),
-  });
-
-  return (
-    <button {...finalProps}>
-      {children ?? renderNavbarCollapseContents(label, icon, iconPlacement)}
-    </button>
-  );
-}
-
-/**
- * Brand/logo container displayed in navbar and mobile panel header.
- */
-export function NavBrand(props: NavBrandProps): JSX.Element {
-  const { children, ref, class: className, ...rest } = props;
-
-  return (
-    <div {...rest} ref={ref} class={classes("navbar-brand", className)} data-slot="navbar-brand">
-      {children}
-    </div>
-  );
-}
-
-/**
- * Navigation group for organizing related nav items.
- *
- * @param align - Alignment: "start" (default), "center", or "end". Using align="end" automatically right-aligns the group.
- * @param label - Optional accessible label for grouped items.
- *
- * @example
- * <NavGroup align="center">
- *   <NavLink href="/docs">Docs</NavLink>
- * </NavGroup>
- */
-export function NavGroup(props: NavGroupProps): JSX.Element {
-  const { children, id, ref, class: className, label, ...rest } = props;
-  const rawAlign = (rest as Record<string, unknown>)["data-align"];
-  const align =
-    props.align ??
-    (rawAlign === "start" || rawAlign === "center" || rawAlign === "end"
-      ? (rawAlign as NavGroupProps["align"])
-      : undefined);
-  const hasLabel = label !== undefined && label !== null;
-  const labelId = hasLabel && id ? `${id}-label` : undefined;
-  const accessibleLabel = typeof label === "string" ? label : undefined;
-
-  return (
-    <div
-      {...rest}
-      id={id}
-      ref={ref}
-      class={classes("navbar-group", className)}
-      aria-label={labelId ? undefined : accessibleLabel}
-      aria-labelledby={labelId}
-      role={hasLabel ? "group" : rest.role}
-      data-align={resolveNavGroupAlign(align)}
-      data-has-label={hasLabel ? "true" : undefined}
-      data-slot="navbar-group"
+  const navbarChildren = flattenNavbarChildren(children);
+  const brandChildren = navbarChildren.filter(isNavBrandChild);
+  const menuChildren = navbarChildren.filter((child) => !isNavBrandChild(child));
+  const content = (
+    <Block
+      direction="row"
+      align="center"
+      gap="md"
+      width="full"
+      data-slot="navbar-content"
     >
-      {hasLabel ? (
-        <>
-          <div id={labelId} class="navbar-group-label" data-slot="navbar-group-label">
-            {label}
-          </div>
-          <div class="navbar-group-body" data-slot="navbar-group-body">
-            {children}
-          </div>
-        </>
-      ) : (
-        children
-      )}
-    </div>
+      {menuChildren}
+    </Block>
+  );
+  const menu = hasRenderableChildren(menuChildren) ? (
+    <NavbarMenu
+      collapseIcon={collapseIcon}
+      collapseLabel={collapseLabel}
+      menuAlign={menuAlign}
+    >
+      {menuChildren}
+    </NavbarMenu>
+  ) : null;
+
+  return (
+    <Block
+      as="nav"
+      direction="row"
+      align="center"
+      gap="md"
+      width="full"
+      {...rest}
+      data-collapse-at={collapseAt}
+      data-slot="navbar"
+    >
+      {[...brandChildren, content, menu]}
+    </Block>
+  );
+}
+
+function NavbarMenu(props: NavbarMenuProps): JSX.Element {
+  const { children, collapseIcon, collapseLabel, menuAlign } = props;
+  const menuOpen = state(false);
+
+  const closeMenuOnLinkClick = (event: MouseEvent) => {
+    const target = event.target;
+
+    if (target instanceof Element && target.closest("a[href]")) {
+      menuOpen.set(false);
+    }
+  };
+
+  return (
+    <Dropdown open={menuOpen()} onOpenChange={menuOpen.set}>
+      <DropdownTrigger
+        aria-label={collapseLabel}
+        class={classes("nav-item")}
+        data-slot="navbar-toggle"
+      >
+        {collapseIcon}
+        <span data-slot="navbar-toggle-label">{collapseLabel}</span>
+      </DropdownTrigger>
+      <DropdownContent
+        align={menuAlign}
+        class={classes("dropdown-content")}
+        data-slot="navbar-menu"
+        side="bottom"
+        sideOffset={6}
+      >
+        <Block gap="xs" onClick={closeMenuOnLinkClick} data-slot="navbar-menu-content">
+          {children}
+        </Block>
+      </DropdownContent>
+    </Dropdown>
+  );
+}
+
+export function NavBrand(props: NavBrandProps): JSX.Element {
+  const { children, ...rest } = props;
+
+  return (
+    <Block direction="row" align="center" gap="sm" shrink={false} {...rest} data-slot="nav-brand">
+      {children}
+    </Block>
+  );
+}
+
+export function NavGroup(props: NavGroupProps): JSX.Element {
+  const { children, title, ...rest } = props;
+
+  return (
+    <Block gap="sm" {...rest} data-slot="nav-group">
+      {title !== undefined ? (
+        <div data-slot="nav-group-label">
+          {title}
+        </div>
+      ) : null}
+      <Block gap="xs" data-slot="nav-group-body">
+        {children}
+      </Block>
+    </Block>
+  );
+}
+
+export function NavDropdown(props: NavDropdownProps): JSX.Element {
+  const {
+    align = "end",
+    children,
+    label,
+    side = "bottom",
+    sideOffset = 6,
+    ...rest
+  } = props;
+
+  return (
+    <Block direction="row" align="center" data-slot="nav-dropdown">
+      <Dropdown {...rest}>
+        <DropdownTrigger class={classes("nav-item")} data-slot="nav-dropdown-trigger">
+          {label}
+        </DropdownTrigger>
+        <DropdownContent
+          align={align}
+          class={classes("dropdown-content")}
+          data-slot="nav-dropdown-content"
+          side={side}
+          sideOffset={sideOffset}
+        >
+          {children}
+        </DropdownContent>
+      </Dropdown>
+    </Block>
   );
 }

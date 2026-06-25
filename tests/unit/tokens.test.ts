@@ -403,7 +403,7 @@ describe("token completeness", () => {
     ]);
 
     const isLayoutRuntimeVar = (token: string) =>
-      /^--ak-(display|m|mx|my|mt|mr|mb|ml|p|px|py|pt|pr|pb|pl|width|min-width|max-width|height|min-height|max-height|position|inset|top|right|bottom|left|overflow|overflow-x|overflow-y|flex-basis|flex-grow|flex-shrink|grid-area|grid-column|grid-column-start|grid-column-end|grid-row|grid-row-start|grid-row-end|gap|column-gap|row-gap|flex-direction|align-items|justify-content|flex-wrap|grid-template-areas|grid-template-columns|grid-template-rows|grid-auto-flow)-(initial|sm|md|lg|xl)$/.test(
+      /^--ak-(display|m|mx|my|mt|mr|mb|ml|p|px|py|pt|pr|pb|pl|width|min-width|max-width|height|min-height|max-height|position|inset|top|right|bottom|left|overflow|overflow-x|overflow-y|flex-basis|flex-grow|flex-shrink|grid-area|grid-column|grid-column-start|grid-column-end|grid-row|grid-row-start|grid-row-end|gap|flex-direction|align-items|justify-content|flex-wrap|grid-template-areas|grid-template-columns|grid-template-rows|grid-auto-flow)-(initial|sm|md|lg|xl)$/.test(
         token,
       );
 

@@ -3,7 +3,8 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { NavBrand, NavGroup, NavLink, Navbar, Sidebar } from "../../src/navs";
+import { NavBrand, NavDropdown, NavGroup, NavLink, Navbar, Sidebar } from "../../src/core";
+import { DropdownItem } from "../../src/overlays";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -35,10 +36,8 @@ describe("navbar and sidebar shell contracts", () => {
     route("/docs", () => (
       <>
         <Navbar aria-label="Docs navigation" id="docs-navbar">
-          <NavBrand>
-            <a href="/">Askr</a>
-          </NavBrand>
-          <NavGroup label="Docs">
+          <a href="/">Askr</a>
+          <NavGroup title="Docs">
             <NavLink href="/docs" match="exact">
               Overview
             </NavLink>
@@ -46,10 +45,8 @@ describe("navbar and sidebar shell contracts", () => {
           </NavGroup>
         </Navbar>
         <Sidebar aria-label="Docs navigation" id="docs-sidebar">
-          <NavBrand>
-            <a href="/">Askr</a>
-          </NavBrand>
-          <NavGroup label="Docs">
+          <a href="/">Askr</a>
+          <NavGroup title="Docs">
             <NavLink href="/docs" match="exact">
               Overview
             </NavLink>
@@ -63,25 +60,67 @@ describe("navbar and sidebar shell contracts", () => {
     await settle();
 
     const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement | null;
-    const navbarBrand = container?.querySelector(
-      '[data-slot="navbar-brand"]',
-    ) as HTMLElement | null;
     const navbarGroup = container?.querySelector(
-      '[data-slot="navbar-group"]',
+      '#docs-navbar [data-slot="nav-group"]',
+    ) as HTMLElement | null;
+    const navbarLabel = container?.querySelector(
+      '#docs-navbar [data-slot="nav-group-label"]',
     ) as HTMLElement | null;
     const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement | null;
-    const sidebarShell = container?.querySelector(
-      '[data-slot="sidebar-shell"]',
+    const sidebarGroup = container?.querySelector(
+      '#docs-sidebar [data-slot="nav-group"]',
     ) as HTMLElement | null;
+    const navItems = container?.querySelectorAll('[data-slot="nav-item"]');
 
     expect(navbar).not.toBeNull();
     expect(navbar?.getAttribute("aria-label")).toBe("Docs navigation");
-    expect(navbarBrand?.textContent).toContain("Askr");
-    expect(navbarGroup?.getAttribute("data-has-label")).toBe("true");
-    expect(navbarGroup?.getAttribute("role")).toBe("group");
+    expect(navbar?.textContent).toContain("Askr");
+    expect(navbarGroup).not.toBeNull();
+    expect(navbarLabel?.textContent).toBe("Docs");
     expect(sidebar).not.toBeNull();
     expect(sidebar?.getAttribute("aria-label")).toBe("Docs navigation");
-    expect(sidebarShell).not.toBeNull();
+    expect(sidebarGroup).not.toBeNull();
+    expect(navItems?.length).toBe(3);
     expect(container?.querySelector("#page")?.textContent).toBe("Docs");
+  });
+
+  it("should renders responsive navbar and nav dropdown slots", async () => {
+    route("/docs", () => (
+      <Navbar aria-label="Responsive docs navigation" collapseAt="md" id="responsive-navbar">
+        <NavBrand as="a" href="/">
+          Askr
+        </NavBrand>
+        <NavLink href="/docs" match="exact">
+          Overview
+        </NavLink>
+        <NavDropdown label="More" defaultOpen>
+          <DropdownItem asChild>
+            <NavLink href="/docs/components">Components</NavLink>
+          </DropdownItem>
+        </NavDropdown>
+      </Navbar>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const navbar = container?.querySelector("#responsive-navbar") as HTMLElement | null;
+    const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLElement | null;
+    const content = container?.querySelector('[data-slot="navbar-content"]') as HTMLElement | null;
+    const toggle = container?.querySelector('[data-slot="navbar-toggle"]') as HTMLElement | null;
+    const dropdownTrigger = container?.querySelector(
+      '[data-slot="nav-dropdown-trigger"]',
+    ) as HTMLElement | null;
+    const dropdownContent = document.body.querySelector(
+      '[data-slot="nav-dropdown-content"]',
+    ) as HTMLElement | null;
+
+    expect(navbar?.getAttribute("data-collapse-at")).toBe("md");
+    expect(brand?.textContent).toBe("Askr");
+    expect(content).not.toBeNull();
+    expect(content?.querySelector('[data-slot="nav-brand"]')).toBeNull();
+    expect(toggle?.getAttribute("aria-label")).toBe("Menu");
+    expect(dropdownTrigger?.textContent).toBe("More");
+    expect(dropdownContent?.textContent).toContain("Components");
   });
 });

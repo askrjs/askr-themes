@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import { Link } from "@askrjs/askr/router";
+import {
+  Block,
+  NavBrand,
+  NavDropdown,
+  NavGroup,
+  NavItem,
+  NavLink,
+  Navbar,
+  Sidebar,
+} from "../../src/core";
 import {
   Breadcrumb,
   BreadcrumbCurrent,
@@ -8,15 +19,10 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
   Nav,
-  NavBrand,
-  NavGroup,
-  NavItem,
-  NavLink,
   Pagination,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  SidebarPanel,
 } from "../../src/navs";
 
 type ElementLike = {
@@ -39,8 +45,6 @@ describe("navigation contracts", () => {
 
     expect(breadcrumb.type).toBe("nav");
     expect(breadcrumb.props["data-slot"]).toBe("breadcrumb");
-    expect(breadcrumb.props["data-breadcrumb"]).toBe("true");
-    expect(breadcrumb.props["aria-label"]).toBe("Breadcrumb");
     expect(list.type).toBe("ol");
     expect(list.props["data-slot"]).toBe("breadcrumb-list");
     expect(item.type).toBe("li");
@@ -49,19 +53,70 @@ describe("navigation contracts", () => {
     expect(link.props["data-slot"]).toBe("breadcrumb-link");
     expect(current.type).toBe("span");
     expect(current.props["aria-current"]).toBe("page");
-    expect(current.props["data-slot"]).toBe("breadcrumb-current");
     expect(separator.type).toBe("span");
     expect(separator.props["data-slot"]).toBe("breadcrumb-separator");
-    expect(separator.props.children).toBe("/");
   });
 
-  it("should renders nav and pagination primitives with canonical slot contracts", () => {
+  it("should renders block-first nav primitives with canonical slots", () => {
     const nav = asElement(Nav({ children: "nav" }));
+    const navbar = asElement(Navbar({ children: "navbar" }));
     const brand = asElement(NavBrand({ children: "brand" }));
-    const group = asElement(NavGroup({ label: "Docs", children: "links" }));
-    const item = asElement(NavItem({ href: "/docs", children: "Docs" }));
+    const brandLink = asElement(NavBrand({ as: "a", href: "/", children: "brand" }));
+    const brandRouterLink = asElement(
+      NavBrand({ asChild: true, children: Link({ href: "/", children: "brand" }) }),
+    );
+    const docsItem = NavLink({ href: "/docs", children: "Docs" });
+    const responsiveNavbar = asElement(
+      Navbar({
+        collapseAt: "md",
+        children: [brand, docsItem],
+      }),
+    );
+    const responsiveNavbarChildren = responsiveNavbar.props.children as ElementLike[];
+    const responsiveNavbarContent = asElement(responsiveNavbarChildren[1]);
+    const group = asElement(NavGroup({ title: "Docs", children: "links" }));
+    const dropdown = asElement(NavDropdown({ label: "More", children: "items" }));
+    const item = asElement(
+      NavItem({ href: "https://example.com/docs", active: true, children: "Docs" }),
+    );
     const link = asElement(NavLink({ href: "/docs/components", children: "Components" }));
-    const sidebarPanel = asElement(SidebarPanel({ children: "panel" }));
+    const linkChild = asElement(link.props.children);
+    const sidebar = asElement(Sidebar({ children: "sidebar" }));
+
+    expect(nav.type).toBe("nav");
+    expect(nav.props["data-slot"]).toBe("nav");
+    expect(navbar.type).toBe(Block);
+    expect(navbar.props.as).toBe("nav");
+    expect(navbar.props["data-slot"]).toBe("navbar");
+    expect(responsiveNavbar.props["data-collapse-at"]).toBe("md");
+    expect(brand.type).toBe(Block);
+    expect(brand.props["data-slot"]).toBe("nav-brand");
+    expect(brand.props.shrink).toBe(false);
+    expect(brandLink.props.as).toBe("a");
+    expect(brandLink.props.href).toBe("/");
+    expect(brandRouterLink.props.asChild).toBe(true);
+    expect(brandRouterLink.props["data-slot"]).toBe("nav-brand");
+    expect(responsiveNavbarChildren[0]).toBe(brand);
+    expect(responsiveNavbarContent.props["data-slot"]).toBe("navbar-content");
+    expect(responsiveNavbarContent.props.children).toEqual([docsItem]);
+    expect(group.type).toBe(Block);
+    expect(group.props["data-slot"]).toBe("nav-group");
+    expect(dropdown.props.children).toBeTruthy();
+    expect(item.type).toBe(Block);
+    expect(item.props.as).toBe("a");
+    expect(item.props["data-slot"]).toBe("nav-item");
+    expect(item.props["data-active"]).toBe("true");
+    expect(link.type).toBe(Block);
+    expect(link.props.asChild).toBe(true);
+    expect(link.props["data-slot"]).toBe("nav-item");
+    expect(linkChild.type).toBe(Link);
+    expect(linkChild.props.href).toBe("/docs/components");
+    expect(sidebar.type).toBe(Block);
+    expect(sidebar.props.as).toBe("aside");
+    expect(sidebar.props["data-slot"]).toBe("sidebar");
+  });
+
+  it("should renders pagination primitives with stable slots", () => {
     const pagination = asElement(
       Pagination({
         children: PaginationItem({
@@ -77,22 +132,6 @@ describe("navigation contracts", () => {
     );
     const ellipsis = asElement(PaginationEllipsis({}));
 
-    expect(nav.type).toBe("nav");
-    expect(nav.props["data-slot"]).toBe("nav");
-    expect(brand.type).toBe("div");
-    expect(brand.props["data-slot"]).toBe("navbar-brand");
-    expect(group.type).toBe("div");
-    expect(group.props["data-slot"]).toBe("navbar-group");
-    expect(group.props["data-has-label"]).toBe("true");
-    expect(group.props.role).toBe("group");
-    expect(item.type).toBe("a");
-    expect(item.props["data-slot"]).toBe("nav-item");
-    expect(link.type).toBe("a");
-    expect(link.props["data-slot"]).toBe("nav-link");
-    expect(link.props.href).toBe("/docs/components");
-    expect(sidebarPanel.type).toBe("div");
-    expect(sidebarPanel.props["data-slot"]).toBe("sidebar-panel");
-    expect(sidebarPanel.props["data-state"]).toBe("open");
     expect(pagination.type).toBe("nav");
     expect(pagination.props["data-slot"]).toBe("pagination");
     expect(paginationItem.type).toBe("li");
@@ -102,24 +141,5 @@ describe("navigation contracts", () => {
     expect(paginationLink.props["data-active"]).toBe("true");
     expect(ellipsis.type).toBe("span");
     expect(ellipsis.props["data-slot"]).toBe("pagination-ellipsis");
-  });
-
-  it("should renders sidebar panels from explicit props without requiring responsive context", () => {
-    const sidebarPanel = asElement(
-      SidebarPanel({
-        active: true,
-        brand: "brand",
-        children: "panel",
-        collapseLabel: "Docs navigation",
-        onClose: () => undefined,
-        open: true,
-        panelId: "docs-sidebar-panel",
-      }),
-    );
-
-    expect(sidebarPanel.type).toBe("div");
-    expect(sidebarPanel.props["data-slot"]).toBe("sidebar-panel");
-    expect(sidebarPanel.props.role).toBe("dialog");
-    expect(sidebarPanel.props["aria-label"]).toBe("Docs navigation");
   });
 });

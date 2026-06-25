@@ -1,5 +1,6 @@
 import { Slot } from "@askrjs/askr/foundations";
-import { currentRoute, navigate } from "@askrjs/askr/router";
+import { currentRoute, Link, navigate } from "@askrjs/askr/router";
+import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import { resolvePathname } from "../_internal/pathname";
@@ -8,22 +9,11 @@ import type {
   NavDivProps,
   NavItemAsChildProps,
   NavItemProps,
-  NavItemVariant,
   NavLinkProps,
   NavListProps,
   NavNavProps,
   NavProps,
 } from "./nav.types";
-
-function navItemClasses(variant: NavItemVariant, className: unknown): string | undefined {
-  return classes(
-    "nav-item",
-    "navbar-item",
-    variant === "icon" && "nav-item-icon",
-    variant === "icon" && "navbar-item-icon",
-    className,
-  );
-}
 
 function normalizePathname(pathname: string): string {
   return pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
@@ -45,6 +35,22 @@ function getReactiveCurrentPathname(): string | null {
   }
 }
 
+function isActiveNavLink(
+  currentPathname: string,
+  targetPathname: string,
+  match: NavLinkProps["match"] = "prefix",
+): boolean {
+  if (targetPathname === "/") {
+    return currentPathname === "/";
+  }
+
+  if (match === "exact") {
+    return currentPathname === targetPathname;
+  }
+
+  return currentPathname === targetPathname || currentPathname.startsWith(`${targetPathname}/`);
+}
+
 function shouldHandleClientNavigation(
   event: MouseEvent,
   target: string | undefined,
@@ -62,22 +68,6 @@ function shouldHandleClientNavigation(
     !event.metaKey &&
     !event.shiftKey
   );
-}
-
-function isActiveNavLink(
-  currentPathname: string,
-  targetPathname: string,
-  match: NavLinkProps["match"] = "prefix",
-): boolean {
-  if (targetPathname === "/") {
-    return currentPathname === "/";
-  }
-
-  if (match === "exact") {
-    return currentPathname === targetPathname;
-  }
-
-  return currentPathname === targetPathname || currentPathname.startsWith(`${targetPathname}/`);
 }
 
 export function Nav(props: NavNavProps): JSX.Element;
@@ -123,31 +113,57 @@ export function NavItem(props: NavItemAsChildProps): JSX.Element;
 export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element {
   const {
     asChild,
+    active = false,
     children,
     ref,
     class: className,
     match: _match,
-    variant = "default",
+    variant: _variant,
     ...rest
-  } = props as (NavItemProps | NavItemAsChildProps) & { match?: unknown };
+  } = props as (NavItemProps | NavItemAsChildProps) & { match?: unknown; variant?: unknown };
   void _match;
-
-  const finalProps = mergeProps(rest, {
-    ref,
-    class: navItemClasses(variant, className),
-    "data-slot": "nav-item",
-    "data-variant": variant,
-  });
+  void _variant;
 
   if (asChild) {
-    return <Slot asChild {...finalProps} children={children} />;
+    return (
+      <Block
+        asChild
+        paddingX="sm"
+        paddingY="xs"
+        radius="md"
+        background={active ? "selected" : undefined}
+        {...rest}
+        ref={ref}
+        class={className}
+        data-active={active ? "true" : undefined}
+        data-slot="nav-item"
+      >
+        {children}
+      </Block>
+    );
   }
 
-  return <a {...finalProps}>{children}</a>;
+  return (
+    <Block
+      as="a"
+      paddingX="sm"
+      paddingY="xs"
+      radius="md"
+      background={active ? "selected" : undefined}
+      {...rest}
+      ref={ref}
+      class={className}
+      data-active={active ? "true" : undefined}
+      data-slot="nav-item"
+    >
+      {children}
+    </Block>
+  );
 }
 
 export function NavLink(props: NavLinkProps): JSX.Element {
   const {
+    active,
     children,
     href,
     onClick,
@@ -155,35 +171,34 @@ export function NavLink(props: NavLinkProps): JSX.Element {
     class: className,
     match = "prefix",
     target,
-    variant = "default",
     ...rest
   } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
   const currentPathname = getReactiveCurrentPathname();
   const targetPathname = resolvePathname(href);
-  const isActive =
+  const routeActive =
     currentPathname !== null &&
     targetPathname !== null &&
     isActiveNavLink(currentPathname, targetPathname, match);
-
-  const linkProps = mergeProps(rest, {
+  const isActive = active ?? routeActive;
+  const activeProps = isActive
+    ? {
+        "aria-current": "page" as const,
+        "data-active": "true" as const,
+      }
+    : {
+        "data-active": undefined,
+      };
+  const inheritedSlot =
+    typeof (rest as Record<string, unknown>)["data-slot"] === "string"
+      ? String((rest as Record<string, unknown>)["data-slot"])
+      : undefined;
+  const slot = inheritedSlot ?? "nav-item";
+  const useRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
+  const childProps = {
+    ...rest,
     href,
     target,
-    ref,
-    class: navItemClasses(variant, className),
-    "data-slot": "nav-link",
-    "data-variant": variant,
-  });
-
-  const finalProps = isActive
-    ? mergeProps(
-        {
-          "aria-current": "page",
-          "data-active": "true",
-        },
-        linkProps,
-      )
-    : linkProps;
-
+  };
   const handleClick = (event: MouseEvent) => {
     onClick?.(event);
 
@@ -196,8 +211,26 @@ export function NavLink(props: NavLinkProps): JSX.Element {
   };
 
   return (
-    <a {...finalProps} onClick={handleClick}>
-      {children}
-    </a>
+    <Block
+      asChild
+      paddingX="sm"
+      paddingY="xs"
+      radius="md"
+      background={isActive ? "selected" : undefined}
+      ref={ref}
+      class={slot === "nav-item" ? className : classes("nav-item", className)}
+      data-slot={slot}
+      {...activeProps}
+    >
+      {useRouterLink ? (
+        <Link {...childProps}>
+          {children}
+        </Link>
+      ) : (
+        <a {...childProps} onClick={handleClick}>
+          {children}
+        </a>
+      )}
+    </Block>
   );
 }

@@ -530,73 +530,67 @@ describe("visual polish contracts", () => {
     ).toBe("anywhere");
   });
 
-  it("should keeps responsive drawers animated, contained, and scrollable", () => {
+  it("should keeps semantic navigation slots compact and contained", () => {
     document.body.innerHTML = `
-      <nav data-slot="navbar" data-responsive-collapsed="true">
-        <button data-slot="navbar-backdrop" data-state="open"></button>
-        <section data-slot="navbar-panel" data-state="open">
-          <header data-slot="navbar-panel-header">
-            <div data-slot="navbar-brand"><a href="#">Long mobile workspace name</a></div>
-            <button data-slot="navbar-panel-close">Close</button>
-          </header>
-        </section>
+      <nav data-slot="navbar">
+        <div data-slot="nav-group">
+          <div data-slot="nav-group-label">Workspace</div>
+          <div data-slot="nav-group-body">
+            <a data-slot="nav-item" data-active="true" href="#">
+              Very long active workspace navigation label
+            </a>
+          </div>
+        </div>
       </nav>
-      <aside data-slot="sidebar" data-responsive-collapsed="true">
-        <button data-slot="sidebar-backdrop" data-state="open"></button>
-        <section data-slot="sidebar-panel" data-state="open">
-          <header data-slot="sidebar-panel-header">
-            <div data-slot="navbar-brand"><a href="#">Long sidebar workspace name</a></div>
-            <button data-slot="sidebar-panel-close">Close</button>
-          </header>
-        </section>
+      <aside data-slot="sidebar">
+        <a data-slot="nav-item" href="#">Settings and administration controls</a>
       </aside>
     `;
 
-    for (const selector of ['[data-slot="navbar-panel"]', '[data-slot="sidebar-panel"]']) {
-      const panel = document.querySelector(selector) as HTMLElement;
-      const style = getComputedStyle(panel);
-      expect(panel.getBoundingClientRect().width, selector).toBeLessThanOrEqual(window.innerWidth);
-      expect(style.overflowY, selector).toBe("auto");
-      expect(style.animationName, selector).toMatch(/panel-in|drawer-in/);
-      expect(style.transformOrigin, selector).not.toBe("0px 0px");
+    for (const selector of ['[data-slot="navbar"] [data-slot="nav-item"]', '[data-slot="sidebar"] [data-slot="nav-item"]']) {
+      const item = document.querySelector(selector) as HTMLElement;
+      const style = getComputedStyle(item);
+      expect(item.scrollWidth, selector).toBeLessThanOrEqual(window.innerWidth);
+      expect(px(style.minHeight), selector).toBeGreaterThan(0);
+      expect(px(style.paddingInlineStart), selector).toBeGreaterThan(0);
+      expect(style.overflowWrap, selector).toBe("anywhere");
     }
 
-    expect(
-      getComputedStyle(document.querySelector('[data-slot="navbar-backdrop"]')!).animationName,
-    ).toBe("navbar-backdrop-in");
-    expect(
-      getComputedStyle(document.querySelector('[data-slot="sidebar-backdrop"]')!).animationName,
-    ).toBe("sidebar-backdrop-in");
+    const active = document.querySelector('[data-slot="nav-item"][data-active="true"]') as HTMLElement;
+    expect(getComputedStyle(active).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
   });
 
-  it("should keeps responsive navbar and sidebar panels inside the viewport", () => {
+  it("should keeps page header and toolbar action rows wrap-safe", () => {
     document.body.innerHTML = `
-      <nav data-slot="navbar" data-responsive-collapsed="true">
-        <section data-slot="navbar-panel">
-          <header data-slot="navbar-panel-header">
-            <div data-slot="navbar-brand"><a href="#">Long mobile workspace name</a></div>
-            <button data-slot="navbar-panel-close">Close</button>
-          </header>
-        </section>
-      </nav>
-      <aside data-slot="sidebar" data-responsive-collapsed="true">
-        <section data-slot="sidebar-panel">
-          <header data-slot="sidebar-panel-header">
-            <div data-slot="navbar-brand"><a href="#">Long sidebar workspace name</a></div>
-            <button data-slot="sidebar-panel-close">Close</button>
-          </header>
-        </section>
-      </aside>
+      <header data-slot="page-header">
+        <div data-slot="page-header-copy">
+          <h1 data-slot="page-header-title">Long page header title for operations</h1>
+          <p data-slot="page-header-description">Description copy stays muted and readable.</p>
+        </div>
+        <div data-slot="page-header-actions">
+          <button class="btn" data-slot="button">Filter</button>
+          <button class="btn btn-primary" data-slot="button">Create</button>
+        </div>
+      </header>
+      <div data-slot="toolbar">
+        <h2 data-slot="toolbar-title">Projects</h2>
+        <div data-slot="toolbar-actions">
+          <button class="btn" data-slot="button">Export</button>
+          <button class="btn btn-primary" data-slot="button">New project</button>
+        </div>
+      </div>
     `;
 
-    for (const selector of ['[data-slot="navbar-panel"]', '[data-slot="sidebar-panel"]']) {
-      const panel = document.querySelector(selector) as HTMLElement;
-      const rect = panel.getBoundingClientRect();
-      expect(rect.width, selector).toBeLessThanOrEqual(window.innerWidth);
-      expect(
-        px(getComputedStyle(panel).maxHeight || getComputedStyle(panel).maxBlockSize),
-      ).not.toBe(0);
-      expect(getComputedStyle(panel).overflowY, selector).toBe("auto");
+    for (const selector of ['[data-slot="page-header-actions"]', '[data-slot="toolbar-actions"]']) {
+      const actions = document.querySelector(selector) as HTMLElement;
+      expect(getComputedStyle(actions).flexWrap, selector).toBe("wrap");
     }
+
+    expect(getComputedStyle(document.querySelector('[data-slot="page-header-title"]')!).marginTop).toBe(
+      "0px",
+    );
+    expect(getComputedStyle(document.querySelector('[data-slot="toolbar-title"]')!).marginTop).toBe(
+      "0px",
+    );
   });
 });

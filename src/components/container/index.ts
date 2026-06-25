@@ -1,9 +1,3 @@
 export { Container } from "./container";
 export { CONTAINER_A11Y_CONTRACT, type ContainerA11yContract } from "./container.a11y";
-export type {
-  ContainerProps,
-  ContainerVariant,
-  ContainerOwnProps,
-  ContainerNativeProps,
-  ContainerAsChildProps,
-} from "./container.types";
+export type { ContainerProps } from "./container.types";

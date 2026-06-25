@@ -10,13 +10,16 @@ export {
 } from "./components/breadcrumb";
 export { BREADCRUMB_A11Y_CONTRACT } from "./components/breadcrumb";
 export type * from "./components/breadcrumb";
-export { Nav, NavItem, NavLink } from "./components/nav";
-export type * from "./components/nav";
-export { NavBrand, Navbar, NavGroup, NavToggle } from "./components/navbar";
-export type * from "./components/navbar";
-export type * from "./components/shell/shell-nav.types";
-export { Sidebar, SidebarPanel } from "./components/sidebar";
-export type * from "./components/sidebar";
+export { Nav } from "./components/nav";
+export type {
+  NavAsChildProps,
+  NavDivProps,
+  NavListProps,
+  NavNavProps,
+  NavOrientation,
+  NavProps,
+  NavVariant,
+} from "./components/nav";
 export {
   Pagination,
   PaginationEllipsis,

@@ -1,71 +1,55 @@
 import { Slot } from "@askrjs/askr/foundations";
+import { classes } from "../_internal/classes";
+import {
+  applyBlockLayoutStyles,
+  mergeLayoutStyles,
+  splitBlockLayoutProps,
+} from "../_internal/block-layout";
 import { mergeProps } from "../_internal/merge-props";
-import { serializeResponsiveValueIf } from "../_internal/layout";
-import type { BlockAsChildProps, BlockDivProps, BlockSpanProps } from "./block.types";
+import { styleDeclarationsToClass } from "../_internal/style";
+import type { BlockAsChildProps, BlockNativeProps } from "./block.types";
 
-const SPACE_TOKENS = new Set([
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "xs",
-  "sm",
-  "md",
-  "lg",
-  "xl",
-  "2xl",
-  "3xl",
-]);
+const DEFAULT_ELEMENT = "div";
 
-export function Block(props: BlockDivProps): JSX.Element;
-export function Block(props: BlockSpanProps): JSX.Element;
+export function Block(props: BlockNativeProps): JSX.Element;
 export function Block(props: BlockAsChildProps): JSX.Element;
-export function Block(props: BlockDivProps | BlockSpanProps | BlockAsChildProps) {
-  const as = "as" in props ? props.as : "div";
-  const { asChild, children, gap, gapX, gapY, align, justify, size = "md", ref, ...rest } = props;
-
-  const finalProps = mergeProps(rest, {
+export function Block(props: BlockNativeProps | BlockAsChildProps) {
+  const as = "as" in props ? props.as : DEFAULT_ELEMENT;
+  const {
+    asChild,
+    children,
     ref,
-    "data-slot": "block",
+    class: classProp,
+    className,
+    style: userStyle,
+    ...rest
+  } = props as (BlockNativeProps | BlockAsChildProps) & {
+    class?: unknown;
+    className?: unknown;
+    style?: unknown;
+  };
+
+  const { blockProps, rest: passthroughProps } = splitBlockLayoutProps(rest);
+  const layoutStyle: Record<string, string | number> = {};
+  applyBlockLayoutStyles(layoutStyle, blockProps);
+
+  const layoutClass = styleDeclarationsToClass(mergeLayoutStyles(layoutStyle, userStyle));
+  const slot =
+    typeof (passthroughProps as Record<string, unknown>)["data-slot"] === "string"
+      ? String((passthroughProps as Record<string, unknown>)["data-slot"])
+      : "block";
+
+  const finalProps = mergeProps(passthroughProps, {
+    ref,
+    class: classes(classProp, className, layoutClass),
+    "data-slot": slot,
     "data-ak-layout": "true",
-    "data-gap": serializeResponsiveValueIf(
-      gap,
-      (value) => typeof value === "string" && SPACE_TOKENS.has(value.trim()),
-    ),
-    "data-gap-x": serializeResponsiveValueIf(
-      gapX,
-      (value) => typeof value === "string" && SPACE_TOKENS.has(value.trim()),
-    ),
-    "data-gap-y": serializeResponsiveValueIf(
-      gapY,
-      (value) => typeof value === "string" && SPACE_TOKENS.has(value.trim()),
-    ),
-    "data-align": serializeResponsiveValueIf(
-      align,
-      (value) =>
-        typeof value === "string" &&
-        ["start", "end", "center", "stretch", "baseline"].includes(value.trim()),
-    ),
-    "data-justify": serializeResponsiveValueIf(
-      justify,
-      (value) =>
-        typeof value === "string" && ["start", "end", "center", "between"].includes(value.trim()),
-    ),
-    "data-size": `initial:${size}`,
   });
 
   if (asChild) {
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  if (as === "span") {
-    return <span {...finalProps}>{children}</span>;
-  }
-
-  return <div {...finalProps}>{children}</div>;
+  const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;
+  return <Element {...finalProps}>{children}</Element>;
 }

@@ -15,18 +15,20 @@ import {
 } from "../../src/controls";
 import { EmptyState, Spinner } from "../../src/feedback";
 import {
-  AspectRatio,
+  Aside,
   Block,
-  Box,
   Container,
-  Flex,
-  Inline,
+  Header,
+  Main,
+  Page,
+  PageHeader,
   Section,
-  Spacer,
-  Stack,
-} from "../../src/layouts";
+  Sidebar,
+  Toolbar,
+} from "../../src/core";
 import {
   Alert,
+  AspectRatio,
   Badge,
   Card,
   CardActions,
@@ -38,6 +40,8 @@ import {
   Separator,
   Skeleton,
 } from "../../src/surfaces";
+
+import "../../src/themes/default/index.css";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -71,13 +75,33 @@ describe("public family browser smoke", () => {
 
   it("should renders the remaining public families in a browser mount", async () => {
     route("/families", () => (
-      <div>
-        <section>
-          <Button>Save</Button>
-          <ButtonGroup>
-            <Button>One</Button>
-            <Button variant="secondary">Two</Button>
-          </ButtonGroup>
+      <Page>
+        <Header sticky>
+          <Container>
+            <Block direction="row" align="center" justify="between" paddingY="md">
+              <strong>Askr</strong>
+              <Button>Save</Button>
+            </Block>
+          </Container>
+        </Header>
+
+        <PageHeader
+          title="Families"
+          description="Theme surface smoke coverage."
+          actions={<Button variant="secondary">Create</Button>}
+        />
+
+        <Toolbar
+          title="Controls"
+          actions={
+            <ButtonGroup>
+              <Button>One</Button>
+              <Button variant="secondary">Two</Button>
+            </ButtonGroup>
+          }
+        />
+
+        <Section>
           <Close />
           <InputGroup>
             <InputGroupText>USD</InputGroupText>
@@ -87,122 +111,104 @@ describe("public family browser smoke", () => {
             <FieldHint>Enter the amount</FieldHint>
             <FieldError>Amount is required</FieldError>
           </Field>
-        </section>
+        </Section>
 
-        <section>
-          <AspectRatio ratio={16 / 9}>
-            <figure>Media</figure>
-          </AspectRatio>
-          <Block gap="2">Block</Block>
-          <Box>Box</Box>
-          <Container size="lg">Container</Container>
-          <Flex gap="3" direction="column" align="start" justify="between">
-            <span>Flex A</span>
-            <span>Flex B</span>
-          </Flex>
-          <Inline gap="3" wrap="nowrap" align="center" justify="between">
-            <span>Inline A</span>
-            <span>Inline B</span>
-          </Inline>
-          <Section size="2">Section</Section>
-          <Spacer basis="1rem" />
-          <Stack gap="2">Stack</Stack>
-        </section>
+        <Block direction={{ base: "column", lg: "row" }} gap="lg">
+          <Main>
+            <Block gap="lg">
+              <AspectRatio ratio={16 / 9}>
+                <figure>Media</figure>
+              </AspectRatio>
+              <Card>
+                <CardHeader>Card header</CardHeader>
+                <CardContent>Card body</CardContent>
+                <CardFooter>Card footer</CardFooter>
+                <CardActions>Card actions</CardActions>
+              </Card>
+            </Block>
+          </Main>
+          <Aside width="sidebar" shrink={false}>
+            Aside
+          </Aside>
+        </Block>
 
-        <section>
+        <Sidebar aria-label="Workspace">
+          <Block as="nav" gap="sm">
+            <a href="/families">Overview</a>
+          </Block>
+        </Sidebar>
+
+        <Section>
           <Alert title="Heads up" description="Something happened." />
           <Badge variant="success">New</Badge>
-          <Card>
-            <CardHeader>Card header</CardHeader>
-            <CardContent>Card body</CardContent>
-            <CardFooter>Card footer</CardFooter>
-            <CardActions>Card actions</CardActions>
-          </Card>
           <ListGroup>
             <ListGroupItem>First item</ListGroupItem>
           </ListGroup>
           <Separator />
           <Skeleton />
-        </section>
+        </Section>
 
-        <section>
+        <Section>
           <EmptyState
             title="Nothing here"
             description="Try adding content."
-            actions={<button type="button">Add</button>}
+            action={<button type="button">Add</button>}
           />
           <Spinner label="Loading" />
-        </section>
-      </div>
+        </Section>
+      </Page>
     ));
 
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
-    expect(container?.querySelector('[data-slot="button"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="button-group"]')).not.toBeNull();
-    expect(container?.querySelector("button.btn-close")).not.toBeNull();
-    expect(container?.querySelector('[data-slot="input-group"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="field"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="field-hint"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="field-error"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="aspect-ratio"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="block"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="box"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="container"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="flex"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="inline"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="section"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="spacer"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="stack"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="alert"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="badge"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="card"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="list-group"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="separator"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="skeleton"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="empty-state"]')).not.toBeNull();
-    expect(container?.querySelector('[data-slot="progress-circle"]')).not.toBeNull();
+    for (const slot of [
+      "page",
+      "header",
+      "page-header",
+      "toolbar",
+      "section",
+      "main",
+      "aside",
+      "sidebar",
+      "button",
+      "button-group",
+      "input-group",
+      "field",
+      "field-hint",
+      "field-error",
+      "aspect-ratio",
+      "card",
+      "alert",
+      "badge",
+      "list-group",
+      "separator",
+      "skeleton",
+      "empty-state",
+      "progress-circle",
+    ]) {
+      expect(container?.querySelector(`[data-slot="${slot}"]`), slot).not.toBeNull();
+    }
 
-    const containerEl = container?.querySelector('[data-slot="container"]') as HTMLElement | null;
-    const boxEl = container?.querySelector('[data-slot="box"]') as HTMLElement | null;
-    const flexEl = container?.querySelector('[data-slot="flex"]') as HTMLElement | null;
-    const inlineEl = container?.querySelector('[data-slot="inline"]') as HTMLElement | null;
-    const sectionEl = container?.querySelector('[data-slot="section"]') as HTMLElement | null;
-    const stackEl = container?.querySelector('[data-slot="stack"]') as HTMLElement | null;
+    const layoutBlocks = [
+      ...(container?.querySelectorAll('[data-ak-layout="true"][class*="ak-style-"]') ?? []),
+    ] as HTMLElement[];
+    const header = container?.querySelector('[data-slot="header"]') as HTMLElement | null;
+    const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement | null;
     const aspectRatioEl = container?.querySelector(
       '[data-slot="aspect-ratio"]',
     ) as HTMLElement | null;
-    const spacerEl = container?.querySelector('[data-slot="spacer"]') as HTMLElement | null;
 
-    expect(containerEl?.getAttribute("data-size")).toBe("initial:lg");
-    expect(flexEl?.getAttribute("data-gap")).toBe("initial:3");
-    expect(inlineEl?.getAttribute("data-slot")).toBe("inline");
-    for (const element of [
-      containerEl,
-      boxEl,
-      flexEl,
-      inlineEl,
-      sectionEl,
-      stackEl,
-      aspectRatioEl,
-      spacerEl,
-    ]) {
-      expect(element?.getAttribute("style")).toBeNull();
-    }
-
-    const flexGap = px(getComputedStyle(flexEl!).columnGap);
-    const inlineGap = px(getComputedStyle(inlineEl!).columnGap);
-
+    expect(layoutBlocks.length).toBeGreaterThan(0);
+    expect(layoutBlocks.some((block) => getComputedStyle(block).display === "flex")).toBe(true);
+    expect(
+      layoutBlocks.some((block) => {
+        const style = getComputedStyle(block);
+        return px(style.rowGap) > 0 || px(style.columnGap) > 0;
+      }),
+    ).toBe(true);
+    expect(getComputedStyle(header!).position).toBe("sticky");
+    expect(getComputedStyle(sidebar!).borderRightWidth).not.toBe("0px");
     expect(getComputedStyle(aspectRatioEl!).aspectRatio).not.toBe("auto");
-    expect(px(getComputedStyle(spacerEl!).flexBasis)).toBeGreaterThan(0);
-    expect(getComputedStyle(inlineEl!).display).toBe("flex");
-    expect(getComputedStyle(inlineEl!).flexWrap).toBe("nowrap");
-    expect(getComputedStyle(flexEl!).alignItems).toBe("flex-start");
-    expect(getComputedStyle(flexEl!).justifyContent).toBe("space-between");
-    expect(getComputedStyle(inlineEl!).alignItems).toBe("center");
-    expect(getComputedStyle(inlineEl!).justifyContent).toBe("space-between");
-    expect(inlineGap).toBe(flexGap);
-    expect(inlineGap).toBeGreaterThan(0);
   });
 });

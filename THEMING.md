@@ -112,8 +112,8 @@ Package boundaries:
 Use the curated theme entrypoints such as `@askrjs/themes/controls`,
 `@askrjs/themes/surfaces`, `@askrjs/themes/navs`, and `@askrjs/themes/shells`
 for styled components such as Button, ButtonGroup, Close, InputGroup, Alert,
-Badge, Box, Block, ListGroup, Pagination, Skeleton, Separator/Divider, Shell,
-ShellNav, ShellMain, and EmptyState.
+Badge, Block, Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown,
+ListGroup, Pagination, Skeleton, Separator/Divider, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
 `ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
@@ -130,13 +130,17 @@ without giving up the canonical `data-slot` contract.
 Responsive rules:
 
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
-- The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for `data-collapse-below`.
+- `Block` is the only layout engine. Responsive layout props use `base`, `sm`, `md`, `lg`, and `xl`.
+- The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for layout variables.
 - Keep breakpoint values centralized in theme tokens so the default theme and generated themes stay aligned.
-- Responsive behavior must target only public hooks such as `data-collapse-below`, `data-columns`, `data-min-item-width`, `data-gap`, `data-size`, and `data-variant`.
+- Responsive behavior must target only public hooks and Block-owned CSS variables.
+- Navbar collapse is a semantic preset: put `NavBrand` first, use `collapseAt`
+  for the single responsive pattern, and use `NavDropdown` for simple
+  single-level menus.
 - Prefer token overrides first. Reach for component CSS overrides only when tokens are insufficient.
 - Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
-- Broad layout slots like `main`, `sidebar`, and `navbar` must always be anchored to a public layout root such as `shell`.
-- Named layout hooks such as `data-size`, `data-max-width`, `data-padding`, and `data-gap` are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
+- Broad layout slots like `main`, `sidebar`, and `navbar` are semantic Block presets, not independent layout engines.
+- Block-owned layout variables are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
 - Icons are part of the public theme contract. `@askrjs/ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
 - Icon size and stroke defaults should resolve through the shared icon tokens: `--ak-icon-size-sm|md|lg|xl` and `--ak-icon-stroke-width-sm|md|lg|xl`.
 - Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Recipe shells such as product-style or marketing-style page wrappers belong in userland composition, not the shipped theme package.

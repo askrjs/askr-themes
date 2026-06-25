@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { Shell, ShellMain, ShellNav } from "../../src/shells";
+import { Block, Header, Main, Sidebar } from "../../src/core";
 
 type ElementLike = {
   type: unknown;
@@ -11,45 +11,35 @@ function asElement(value: unknown): ElementLike {
   return value as ElementLike;
 }
 
-describe("shell primitive", () => {
-  it("should renders an explicit shell root contract", () => {
-    const shell = asElement(
-      Shell({
-        variant: "sidebar",
-        class: "shell-custom",
-        children: [ShellNav({ children: "nav" }), ShellMain({ children: "main" })],
-      }),
-    );
+describe("semantic shell presets", () => {
+  it("should renders Header as a thin sticky Block preset", () => {
+    const header = asElement(Header({ sticky: true, class: "header-custom", children: "nav" }));
 
-    expect(shell.props["data-slot"]).toBe("shell");
-    expect(shell.props["data-variant"]).toBe("sidebar");
-    expect(shell.props.class).toBe("shell shell-custom");
-    expect(shell.props.style).toBeUndefined();
+    expect(header.type).toBe(Block);
+    expect(header.props.as).toBe("header");
+    expect(header.props["data-slot"]).toBe("header");
+    expect(header.props.sticky).toBe(true);
+    expect(header.props.top).toBe("0");
+    expect(header.props.background).toBe("surface");
+    expect(header.props.borderBottom).toBe(true);
+    expect(header.props.class).toBe("header-custom");
   });
 
-  it("should supports the compact rail shell variant", () => {
-    const shell = asElement(
-      Shell({
-        variant: "rail",
-        children: [ShellNav({ children: "nav" }), ShellMain({ children: "main" })],
-      }),
-    );
+  it("should renders Main and Sidebar with stable semantic slots", () => {
+    const sidebar = asElement(Sidebar({ children: "nav", class: "sidebar-custom" }));
+    const main = asElement(Main({ children: "main", class: "main-custom" }));
 
-    expect(shell.props["data-slot"]).toBe("shell");
-    expect(shell.props["data-variant"]).toBe("rail");
-    expect(shell.props.class).toBe("shell");
-  });
-
-  it("should exposes shell parts with stable slot names", () => {
-    const nav = asElement(ShellNav({ children: "nav", class: "shell-nav-custom" }));
-    const main = asElement(ShellMain({ children: "main", class: "shell-main-custom" }));
-
-    expect(nav.props["data-slot"]).toBe("shell-nav");
-    expect(main.props["data-slot"]).toBe("shell-main");
-    expect(nav.props.class).toBe("shell-nav shell-nav-custom");
-    expect(main.props.class).toBe("shell-main shell-main-custom");
-    expect(main.type).toBe("main");
-    expect(nav.props.style).toBeUndefined();
-    expect(main.props.style).toBeUndefined();
+    expect(sidebar.type).toBe(Block);
+    expect(main.type).toBe(Block);
+    expect(sidebar.props.as).toBe("aside");
+    expect(main.props.as).toBe("main");
+    expect(sidebar.props["data-slot"]).toBe("sidebar");
+    expect(main.props["data-slot"]).toBe("main");
+    expect(sidebar.props.width).toBe("sidebar");
+    expect(sidebar.props.shrink).toBe(false);
+    expect(sidebar.props.borderRight).toBe(true);
+    expect(main.props.grow).toBe(true);
+    expect(sidebar.props.class).toBe("sidebar-custom");
+    expect(main.props.class).toBe("main-custom");
   });
 });

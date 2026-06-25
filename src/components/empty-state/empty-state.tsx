@@ -1,4 +1,4 @@
-import { classes } from "../_internal/classes";
+import { Block } from "../block";
 import type { EmptyStateProps } from "./empty-state.types";
 
 export function EmptyState(props: EmptyStateProps): JSX.Element {
@@ -7,36 +7,26 @@ export function EmptyState(props: EmptyStateProps): JSX.Element {
     title,
     titleAs: TitleTag = "h2",
     description,
-    actions,
+    action,
     children,
-    ref,
-    class: className,
     ...rest
   } = props;
 
   return (
-    <div {...rest} ref={ref} class={classes("empty-state", className)} data-slot="empty-state">
-      {icon !== undefined ? (
-        <div class="empty-state-icon" data-slot="empty-state-icon">
-          {icon}
-        </div>
-      ) : null}
-      {title !== undefined ? (
-        <TitleTag class="empty-state-title" data-slot="empty-state-title">
-          {title}
-        </TitleTag>
-      ) : null}
-      {description !== undefined ? (
-        <p class="empty-state-description" data-slot="empty-state-description">
-          {description}
-        </p>
-      ) : null}
-      {children}
-      {actions !== undefined ? (
-        <div class="empty-state-actions" data-slot="empty-state-actions">
-          {actions}
-        </div>
-      ) : null}
-    </div>
+    <Block center minHeight="content" padding="xl" {...rest} data-slot="empty-state">
+      <Block align="center" gap="md" maxWidth="sm" data-slot="empty-state-content">
+        {icon !== undefined ? <div data-slot="empty-state-icon">{icon}</div> : null}
+        {title !== undefined ? <TitleTag data-slot="empty-state-title">{title}</TitleTag> : null}
+        {description !== undefined ? (
+          <p data-slot="empty-state-description">{description}</p>
+        ) : null}
+        {children}
+        {action !== undefined ? (
+          <Block direction="row" justify="center" gap="sm" data-slot="empty-state-actions">
+            {action}
+          </Block>
+        ) : null}
+      </Block>
+    </Block>
   );
 }

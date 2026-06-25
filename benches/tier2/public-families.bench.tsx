@@ -2,8 +2,8 @@ import { bench, describe } from "vite-plus/test";
 
 import {
   buildControlsFixture,
+  buildCoreFixture,
   buildFeedbackFixture,
-  buildLayoutsFixture,
   buildNavsFixture,
   buildSurfacesFixture,
 } from "../_shared/fixtures";
@@ -30,8 +30,8 @@ describe("tier2 public family render benches", () => {
     renderBatch(buildSurfacesFixture);
   });
 
-  bench("layouts family render", () => {
-    renderBatch(buildLayoutsFixture);
+  bench("core family render", () => {
+    renderBatch(buildCoreFixture);
   });
 
   bench("navs family render", () => {

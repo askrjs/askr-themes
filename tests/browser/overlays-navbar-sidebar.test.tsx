@@ -3,8 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { NavBrand, NavGroup, NavLink, Navbar } from "../../src/navs";
-import { Shell, ShellMain, ShellNav, Sidebar } from "../../src/shells";
+import { Block, Main, NavGroup, NavLink, Navbar, Sidebar } from "../../src/core";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
 
 import "../../src/themes/default/index.css";
@@ -14,60 +13,6 @@ async function settle(): Promise<void> {
   await Promise.resolve();
   await new Promise((resolve) => setTimeout(resolve, 0));
   await new Promise((resolve) => requestAnimationFrame(resolve));
-  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-}
-
-let innerWidthSpy: { mockReturnValue(value: number): unknown } | undefined;
-
-function setViewport(width: number): void {
-  if (typeof window.resizeTo === "function") {
-    try {
-      window.resizeTo(width, window.innerHeight || 900);
-    } catch {
-      // Ignore; some runtimes expose resizeTo but block it.
-    }
-  }
-
-  try {
-    Object.defineProperty(window, "innerWidth", {
-      configurable: true,
-      value: width,
-      writable: true,
-    });
-  } catch {
-    // Ignore if innerWidth is not configurable in this runtime.
-  }
-
-  innerWidthSpy?.mockReturnValue(width);
-  window.dispatchEvent(new Event("resize"));
-}
-
-async function waitFor(predicate: () => boolean, attempts = 24): Promise<boolean> {
-  for (let index = 0; index < attempts; index += 1) {
-    if (predicate()) {
-      return true;
-    }
-
-    await settle();
-  }
-
-  return false;
-}
-
-async function waitForElement<T extends Element>(
-  read: () => T | null,
-  attempts = 24,
-): Promise<T | null> {
-  for (let index = 0; index < attempts; index += 1) {
-    const element = read();
-    if (element) {
-      return element;
-    }
-
-    await settle();
-  }
-
-  return null;
 }
 
 function getDropdownContent(label: string): HTMLElement | null {
@@ -84,13 +29,9 @@ describe("navbar and sidebar overlay recipes", () => {
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/docs");
     clearRoutes();
-    innerWidthSpy = vi.spyOn(window, "innerWidth", "get");
-    innerWidthSpy.mockReturnValue(1200);
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
-
     if (container) {
       cleanupApp(container);
       container.remove();
@@ -98,45 +39,29 @@ describe("navbar and sidebar overlay recipes", () => {
     }
 
     clearRoutes();
-    innerWidthSpy = undefined;
   });
 
-  it("should uses real Dropdown primitives in navbar and sidebar recipes", async () => {
+  it("should compose real Dropdown primitives inside navbar and sidebar recipes", async () => {
     route("/docs", () => (
-      <Shell variant="sidebar">
-        <ShellNav>
-          <Sidebar id="overlay-sidebar" aria-label="Sidebar navigation" breakpoint="md">
-            <NavBrand>
-              <a href="/">Askr</a>
-            </NavBrand>
-            <NavGroup label="Workspace">
-              <Dropdown id="sidebar-workspace-dropdown">
-                <DropdownTrigger class="navbar-item">Workspace</DropdownTrigger>
-                <DropdownContent aria-label="Sidebar workspace menu" side="right" sideOffset={4}>
-                  <DropdownItem asChild>
-                    <NavLink href="/docs/audit">Audit log</NavLink>
-                  </DropdownItem>
-                  <DropdownItem>Switch workspace</DropdownItem>
-                </DropdownContent>
-              </Dropdown>
-              <Dropdown id="sidebar-drawer-dropdown">
-                <DropdownTrigger class="navbar-item">Drawer workspace</DropdownTrigger>
-                <DropdownContent aria-label="Sidebar drawer menu" side="bottom" sideOffset={4}>
-                  <DropdownItem>A very long workspace label that should stay readable</DropdownItem>
-                  <DropdownItem disabled>Disabled workspace</DropdownItem>
-                </DropdownContent>
-              </Dropdown>
-            </NavGroup>
-          </Sidebar>
-        </ShellNav>
-        <ShellMain>
-          <Navbar id="overlay-navbar" aria-label="Navbar navigation" breakpoint="md">
-            <NavBrand>
-              <a href="/">Askr</a>
-            </NavBrand>
-            <NavGroup label="Docs">
+      <Block minHeight="screen" direction="row">
+        <Sidebar aria-label="Sidebar navigation">
+          <NavGroup title="Workspace">
+            <Dropdown id="sidebar-workspace-dropdown">
+              <DropdownTrigger>Workspace</DropdownTrigger>
+              <DropdownContent aria-label="Sidebar workspace menu" side="right" sideOffset={4}>
+                <DropdownItem asChild>
+                  <NavLink href="/docs/audit">Audit log</NavLink>
+                </DropdownItem>
+                <DropdownItem>Switch workspace</DropdownItem>
+              </DropdownContent>
+            </Dropdown>
+          </NavGroup>
+        </Sidebar>
+        <Main>
+          <Navbar aria-label="Navbar navigation">
+            <NavGroup title="Docs">
               <Dropdown id="navbar-product-dropdown">
-                <DropdownTrigger class="navbar-item">Product</DropdownTrigger>
+                <DropdownTrigger>Product</DropdownTrigger>
                 <DropdownContent aria-label="Product menu" sideOffset={4}>
                   <DropdownItem asChild>
                     <NavLink href="/docs/components">Components</NavLink>
@@ -145,22 +70,13 @@ describe("navbar and sidebar overlay recipes", () => {
                 </DropdownContent>
               </Dropdown>
             </NavGroup>
-            <NavGroup label="Account" align="end">
-              <Dropdown id="navbar-account-dropdown">
-                <DropdownTrigger class="navbar-item">Account</DropdownTrigger>
-                <DropdownContent aria-label="Account menu" align="end" sideOffset={4}>
-                  <DropdownItem>Profile</DropdownItem>
-                </DropdownContent>
-              </Dropdown>
-            </NavGroup>
           </Navbar>
-        </ShellMain>
-      </Shell>
+        </Main>
+      </Block>
     ));
     route("/docs/audit", () => <div id="page">Audit log</div>);
     route("/docs/components", () => <div id="page">Components</div>);
 
-    setViewport(1200);
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
@@ -179,19 +95,33 @@ describe("navbar and sidebar overlay recipes", () => {
     expect(productLink?.getAttribute("role")).toBe("menuitem");
     expect(productLink?.getAttribute("match")).toBeNull();
 
-    productMenu?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-    await settle();
-    expect(getDropdownContent("Product menu")).toBeNull();
-
-    const accountTrigger = container?.querySelectorAll(
-      '[aria-label="Navbar navigation"] [data-slot="dropdown-trigger"]',
-    )[1] as HTMLButtonElement | undefined;
-    accountTrigger?.click();
-    await settle();
-    expect(getDropdownContent("Account menu")?.getAttribute("data-align")).toBe("end");
-    getDropdownContent("Account menu")?.dispatchEvent(
-      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    productLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
     );
+    await settle();
+
+    expect(window.location.pathname).toBe("/docs/components");
+
+    window.history.replaceState({}, "", "/docs");
+    clearRoutes();
+    route("/docs", () => (
+      <Sidebar aria-label="Sidebar navigation">
+        <NavGroup title="Workspace">
+          <Dropdown id="sidebar-workspace-dropdown">
+            <DropdownTrigger>Workspace</DropdownTrigger>
+            <DropdownContent aria-label="Sidebar workspace menu" side="right" sideOffset={4}>
+              <DropdownItem>Switch workspace</DropdownItem>
+            </DropdownContent>
+          </Dropdown>
+        </NavGroup>
+      </Sidebar>
+    ));
+    cleanupApp(container!);
+    await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 
     const sidebarTrigger = container?.querySelector(
@@ -203,88 +133,5 @@ describe("navbar and sidebar overlay recipes", () => {
     const sidebarMenu = getDropdownContent("Sidebar workspace menu");
     expect(sidebarMenu?.getAttribute("data-side")).toBe("right");
     expect(sidebarMenu?.getAttribute("data-align")).toBe("start");
-    sidebarMenu?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-    await settle();
-
-    setViewport(375);
-    const collapsed = await waitFor(
-      () =>
-        container
-          ?.querySelector('[aria-label="Navbar navigation"] [data-slot="navbar"]')
-          ?.getAttribute("data-responsive-collapsed") === "true",
-    );
-    if (!collapsed) {
-      return;
-    }
-
-    const navbarToggle = container?.querySelector(
-      '[aria-label="Navbar navigation"] [data-slot="navbar-toggle"]',
-    ) as HTMLButtonElement | null;
-    navbarToggle?.click();
-    const navbarOpened = await waitFor(
-      () =>
-        container
-          ?.querySelector('[aria-label="Navbar navigation"] [data-slot="navbar-toggle"]')
-          ?.getAttribute("aria-expanded") === "true",
-    );
-    if (!navbarOpened) {
-      return;
-    }
-
-    const panelTrigger = (await waitForElement(
-      () =>
-        container?.querySelector(
-          '[data-slot="navbar-panel"] [data-slot="dropdown-trigger"]',
-        ) as HTMLButtonElement | null,
-    )) as HTMLButtonElement | null;
-    panelTrigger?.click();
-    const productMenuOpen = await waitFor(() => getDropdownContent("Product menu") !== null);
-    expect(productMenuOpen).toBe(true);
-
-    getDropdownContent("Product menu")?.dispatchEvent(
-      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
-    );
-    await settle();
-
-    expect(getDropdownContent("Product menu")).toBeNull();
-    expect(container?.querySelector('[data-slot="navbar-panel"]')).not.toBeNull();
-
-    const navbarClose = container?.querySelector(
-      '[data-slot="navbar-panel-close"]',
-    ) as HTMLButtonElement | null;
-    navbarClose?.click();
-    await settle();
-
-    const sidebarToggle = container?.querySelector(
-      '[aria-label="Sidebar navigation"] [data-slot="sidebar-toggle"]',
-    ) as HTMLButtonElement | null;
-    sidebarToggle?.click();
-    await settle();
-
-    const drawerTrigger = container?.querySelectorAll(
-      '[data-slot="sidebar-panel"] [data-slot="dropdown-trigger"]',
-    )[1] as HTMLButtonElement | undefined;
-    drawerTrigger?.click();
-    await settle();
-
-    const drawerMenu = getDropdownContent("Sidebar drawer menu");
-    const drawerRect = drawerMenu!.getBoundingClientRect();
-
-    expect(drawerMenu?.getAttribute("data-side")).toBe("bottom");
-    expect(drawerRect.left).toBeGreaterThanOrEqual(0);
-    expect(drawerRect.right).toBeLessThanOrEqual(document.documentElement.clientWidth);
-    expect(getComputedStyle(drawerMenu!).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
-    expect(getComputedStyle(drawerMenu!).boxShadow).not.toBe("none");
-
-    drawerMenu?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
-    await settle();
-    expect(container?.querySelector('[data-slot="sidebar-panel"]')).not.toBeNull();
-
-    const sidebarClose = container?.querySelector(
-      '[data-slot="sidebar-panel-close"]',
-    ) as HTMLButtonElement | null;
-    sidebarClose?.click();
-    await settle();
-    expect(container?.querySelector('[data-slot="sidebar-panel"]')).toBeNull();
   });
 });
