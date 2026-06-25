@@ -8,7 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "../../src/navs";
-import { Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/surfaces";
 
 describe("breadcrumb and spinner wrappers", () => {
   it("should renders deterministic breadcrumb and spinner element trees", () => {

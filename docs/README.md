@@ -128,8 +128,7 @@ import {
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
 import { Button, ButtonGroup, Field, InputGroup } from "@askrjs/themes/controls";
-import { AspectRatio, Card, CardActions, Alert, Badge, ListGroup } from "@askrjs/themes/surfaces";
-import { Spinner } from "@askrjs/themes/feedback";
+import { AspectRatio, Card, CardActions, Alert, Badge, ListGroup, Spinner } from "@askrjs/themes/surfaces";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@askrjs/themes/overlays";
 ```
 

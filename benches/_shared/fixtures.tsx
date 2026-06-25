@@ -7,7 +7,6 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { Spinner } from "../../src/feedback";
 import {
   Block,
   Container,
@@ -49,6 +48,7 @@ import {
   ListGroupItem,
   Separator,
   Skeleton,
+  Spinner,
 } from "../../src/surfaces";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
@@ -84,9 +84,9 @@ export function buildControlsFixture(): JSX.Element {
   );
 }
 
-export function buildFeedbackFixture(): JSX.Element {
+export function buildStatusSurfaceFixture(): JSX.Element {
   return (
-    <section data-bench="feedback">
+    <section data-bench="status-surfaces">
       <Spinner label="Loading" />
     </section>
   );
@@ -217,7 +217,7 @@ export function buildPublicFamilyPage(): JSX.Element {
   return (
     <div data-bench="public-family">
       {buildControlsFixture()}
-      {buildFeedbackFixture()}
+      {buildStatusSurfaceFixture()}
       {buildBrowserNavsFixture()}
       {buildCoreFixture()}
       {buildSurfacesFixture()}
@@ -238,7 +238,7 @@ export function buildRouteTransitionPage(props: { title: string; rows?: number }
         <CardContent>
           <Block gap="sm">
             {Array.from({ length: rows }, (_, index) => (
-              <Card key={index} variant="raised" padding={index % 3 === 0 ? "sm" : "md"}>
+              <Card key={index} variant="raised">
                 <CardHeader>
                   <CardTitle>Item {index + 1}</CardTitle>
                 </CardHeader>

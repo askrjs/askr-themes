@@ -20,7 +20,6 @@ import {
   Sidebar,
   Toolbar,
 } from "../../src/core";
-import { Spinner } from "../../src/feedback";
 import {
   Breadcrumb,
   Nav,
@@ -37,7 +36,7 @@ import {
   Menu,
   Menubar,
 } from "../../src/overlays";
-import { Alert, AspectRatio, Badge, Card, ListGroup, ListGroupItem } from "../../src/surfaces";
+import { Alert, AspectRatio, Badge, Card, ListGroup, ListGroupItem, Spinner } from "../../src/surfaces";
 import {
   CAT_THEME_NAMES,
   CAT_THEME_OPTIONS,
@@ -58,7 +57,7 @@ describe("curated entrypoints", () => {
     expect(CAT_THEME_OPTIONS.map((option) => option.value)).toEqual(CAT_THEME_NAMES);
   });
 
-  it("should exposes core, surface, feedback, nav, and overlay families", () => {
+  it("should exposes core, surface, nav, and overlay families", () => {
     expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
     expect(Block({ children: "block", gap: "md" })).toBeTruthy();
     expect(Container({ children: "container" })).toBeTruthy();

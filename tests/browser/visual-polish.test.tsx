@@ -281,7 +281,7 @@ describe("visual polish contracts", () => {
     expect(px(getComputedStyle(themePicker).minHeight)).toBe(38);
   });
 
-  it("should keeps status, feedback, and media primitives resilient under long content", () => {
+  it("should keeps status, loading, and media primitives resilient under long content", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <span class="badge" data-slot="badge" data-variant="info">

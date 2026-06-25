@@ -11,7 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "../../src/navs";
-import { Spinner } from "../../src/feedback";
+import { Spinner } from "../../src/surfaces";
 
 async function settle(): Promise<void> {
   await Promise.resolve();

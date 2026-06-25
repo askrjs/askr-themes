@@ -31,7 +31,6 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { Spinner } from "../../src/feedback";
 import { Breadcrumb, Pagination, PaginationEllipsis, PaginationItem, PaginationLink } from "../../src/navs";
 import {
   DROPDOWN_A11Y_CONTRACT,
@@ -53,6 +52,7 @@ import {
   ListGroup,
   ListGroupItem,
   SEPARATOR_A11Y_CONTRACT,
+  Spinner,
 } from "../../src/surfaces";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import {
@@ -134,7 +134,7 @@ describe("package surface", () => {
     expect(pkg.exports?.["./theme"]).toBeTruthy();
     expect(pkg.exports?.["./controls"]).toBeTruthy();
     expect(pkg.exports?.["./surfaces"]).toBeTruthy();
-    expect(pkg.exports?.["./feedback"]).toBeTruthy();
+    expect(pkg.exports?.["./feedback"]).toBeUndefined();
     expect(pkg.exports?.["./navs"]).toBeTruthy();
     expect(pkg.exports?.["./overlays"]).toBeTruthy();
     expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
@@ -173,12 +173,15 @@ describe("package surface", () => {
     }
   });
 
-  it("should keeps EmptyState owned by core instead of feedback", () => {
+  it("should keeps EmptyState owned by core and Spinner owned by surfaces", () => {
     const coreEntrypoint = readFileSync(join(ROOT_DIR, "src/core.ts"), "utf-8");
-    const feedbackEntrypoint = readFileSync(join(ROOT_DIR, "src/feedback.ts"), "utf-8");
+    const surfacesEntrypoint = readFileSync(join(ROOT_DIR, "src/surfaces.ts"), "utf-8");
+    const feedbackEntrypoint = join(ROOT_DIR, "src/feedback.ts");
 
     expect(coreEntrypoint).toContain('export { EmptyState } from "./components/empty-state";');
-    expect(feedbackEntrypoint).not.toContain("EmptyState");
+    expect(surfacesEntrypoint).toContain('export { Spinner } from "./components/spinner";');
+    expect(coreEntrypoint).not.toContain("Spinner");
+    expect(existsSync(feedbackEntrypoint)).toBe(false);
   });
 
   it("should keeps default CSS package exports pointed at real files", () => {
