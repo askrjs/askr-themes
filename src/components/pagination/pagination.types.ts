@@ -1,11 +1,11 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
-type NavProps = Omit<JSX.IntrinsicElements["nav"], "children" | "ref" | "aria-label">;
+type PaginationNavProps = Omit<JSX.IntrinsicElements["nav"], "children" | "ref" | "aria-label">;
 type LiProps = Omit<JSX.IntrinsicElements["li"], "children" | "ref">;
 type AnchorProps = Omit<JSX.IntrinsicElements["a"], "children" | "ref">;
 
-export type PaginationProps = NavProps & {
+export type PaginationProps = PaginationNavProps & {
   children?: unknown;
   label?: string;
   ref?: Ref<HTMLElement>;

@@ -2,8 +2,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --ak-font-family-body:
-    "Aptos", "Segoe UI Variable Text", "Segoe UI", "SF Pro Text", Inter, ui-sans-serif, system-ui,
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    "Avenir Next", Avenir, "Nunito Sans", Inter, ui-rounded, "SF Pro Rounded",
+    "Segoe UI Variable Text", "Segoe UI", system-ui, ui-sans-serif, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  --ak-font-family-display:
+    "Avenir Next", Avenir, "SF Pro Rounded", ui-rounded, "Nunito Sans", Inter, system-ui,
+    ui-sans-serif, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   --ak-font-family-mono:
     "IBM Plex Mono", "SFMono-Regular", "Menlo", "Consolas", ui-monospace, monospace,
     "Apple Color Emoji", "Segoe UI Emoji";

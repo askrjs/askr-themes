@@ -27,22 +27,16 @@ styles/shell/navbar.css
 styles/shell/sidebar.css
 styles/actions/button.css
 styles/actions/button-group.css
-styles/actions/toggle.css
-styles/actions/toggle-group.css
 styles/display/alert.css
 styles/forms/input.css
 styles/forms/input-group.css
 styles/forms/textarea.css
-styles/forms/form.css
 styles/forms/field.css
 styles/forms/checkbox.css
 styles/forms/switch.css
-styles/forms/radio-group.css
 styles/forms/select.css
-styles/forms/slider.css
 styles/forms/label.css
 styles/display/card.css
-styles/display/list-group.css
 styles/display/progress.css
 styles/display/progress-circle.css
 styles/display/badge.css
@@ -50,22 +44,16 @@ styles/display/skeleton.css
 styles/display/avatar.css
 styles/display/separator.css
 styles/display/table.css
-styles/display/scroll-area.css
 styles/display/spinner.css
 styles/display/coverage.css
 styles/navigation/breadcrumb.css
 styles/navigation/nav.css
 styles/navigation/pagination.css
-styles/navigation/menu.css
-styles/navigation/menubar.css
-styles/disclosure/accordion.css
-styles/disclosure/collapsible.css
 styles/overlays/alert-dialog.css
 styles/overlays/dropdown.css
 styles/overlays/toast.css
 styles/overlays/dialog.css
 styles/overlays/popover.css
-styles/overlays/hover-card.css
 styles/overlays/tooltip.css
 ```
 
@@ -160,20 +148,18 @@ See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
 generic catch-all: use `core` for structure, `controls` for actions and forms,
-`surfaces` for display and disclosure, `navs` for breadcrumb/standalone
+`surfaces` for display, `navs` for breadcrumb/standalone
 nav/pagination, and `overlays` for floating UI.
-If the default theme styles a `@askrjs/ui` primitive, import it from the matching
-`@askrjs/themes/*` family. `@askrjs/ui` owns behavior; `@askrjs/themes` is the
-app-facing import path for styled components.
+Themes re-exports the small set of styled primitives that are common in app
+code. `@askrjs/ui` owns advanced primitives and behavior details.
 Use `controls` for styled components such as Button, Input, Select, Checkbox,
-Switch, Toggle, Field, and InputGroup. Use `surfaces` for styled components such
-as Alert, Badge, Card, CardActions, ListGroup, Table, Avatar, Progress,
-Accordion, Spinner, and Skeleton. Use `navs` for Breadcrumb, Nav, and
-Pagination.
+Switch, Field, and InputGroup. Use `surfaces` for styled components such as
+Alert, Badge, Card, CardActions, Table, Avatar, Progress, Spinner, and Skeleton.
+Use `navs` for Breadcrumb, Pagination, Tabs, Tab, Pills, and Pill.
 Use `overlays` for the styled overlay primitives shipped with the default CSS:
-Dialog, AlertDialog, Dropdown, Popover, Tooltip, HoverCard, Toast, Menu, and
-Menubar. `Dialog` is the canonical modal surface name; a separate `Modal`
-component would duplicate the same behavior.
+Dialog, AlertDialog, Dropdown, Popover, Tooltip, and Toast. `Dialog` is the
+canonical modal surface name; a separate `Modal` component would duplicate the
+same behavior.
 `EmptyState` belongs to `core` because it is a stable composition preset, not a
 surface export.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
@@ -182,8 +168,7 @@ theme-owned because they are visual composition only.
 The wrappers intentionally emit familiar alias classes for the common app
 surfaces they own, so the DOM stays easy to target with either `data-slot`
 hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
-`field`, `field-hint`, `field-error`, `input-group`, `list-group`, and
-`pagination`.
+`field`, `field-hint`, `field-error`, `input-group`, and `pagination`.
 Status surfaces such as `Spinner` and nav helpers such as `Breadcrumb` stay
 thin. Use `Badge` for small non-interactive labels and `Alert` for inline
 feedback. Chips and tags should stay local recipes until they have a distinct
@@ -208,6 +193,7 @@ For structural chrome, keep the API intent explicit:
 - Use `NavGroup title` when a navigation section needs a visible heading.
 - Use `NavDropdown` for simple single-level menus.
 - Use `NavLink` for app routes and `NavItem active` for external or manually active anchors.
+- Use `Tabs`/`Tab` for local sections and `Pills`/`Pill` for compact rounded navigation.
 - Keep `NavItem` variant-free; custom one-off treatment belongs in `class` or `style`.
 - Use `NavLink match="exact"` when route matching should not select child routes.
 - Keep generated drawers, rails, split pages, and app layouts in recipes until a stable cross-app need emerges.
@@ -243,7 +229,7 @@ Acceptance criteria:
 - No clipped text, accidental horizontal scroll, collapsed gaps, or misaligned icons.
 - Controls share height, padding, radius, typography, and focus treatment.
 - Long enterprise labels wrap or truncate intentionally in navs, cards, badges, tables, overlays, and dense rows.
-- Overlays, menus, toasts, dialogs, and popovers fit narrow screens without fixed-width overflow.
+- Overlays, dropdowns, toasts, dialogs, and popovers fit narrow screens without fixed-width overflow.
 - Typography feels deliberate: calm letter spacing, readable line heights, and balanced heading scale.
 - Dark mode has equal depth, contrast, and polish rather than inverted colors only.
 - Dense SaaS screens scan cleanly without feeling cramped.

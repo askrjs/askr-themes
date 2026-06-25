@@ -84,7 +84,7 @@ describe("template parity", () => {
     expect(readFileSync(TEMPLATE_INDEX, "utf-8")).toEqual(readFileSync(DEFAULT_INDEX, "utf-8"));
   });
 
-  it("should template keeps Nav and Navbar styles aligned with the default theme", () => {
+  it("should template keeps tabs, pills, and Navbar styles aligned with the default theme", () => {
     const navFiles = ["navigation/nav.css", "shell/navbar.css"];
 
     for (const file of navFiles) {

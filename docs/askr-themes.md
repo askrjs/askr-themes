@@ -66,7 +66,7 @@ import {
   Toolbar,
   EmptyState,
 } from "@askrjs/themes/core";
-import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
+import { Breadcrumb, Pagination, Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
 import { Button, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
 import {
   AspectRatio,
@@ -74,7 +74,6 @@ import {
   Card,
   Alert,
   Badge,
-  ListGroup,
   Progress,
   Spinner,
   Table,
@@ -91,10 +90,9 @@ import {
 } from "@askrjs/themes/overlays";
 ```
 
-If the default theme styles a `@askrjs/ui` primitive, import that primitive from
-the matching `@askrjs/themes/*` family. `@askrjs/ui` still owns behavior,
-keyboard handling, focus management, and ARIA. `@askrjs/themes` is the
-app-facing import path for styled components.
+Themes re-exports the small set of styled primitives that are common in app
+code. `@askrjs/ui` still owns behavior, keyboard handling, focus management,
+and advanced primitives.
 
 ## Block
 
@@ -250,14 +248,21 @@ when a product needs more custom behavior.
 </Navbar>
 ```
 
-`NavLink` still handles route matching and client-side navigation:
+Use `Tabs` and `Tab` for local section navigation. Use `Pills` and `Pill` for
+compact rounded navigation. The item name carries the visual shape, so there is
+no nav variant prop:
 
 ```tsx
-<Nav aria-label="Settings sections" variant="tabs">
-  <NavLink href="/settings/profile">Profile</NavLink>
-  <NavLink href="/settings/billing">Billing</NavLink>
-  <NavLink href="/settings/security">Security</NavLink>
-</Nav>
+<Tabs aria-label="Settings sections">
+  <Tab href="/settings/profile">Profile</Tab>
+  <Tab href="/settings/billing">Billing</Tab>
+  <Tab href="/settings/security">Security</Tab>
+</Tabs>
+
+<Pills aria-label="Project views">
+  <Pill href="/projects/open">Open</Pill>
+  <Pill href="/projects/archived">Archived</Pill>
+</Pills>
 ```
 
 ## Status And Overlays
@@ -277,9 +282,9 @@ there is no separate dismissible flag.
 ```
 
 Use `Dialog` for modal content and `AlertDialog` for destructive confirmations.
-Do not create a second `Modal` abstraction. Use `Popover`, `Tooltip`,
-`HoverCard`, and `Toast` from `@askrjs/themes/overlays` so the import path
-matches the theme CSS.
+Do not create a second `Modal` abstraction. Use `Popover`, `Tooltip`, and
+`Toast` from `@askrjs/themes/overlays` for common floating UI. Import advanced
+overlay primitives from `@askrjs/ui`.
 
 ```tsx
 <Dialog>

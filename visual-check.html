@@ -68,6 +68,15 @@
         line-height: 1.65;
       }
 
+      .audit-kicker {
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-xs);
+        font-weight: var(--ak-font-weight-bold);
+        letter-spacing: 0;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
       .hero-asides {
         display: grid;
         gap: 0.75rem;
@@ -553,19 +562,18 @@
           ])}
         </div>`;
 
-      const togglesContent = `
+      const actionGroupsContent = `
         <div class="stack">
-          ${renderRow([
-            '<button data-slot="toggle">Off</button>',
-            '<button data-slot="toggle" data-state="on">On</button>',
-            '<button data-slot="toggle" data-disabled>Disabled</button>',
-          ])}
-          <div data-slot="toggle-group" aria-label="Density">
-            <button data-slot="toggle-group-item" data-state="on">Compact</button>
-            <button data-slot="toggle-group-item">Cozy</button>
-            <button data-slot="toggle-group-item" data-disabled>Disabled</button>
+          <div class="btn-group" data-slot="button-group" data-attached="true">
+            <button class="btn btn-outline" data-slot="button">Compact</button>
+            <button class="btn btn-outline" data-slot="button">Comfortable</button>
+            <button class="btn btn-outline" data-slot="button" data-disabled>Disabled</button>
           </div>
-          <button data-slot="collapsible-trigger" data-disabled>Disabled disclosure</button>
+          ${renderRow([
+            '<button class="btn btn-secondary" data-slot="button">Secondary</button>',
+            '<button class="btn btn-ghost" data-slot="button">Ghost</button>',
+            '<button class="btn btn-link" data-slot="button">Link action</button>',
+          ])}
         </div>`;
 
       const shellContent = `
@@ -616,15 +624,29 @@
               </details>
             </nav>
           </header>
-          <nav class="nav" data-slot="nav" data-variant="tabs" aria-label="Tabs">
-            <a class="nav-item" data-slot="nav-link" href="#" aria-current="page">Overview</a>
-            <a class="nav-item" data-slot="nav-link" href="#">Usage</a>
-            <a class="nav-item" data-slot="nav-link" href="#">API</a>
+          <nav class="tabs" data-slot="tabs" aria-label="Tabs">
+            <a class="tab" data-slot="tab" href="#" aria-current="page">Overview</a>
+            <a class="tab" data-slot="tab" href="#">Usage</a>
+            <a class="tab" data-slot="tab" href="#">API</a>
           </nav>
-          <nav class="nav" data-slot="nav" data-variant="pills" aria-label="Pills">
-            <a class="nav-item" data-slot="nav-link" href="#" data-active="true">Open</a>
-            <a class="nav-item" data-slot="nav-link" href="#">Queued</a>
-            <a class="nav-item" data-slot="nav-link" href="#">Done</a>
+          <nav class="pills" data-slot="pills" aria-label="Pills">
+            <a class="pill" data-slot="pill" href="#" data-active="true">Open</a>
+            <a class="pill" data-slot="pill" href="#">Queued</a>
+            <a class="pill" data-slot="pill" href="#">Done</a>
+          </nav>
+        </div>`;
+
+      const tabsPillsContent = `
+        <div class="stack">
+          <nav class="tabs" data-slot="tabs" aria-label="Settings tabs">
+            <a class="tab" data-slot="tab" href="#" aria-current="page">Profile</a>
+            <a class="tab" data-slot="tab" href="#">Billing</a>
+            <a class="tab" data-slot="tab" href="#">Security policies</a>
+          </nav>
+          <nav class="pills" data-slot="pills" aria-label="Project views">
+            <a class="pill" data-slot="pill" href="#" data-active="true">Open</a>
+            <a class="pill" data-slot="pill" href="#">Queued review</a>
+            <a class="pill" data-slot="pill" href="#">Archived</a>
           </nav>
         </div>`;
 
@@ -684,16 +706,16 @@
                 </p>
               </article>
             </div>
-            <div data-slot="radio-group" data-orientation="horizontal">
-              <button data-slot="radio-group-item" data-state="checked">Daily digest</button>
-              <button data-slot="radio-group-item">Weekly operational review</button>
-              <button data-slot="radio-group-item">Monthly executive summary</button>
-            </div>
-            <div data-slot="toggle-group" aria-label="Mobile density">
-              <button data-slot="toggle-group-item" data-state="on">Compact</button>
-              <button data-slot="toggle-group-item">Comfortable</button>
-              <button data-slot="toggle-group-item">Expanded</button>
-            </div>
+            <nav class="pills" data-slot="pills" aria-label="Mobile reports">
+              <a class="pill" data-slot="pill" data-active="true" href="#">Daily digest</a>
+              <a class="pill" data-slot="pill" href="#">Weekly operational review</a>
+              <a class="pill" data-slot="pill" href="#">Monthly executive summary</a>
+            </nav>
+            <nav class="tabs" data-slot="tabs" aria-label="Mobile sections">
+              <a class="tab" data-slot="tab" aria-current="page" href="#">Compact</a>
+              <a class="tab" data-slot="tab" href="#">Comfortable</a>
+              <a class="tab" data-slot="tab" href="#">Expanded</a>
+            </nav>
             <nav class="pagination" data-slot="pagination" aria-label="Mobile pagination">
               <a data-slot="pagination-link" href="#">Previous report</a>
               <a data-slot="pagination-link" data-active="true" href="#">12</a>
@@ -717,21 +739,6 @@
               <div data-slot="dropdown-content">
                 <button data-slot="dropdown-item">Account settings with an intentionally long label</button>
                 <button data-slot="dropdown-item">Billing</button>
-              </div>
-              <div data-slot="menu-content">
-                <div data-slot="menu-label">Mobile submenu</div>
-                <button data-slot="menu-item">Overview</button>
-                <details open data-submenu="true">
-                  <summary data-slot="menu-item" data-submenu-trigger="true">Archive</summary>
-                  <ul data-submenu-content="true">
-                    <li data-submenu-item="true">
-                      <button data-slot="menu-item">Archive this very long document name</button>
-                    </li>
-                    <li data-submenu-item="true">
-                      <button data-slot="menu-item">Archive and close</button>
-                    </li>
-                  </ul>
-                </details>
               </div>
             </div>
             <div class="compact-table-wrap">
@@ -828,29 +835,12 @@
             <button data-slot="switch" data-state="checked" aria-label="Enabled"></button>
             <button data-slot="switch" data-disabled aria-label="Disabled"></button>
           </div>
-          <div data-slot="radio-group" data-orientation="horizontal">
-            <button data-slot="radio-group-item" data-state="checked">Daily</button>
-            <button data-slot="radio-group-item">Weekly</button>
-            <button data-slot="radio-group-item" data-disabled>Monthly</button>
-          </div>
-          <div class="slider-demo" data-slot="slider">
-            <div data-slot="slider-track">
-              <div data-slot="slider-range"></div>
-            </div>
-            <div data-slot="slider-thumb" data-orientation="horizontal" tabindex="0"></div>
-          </div>
-          <div class="slider-demo" data-slot="slider" data-disabled>
-            <div data-slot="slider-track">
-              <div data-slot="slider-range"></div>
-            </div>
-            <div data-slot="slider-thumb" data-orientation="horizontal"></div>
-          </div>
         </div>`;
 
       const cardContent = `
         <article class="card card-raised" data-slot="card" data-variant="raised">
           <div class="card-header" data-slot="card-header">
-            <p class="eyebrow">Overview</p>
+            <p class="audit-kicker">Overview</p>
             <h4 class="card-title" data-slot="card-title">Raised card</h4>
             <p class="card-description" data-slot="card-description">Elevated but still restrained.</p>
           </div>
@@ -922,14 +912,19 @@
 
       const displayContent = `
         <div class="stack">
-          <ul class="list-group" data-slot="list-group">
-            <li class="list-group-item" data-slot="list-group-item">Default row with calm spacing</li>
-            <li class="list-group-item list-group-item-action" data-slot="list-group-item" data-action="true">
+          <div class="stack" aria-label="Card list recipe">
+            <article class="card" data-slot="card">
+              <div class="card-content" data-slot="card-content">Default row with calm spacing</div>
+            </article>
+            <article class="card" data-slot="card">
+              <div class="card-content" data-slot="card-content">
               Interactive row with a longer label that still aligns to the same baseline
-            </li>
-            <li class="list-group-item active" data-slot="list-group-item" data-active="true">Selected row</li>
-            <li class="list-group-item disabled" data-slot="list-group-item" data-disabled="true">Disabled row</li>
-          </ul>
+              </div>
+            </article>
+            <article class="card" data-slot="card" data-variant="raised">
+              <div class="card-content" data-slot="card-content">Selected row</div>
+            </article>
+          </div>
           <div class="stack">
             <div data-slot="progress" aria-label="Progress">
               <div data-slot="progress-indicator" style="width: 68%;"></div>
@@ -980,27 +975,6 @@
           </select>
         </div>`;
 
-      const disclosureContent = `
-        <div class="stack">
-          <div data-slot="accordion">
-            <div data-slot="accordion-item" data-state="open">
-              <button data-slot="accordion-trigger" data-state="open">Open accordion item</button>
-              <div data-slot="accordion-content">
-                Disclosure content should align with the trigger, not feel visually detached.
-              </div>
-            </div>
-            <div data-slot="accordion-item">
-              <button data-slot="accordion-trigger">Closed accordion item</button>
-            </div>
-          </div>
-          <div data-slot="collapsible" data-state="open">
-            <button data-slot="collapsible-trigger" data-state="open">Collapsible trigger</button>
-            <div data-slot="collapsible-content">
-              Compact disclosure copy with clear padding and text rhythm.
-            </div>
-          </div>
-        </div>`;
-
       const dialogContent = `
         <div class="stack">
           <section data-slot="dialog-content">
@@ -1029,15 +1003,6 @@
           </section>
         </div>`;
 
-      const hoverCardContent = `
-        <div class="stack">
-          <button class="btn btn-outline" data-slot="hover-card-trigger">Hover card trigger</button>
-          <section data-slot="hover-card-content">
-            <p class="mini-label">Hover card</p>
-            <p>Preview content with the same elevation language.</p>
-          </section>
-        </div>`;
-
       const dropdownContent = `
         <div class="stack">
           <button data-slot="dropdown-trigger" data-state="open">Dropdown trigger</button>
@@ -1048,46 +1013,6 @@
             <button data-slot="dropdown-item" data-disabled>Disabled item</button>
             <div data-slot="dropdown-separator"></div>
             <button data-slot="dropdown-item">Help</button>
-          </div>
-        </div>`;
-
-      const menuContent = `
-        <div class="stack">
-          <div data-slot="menu-content">
-            <div data-slot="menu-label">Menu</div>
-            <button data-slot="menu-item">New</button>
-            <button data-slot="menu-item">Open</button>
-            <button data-slot="menu-item" data-disabled>Disabled</button>
-            <div data-slot="menu-separator"></div>
-            <details open data-submenu="true">
-              <summary data-slot="menu-item" data-submenu-trigger="true">Archive</summary>
-              <ul data-submenu-content="true">
-                <li data-submenu-item="true"><button data-slot="menu-item">Archive this document</button></li>
-                <li data-submenu-item="true"><button data-slot="menu-item">Archive and close</button></li>
-              </ul>
-            </details>
-          </div>
-        </div>`;
-
-      const menubarContent = `
-        <div class="stack">
-          <div data-slot="menubar">
-            <button data-slot="menubar-trigger" data-state="open">File</button>
-            <button data-slot="menubar-trigger">View</button>
-            <button data-slot="menubar-trigger">Help</button>
-          </div>
-          <div data-slot="menubar-content">
-            <button data-slot="menubar-item">New</button>
-            <button data-slot="menubar-item">Open</button>
-            <button data-slot="menubar-item" data-disabled>Disabled</button>
-            <div data-slot="menubar-separator"></div>
-            <details open data-submenu="true">
-              <summary data-slot="menubar-sub-trigger" data-submenu-trigger="true">Export</summary>
-              <ul data-submenu-content="true">
-                <li data-submenu-item="true"><button data-slot="menubar-item">Export as PDF</button></li>
-                <li data-submenu-item="true"><button data-slot="menubar-item">Export as CSV</button></li>
-              </ul>
-            </details>
           </div>
         </div>`;
 
@@ -1162,18 +1087,11 @@
           </section>
           <div class="mini-grid">
             <section data-slot="popover-content" data-state="closed">Closing popover surface</section>
-            <section data-slot="hover-card-content" data-state="closed">Closing hover-card surface</section>
             <div data-slot="dropdown-content" data-state="closed">
               <button data-slot="dropdown-item">Closing dropdown row</button>
             </div>
             <div data-slot="select-content" data-state="closed">
               <button data-slot="select-item">Closing select option</button>
-            </div>
-            <div data-slot="menu-content" data-state="closed">
-              <button data-slot="menu-item">Closing menu row</button>
-            </div>
-            <div data-slot="menubar-content" data-state="closed">
-              <button data-slot="menubar-item">Closing menubar row</button>
             </div>
             <div data-slot="tooltip-content" data-state="closed" data-side="top">
               Closing tooltip with a long label that wraps intentionally.
@@ -1211,7 +1129,7 @@
               content: `
                 <div class="stack">
                   <div class="stack">
-                    <p class="eyebrow">Typography</p>
+                    <p class="audit-kicker">Typography</p>
                     <h1>Admin clarity</h1>
                     <h2>Section rhythm</h2>
                     <p>
@@ -1278,12 +1196,17 @@
               layout: "split",
               content: shellContent,
             },
+            {
+              title: "Tabs and pills",
+              note: "Separate semantic names for section and compact route navigation.",
+              content: tabsPillsContent,
+            },
           ],
         },
         {
           id: "actions",
           title: "Actions",
-          note: "Buttons and toggles with density, hover, and disabled treatment.",
+          note: "Buttons and grouped actions with density, hover, and disabled treatment.",
           cards: [
             {
               title: "Buttons",
@@ -1292,10 +1215,10 @@
               content: buttonsContent,
             },
             {
-              title: "Toggle controls",
-              note: "Toggle and group states under the same control language.",
+              title: "Action groups",
+              note: "Grouped actions share the same control language.",
               layout: "split",
-              content: togglesContent,
+              content: actionGroupsContent,
             },
           ],
         },
@@ -1311,7 +1234,7 @@
             },
             {
               title: "Selection controls",
-              note: "Select, checkbox, switch, radio, and slider surfaces.",
+              note: "Select, checkbox, and switch surfaces.",
               content: selectionContent,
             },
           ],
@@ -1349,22 +1272,9 @@
           ],
         },
         {
-          id: "disclosure",
-          title: "Disclosure",
-          note: "Accordion and collapsible states with consistent trigger density.",
-          cards: [
-            {
-              title: "Accordion and collapsible",
-              note: "Open, closed, and content rhythm under the shared control language.",
-              layout: "split",
-              content: disclosureContent,
-            },
-          ],
-        },
-        {
           id: "overlays",
           title: "Overlays",
-          note: "Dialogs, popovers, hover cards, menus, tooltips, and toasts.",
+          note: "Dialogs, popovers, dropdowns, tooltips, and toasts.",
           cards: [
             {
               title: "Dialog",
@@ -1378,24 +1288,9 @@
               content: popoverContent,
             },
             {
-              title: "Hover card",
-              note: "Preview card with the same elevation language.",
-              content: hoverCardContent,
-            },
-            {
               title: "Dropdown",
               note: "Trigger, panel, and item focus states.",
               content: dropdownContent,
-            },
-            {
-              title: "Menu",
-              note: "Menu panel and item treatment.",
-              content: menuContent,
-            },
-            {
-              title: "Menubar",
-              note: "Toolbar trigger focus states and panel contents.",
-              content: menubarContent,
             },
             {
               title: "Tooltip",
@@ -1461,7 +1356,7 @@
         <section class="hero">
           <div class="hero-grid">
             <div class="hero-copy">
-              <p class="eyebrow">askr-themes</p>
+              <p class="audit-kicker">askr-themes</p>
               <h1>Component audit, one family at a time.</h1>
               <p class="hero-lead">
                 Each sample is isolated so light and dark can be compared quickly, while the

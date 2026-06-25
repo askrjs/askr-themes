@@ -11,6 +11,7 @@ const TOKENS_DOC = join(DOCS_DIR, "tokens.md");
 const COMPONENT_ANATOMY_DOC = join(DOCS_DIR, "component-anatomy.md");
 const CUSTOMIZATION_DOC = join(DOCS_DIR, "customization.md");
 const RECIPES_DOC = join(DOCS_DIR, "recipes.md");
+const REMOVED_LIST_SURFACE = ["List", "Group"].join("");
 
 describe("docs surface", () => {
   it("should documents curated entrypoints instead of a components catch-all", () => {
@@ -77,12 +78,16 @@ describe("docs surface", () => {
     expect(themesDoc).toContain("NavLink");
     expect(themesDoc).toContain("InputGroup");
     expect(themesDoc).toContain("Field");
-    expect(themesDoc).toContain("ListGroup");
+    expect(themesDoc).toContain("Tabs");
+    expect(themesDoc).toContain("Tab");
+    expect(themesDoc).toContain("Pills");
+    expect(themesDoc).toContain("Pill");
+    expect(themesDoc).not.toContain(REMOVED_LIST_SURFACE);
     expect(themesDoc).toContain("Pagination");
     expect(themesDoc).toContain("Breadcrumb");
     expect(themesDoc).toContain("Spinner");
-    expect(themesDoc).toContain("If the default theme styles a `@askrjs/ui` primitive");
-    expect(themesDoc).toContain("app-facing import path for styled components");
+    expect(themesDoc).toContain("Themes re-exports the small set of styled primitives");
+    expect(themesDoc).toContain("and advanced primitives");
     expect(themesDoc).toContain("Do not create a second `Modal` abstraction.");
     expect(themesDoc).toContain("Chips and tags stay as recipes for now.");
 
@@ -100,19 +105,23 @@ describe("docs surface", () => {
     expect(themingDoc).toContain("ButtonGroup");
     expect(themingDoc).toContain("InputGroup");
     expect(themingDoc).toContain("Field");
-    expect(themingDoc).toContain("ListGroup");
+    expect(themingDoc).toContain("Tabs");
+    expect(themingDoc).toContain("Tab");
+    expect(themingDoc).toContain("Pills");
+    expect(themingDoc).toContain("Pill");
+    expect(themingDoc).not.toContain(REMOVED_LIST_SURFACE);
     expect(themingDoc).toContain("Pagination");
     expect(themingDoc).toContain("CardActions");
     expect(themingDoc).toContain("Header");
     expect(themingDoc).toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
-    expect(themingDoc).toContain("If the default theme styles a `@askrjs/ui` primitive");
+    expect(themingDoc).toContain("Themes re-exports the small set of styled primitives");
     expect(themingDoc).toContain(
       "Use `controls` for styled components such as Button, Input, Select",
     );
-    expect(themingDoc).toContain("as Alert, Badge, Card, CardActions");
+    expect(themingDoc).toContain("Alert, Badge, Card, CardActions");
     expect(themingDoc).toContain("`EmptyState` belongs to `core`");
-    expect(themingDoc).toContain("`Dialog` is the canonical modal surface name");
+    expect(themingDoc).toContain("canonical modal surface name");
     expect(themingDoc).toContain("Chips and tags should stay local recipes");
 
     expect(readmeDoc).toContain("@askrjs/themes/core");
@@ -130,7 +139,7 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("Pagination");
     expect(readmeDoc).toContain("Card");
     expect(readmeDoc).toContain("DropdownContent");
-    expect(readmeDoc).toContain("KISS import path for styled app components");
+    expect(readmeDoc).toContain("Themes re-exports the small set of styled primitives");
     expect(readmeDoc).toContain("./component-anatomy.md");
     expect(readmeDoc).toContain("./customization.md");
     expect(readmeDoc).toContain("./recipes.md");
@@ -166,6 +175,10 @@ describe("docs surface", () => {
     expect(componentAnatomyDoc).toContain("Do not depend on old slots such as `navbar-shell`");
     expect(componentAnatomyDoc).toContain("`NavLink`");
     expect(componentAnatomyDoc).toContain("`NavDropdown`");
+    expect(componentAnatomyDoc).toContain("`Tabs`");
+    expect(componentAnatomyDoc).toContain("`Tab`");
+    expect(componentAnatomyDoc).toContain("`Pills`");
+    expect(componentAnatomyDoc).toContain("`Pill`");
     expect(componentAnatomyDoc).toContain("`dropdown-content`");
     expect(componentAnatomyDoc).toContain("`theme-toggle-content`");
     expect(componentAnatomyDoc).toContain("`card-actions`");

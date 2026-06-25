@@ -22,78 +22,56 @@ import {
   Toolbar,
 } from "../../src/core";
 import {
-  BUTTON_A11Y_CONTRACT,
   Button,
   ButtonGroup,
-  CHECKBOX_A11Y_CONTRACT,
   Checkbox,
   Close,
   Field,
   FieldError,
   FieldHint,
-  INPUT_A11Y_CONTRACT,
   Input,
   InputGroup,
   InputGroupText,
-  LABEL_A11Y_CONTRACT,
   Label,
-  SELECT_A11Y_CONTRACT,
   Select,
-  SWITCH_A11Y_CONTRACT,
   Switch,
-  Toggle,
+  Textarea,
 } from "../../src/controls";
 import {
   Breadcrumb,
+  Pill,
+  Pills,
   Pagination,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
+  Tab,
+  Tabs,
 } from "../../src/navs";
 import {
-  ALERT_DIALOG_A11Y_CONTRACT,
   AlertDialog,
-  DIALOG_A11Y_CONTRACT,
   Dialog,
-  DROPDOWN_A11Y_CONTRACT,
   Dropdown,
   DropdownContent,
   DropdownItem,
   DropdownTrigger,
-  HoverCard,
-  MENUBAR_A11Y_CONTRACT,
-  MENU_A11Y_CONTRACT,
-  Menu,
-  Menubar,
-  POPOVER_A11Y_CONTRACT,
   Popover,
-  TOAST_A11Y_CONTRACT,
-  TOOLTIP_A11Y_CONTRACT,
   Toast,
   Tooltip,
 } from "../../src/overlays";
 import {
-  ACCORDION_A11Y_CONTRACT,
-  AVATAR_A11Y_CONTRACT,
-  Accordion,
   Alert,
   AspectRatio,
   Avatar,
   Badge,
-  COLLAPSIBLE_A11Y_CONTRACT,
   Card,
   CardActions,
-  Collapsible,
-  ListGroup,
-  ListGroupItem,
-  PROGRESS_A11Y_CONTRACT,
-  PROGRESS_CIRCLE_A11Y_CONTRACT,
   Progress,
   ProgressCircle,
-  SEPARATOR_A11Y_CONTRACT,
+  Separator,
+  Skeleton,
   Spinner,
   Table,
-  VirtualList,
 } from "../../src/surfaces";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import {
@@ -105,6 +83,13 @@ import {
 
 const DEFAULT_INDEX = DEFAULT_THEME_INDEX_FILE;
 const TEMPLATE_INDEX = TEMPLATE_THEME_INDEX_FILE;
+const REMOVED_CARD_CSS_EXPORT = ["./default/card", "css"].join(".");
+const REMOVED_BUTTON_CSS_EXPORT = ["./default/button", "css"].join(".");
+const REMOVED_LIST_CSS_EXPORT = ["./default/list", "group.css"].join("-");
+const REMOVED_CAT_PRESETS_EXPORT = ["./cat", "presets"].join("-");
+const A11Y_EXPORT_PATTERN = new RegExp(
+  `${["A11Y", "CONTRACT"].join("_")}|${["A11y", "Contract"].join("")}`,
+);
 
 describe("package surface", () => {
   it("should exposes the block-first core and curated visual families", () => {
@@ -142,16 +127,20 @@ describe("package surface", () => {
       Label,
       Select,
       Switch,
-      Toggle,
-      Accordion,
+      Textarea,
       Alert,
       AspectRatio,
       Avatar,
+      Separator,
+      Skeleton,
       Spinner,
-      Collapsible,
       Progress,
       ProgressCircle,
       Breadcrumb,
+      Tabs,
+      Tab,
+      Pills,
+      Pill,
       Pagination,
       PaginationItem,
       PaginationLink,
@@ -164,41 +153,15 @@ describe("package surface", () => {
       DropdownItem,
       Popover,
       Tooltip,
-      HoverCard,
       Toast,
-      Menu,
-      Menubar,
-      ListGroup,
-      ListGroupItem,
       Badge,
       Card,
       CardActions,
       Table,
-      VirtualList,
     ]) {
       expect(typeof component).toBe("function");
     }
 
-    expect(BUTTON_A11Y_CONTRACT).toBeTruthy();
-    expect(CHECKBOX_A11Y_CONTRACT).toBeTruthy();
-    expect(INPUT_A11Y_CONTRACT).toBeTruthy();
-    expect(LABEL_A11Y_CONTRACT).toBeTruthy();
-    expect(SELECT_A11Y_CONTRACT).toBeTruthy();
-    expect(SWITCH_A11Y_CONTRACT).toBeTruthy();
-    expect(DIALOG_A11Y_CONTRACT).toBeTruthy();
-    expect(ALERT_DIALOG_A11Y_CONTRACT).toBeTruthy();
-    expect(DROPDOWN_A11Y_CONTRACT).toBeTruthy();
-    expect(POPOVER_A11Y_CONTRACT).toBeTruthy();
-    expect(TOOLTIP_A11Y_CONTRACT).toBeTruthy();
-    expect(TOAST_A11Y_CONTRACT).toBeTruthy();
-    expect(MENU_A11Y_CONTRACT).toBeTruthy();
-    expect(MENUBAR_A11Y_CONTRACT).toBeTruthy();
-    expect(ACCORDION_A11Y_CONTRACT).toBeTruthy();
-    expect(AVATAR_A11Y_CONTRACT).toBeTruthy();
-    expect(COLLAPSIBLE_A11Y_CONTRACT).toBeTruthy();
-    expect(PROGRESS_A11Y_CONTRACT).toBeTruthy();
-    expect(PROGRESS_CIRCLE_A11Y_CONTRACT).toBeTruthy();
-    expect(SEPARATOR_A11Y_CONTRACT).toBeTruthy();
   });
 
   it("should publishes curated entrypoints without a components catch-all", () => {
@@ -214,10 +177,40 @@ describe("package surface", () => {
     expect(pkg.exports?.["./navs"]).toBeTruthy();
     expect(pkg.exports?.["./overlays"]).toBeTruthy();
     expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
-    expect(pkg.exports?.["./cat-presets"]).toBe("./src/themes/presets/index.css");
+    expect(pkg.exports?.[REMOVED_CAT_PRESETS_EXPORT]).toBeUndefined();
     expect(pkg.exports?.["./layouts"]).toBeUndefined();
     expect(pkg.exports?.["./shells"]).toBeUndefined();
     expect(pkg.exports?.["./components"]).toBeUndefined();
+    expect(pkg.exports?.["./default/tokens.css"]).toBe("./src/themes/default/tokens.css");
+    expect(pkg.exports?.[REMOVED_CARD_CSS_EXPORT]).toBeUndefined();
+    expect(pkg.exports?.[REMOVED_BUTTON_CSS_EXPORT]).toBeUndefined();
+    expect(pkg.exports?.[REMOVED_LIST_CSS_EXPORT]).toBeUndefined();
+  });
+
+  it("should keeps accessibility contracts out of app-facing barrels", () => {
+    const barrels = [
+      "src/core.ts",
+      "src/controls.ts",
+      "src/navs.ts",
+      "src/overlays.ts",
+      "src/surfaces.ts",
+      "src/components/badge/index.ts",
+      "src/components/block/index.ts",
+      "src/components/breadcrumb/index.ts",
+      "src/components/container/index.ts",
+      "src/components/header/index.ts",
+      "src/components/section/index.ts",
+      "src/components/separator/index.ts",
+      "src/components/skeleton/index.ts",
+    ];
+
+    for (const barrel of barrels) {
+      const source = readFileSync(join(ROOT_DIR, barrel), "utf-8");
+
+      expect(source, `${barrel} should not re-export internal contract details`).not.toMatch(
+        A11Y_EXPORT_PATTERN,
+      );
+    }
   });
 
   it("should keeps NavItem as a single link preset without dead variants", () => {
@@ -279,7 +272,7 @@ describe("package surface", () => {
       exports?: Record<string, unknown>;
     };
 
-    for (const entrypoint of ["./presets", "./cat-presets"] as const) {
+    for (const entrypoint of ["./presets"] as const) {
       const target = pkg.exports?.[entrypoint];
 
       expect(typeof target).toBe("string");

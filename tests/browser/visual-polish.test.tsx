@@ -37,9 +37,7 @@ describe("visual polish contracts", () => {
       <button class="select-trigger" data-slot="select-trigger">
         <span data-slot="select-value">Production</span>
       </button>
-      <button data-slot="toggle">Toggle</button>
       <button data-slot="dropdown-trigger">Dropdown</button>
-      <button data-slot="menubar-trigger">File</button>
     `;
 
     const controls = [...document.body.children] as HTMLElement[];
@@ -55,30 +53,10 @@ describe("visual polish contracts", () => {
     }
   });
 
-  it("should keeps menu-like rows aligned and compact", () => {
+  it("should keeps dropdown and select rows aligned and compact", () => {
     document.body.innerHTML = `
       <div data-slot="dropdown-content">
         <button data-slot="dropdown-item">Profile</button>
-      </div>
-      <div data-slot="menu-content">
-        <button data-slot="menu-item">Settings</button>
-        <details open data-submenu="true">
-          <summary data-slot="menu-item" data-submenu-trigger="true">Archive</summary>
-          <ul data-submenu-content="true">
-              <li data-submenu-item="true"><button data-slot="menu-item">Archive this document</button></li>
-              <li data-submenu-item="true"><button data-slot="menu-item">Archive and close</button></li>
-            </ul>
-          </details>
-      </div>
-      <div data-slot="menubar-content">
-        <button data-slot="menubar-item">Export</button>
-        <details open data-submenu="true">
-          <summary data-slot="menubar-sub-trigger" data-submenu-trigger="true">Parent</summary>
-          <ul data-submenu-content="true">
-              <li data-submenu-item="true"><button data-slot="menubar-item">Submenu 1</button></li>
-              <li data-submenu-item="true"><button data-slot="menubar-item">Submenu 2</button></li>
-            </ul>
-          </details>
       </div>
       <div data-slot="select-content">
         <button data-slot="select-item">Production</button>
@@ -87,8 +65,6 @@ describe("visual polish contracts", () => {
 
     const rows = [
       document.querySelector('[data-slot="dropdown-item"]'),
-      document.querySelector('[data-slot="menu-item"]'),
-      document.querySelector('[data-slot="menubar-item"]'),
       document.querySelector('[data-slot="select-item"]'),
     ] as HTMLElement[];
 
@@ -99,32 +75,6 @@ describe("visual polish contracts", () => {
       expect(style.alignItems, row.outerHTML).toBe("center");
     }
 
-    const submenuSummaries = [
-      document.querySelector('[data-slot="menu-content"] summary'),
-      document.querySelector('[data-slot="menubar-content"] summary'),
-    ] as HTMLElement[];
-
-    const submenuLists = [
-      document.querySelector('[data-slot="menu-content"] [data-submenu-content="true"]'),
-      document.querySelector('[data-slot="menubar-content"] [data-submenu-content="true"]'),
-    ] as HTMLElement[];
-
-    for (const summary of submenuSummaries) {
-      const style = getComputedStyle(summary);
-      expect(style.display, summary.outerHTML).toBe("flex");
-      expect(style.justifyContent, summary.outerHTML).toBe("space-between");
-      expect(style.backgroundColor, summary.outerHTML).not.toBe("rgba(0, 0, 0, 0)");
-    }
-
-    for (const submenuList of submenuLists) {
-      const style = getComputedStyle(submenuList);
-      expect(style.display, submenuList.outerHTML).toBe("grid");
-      const expectedIndent = window.matchMedia("(min-width: 48rem)").matches ? 12 : 8;
-      expect(px(style.paddingInlineStart), submenuList.outerHTML).toBeGreaterThanOrEqual(
-        expectedIndent,
-      );
-      expect(submenuList.scrollWidth).toBeLessThanOrEqual(submenuList.parentElement!.clientWidth);
-    }
   });
 
   it("should reset select popup items so native button chrome does not leak through", () => {
@@ -183,11 +133,6 @@ describe("visual polish contracts", () => {
           Supporting copy should fit without losing rhythm.
         </p>
       </article>
-      <ul class="list-group" data-slot="list-group">
-        <li class="list-group-item" data-slot="list-group-item">
-          A long enterprise label that should not collapse row spacing or alignment
-        </li>
-      </ul>
       <table data-slot="table">
         <thead data-slot="table-head">
           <tr data-slot="table-row">
@@ -203,7 +148,6 @@ describe("visual polish contracts", () => {
     `;
 
     const card = document.querySelector('[data-slot="card"]') as HTMLElement;
-    const listItem = document.querySelector('[data-slot="list-group-item"]') as HTMLElement;
     const tableCell = document.querySelector('[data-slot="table-cell"]') as HTMLElement;
     const minTablePadding = window.matchMedia("(max-width: 30rem)").matches ? 4 : 10;
     const tableHeaders = [
@@ -211,7 +155,6 @@ describe("visual polish contracts", () => {
     ] as HTMLElement[];
 
     expect(px(getComputedStyle(card).gap)).toBeGreaterThanOrEqual(12);
-    expect(px(getComputedStyle(listItem).minHeight)).toBeGreaterThanOrEqual(42);
     expect(px(getComputedStyle(tableCell).paddingBlockStart)).toBeGreaterThanOrEqual(
       minTablePadding,
     );
@@ -478,7 +421,6 @@ describe("visual polish contracts", () => {
           <p data-slot="dialog-description">Readable copy.</p>
         </section>
         <section data-slot="popover-content">Popover content with a long wrapping sentence.</section>
-        <section data-slot="hover-card-content">Hover card content with a long wrapping sentence.</section>
         <div data-slot="dropdown-content">
           <button data-slot="dropdown-item">Account settings with a very long label</button>
         </div>
@@ -486,16 +428,15 @@ describe("visual polish contracts", () => {
           <button data-slot="select-item">Production environment with a very long target</button>
         </div>
         <div data-slot="toast"><p data-slot="toast-description">Toast copy wraps.</p></div>
-        <div data-slot="radio-group" data-orientation="horizontal">
-          <button data-slot="radio-group-item">Daily digest</button>
-          <button data-slot="radio-group-item">Weekly operational review</button>
-          <button data-slot="radio-group-item">Monthly executive summary</button>
-        </div>
-        <div data-slot="toggle-group">
-          <button data-slot="toggle-group-item">Compact</button>
-          <button data-slot="toggle-group-item">Comfortable</button>
-          <button data-slot="toggle-group-item">Expanded</button>
-        </div>
+        <nav class="pills" data-slot="pills" aria-label="Reports">
+          <a class="pill" data-slot="pill" href="#">Daily digest</a>
+          <a class="pill" data-slot="pill" href="#">Weekly operational review</a>
+          <a class="pill" data-slot="pill" href="#">Monthly executive summary</a>
+        </nav>
+        <nav class="tabs" data-slot="tabs" aria-label="Sections">
+          <a class="tab" data-slot="tab" href="#">Overview</a>
+          <a class="tab" data-slot="tab" href="#">Detailed operations</a>
+        </nav>
         <nav class="pagination" data-slot="pagination">
           <a data-slot="pagination-link" href="#">Previous report</a>
           <a data-slot="pagination-link" href="#">Next report</a>
@@ -507,12 +448,11 @@ describe("visual polish contracts", () => {
     const checked = [
       '[data-slot="dialog-content"]',
       '[data-slot="popover-content"]',
-      '[data-slot="hover-card-content"]',
       '[data-slot="dropdown-content"]',
       '[data-slot="select-content"]',
       '[data-slot="toast"]',
-      '[data-slot="radio-group"]',
-      '[data-slot="toggle-group"]',
+      '[data-slot="pills"]',
+      '[data-slot="tabs"]',
       '[data-slot="pagination"]',
     ];
 
@@ -530,18 +470,11 @@ describe("visual polish contracts", () => {
           <h2 data-slot="dialog-title">Closing dialog</h2>
         </section>
         <section data-slot="popover-content" data-state="closed">Popover</section>
-        <section data-slot="hover-card-content" data-state="closed">Hover card</section>
         <div data-slot="dropdown-content" data-state="closed">
           <button data-slot="dropdown-item">Dropdown item</button>
         </div>
         <div data-slot="select-content" data-state="closed">
           <button data-slot="select-item">Select item</button>
-        </div>
-        <div data-slot="menu-content" data-state="closed">
-          <button data-slot="menu-item">Menu item</button>
-        </div>
-        <div data-slot="menubar-content" data-state="closed">
-          <button data-slot="menubar-item">Menubar item</button>
         </div>
         <div data-slot="tooltip-content" data-state="closed" data-side="top">
           Tooltip with a long wrapping label
@@ -558,11 +491,8 @@ describe("visual polish contracts", () => {
       ['[data-slot="dialog-overlay"]', "ak-fade-out"],
       ['[data-slot="dialog-content"]', "ak-scale-out"],
       ['[data-slot="popover-content"]', "ak-slide-up-out"],
-      ['[data-slot="hover-card-content"]', "ak-hover-card-out"],
       ['[data-slot="dropdown-content"]', "ak-menu-out"],
       ['[data-slot="select-content"]', "ak-select-out"],
-      ['[data-slot="menu-content"]', "ak-menu-out"],
-      ['[data-slot="menubar-content"]', "ak-menu-out"],
       ['[data-slot="tooltip-content"]', "ak-tooltip-out"],
       ['[data-slot="toast"]', "ak-toast-out"],
     ]);

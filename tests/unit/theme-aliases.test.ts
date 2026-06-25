@@ -10,8 +10,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  ListGroup,
-  ListGroupItem,
 } from "../../src/surfaces";
 import {
   ButtonGroup,
@@ -74,17 +72,7 @@ describe("theme alias classes", () => {
     expect(asElement(ControlFieldError({ children: "error" })).props.class).toBe("field-error");
   });
 
-  it("should emits the familiar list and pagination aliases by default", () => {
-    expect(asElement(ListGroup({ children: "items" })).props.class).toBe("list-group");
-    expect(
-      asElement(ListGroup({ children: "items", flush: true, orientation: "horizontal" })).props
-        .class,
-    ).toBe("list-group list-group-flush list-group-horizontal");
-    expect(
-      asElement(ListGroupItem({ children: "row", action: true, active: true, disabled: true }))
-        .props.class,
-    ).toBe("list-group-item list-group-item-action active disabled");
-
+  it("should emits the familiar pagination aliases by default", () => {
     const pagination = asElement(
       Pagination({
         children: PaginationItem({

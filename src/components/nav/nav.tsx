@@ -5,14 +5,15 @@ import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import { resolvePathname } from "../_internal/pathname";
 import type {
-  NavAsChildProps,
-  NavDivProps,
   NavItemAsChildProps,
   NavItemProps,
   NavLinkProps,
-  NavListProps,
-  NavNavProps,
-  NavProps,
+  PillProps,
+  PillsAsChildProps,
+  PillsProps,
+  TabProps,
+  TabsAsChildProps,
+  TabsProps,
 } from "./nav.types";
 
 function normalizePathname(pathname: string): string {
@@ -70,42 +71,124 @@ function shouldHandleClientNavigation(
   );
 }
 
-export function Nav(props: NavNavProps): JSX.Element;
-export function Nav(props: NavDivProps): JSX.Element;
-export function Nav(props: NavListProps): JSX.Element;
-export function Nav(props: NavAsChildProps): JSX.Element;
-export function Nav(props: NavProps): JSX.Element {
-  const as = "as" in props ? props.as : "nav";
+function renderNavSet(
+  props: TabsProps | TabsAsChildProps | PillsProps | PillsAsChildProps,
+  slot: "tabs" | "pills",
+): JSX.Element {
   const className = "class" in props ? props.class : undefined;
-  const {
-    asChild,
-    children,
-    orientation = "horizontal",
-    variant = "default",
-    ref,
-    ...rest
-  } = props;
+  const { asChild, children, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
-    class: classes("nav", className),
-    "data-slot": "nav",
-    "data-orientation": orientation,
-    "data-variant": variant,
+    class: classes(slot, className),
+    "data-slot": slot,
   });
 
   if (asChild) {
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  if (as === "div") {
-    return <div {...finalProps}>{children}</div>;
-  }
-
-  if (as === "ul") {
-    return <ul {...finalProps}>{children}</ul>;
-  }
-
   return <nav {...finalProps}>{children}</nav>;
+}
+
+function renderRoutedLink(
+  props: NavLinkProps | TabProps | PillProps,
+  slot: "nav-item" | "tab" | "pill",
+  options: { activeBackground?: boolean; className?: string; inheritSlot?: boolean } = {},
+): JSX.Element {
+  const {
+    active,
+    children,
+    href,
+    onClick,
+    ref,
+    class: className,
+    match = "prefix",
+    target,
+    ...rest
+  } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
+  const inheritedSlot =
+    options.inheritSlot && typeof (rest as Record<string, unknown>)["data-slot"] === "string"
+      ? String((rest as Record<string, unknown>)["data-slot"])
+      : undefined;
+  const resolvedSlot = (inheritedSlot ?? slot) as "nav-item" | "tab" | "pill";
+  const inheritedNavClass = slot === "nav-item" && resolvedSlot !== "nav-item" ? "nav-item" : undefined;
+  const { "data-slot": _dataSlot, ...childRest } = rest as Record<string, unknown>;
+  void _dataSlot;
+  const currentPathname = getReactiveCurrentPathname();
+  const targetPathname = resolvePathname(href);
+  const routeActive =
+    currentPathname !== null &&
+    targetPathname !== null &&
+    isActiveNavLink(currentPathname, targetPathname, match);
+  const isActive = active ?? routeActive;
+  const activeProps = isActive
+    ? {
+        "aria-current": "page" as const,
+        "data-active": "true" as const,
+      }
+    : {
+        "data-active": undefined,
+      };
+  const useRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
+  const childProps = {
+    ...childRest,
+    href,
+    target,
+  };
+  const handleClick = (event: MouseEvent) => {
+    onClick?.(event);
+
+    if (!shouldHandleClientNavigation(event, target, targetPathname)) {
+      return;
+    }
+
+    event.preventDefault();
+    navigate(href);
+  };
+
+  return (
+    <Block
+      asChild
+      paddingX="sm"
+      paddingY="xs"
+      radius={resolvedSlot === "pill" ? "round" : "md"}
+      background={isActive && options.activeBackground ? "selected" : undefined}
+      ref={ref}
+      class={classes(options.className, inheritedNavClass, className)}
+      data-slot={resolvedSlot}
+      {...activeProps}
+    >
+      {useRouterLink ? (
+        <Link {...childProps}>
+          {children}
+        </Link>
+      ) : (
+        <a {...childProps} onClick={handleClick}>
+          {children}
+        </a>
+      )}
+    </Block>
+  );
+}
+
+export function Tabs(props: TabsProps): JSX.Element;
+export function Tabs(props: TabsAsChildProps): JSX.Element;
+export function Tabs(props: TabsProps | TabsAsChildProps): JSX.Element {
+  return renderNavSet(props, "tabs");
+}
+
+export function Pills(props: PillsProps): JSX.Element;
+export function Pills(props: PillsAsChildProps): JSX.Element;
+export function Pills(props: PillsProps | PillsAsChildProps): JSX.Element {
+  return renderNavSet(props, "pills");
+}
+
+export function Tab(props: TabProps): JSX.Element {
+  return renderRoutedLink(props, "tab", { className: "tab" });
+}
+
+export function Pill(props: PillProps): JSX.Element {
+  return renderRoutedLink(props, "pill", { activeBackground: true, className: "pill" });
 }
 
 export function NavItem(props: NavItemProps): JSX.Element;
@@ -160,75 +243,5 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
 }
 
 export function NavLink(props: NavLinkProps): JSX.Element {
-  const {
-    active,
-    children,
-    href,
-    onClick,
-    ref,
-    class: className,
-    match = "prefix",
-    target,
-    ...rest
-  } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
-  const currentPathname = getReactiveCurrentPathname();
-  const targetPathname = resolvePathname(href);
-  const routeActive =
-    currentPathname !== null &&
-    targetPathname !== null &&
-    isActiveNavLink(currentPathname, targetPathname, match);
-  const isActive = active ?? routeActive;
-  const activeProps = isActive
-    ? {
-        "aria-current": "page" as const,
-        "data-active": "true" as const,
-      }
-    : {
-        "data-active": undefined,
-      };
-  const inheritedSlot =
-    typeof (rest as Record<string, unknown>)["data-slot"] === "string"
-      ? String((rest as Record<string, unknown>)["data-slot"])
-      : undefined;
-  const slot = inheritedSlot ?? "nav-item";
-  const useRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
-  const childProps = {
-    ...rest,
-    href,
-    target,
-  };
-  const handleClick = (event: MouseEvent) => {
-    onClick?.(event);
-
-    if (!shouldHandleClientNavigation(event, target, targetPathname)) {
-      return;
-    }
-
-    event.preventDefault();
-    navigate(href);
-  };
-
-  return (
-    <Block
-      asChild
-      paddingX="sm"
-      paddingY="xs"
-      radius="md"
-      background={isActive ? "selected" : undefined}
-      ref={ref}
-      class={slot === "nav-item" ? className : classes("nav-item", className)}
-      data-slot={slot}
-      {...activeProps}
-    >
-      {useRouterLink ? (
-        <Link {...childProps}>
-          {children}
-        </Link>
-      ) : (
-        <a {...childProps} onClick={handleClick}>
-          {children}
-        </a>
-      )}
-    </Block>
-  );
+  return renderRoutedLink(props, "nav-item", { activeBackground: true, inheritSlot: true });
 }

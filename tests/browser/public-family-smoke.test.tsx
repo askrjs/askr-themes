@@ -35,8 +35,6 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  ListGroup,
-  ListGroupItem,
   Separator,
   Skeleton,
   Spinner,
@@ -142,9 +140,6 @@ describe("public family browser smoke", () => {
         <Section>
           <Alert title="Heads up" description="Something happened." />
           <Badge variant="success">New</Badge>
-          <ListGroup>
-            <ListGroupItem>First item</ListGroupItem>
-          </ListGroup>
           <Separator />
           <Skeleton />
         </Section>
@@ -182,7 +177,6 @@ describe("public family browser smoke", () => {
       "card",
       "alert",
       "badge",
-      "list-group",
       "separator",
       "skeleton",
       "empty-state",
