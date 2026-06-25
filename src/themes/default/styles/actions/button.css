@@ -247,6 +247,8 @@
 }
 
 :where(.btn-icon, [data-slot="button"][data-size="icon"]) {
-  width: var(--_button-height);
+  flex: none;
+  inline-size: var(--_button-height);
+  min-inline-size: var(--_button-height);
   padding-inline: 0;
 }

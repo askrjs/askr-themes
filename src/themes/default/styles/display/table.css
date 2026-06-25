@@ -3,6 +3,7 @@
   min-inline-size: 0;
   border-collapse: separate;
   border-spacing: 0;
+  table-layout: fixed;
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-raised);
@@ -65,4 +66,18 @@
 
 :where([data-slot="table-cell"]) {
   font-weight: var(--ak-font-weight-regular);
+}
+
+@media (max-width: 30rem) {
+  :where([data-slot="table-header-cell"]),
+  :where([data-slot="table-cell"]) {
+    padding: var(--ak-space-sm) var(--ak-space-xs);
+    font-size: var(--ak-font-size-xs);
+    line-height: var(--ak-line-height-tight);
+  }
+
+  :where([data-slot="table-header-cell"]) {
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
 }
