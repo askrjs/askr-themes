@@ -28,8 +28,8 @@ describe("block layout helpers", () => {
       paddingX: "page",
       maxWidth: "page",
       direction: { base: "column", lg: "row" },
-      class: "shell",
-      title: "Layout shell",
+      class: "chrome",
+      title: "Layout chrome",
     });
 
     expect(blockProps).toEqual({
@@ -37,7 +37,7 @@ describe("block layout helpers", () => {
       maxWidth: "page",
       direction: { base: "column", lg: "row" },
     });
-    expect(rest).toEqual({ class: "shell", title: "Layout shell" });
+    expect(rest).toEqual({ class: "chrome", title: "Layout chrome" });
   });
 
   it("should maps block layout props to responsive css custom properties", () => {

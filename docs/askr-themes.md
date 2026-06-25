@@ -151,7 +151,7 @@ across applications:
 - `Toolbar`: compact title plus actions row.
 - `EmptyState`: consistent empty or no-results feedback.
 
-Application-specific shells stay as recipes. Compose centered pages, sidebar
+Application-specific layouts stay as recipes. Compose centered pages, sidebar
 layouts, split pages, form pages, responsive rows, panel grids, card lists, and
 form actions locally until repeated use proves they deserve promotion.
 

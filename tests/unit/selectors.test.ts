@@ -484,26 +484,26 @@ describe("plain class contract", () => {
   }
 });
 
-describe("layout selector scoping", () => {
+describe("legacy shell selector cleanup", () => {
   const files = getComponentCssFiles();
-  const broadLayoutSlotPattern = /\[data-slot="(shell-main|shell-nav)"\]/;
+  const legacyShellSlotPattern =
+    /\[data-slot="(shell|shell-main|shell-nav|sidebar-panel|sidebar-toggle|sidebar-backdrop|sidebar-rail-toggle)"\]/;
 
   for (const file of files) {
     const filename = file.split(/[/\\]/).pop()!;
 
-    it(`should ${filename}: anchors broad layout slots to a public layout root`, () => {
+    it(`should ${filename}: does not expose removed shell slots`, () => {
       const css = readFileSync(file, "utf-8");
       const selectors = extractSelectors(css);
 
       const violations = selectors.filter((selector) => {
         const normalized = selector.replace(/:where\(([^()]*)\)/g, "$1");
-        if (!broadLayoutSlotPattern.test(normalized)) return false;
-        return !/\[data-slot="shell"\]/.test(normalized);
+        return legacyShellSlotPattern.test(normalized);
       });
 
       expect(
         violations,
-        `Broad layout slots must be scoped by a public layout root: ${violations.join(", ")}`,
+        `Removed shell slots must stay out of CSS: ${violations.join(", ")}`,
       ).toEqual([]);
     });
   }

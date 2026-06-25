@@ -1,8 +1,8 @@
 ﻿# Theming
 
-`@askrjs/themes` is the shell, token, and component styling companion to
-`@askrjs/charts`. It owns the app frame and shared visual language, while chart
-rendering stays in the chart package.
+`@askrjs/themes` is the token, structural preset, and component styling
+companion to `@askrjs/charts`. It owns the shared visual language while
+product-specific app layouts stay in userland recipes.
 
 See [docs/architecture.md](./docs/architecture.md) for the package boundary
 between `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
@@ -106,13 +106,13 @@ Package boundaries:
 
 - `@askrjs/askr` owns what exists and when.
 - `@askrjs/ui` owns behavior, state, focus, and ARIA coordination.
-- `@askrjs/themes` owns visual-only components, layout composition, and
-  default styling.
+- `@askrjs/themes` owns visual-only components, Block-first structural
+  presets, and default styling.
 
 Use the curated theme entrypoints such as `@askrjs/themes/controls`,
-`@askrjs/themes/surfaces`, `@askrjs/themes/navs`, and `@askrjs/themes/shells`
-for styled components such as Button, ButtonGroup, Close, InputGroup, Alert,
-Badge, Block, Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown,
+`@askrjs/themes/core`, `@askrjs/themes/surfaces`, and `@askrjs/themes/navs`
+for styled components such as Button, ButtonGroup, Close, InputGroup, Block,
+Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert, Badge,
 ListGroup, Pagination, Skeleton, Separator/Divider, and EmptyState.
 
 Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
@@ -143,7 +143,7 @@ Responsive rules:
 - Block-owned layout variables are part of the public theme contract and should resolve through theme tokens rather than hard-coded values.
 - Icons are part of the public theme contract. `@askrjs/ui` owns the canonical icon hooks, and official icon wrappers should implement that contract by emitting `data-slot="icon"`, `data-icon`, semantic `data-size`, and `data-decorative` so themes can style them uniformly across icon sets.
 - Icon size and stroke defaults should resolve through the shared icon tokens: `--ak-icon-size-sm|md|lg|xl` and `--ak-icon-stroke-width-sm|md|lg|xl`.
-- Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Recipe shells such as product-style or marketing-style page wrappers belong in userland composition, not the shipped theme package.
+- Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Product-style or marketing-style page layouts belong in userland composition, not the shipped theme package.
 - Comfortable density is tokenized through `--ak-density-control-height-*` and `--ak-density-control-padding-x-*`; apps should tune those before overriding component CSS.
 - Future class aliases must be added selectively with contract tests; do not mirror every internal slot as a class by default.
 
@@ -156,7 +156,7 @@ This document defines the default theme token contract for `askr-themes`.
 The purpose of this token set is to provide a stable, reusable semantic theming layer for:
 
 - `askr-ui` headless components
-- application shell layouts
+- application layouts
 - docs layouts
 - admin dashboards
 - forms

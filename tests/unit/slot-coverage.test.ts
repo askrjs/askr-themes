@@ -30,16 +30,6 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "center",
   "flex",
   "icon",
-  "navbar-panel",
-  "navbar-panel-close",
-  "navbar-panel-header",
-  "sidebar-panel",
-  "sidebar-panel-close",
-  "sidebar-panel-header",
-  "sidebar-brand",
-  "sidebar-group",
-  "sidebar-group-body",
-  "sidebar-group-label",
   "theme-provider",
 ]);
 

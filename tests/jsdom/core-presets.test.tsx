@@ -11,7 +11,7 @@ function asElement(value: unknown): ElementLike {
   return value as ElementLike;
 }
 
-describe("semantic shell presets", () => {
+describe("semantic core presets", () => {
   it("should renders Header as a thin sticky Block preset", () => {
     const header = asElement(Header({ sticky: true, class: "header-custom", children: "nav" }));
 

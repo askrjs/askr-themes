@@ -6,13 +6,13 @@ import { Block } from "../../src/core";
 import { Card, CardContent } from "../../src/surfaces";
 
 describe("product SaaS composition patterns", () => {
-  it("should builds dashboard content while leaving the shell in userland", () => {
+  it("should builds dashboard content while leaving app layout in userland", () => {
     const page = (
-      <div class="ops-app-shell">
-        <aside class="ops-app-shell-nav">
+      <div class="ops-app-layout">
+        <aside class="ops-app-layout-nav">
           {Block({ children: ["Overview", "Customers", "Settings"], gap: "sm", padding: "md" })}
         </aside>
-        <main class="ops-app-shell-main">
+        <main class="ops-app-layout-main">
           <section class="page-header">
             <div class="page-header-copy">
               <h1>Acme Console</h1>

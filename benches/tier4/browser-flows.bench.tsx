@@ -341,28 +341,34 @@ describe("tier4 browser benches", () => {
       const navbar = scenario?.container.querySelector(
         '[data-slot="navbar"]',
       ) as HTMLElement | null;
-      const shell = scenario?.container.querySelector(
-        '[data-slot="navbar-shell"]',
+      const content = scenario?.container.querySelector(
+        '[data-slot="navbar-content"]',
       ) as HTMLElement | null;
       const toggle = scenario?.container.querySelector(
         '[data-slot="navbar-toggle"]',
       ) as HTMLButtonElement | null;
 
-      if (!navbar || !shell || !toggle) {
+      if (!navbar || !content || !toggle) {
         throw new Error("navbar bench failed to mount the responsive chrome");
       }
 
       void getComputedStyle(navbar).justifyContent;
-      void getComputedStyle(shell).display;
+      void getComputedStyle(content).display;
 
       toggle.click();
       await settle();
 
-      const backdrop = scenario?.container.querySelector(
-        '[data-slot="navbar-backdrop"]',
+      const menu = document.body.querySelector(
+        '[data-slot="navbar-menu"]',
       ) as HTMLElement | null;
 
-      backdrop?.click();
+      if (!menu) {
+        throw new Error("navbar bench failed to open the responsive menu");
+      }
+
+      void getComputedStyle(menu).display;
+
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
       await settle();
 
       viewport?.set(1200);
@@ -371,16 +377,14 @@ describe("tier4 browser benches", () => {
     });
   });
 
-  describe("sidebar responsiveness", () => {
+  describe("sidebar structure", () => {
     let scenario: MountedScenario | undefined;
-    let viewport: ReturnType<typeof stubViewport> | undefined;
 
     beforeEach(async () => {
-      viewport = stubViewport(1200);
-
       scenario = await mountScenario("/docs", () => {
         group({ layout: SidebarBenchLayout }, () => {
           route("/docs", () => <div id="page">Docs content</div>);
+          route("/docs/components", () => <div id="page">Components content</div>);
         });
       });
 
@@ -390,79 +394,28 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      viewport?.restore();
-      viewport = undefined;
       clearRoutes();
     });
 
-    bench("sidebar responsive cycle", async () => {
+    bench("sidebar navigation cycle", async () => {
       const sidebar = scenario?.container.querySelector(
         '[data-slot="sidebar"]',
       ) as HTMLElement | null;
-      const shellNav = scenario?.container.querySelector(
-        '[data-slot="shell-nav"]',
+      const main = scenario?.container.querySelector(
+        '[data-bench="sidebar-main"]',
       ) as HTMLElement | null;
-      const railToggle = scenario?.container.querySelector(
-        '[data-slot="sidebar-rail-toggle"]',
-      ) as HTMLButtonElement | null;
+      const link = scenario?.container.querySelector(
+        '[data-slot="nav-item"][href="/docs/components"]',
+      ) as HTMLAnchorElement | null;
 
-      if (!sidebar || !shellNav || !railToggle) {
-        throw new Error("sidebar bench failed to mount the responsive chrome");
+      if (!sidebar || !main || !link) {
+        throw new Error("sidebar bench failed to mount the expected structure");
       }
 
       void getComputedStyle(sidebar).width;
-      void getComputedStyle(shellNav).width;
+      void getComputedStyle(main).display;
 
-      railToggle.click();
-      await settle();
-
-      viewport?.set(375);
-      window.dispatchEvent(new Event("resize"));
-      await settle();
-
-      const mobileToggle = scenario?.container.querySelector(
-        '[data-slot="sidebar-toggle"]',
-      ) as HTMLButtonElement | null;
-
-      if (!mobileToggle) {
-        throw new Error("sidebar bench failed to expose the mobile toggle");
-      }
-
-      mobileToggle.click();
-      await settle();
-
-      const panel = scenario?.container.querySelector(
-        '[data-slot="sidebar-panel"]',
-      ) as HTMLElement | null;
-      const backdrop = scenario?.container.querySelector(
-        '[data-slot="sidebar-backdrop"]',
-      ) as HTMLElement | null;
-
-      if (!panel || !backdrop) {
-        throw new Error("sidebar bench failed to open the mobile panel");
-      }
-
-      void getComputedStyle(panel).display;
-
-      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-      await settle();
-
-      const reopenedToggle = scenario?.container.querySelector(
-        '[data-slot="sidebar-toggle"]',
-      ) as HTMLButtonElement | null;
-
-      reopenedToggle?.click();
-      await settle();
-
-      const reopenedBackdrop = scenario?.container.querySelector(
-        '[data-slot="sidebar-backdrop"]',
-      ) as HTMLElement | null;
-
-      reopenedBackdrop?.click();
-      await settle();
-
-      viewport?.set(1200);
-      window.dispatchEvent(new Event("resize"));
+      link.click();
       await settle();
     });
   });
@@ -511,7 +464,7 @@ describe("tier4 browser benches", () => {
   describe("long-session memory", () => {
     const MEMORY_SOAK_CYCLES = 8;
 
-    bench("shell/theme memory soak", async () => {
+    bench("chrome/theme memory soak", async () => {
       const viewport = stubViewport(1200);
       const retainedHeapSamples: number[] = [];
 

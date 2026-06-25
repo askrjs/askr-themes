@@ -118,7 +118,7 @@ describe("block-first components", () => {
     expect(brand.props["data-slot"]).toBe("nav-brand");
   });
 
-  it("should exposes common composition components without recipe-only layout shells", () => {
+  it("should exposes common composition components without recipe-only layouts", () => {
     expect(Page({ children: "page" })).toBeTruthy();
     expect(PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" })).toBeTruthy();
     expect(Toolbar({ title: "Projects", actions: "actions" })).toBeTruthy();

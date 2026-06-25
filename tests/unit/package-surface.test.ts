@@ -175,7 +175,7 @@ describe("package surface", () => {
     }
   });
 
-  it("should does not wire recipe shell imports into the shipped bundles", () => {
+  it("should does not wire recipe layout imports into the shipped bundles", () => {
     const defaultIndex = readFileSync(DEFAULT_INDEX, "utf-8");
     const templateIndex = readFileSync(TEMPLATE_INDEX, "utf-8");
 

@@ -10,20 +10,20 @@ import { mergeCssVar } from "../../src/components/_internal/style";
 const WORK = 256;
 
 const mergePropsBase = {
-  class: "shell",
+  class: "chrome",
   onClick: () => undefined,
   onKeyDown: () => undefined,
   ref: { current: null as HTMLDivElement | null },
   role: "presentation",
-  title: "shell",
+  title: "chrome",
 };
 
 const mergePropsInjected = {
-  class: "shell-injected",
+  class: "chrome-injected",
   onClick: () => undefined,
   onKeyDown: () => undefined,
   ref: { current: null as HTMLDivElement | null },
-  "aria-label": "Shell",
+  "aria-label": "Chrome",
 };
 
 const layoutStyle = {

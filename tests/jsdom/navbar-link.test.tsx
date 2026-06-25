@@ -16,7 +16,7 @@ async function settle(): Promise<void> {
   await Promise.resolve();
 }
 
-function shell(page: string) {
+function layout(page: string) {
   return (
     <>
       <nav aria-label="Primary">
@@ -33,10 +33,10 @@ function shell(page: string) {
 }
 
 function registerNavRoutes(): void {
-  route("/", () => shell("Home page"));
-  route("/docs", () => shell("Docs home"));
-  route("/docs/getting-started", () => shell("Getting started"));
-  route("/docs/components", () => shell("Components"));
+  route("/", () => layout("Home page"));
+  route("/docs", () => layout("Docs home"));
+  route("/docs/getting-started", () => layout("Getting started"));
+  route("/docs/components", () => layout("Components"));
 }
 
 describe("navbar link jsdom regression", () => {
