@@ -8,6 +8,9 @@ const THEMES_DOC = join(DOCS_DIR, "askr-themes.md");
 const THEMING_DOC = join(DOCS_DIR, "theming.md");
 const README_DOC = join(DOCS_DIR, "README.md");
 const TOKENS_DOC = join(DOCS_DIR, "tokens.md");
+const COMPONENT_ANATOMY_DOC = join(DOCS_DIR, "component-anatomy.md");
+const CUSTOMIZATION_DOC = join(DOCS_DIR, "customization.md");
+const RECIPES_DOC = join(DOCS_DIR, "recipes.md");
 
 describe("docs surface", () => {
   it("should documents curated entrypoints instead of a components catch-all", () => {
@@ -33,6 +36,9 @@ describe("docs surface", () => {
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
     const readmeDoc = readFileSync(README_DOC, "utf-8");
     const tokensDoc = readFileSync(TOKENS_DOC, "utf-8");
+    const componentAnatomyDoc = readFileSync(COMPONENT_ANATOMY_DOC, "utf-8");
+    const customizationDoc = readFileSync(CUSTOMIZATION_DOC, "utf-8");
+    const recipesDoc = readFileSync(RECIPES_DOC, "utf-8");
 
     expect(themesDoc).toContain("## Design Model");
     expect(themesDoc).toContain("## Public API");
@@ -101,7 +107,9 @@ describe("docs surface", () => {
     expect(themingDoc).toContain("Breadcrumb");
     expect(themingDoc).toContain("Spinner");
     expect(themingDoc).toContain("If the default theme styles a `@askrjs/ui` primitive");
-    expect(themingDoc).toContain("Use `controls` for styled components such as Button, Input, Select");
+    expect(themingDoc).toContain(
+      "Use `controls` for styled components such as Button, Input, Select",
+    );
     expect(themingDoc).toContain("as Alert, Badge, Card, CardActions");
     expect(themingDoc).toContain("`EmptyState` belongs to `core`");
     expect(themingDoc).toContain("`Dialog` is the canonical modal surface name");
@@ -123,6 +131,9 @@ describe("docs surface", () => {
     expect(readmeDoc).toContain("Card");
     expect(readmeDoc).toContain("DropdownContent");
     expect(readmeDoc).toContain("KISS import path for styled app components");
+    expect(readmeDoc).toContain("./component-anatomy.md");
+    expect(readmeDoc).toContain("./customization.md");
+    expect(readmeDoc).toContain("./recipes.md");
     expect(readmeDoc).toContain("Keep chips/tags as recipes");
     expect(themingDoc).not.toContain("@askrjs/themes/feedback");
 
@@ -143,5 +154,49 @@ describe("docs surface", () => {
     expect(tokensDoc).toContain("Motion");
     expect(tokensDoc).toContain("Z-index");
     expect(tokensDoc).toContain("State");
+
+    expect(componentAnatomyDoc).toContain("# Component Anatomy");
+    expect(componentAnatomyDoc).toContain("`data-slot` values are safe app styling hooks");
+    expect(componentAnatomyDoc).toContain("`Block` remains the only layout engine.");
+    expect(componentAnatomyDoc).toContain("`navbar-collapse`");
+    expect(componentAnatomyDoc).toContain("`navbar-toggle`");
+    expect(componentAnatomyDoc).toContain("`navbar-toggle-label`");
+    expect(componentAnatomyDoc).toContain("`navbar-content`");
+    expect(componentAnatomyDoc).toContain("`NavBrand` remains visible outside collapsed content.");
+    expect(componentAnatomyDoc).toContain("Do not depend on old slots such as `navbar-shell`");
+    expect(componentAnatomyDoc).toContain("`NavLink`");
+    expect(componentAnatomyDoc).toContain("`NavDropdown`");
+    expect(componentAnatomyDoc).toContain("`dropdown-content`");
+    expect(componentAnatomyDoc).toContain("`theme-toggle-content`");
+    expect(componentAnatomyDoc).toContain("`card-actions`");
+    expect(componentAnatomyDoc).toContain("`field-error`");
+    expect(componentAnatomyDoc).toContain("`input`");
+    expect(componentAnatomyDoc).toContain("`button`");
+    expect(componentAnatomyDoc).toContain("Do not add broad layout props");
+
+    expect(customizationDoc).toContain("# Safe Customization");
+    expect(customizationDoc).toContain("Override tokens for broad visual decisions.");
+    expect(customizationDoc).toContain("Use stable `data-slot` hooks for app-scoped CSS.");
+    expect(customizationDoc).toContain(
+      "Alias classes exist only where they are intentionally supported",
+    );
+    expect(customizationDoc).toContain("Do not recreate CSS as props.");
+    expect(customizationDoc).toContain('<Card width="lg" density="compact" shadowColor="blue" />');
+    expect(customizationDoc).toContain('.settings-page :where([data-slot="card"])');
+    expect(customizationDoc).toContain('.account-menu :where([data-slot="dropdown-content"])');
+    expect(customizationDoc).toContain("Use `class` for reusable app styling");
+    expect(customizationDoc).toContain("Use `style` for one-off dynamic values");
+
+    expect(recipesDoc).toContain("# App Recipes");
+    expect(recipesDoc).toContain("## Simple Login Page");
+    expect(recipesDoc).toContain("## Admin Shell");
+    expect(recipesDoc).toContain("## Settings Form Page");
+    expect(recipesDoc).toContain("## Data Table Page");
+    expect(recipesDoc).toContain("## Dropdown Action Menu");
+    expect(recipesDoc).toContain("Do not bake that decision into core.");
+    expect(recipesDoc).toContain("Header actions remain visible on mobile.");
+    expect(recipesDoc).toContain("Keep app-specific shells");
+    expect(recipesDoc).toContain("SelectContent");
+    expect(recipesDoc).not.toContain('<DropdownItem variant="danger"');
   });
 });

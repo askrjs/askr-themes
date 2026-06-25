@@ -320,6 +320,13 @@ Override tokens after that import when needed:
 aliases selective and focused on raw HTML ergonomics. Prefer tokens and
 documented `data-slot` hooks for durable customization.
 
+Use [Component Anatomy](./component-anatomy.md) when you need exact slot names,
+alias classes, and safe override examples. Use
+[Safe Customization](./customization.md) before adding new props to a themed
+component. Use [App Recipes](./recipes.md) for copyable login, admin shell,
+settings form, table, dropdown, and detail-page patterns that should remain in
+userland.
+
 ## Package Boundary
 
 Use `askr-themes` when you want the standard Askr visual language without
@@ -331,4 +338,7 @@ Behavior and accessibility logic remain owned by `@askrjs/askr` and
 
 - [Tokens](./tokens.md)
 - [Theming](./theming.md)
+- [Component Anatomy](./component-anatomy.md)
+- [Safe Customization](./customization.md)
+- [App Recipes](./recipes.md)
 - [Architecture](./architecture.md)
