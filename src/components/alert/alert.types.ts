@@ -10,7 +10,6 @@ export type AlertProps = DivProps & {
   children?: unknown;
   description?: unknown;
   dismissLabel?: string;
-  dismissible?: boolean;
   icon?: unknown;
   onDismiss?: () => void;
   title?: unknown;

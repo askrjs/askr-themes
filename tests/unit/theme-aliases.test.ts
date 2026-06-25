@@ -57,8 +57,7 @@ describe("theme alias classes", () => {
       asElement(Badge({ children: "new", variant: "success", class: "my-badge" })).props.class,
     ).toBe("badge badge-success my-badge");
     expect(
-      asElement(Alert({ title: "Notice", variant: "info", dismissible: true, onDismiss: () => {} }))
-        .props.class,
+      asElement(Alert({ title: "Notice", variant: "info", onDismiss: () => {} })).props.class,
     ).toBe("alert alert-info alert-dismissible");
   });
 

@@ -29,14 +29,28 @@ import {
   PaginationLink,
 } from "../../src/navs";
 import {
+  AlertDialog,
+  Dialog,
   Dropdown,
   DropdownContent,
   DropdownItem,
   DropdownTrigger,
+  HoverCard,
   Menu,
   Menubar,
+  Popover,
+  Toast,
+  Tooltip,
 } from "../../src/overlays";
-import { Alert, AspectRatio, Badge, Card, ListGroup, ListGroupItem, Spinner } from "../../src/surfaces";
+import {
+  Alert,
+  AspectRatio,
+  Badge,
+  Card,
+  ListGroup,
+  ListGroupItem,
+  Spinner,
+} from "../../src/surfaces";
 import {
   CAT_THEME_NAMES,
   CAT_THEME_OPTIONS,
@@ -92,10 +106,16 @@ describe("curated entrypoints", () => {
     expect(PaginationEllipsis({})).toBeTruthy();
     expect(PaginationItem({ children: "item" })).toBeTruthy();
     expect(PaginationLink({ href: "/docs", children: "page 1" })).toBeTruthy();
+    expect(typeof Dialog).toBe("function");
+    expect(typeof AlertDialog).toBe("function");
     expect(typeof Dropdown).toBe("function");
     expect(typeof DropdownTrigger).toBe("function");
     expect(typeof DropdownContent).toBe("function");
     expect(typeof DropdownItem).toBe("function");
+    expect(typeof Popover).toBe("function");
+    expect(typeof Tooltip).toBe("function");
+    expect(typeof HoverCard).toBe("function");
+    expect(typeof Toast).toBe("function");
     expect(typeof Menu).toBe("function");
     expect(typeof Menubar).toBe("function");
     expect(ListGroup({ children: "list" })).toBeTruthy();

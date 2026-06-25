@@ -17,7 +17,7 @@ import {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "@askrjs/ui";
+} from "../../src/overlays";
 
 import "../../src/themes/default/index.css";
 

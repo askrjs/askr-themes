@@ -69,7 +69,16 @@ import {
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
 import { Button, Field, InputGroup } from "@askrjs/themes/controls";
 import { AspectRatio, Card, Alert, Badge, ListGroup, Spinner } from "@askrjs/themes/surfaces";
-import { DropdownItem } from "@askrjs/themes/overlays";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+  DropdownItem,
+} from "@askrjs/themes/overlays";
 ```
 
 ## Block
@@ -87,14 +96,7 @@ Use explicit prop names. The API intentionally avoids shorthand aliases such as
 `px`, `mx`, or generic CSS recreation. Rare CSS belongs in `class` or `style`.
 
 ```tsx
-<Block
-  as="main"
-  maxWidth="page"
-  marginX="auto"
-  paddingX="page"
-  paddingY="xl"
-  gap="lg"
->
+<Block as="main" maxWidth="page" marginX="auto" paddingX="page" paddingY="xl" gap="lg">
   <h1>Dashboard</h1>
   <p>Page content.</p>
 </Block>
@@ -104,9 +106,15 @@ Responsive behavior uses one pattern everywhere:
 
 ```tsx
 <Block direction={{ base: "column", lg: "row" }} gap="lg">
-  <Block grow padding="lg" border radius="lg">Projects</Block>
-  <Block grow padding="lg" border radius="lg">Activity</Block>
-  <Block grow padding="lg" border radius="lg">Usage</Block>
+  <Block grow padding="lg" border radius="lg">
+    Projects
+  </Block>
+  <Block grow padding="lg" border radius="lg">
+    Activity
+  </Block>
+  <Block grow padding="lg" border radius="lg">
+    Usage
+  </Block>
 </Block>
 ```
 
@@ -129,7 +137,9 @@ another layout system.
       <NavBrand asChild>
         <Link href="/">Askr</Link>
       </NavBrand>
-      <NavLink href="/dashboard" match="exact">Dashboard</NavLink>
+      <NavLink href="/dashboard" match="exact">
+        Dashboard
+      </NavLink>
       <NavLink href="/projects">Projects</NavLink>
       <NavDropdown label="More">
         <DropdownItem asChild>
@@ -183,7 +193,9 @@ use `active` for manual state and `class` or `style` for rare custom treatment.
     <Link href="/">Askr</Link>
   </NavBrand>
   <NavGroup title="Workspace">
-    <NavLink href="/dashboard" match="exact">Dashboard</NavLink>
+    <NavLink href="/dashboard" match="exact">
+      Dashboard
+    </NavLink>
     <NavLink href="/projects">Projects</NavLink>
   </NavGroup>
 </Navbar>
@@ -197,7 +209,9 @@ the rest of the content expands from a toggle.
   <NavBrand asChild>
     <Link href="/">Askr</Link>
   </NavBrand>
-  <NavLink href="/dashboard" match="exact">Dashboard</NavLink>
+  <NavLink href="/dashboard" match="exact">
+    Dashboard
+  </NavLink>
   <NavLink href="/projects">Projects</NavLink>
 </Navbar>
 ```
@@ -210,7 +224,9 @@ when a product needs more custom behavior.
   <NavBrand asChild>
     <Link href="/">Askr</Link>
   </NavBrand>
-  <NavLink href="/dashboard" match="exact">Dashboard</NavLink>
+  <NavLink href="/dashboard" match="exact">
+    Dashboard
+  </NavLink>
   <NavDropdown label="More">
     <DropdownItem asChild>
       <a href="/settings">Settings</a>
@@ -228,6 +244,45 @@ when a product needs more custom behavior.
   <NavLink href="/settings/security">Security</NavLink>
 </Nav>
 ```
+
+## Status And Overlays
+
+Use `Badge` for small non-interactive labels such as status, plan, or metadata.
+Use `Alert` for inline feedback. Passing `onDismiss` makes an alert dismissible;
+there is no separate dismissible flag.
+
+```tsx
+<Alert
+  title="Deploy queued"
+  description="Production will update after the current job finishes."
+  variant="info"
+  onDismiss={() => setVisible(false)}
+/>
+<Badge variant="success">Live</Badge>
+```
+
+Use `Dialog` for modal content and `AlertDialog` for destructive confirmations.
+Do not create a second `Modal` abstraction. Use `Popover`, `Tooltip`,
+`HoverCard`, and `Toast` from `@askrjs/themes/overlays` so the import path
+matches the theme CSS.
+
+```tsx
+<Dialog>
+  <DialogTrigger>Edit profile</DialogTrigger>
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogContent>
+      <DialogTitle>Edit profile</DialogTitle>
+      <DialogDescription>Update the account details shown to teammates.</DialogDescription>
+    </DialogContent>
+  </DialogPortal>
+</Dialog>
+```
+
+Chips and tags stay as recipes for now. If the UI only needs a visual label,
+use `Badge`. If it needs a removable filter token, compose the local product
+interaction from existing controls until that pattern is stable enough to
+promote.
 
 ## Theming
 

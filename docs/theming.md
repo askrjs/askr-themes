@@ -166,6 +166,10 @@ Use the curated theme entrypoints such as `controls`, `surfaces`, and `navs`
 for styled components such as Button, ButtonGroup, Close,
 InputGroup, Field, Alert, ListGroup, Pagination, Badge, Card, CardActions,
 AspectRatio, Spinner, and Skeleton.
+Use `overlays` for the styled overlay primitives shipped with the default CSS:
+Dialog, AlertDialog, Dropdown, Popover, Tooltip, HoverCard, Toast, Menu, and
+Menubar. `Dialog` is the canonical modal surface name; a separate `Modal`
+component would duplicate the same behavior.
 `EmptyState` belongs to `core` because it is a stable composition preset, not a
 surface export.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
@@ -177,7 +181,10 @@ hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
 `field`, `field-hint`, `field-error`, `input-group`, `list-group`, and
 `pagination`.
 Status surfaces such as `Spinner` and nav helpers such as `Breadcrumb` stay
-thin. Structural chrome components such as `Header`, `Main`, `Section`,
+thin. Use `Badge` for small non-interactive labels and `Alert` for inline
+feedback. Chips and tags should stay local recipes until they have a distinct
+interactive/removable contract that `Badge` does not cover. Structural chrome
+components such as `Header`, `Main`, `Section`,
 `Aside`, `Sidebar`, `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`,
 and `NavItem` are semantic presets built on `Block`; they do not introduce
 independent layout behavior. Recipe layouts like marketing, product, sidebar,
