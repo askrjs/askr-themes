@@ -1,34 +1,5 @@
-import type { JSXElement } from "@askrjs/askr/foundations";
-import type { Ref } from "@askrjs/askr/foundations/utilities";
-import type { BoxLayoutOwnProps, LayoutResponsive } from "../box/box.types";
+import type { BlockDivProps, BlockSize } from "../block";
 
-export type ContainerVariant = "default" | "sm" | "md" | "lg" | "xl" | "xxl" | "fluid";
-
-export type ContainerOwnProps = BoxLayoutOwnProps & {
-  /** Bootstrap-like responsive container variant. */
-  variant?: ContainerVariant;
-  /** Radix-style container size token. */
-  size?: LayoutResponsive<"1" | "2" | "3" | "4" | "sm" | "md" | "lg" | "xl" | "fluid">;
-  /** Horizontal alignment of the constrained container. */
-  align?: LayoutResponsive<"left" | "center" | "right">;
-  /** Compatibility max-width override. */
-  maxWidth?: LayoutResponsive<string>;
-  /** Compatibility horizontal padding override. */
-  padding?: LayoutResponsive<string | number>;
-  children?: unknown;
+export type ContainerProps = Omit<BlockDivProps, "maxWidth"> & {
+  size?: BlockSize;
 };
-
-export type ContainerNativeProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
-  ContainerOwnProps & {
-    asChild?: false;
-    ref?: Ref<HTMLDivElement>;
-  };
-
-export type ContainerAsChildProps = ContainerOwnProps & {
-  asChild: true;
-  children: JSXElement;
-  ref?: Ref<unknown>;
-  style?: JSX.IntrinsicElements["div"]["style"];
-};
-
-export type ContainerProps = ContainerNativeProps | ContainerAsChildProps;

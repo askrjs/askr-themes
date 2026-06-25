@@ -1,22 +1,32 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import { Button, ButtonGroup, Close, InputGroup, InputGroupText } from "../../src/controls";
-import { EmptyState, Spinner } from "../../src/feedback";
-import { Block, Stack, AspectRatio } from "../../src/layouts";
 import {
-  Breadcrumb,
-  Nav,
+  Aside,
+  Block,
+  Container,
+  Header,
+  Main,
   NavBrand,
+  NavDropdown,
   NavGroup,
   NavItem,
   NavLink,
   Navbar,
+  Page,
+  PageHeader,
+  Section,
+  Sidebar,
+  Toolbar,
+} from "../../src/core";
+import { EmptyState, Spinner } from "../../src/feedback";
+import {
+  Breadcrumb,
+  Nav,
   Pagination,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  Sidebar,
-  SidebarPanel,
 } from "../../src/navs";
 import {
   Dropdown,
@@ -26,8 +36,7 @@ import {
   Menu,
   Menubar,
 } from "../../src/overlays";
-import { Alert, Badge, Card, ListGroup, ListGroupItem } from "../../src/surfaces";
-import { Header } from "../../src/shells";
+import { Alert, AspectRatio, Badge, Card, ListGroup, ListGroupItem } from "../../src/surfaces";
 import {
   CAT_THEME_NAMES,
   CAT_THEME_OPTIONS,
@@ -36,15 +45,6 @@ import {
   ThemeToggle,
   useTheme,
 } from "../../src/theme";
-
-type ElementLike = {
-  type: unknown;
-  props: Record<string, unknown>;
-};
-
-function asElement(value: unknown): ElementLike {
-  return value as ElementLike;
-}
 
 describe("curated entrypoints", () => {
   it("should exposes theme and control families", () => {
@@ -59,8 +59,12 @@ describe("curated entrypoints", () => {
 
   it("should exposes layout, surface, feedback, nav, and shell families", () => {
     expect(AspectRatio({ ratio: 16 / 9, children: "hero" })).toBeTruthy();
-    expect(Block({ children: "block", gap: "2" })).toBeTruthy();
-    expect(Stack({ children: "stack", gap: "2" })).toBeTruthy();
+    expect(Block({ children: "block", gap: "md" })).toBeTruthy();
+    expect(Container({ children: "container" })).toBeTruthy();
+    expect(Section({ children: "section" })).toBeTruthy();
+    expect(Page({ children: "page" })).toBeTruthy();
+    expect(PageHeader({ title: "Projects" })).toBeTruthy();
+    expect(Toolbar({ title: "Projects" })).toBeTruthy();
     expect(ButtonGroup({ children: "group" })).toBeTruthy();
     expect(Close({ children: "x" })).toBeTruthy();
     expect(InputGroup({ children: "input-group" })).toBeTruthy();
@@ -71,12 +75,17 @@ describe("curated entrypoints", () => {
     expect(Breadcrumb({ children: "trail" })).toBeTruthy();
     expect(Nav({ children: "nav" })).toBeTruthy();
     expect(Spinner({ label: "Working" })).toBeTruthy();
+    expect(EmptyState({ title: "No projects" })).toBeTruthy();
     expect(Header({ children: "header" })).toBeTruthy();
-    expect(typeof Navbar).toBe("function");
-    expect(typeof Sidebar).toBe("function");
-    expect(typeof SidebarPanel).toBe("function");
-    expect(NavBrand({ children: "brand" })).toBeTruthy();
-    expect(NavGroup({ children: "group" })).toBeTruthy();
+    expect(Main({ children: "main" })).toBeTruthy();
+    expect(Aside({ children: "aside" })).toBeTruthy();
+    expect(Sidebar({ children: "sidebar" })).toBeTruthy();
+    expect(Navbar({ children: "navbar" })).toBeTruthy();
+    expect(Navbar({ collapseAt: "md", children: "navbar" })).toBeTruthy();
+    expect(NavBrand({ children: "Askr" })).toBeTruthy();
+    expect(NavBrand({ as: "a", href: "/", children: "Askr" })).toBeTruthy();
+    expect(NavDropdown({ label: "More", children: "items" })).toBeTruthy();
+    expect(NavGroup({ title: "Workspace", children: "group" })).toBeTruthy();
     expect(NavItem({ href: "https://github.com/askrjs", children: "item" })).toBeTruthy();
     expect(NavLink({ href: "/docs", children: "link" })).toBeTruthy();
     expect(Pagination({ children: "pages" })).toBeTruthy();
@@ -91,12 +100,5 @@ describe("curated entrypoints", () => {
     expect(typeof Menubar).toBe("function");
     expect(ListGroup({ children: "list" })).toBeTruthy();
     expect(ListGroupItem({ children: "row" })).toBeTruthy();
-    expect(EmptyState({ title: "No projects" })).toBeTruthy();
-  });
-
-  it("should lets the empty state override heading level", () => {
-    const emptyState = asElement(EmptyState({ title: "No projects", titleAs: "h3" }));
-
-    expect((emptyState.props.children as ElementLike[])[1].type).toBe("h3");
   });
 });

@@ -9,16 +9,16 @@ import {
 } from "../../src/controls";
 import { EmptyState, Spinner } from "../../src/feedback";
 import {
-  AspectRatio,
   Block,
-  Box,
   Container,
-  Flex,
-  Inline,
+  NavBrand,
+  NavGroup,
+  NavItem,
+  NavLink,
+  Navbar,
   Section,
-  Spacer,
-  Stack,
-} from "../../src/layouts";
+  Sidebar,
+} from "../../src/core";
 import {
   Breadcrumb,
   BreadcrumbCurrent,
@@ -43,23 +43,12 @@ import {
   CardHeader,
   CardTitle,
   Divider,
+  AspectRatio,
   ListGroup,
   ListGroupItem,
   Separator,
   Skeleton,
 } from "../../src/surfaces";
-import {
-  NavBrand,
-  NavGroup,
-  NavItem,
-  NavLink,
-  Navbar,
-  Shell,
-  ShellMain,
-  ShellNav,
-  Sidebar,
-  SidebarToggle,
-} from "../../src/shells";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import { Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow } from "@askrjs/ui";
 
@@ -101,7 +90,7 @@ export function buildFeedbackFixture(): JSX.Element {
         icon={<BenchIcon label="!" />}
         title="No results"
         description="Try changing the current filters."
-        actions={<button type="button">Reset</button>}
+        action={<button type="button">Reset</button>}
       />
       <Spinner label="Loading" />
     </section>
@@ -135,25 +124,24 @@ export function buildSurfacesFixture(): JSX.Element {
   );
 }
 
-export function buildLayoutsFixture(): JSX.Element {
+export function buildCoreFixture(): JSX.Element {
   return (
-    <section data-bench="layouts">
+    <section data-bench="core">
       <AspectRatio ratio={16 / 9}>
         <figure>Media</figure>
       </AspectRatio>
-      <Block gap="2">
-        <Box>Box</Box>
+      <Block gap="sm">
+        <Block border radius="md" padding="md">Block</Block>
         <Container size="lg">
-          <Stack gap="2">
-            <Flex gap="2" direction="column">
-              <Inline gap="2">Inline</Inline>
-              <Section size="2">Section</Section>
-            </Flex>
-            <Spacer basis="1rem" />
-            <Block gap="1">
+          <Block gap="sm">
+            <Block gap="sm" direction="column">
+              <Block direction="row" gap="sm">Inline row</Block>
+              <Section>Section</Section>
+            </Block>
+            <Block gap="xs">
               <div>Nested block</div>
             </Block>
-          </Stack>
+          </Block>
         </Container>
       </Block>
     </section>
@@ -175,13 +163,7 @@ export function buildNavsFixture(): JSX.Element {
         </BreadcrumbList>
       </Breadcrumb>
       <Nav aria-label="Primary">
-        <NavBrand>
-          <a href="/">
-            <BenchIcon label="Askr" />
-            <strong>Askr</strong>
-          </a>
-        </NavBrand>
-        <NavGroup label="Docs">
+        <NavGroup title="Docs">
           <NavItem href="/docs">Overview</NavItem>
           <NavLink href="/docs/components">Components</NavLink>
         </NavGroup>
@@ -216,13 +198,7 @@ export function buildBrowserNavsFixture(): JSX.Element {
         </BreadcrumbList>
       </Breadcrumb>
       <Nav aria-label="Primary">
-        <NavBrand>
-          <a href="/">
-            <BenchIcon label="Askr" />
-            <strong>Askr</strong>
-          </a>
-        </NavBrand>
-        <NavGroup label="Docs">
+        <NavGroup title="Docs">
           <NavItem href="/docs">Overview</NavItem>
           <NavItem href="/docs/components">Components</NavItem>
         </NavGroup>
@@ -242,7 +218,7 @@ export function buildPublicFamilyPage(): JSX.Element {
       {buildControlsFixture()}
       {buildFeedbackFixture()}
       {buildBrowserNavsFixture()}
-      {buildLayoutsFixture()}
+      {buildCoreFixture()}
       {buildSurfacesFixture()}
     </div>
   );
@@ -259,7 +235,7 @@ export function buildRouteTransitionPage(props: { title: string; rows?: number }
           <CardDescription>Route content</CardDescription>
         </CardHeader>
         <CardContent>
-          <Stack gap="2">
+          <Block gap="sm">
             {Array.from({ length: rows }, (_, index) => (
               <Card key={index} variant="raised" padding={index % 3 === 0 ? "sm" : "md"}>
                 <CardHeader>
@@ -270,7 +246,7 @@ export function buildRouteTransitionPage(props: { title: string; rows?: number }
                 </CardContent>
               </Card>
             ))}
-          </Stack>
+          </Block>
         </CardContent>
         <CardFooter>
           <Badge variant="info">{rows} records</Badge>
@@ -310,7 +286,7 @@ export function NavbarBenchLayout(props: { children?: unknown }): JSX.Element {
 
   return (
     <div data-bench="navbar-layout">
-      <Navbar id="docs-navbar" aria-label="Docs navigation" breakpoint="md">
+      <Navbar id="docs-navbar" aria-label="Docs navigation" collapseAt="md">
         <NavBrand>
           <a href="/">
             <BenchIcon label="Askr" />
@@ -337,7 +313,7 @@ export function NavbarStaticLayout(props: { children?: unknown }): JSX.Element {
 
   return (
     <div data-bench="navbar-layout">
-      <Navbar id="docs-navbar" aria-label="Docs navigation" breakpoint="md">
+      <Navbar id="docs-navbar" aria-label="Docs navigation" collapseAt="md">
         <NavBrand>
           <a href="/">
             <BenchIcon label="Askr" />
@@ -361,45 +337,35 @@ export function SidebarBenchLayout(props: { children?: unknown }): JSX.Element {
   const { children } = props;
 
   return (
-    <Shell variant="sidebar">
-      <ShellNav>
-        <Sidebar
-          id="docs-sidebar"
-          aria-label="Docs navigation"
-          breakpoint="md"
-          collapsible="icon"
-          defaultCollapsed
-        >
-          <SidebarToggle
-            expandedIcon={<BenchIcon label="E" state="expanded" />}
-            collapsedIcon={<BenchIcon label="C" state="collapsed" />}
-          />
-          <NavBrand>
-            <a href="/">
-              <BenchIcon label="Askr" />
-              <strong>Askr</strong>
-            </a>
-          </NavBrand>
-          <NavGroup label="Guides">
-            <NavLink href="/docs" match="exact">
-              <BenchIcon label="Overview" />
-              <span>Overview</span>
-            </NavLink>
-            <NavLink href="/docs/components">
-              <BenchIcon label="Components" />
-              <span>Components</span>
-            </NavLink>
-          </NavGroup>
-          <NavGroup align="end">
-            <NavLink href="/settings">
-              <BenchIcon label="Settings" />
-              <span>Settings</span>
-            </NavLink>
-          </NavGroup>
-        </Sidebar>
-      </ShellNav>
-      <ShellMain data-bench="sidebar-main">{children}</ShellMain>
-    </Shell>
+    <Block minHeight="screen" direction="row">
+      <Sidebar id="docs-sidebar" aria-label="Docs navigation">
+        <NavBrand>
+          <a href="/">
+            <BenchIcon label="Askr" />
+            <strong>Askr</strong>
+          </a>
+        </NavBrand>
+        <NavGroup title="Guides">
+          <NavLink href="/docs" match="exact">
+            <BenchIcon label="Overview" />
+            <span>Overview</span>
+          </NavLink>
+          <NavLink href="/docs/components">
+            <BenchIcon label="Components" />
+            <span>Components</span>
+          </NavLink>
+        </NavGroup>
+        <NavGroup>
+          <NavLink href="/settings">
+            <BenchIcon label="Settings" />
+            <span>Settings</span>
+          </NavLink>
+        </NavGroup>
+      </Sidebar>
+      <Block as="main" grow data-bench="sidebar-main">
+        {children}
+      </Block>
+    </Block>
   );
 }
 

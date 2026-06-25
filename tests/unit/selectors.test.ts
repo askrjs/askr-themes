@@ -20,7 +20,6 @@ const CLASS_UTILITY_FILES = new Set([
   "label.css",
   "list-group.css",
   "nav.css",
-  "navbar.css",
   "pagination.css",
   "patterns.css",
   "reset.css",
@@ -43,7 +42,6 @@ const PLAIN_CLASS_CONTRACT_FILES = new Set([
   "input.css",
   "label.css",
   "list-group.css",
-  "navbar.css",
   "pagination.css",
   "patterns.css",
   "utilities.css",
@@ -127,23 +125,6 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "list-group-horizontal",
     "list-group-item",
     "list-group-item-action",
-  ],
-  "navbar.css": [
-    "navbar",
-    "navbar-brand",
-    "navbar-backdrop",
-    "navbar-mobile",
-    "navbar-group",
-    "navbar-group-body",
-    "navbar-group-label",
-    "navbar-panel",
-    "navbar-panel-close",
-    "navbar-panel-header",
-    "navbar-item",
-    "navbar-item-icon",
-    "navbar-shell",
-    "navbar-toggle",
-    "navbar-toggle-glyph",
   ],
   "pagination.css": [
     "active",
@@ -505,7 +486,7 @@ describe("plain class contract", () => {
 
 describe("layout selector scoping", () => {
   const files = getComponentCssFiles();
-  const broadLayoutSlotPattern = /\[data-slot="(main|sidebar)"\]/;
+  const broadLayoutSlotPattern = /\[data-slot="(shell-main|shell-nav)"\]/;
 
   for (const file of files) {
     const filename = file.split(/[/\\]/).pop()!;

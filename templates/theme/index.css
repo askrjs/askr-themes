@@ -3,12 +3,10 @@
 @import "./styles/base/typography.css";
 @import "./styles/base/icon.css";
 @import "./styles/layout/layout.css";
-@import "./styles/layout/responsive-layout.css";
 @import "./styles/base/utilities.css";
 @import "./styles/layout/block.css";
 @import "./styles/layout/patterns.css";
 @import "./styles/layout/aspect-ratio.css";
-@import "./styles/shell/theme.css";
 @import "./styles/shell/header.css";
 @import "./styles/shell/navbar.css";
 @import "./styles/shell/sidebar.css";

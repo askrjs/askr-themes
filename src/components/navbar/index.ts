@@ -1,17 +1,11 @@
-export { Navbar, NavBrand, NavGroup, NavToggle } from "./navbar";
+export { Navbar, NavBrand, NavDropdown, NavGroup } from "./navbar";
 export { NavItem, NavLink } from "../nav";
 export type {
   NavBrandProps,
+  NavDropdownProps,
   NavGroupProps,
-  NavItemAsChildProps,
-  NavItemProps,
-  NavItemVariant,
-  NavLinkProps,
+  NavbarCollapseBreakpoint,
+  NavbarMenuAlign,
   NavbarProps,
-  NavToggleProps,
 } from "./navbar.types";
-export type {
-  CollapseBreakpoint,
-  CollapseIconPlacement,
-  Collapsible,
-} from "../shell/shell-nav.types";
+export type { NavItemAsChildProps, NavItemProps, NavItemVariant, NavLinkProps } from "../nav";

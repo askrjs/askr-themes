@@ -42,9 +42,9 @@
       "types": "./dist/theme.d.ts",
       "import": "./dist/theme.js"
     },
-    "./layouts": {
-      "types": "./dist/layouts.d.ts",
-      "import": "./dist/layouts.js"
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js"
     },
     "./controls": {
       "types": "./dist/controls.d.ts",
@@ -57,10 +57,6 @@
     "./feedback": {
       "types": "./dist/feedback.d.ts",
       "import": "./dist/feedback.js"
-    },
-    "./shells": {
-      "types": "./dist/shells.d.ts",
-      "import": "./dist/shells.js"
     },
     "./navs": {
       "types": "./dist/navs.d.ts",
@@ -103,7 +99,6 @@
     "./default/progress.css": "./src/themes/default/styles/display/progress.css",
     "./default/progress-circle.css": "./src/themes/default/styles/display/progress-circle.css",
     "./default/radio-group.css": "./src/themes/default/styles/forms/radio-group.css",
-    "./default/responsive-layout.css": "./src/themes/default/styles/layout/responsive-layout.css",
     "./default/select.css": "./src/themes/default/styles/forms/select.css",
     "./default/separator.css": "./src/themes/default/styles/display/separator.css",
     "./default/skeleton.css": "./src/themes/default/styles/display/skeleton.css",

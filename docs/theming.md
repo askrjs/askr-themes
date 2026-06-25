@@ -19,11 +19,9 @@ styles/base/typography.css
 styles/base/icon.css
 styles/base/utilities.css
 styles/layout/layout.css
-styles/layout/responsive-layout.css
 styles/layout/block.css
 styles/layout/patterns.css
 styles/layout/aspect-ratio.css
-styles/shell/theme.css
 styles/shell/header.css
 styles/shell/navbar.css
 styles/shell/sidebar.css
@@ -161,11 +159,13 @@ default theme also provides a small set of class aliases for raw HTML.
 See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized into curated entrypoints rather than a
-generic catch-all: use `theme`, `layouts`, `controls`, `surfaces`,
-`feedback`, `shells`, and `navs` based on concern.
-Use the curated theme entrypoints such as `controls`, `surfaces`, `navs`, and
-`shells` for styled components such as Button, ButtonGroup, Close, InputGroup,
-Field, Alert, ListGroup, Pagination, Badge, Card, CardActions, and Skeleton.
+generic catch-all: use `core` for structure, `navs` for breadcrumb/standalone
+nav/pagination, and `theme`, `controls`, `surfaces`, `feedback`, or `overlays`
+for the matching visual or behavioral family.
+Use the curated theme entrypoints such as `controls`, `surfaces`, `feedback`,
+and `navs` for styled components such as Button, ButtonGroup, Close,
+InputGroup, Field, Alert, ListGroup, Pagination, Badge, Card, CardActions,
+AspectRatio, Spinner, and Skeleton.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
 theme-owned because they are visual composition only.
@@ -175,26 +175,28 @@ hooks or names like `alert`, `btn-group`, `btn-close`, `card-actions`,
 `field`, `field-hint`, `field-error`, `input-group`, `list-group`, and
 `pagination`.
 Feedback helpers such as `Spinner` and nav helpers such as `Breadcrumb` stay
-thin, while shell chrome components such as `Header`, `Sidebar`, `Navbar`,
-`NavItem`, `NavLink`, `NavGroup`, `NavBrand`, `Shell`, `ShellNav`, and `ShellMain`
-provide the app frame. Recipe shells like
-marketing or product pages should be composed in userland from these
-primitives rather than shipped as dedicated theme exports.
+thin. Structural chrome components such as `Header`, `Main`, `Section`,
+`Aside`, `Sidebar`, `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`,
+and `NavItem` are semantic presets built on `Block`; they do not introduce
+independent layout behavior. Recipe shells like marketing, product, sidebar,
+split, or form pages should be composed in userland from these primitives
+rather than shipped as dedicated theme exports.
 
 Density modifiers are available on the shared control classes, including
 `btn-sm`, `btn-lg`, `input-sm`, `input-lg`, `textarea-sm`, `textarea-lg`, and
 `select-trigger-sm` / `select-trigger-lg`.
 
-For shell chrome, keep the orientation-specific API intent explicit:
+For structural chrome, keep the API intent explicit:
 
-- Use `align="center" | "end"` for horizontal topbar grouping.
-- Use `align="end"` when a vertical sidebar group sits in a full-height sidebar column or drawer and should pin to the bottom.
-- Use `label` when a nav section needs a visible and semantic section heading.
-- Use `Shell variant="rail"` when the primary app frame should reserve a persistent compact, icon-only navigation rail on desktop; keep text labels in the DOM so links retain accessible names.
-- Use `Sidebar` when vertical navigation should collapse into an icon rail and generated drawer.
-- Use `Navbar` for horizontal topbars.
-- Use `collapsible="icon"` for desktop vertical sidebars that should shrink to an icon rail.
-- Use `match="exact"` when a nav item should not stay selected for child routes.
+- Use `Block` when you need a wrapper.
+- Use `Container` when content needs page-width constraints and gutters.
+- Use `Header`, `Main`, `Section`, `Aside`, `Sidebar`, and `Navbar` for semantic readability.
+- Put `NavBrand` first in `Navbar`; add `collapseAt` when links should collapse behind a menu.
+- Use `NavGroup title` when a navigation section needs a visible heading.
+- Use `NavDropdown` for simple single-level menus.
+- Use `NavLink` for app routes and `NavItem active` for external or manually active anchors.
+- Use `NavLink match="exact"` when route matching should not select child routes.
+- Keep generated drawers, rails, split pages, and app shells in recipes until a stable cross-app need emerges.
 
 Layout wrappers such as `AspectRatio` stay in the same visual layer and keep
 their job limited to presentation.

@@ -4,8 +4,7 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { createQuery } from "@askrjs/askr/data";
 import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
 
-import { NavBrand, NavGroup, Navbar } from "../../src/navs";
-import { Shell, ShellMain, ShellNav } from "../../src/shells";
+import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
 import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemeProvider, ThemeToggle } from "../../src/theme";
 
 async function settle(): Promise<void> {
@@ -200,21 +199,21 @@ describe("theme route persistence in the browser", () => {
 
     const AppLayout = ({ children }: { children?: unknown }) => (
       <ThemeProvider defaultTheme="light">
-        <Shell variant="topbar">
-          <ShellNav>
-            <Navbar aria-label="Navigation">
-              <NavBrand>
-                <a href="/">
-                  <strong>Fitz</strong>
-                </a>
-              </NavBrand>
+        <Header>
+          <Container>
+            <Block direction="row" align="center" justify="between" paddingY="md">
+              <a href="/">
+                <strong>Fitz</strong>
+              </a>
+              <Navbar aria-label="Navigation">
               <NavGroup align="end">
                 <ThemeToggle />
               </NavGroup>
-            </Navbar>
-          </ShellNav>
-          <ShellMain>{children}</ShellMain>
-        </Shell>
+              </Navbar>
+            </Block>
+          </Container>
+        </Header>
+        <Main>{children}</Main>
       </ThemeProvider>
     );
 

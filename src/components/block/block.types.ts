@@ -1,54 +1,65 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
+import type {
+  BlockAlign,
+  BlockBackground,
+  BlockDirection,
+  BlockJustify,
+  BlockLayoutProps,
+  BlockMargin,
+  BlockRadius,
+  BlockShadow,
+  BlockSize,
+  BlockSpace,
+  BlockZIndex,
+  ResponsiveValue,
+} from "../_internal/block-layout";
 
-export type BlockSize = "xs" | "sm" | "md" | "lg" | "xl";
-
-export type BlockSpace =
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "xs"
-  | "sm"
-  | "md"
-  | "lg"
-  | "xl"
-  | "2xl"
-  | "3xl";
-
-export type BlockAlign = "start" | "end" | "center" | "stretch" | "baseline";
-
-export type BlockJustify = "start" | "end" | "center" | "between";
-
-export type BlockOwnProps = {
-  gap?: BlockSpace;
-  gapX?: BlockSpace;
-  gapY?: BlockSpace;
-  align?: BlockAlign;
-  justify?: BlockJustify;
-  size?: BlockSize;
-  as?: "div" | "span";
-  children?: unknown;
+export type {
+  BlockAlign,
+  BlockBackground,
+  BlockDirection,
+  BlockJustify,
+  BlockMargin,
+  BlockRadius,
+  BlockShadow,
+  BlockSize,
+  BlockSpace,
+  BlockZIndex,
+  ResponsiveValue as BlockResponsiveValue,
 };
 
-export type BlockNativeProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &
+export type BlockElement =
+  | "div"
+  | "span"
+  | "main"
+  | "header"
+  | "section"
+  | "aside"
+  | "nav"
+  | "a"
+  | "form"
+  | "article";
+
+export type BlockOwnProps = BlockLayoutProps & {
+  as?: BlockElement;
+  children?: unknown;
+  className?: string;
+};
+
+export type BlockElementProps<TElement extends BlockElement> = Omit<
+  JSX.IntrinsicElements[TElement],
+  "children" | "ref"
+> &
   BlockOwnProps & {
-    as?: "div";
+    as?: TElement;
     asChild?: false;
-    ref?: Ref<HTMLDivElement>;
+    ref?: Ref<unknown>;
   };
 
-export type BlockSpanProps = Omit<JSX.IntrinsicElements["span"], "children" | "ref"> &
-  BlockOwnProps & {
-    as: "span";
-    asChild?: false;
-    ref?: Ref<HTMLSpanElement>;
-  };
+export type BlockNativeProps = {
+  [TElement in BlockElement]: BlockElementProps<TElement>;
+}[BlockElement];
 
 export type BlockAsChildProps = Omit<BlockOwnProps, "as"> & {
   asChild: true;
@@ -56,5 +67,6 @@ export type BlockAsChildProps = Omit<BlockOwnProps, "as"> & {
   ref?: Ref<unknown>;
 };
 
-export type BlockDivProps = BlockNativeProps;
-export type BlockProps = BlockDivProps | BlockSpanProps | BlockAsChildProps;
+export type BlockDivProps = BlockElementProps<"div">;
+export type BlockSpanProps = BlockElementProps<"span">;
+export type BlockProps = BlockNativeProps | BlockAsChildProps;

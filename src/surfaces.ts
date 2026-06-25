@@ -1,5 +1,7 @@
 import "./themes/default/index.css";
 
+export { AspectRatio } from "./components/aspect-ratio";
+export type * from "./components/aspect-ratio";
 export { Alert } from "./components/alert";
 export type * from "./components/alert";
 export { Badge } from "./components/badge";

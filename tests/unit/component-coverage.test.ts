@@ -4,10 +4,9 @@ import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
 import * as controls from "../../src/controls";
+import * as core from "../../src/core";
 import * as feedback from "../../src/feedback";
-import * as layouts from "../../src/layouts";
 import * as navs from "../../src/navs";
-import * as shells from "../../src/shells";
 import * as surfaces from "../../src/surfaces";
 import * as theme from "../../src/theme";
 
@@ -23,12 +22,46 @@ type CoverageGroup = {
 const IGNORED_EXPORTS = {
   controls: ["Button"],
   navs: ["BREADCRUMB_A11Y_CONTRACT"],
-  shells: ["HEADER_A11Y_CONTRACT", "SHELL_A11Y_CONTRACT"],
   surfaces: ["SEPARATOR_A11Y_CONTRACT"],
   theme: ["DEFAULT_THEME_OPTIONS"],
 } as const;
 
 const COVERAGE = {
+  core: [
+    {
+      exports: [
+        "Aside",
+        "Block",
+        "Container",
+        "EmptyState",
+        "Header",
+        "Main",
+        "Navbar",
+        "NavBrand",
+        "NavDropdown",
+        "NavGroup",
+        "NavItem",
+        "NavLink",
+        "Page",
+        "PageHeader",
+        "Section",
+        "Sidebar",
+        "Toolbar",
+      ],
+      directTests: [
+        "tests/unit/block-first-components.test.ts",
+        "tests/unit/navigation-contracts.test.ts",
+        "tests/unit/components-entrypoint.test.ts",
+        "tests/unit/package-surface.test.ts",
+      ],
+      benchFiles: [
+        "benches/tier2/public-families.bench.tsx",
+        "benches/tier3/composition.bench.tsx",
+        "benches/tier4/browser-flows.bench.tsx",
+      ],
+      benchTier: 2,
+    },
+  ],
   controls: [
     {
       exports: [
@@ -68,33 +101,6 @@ const COVERAGE = {
       benchTier: 2,
     },
   ],
-  layouts: [
-    {
-      exports: [
-        "AspectRatio",
-        "Block",
-        "Box",
-        "Container",
-        "Flex",
-        "Inline",
-        "Section",
-        "Spacer",
-        "Stack",
-      ],
-      directTests: [
-        "tests/jsdom/aspect-ratio.test.tsx",
-        "tests/jsdom/block.test.tsx",
-        "tests/unit/moved-components.test.ts",
-        "tests/unit/components-entrypoint.test.ts",
-        "tests/unit/package-surface.test.ts",
-      ],
-      benchFiles: [
-        "benches/tier2/public-families.bench.tsx",
-        "benches/tier4/browser-flows.bench.tsx",
-      ],
-      benchTier: 2,
-    },
-  ],
   navs: [
     {
       exports: [
@@ -105,10 +111,6 @@ const COVERAGE = {
         "BreadcrumbList",
         "BreadcrumbSeparator",
         "Nav",
-        "NavBrand",
-        "NavGroup",
-        "NavItem",
-        "NavLink",
         "Pagination",
         "PaginationEllipsis",
         "PaginationItem",
@@ -127,54 +129,12 @@ const COVERAGE = {
       ],
       benchTier: 2,
     },
-    {
-      exports: ["Navbar", "NavToggle", "Sidebar", "SidebarPanel"],
-      directTests: [
-        "tests/unit/navigation-contracts.test.ts",
-        "tests/jsdom/navbar-shell.test.tsx",
-        "tests/unit/shell-edge-components.test.ts",
-        "tests/unit/package-surface.test.ts",
-        "tests/unit/components-entrypoint.test.ts",
-      ],
-      benchFiles: ["benches/tier3/composition.bench.tsx", "benches/tier4/browser-flows.bench.tsx"],
-      benchTier: 3,
-    },
-  ],
-  shells: [
-    {
-      exports: [
-        "Header",
-        "Sidebar",
-        "SidebarPanel",
-        "SidebarToggle",
-        "NavBrand",
-        "Navbar",
-        "NavGroup",
-        "NavItem",
-        "NavLink",
-        "NavToggle",
-        "Shell",
-        "ShellMain",
-        "ShellNav",
-      ],
-      directTests: [
-        "tests/unit/header-components.test.ts",
-        "tests/unit/shell-edge-components.test.ts",
-        "tests/unit/themed-layout-wrappers.test.ts",
-        "tests/unit/moved-components.test.ts",
-        "tests/unit/navigation-contracts.test.ts",
-        "tests/jsdom/navbar-shell.test.tsx",
-        "tests/unit/components-entrypoint.test.ts",
-        "tests/unit/package-surface.test.ts",
-      ],
-      benchFiles: ["benches/tier3/composition.bench.tsx", "benches/tier4/browser-flows.bench.tsx"],
-      benchTier: 3,
-    },
   ],
   surfaces: [
     {
       exports: [
         "Alert",
+        "AspectRatio",
         "Badge",
         "Card",
         "CardActions",
@@ -192,7 +152,7 @@ const COVERAGE = {
       directTests: [
         "tests/unit/card-components.test.ts",
         "tests/unit/theme-aliases.test.ts",
-        "tests/unit/moved-components.test.ts",
+        "tests/unit/block-first-components.test.ts",
         "tests/unit/components-entrypoint.test.ts",
         "tests/unit/package-surface.test.ts",
       ],
@@ -264,6 +224,10 @@ function assertCoverage(
 }
 
 describe("component coverage matrix", () => {
+  it("should keeps the core family covered by direct tests and composition benches", () => {
+    assertCoverage("core", core, [], COVERAGE.core);
+  });
+
   it("should keeps the controls family covered by direct tests and tier2 benches", () => {
     assertCoverage("controls", controls, IGNORED_EXPORTS.controls, COVERAGE.controls);
   });
@@ -272,16 +236,8 @@ describe("component coverage matrix", () => {
     assertCoverage("feedback", feedback, [], COVERAGE.feedback);
   });
 
-  it("should keeps the layouts family covered by direct tests and tier2 benches", () => {
-    assertCoverage("layouts", layouts, [], COVERAGE.layouts);
-  });
-
   it("should keeps the nav family covered by direct tests and the correct bench tiers", () => {
     assertCoverage("navs", navs, IGNORED_EXPORTS.navs, COVERAGE.navs);
-  });
-
-  it("should keeps the shell family covered by direct tests and the correct bench tiers", () => {
-    assertCoverage("shells", shells, IGNORED_EXPORTS.shells, COVERAGE.shells);
   });
 
   it("should keeps the surfaces family covered by direct tests and tier2 benches", () => {

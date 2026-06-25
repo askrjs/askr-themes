@@ -26,6 +26,7 @@ const THEME_SOURCE_COMPONENTS_DIR = path.join(themesRoot, "src", "components");
 const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", "styles");
 
 const ALLOWED_THEME_ONLY_SLOTS = new Set([
+  "block",
   "center",
   "flex",
   "icon",

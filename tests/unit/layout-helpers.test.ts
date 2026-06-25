@@ -1,76 +1,62 @@
 import { describe, expect, it } from "vite-plus/test";
 
 import {
-  applyBoxLayoutStyles,
-  splitBoxLayoutProps,
-} from "../../src/components/_internal/box-layout";
-import {
+  applyBlockLayoutStyles,
   mergeLayoutStyles,
-  resolveAlignValue,
-  resolveContainerSizeValue,
-  resolveJustifyValue,
-  resolveSectionSizeValue,
-  resolveSpaceValue,
-} from "../../src/components/_internal/layout";
+  splitBlockLayoutProps,
+} from "../../src/components/_internal/block-layout";
 import { mergeCssVar } from "../../src/components/_internal/style";
 
-describe("layout helpers", () => {
+describe("block layout helpers", () => {
   it("should serializes layout declarations with user overrides", () => {
     expect(
       mergeLayoutStyles(
         {
-          display: "grid",
-          gap: "var(--ak-space-2)",
+          "--ak-gap-base": "var(--ak-space-md)",
+          "--ak-px-base": "var(--ak-layout-page-gutter)",
         },
         {
-          gap: "var(--ak-space-4)",
-          padding: "1rem",
+          "--ak-gap-base": "var(--ak-space-lg)",
+          color: "red",
         },
       ),
-    ).toBe("display:grid;gap:var(--ak-space-4);padding:1rem");
-
-    expect(mergeLayoutStyles({ display: "grid" }, "gap:1rem;justify-content:center")).toBe(
-      "display:grid;gap:1rem;justify-content:center",
-    );
+    ).toBe("--ak-gap-base:var(--ak-space-lg);--ak-px-base:var(--ak-layout-page-gutter);color:red");
   });
 
-  it("should splits box layout props from passthrough props", () => {
-    const { boxProps, rest } = splitBoxLayoutProps({
-      display: "flex",
-      m: "sm",
-      maxWidth: "68rem",
+  it("should splits block layout props from passthrough props", () => {
+    const { blockProps, rest } = splitBlockLayoutProps({
+      paddingX: "page",
+      maxWidth: "page",
+      direction: { base: "column", lg: "row" },
       class: "shell",
       title: "Layout shell",
     });
 
-    expect(boxProps).toEqual({ display: "flex", m: "sm", maxWidth: "68rem" });
+    expect(blockProps).toEqual({
+      paddingX: "page",
+      maxWidth: "page",
+      direction: { base: "column", lg: "row" },
+    });
     expect(rest).toEqual({ class: "shell", title: "Layout shell" });
   });
 
-  it("should maps box layout props to css custom properties", () => {
+  it("should maps block layout props to responsive css custom properties", () => {
     const styles: Record<string, string | number> = {};
 
-    applyBoxLayoutStyles(styles, {
-      m: "sm",
-      maxWidth: "68rem",
-      flexGrow: 2,
+    applyBlockLayoutStyles(styles, {
+      paddingX: "page",
+      maxWidth: "page",
+      grow: true,
+      hide: { base: true, lg: false },
+      background: "surface",
     });
 
-    expect(styles["--ak-m-initial"]).toBe("var(--ak-space-sm)");
-    expect(styles["--ak-max-width-initial"]).toBe("68rem");
-    expect(styles["--ak-flex-grow-initial"]).toBe(2);
-  });
-
-  it("should resolves the canonical layout size helpers", () => {
-    expect(resolveSpaceValue("sm")).toBe("var(--ak-space-sm)");
-    expect(resolveSpaceValue(12)).toBe("12");
-    expect(resolveContainerSizeValue("lg")).toBe("var(--ak-container-3)");
-    expect(resolveContainerSizeValue("fluid")).toBe("100%");
-    expect(resolveSectionSizeValue("3")).toBe("var(--ak-section-3)");
-    expect(resolveJustifyValue("between")).toBe("space-between");
-    expect(resolveJustifyValue("end")).toBe("flex-end");
-    expect(resolveAlignValue("start")).toBe("flex-start");
-    expect(resolveAlignValue("center")).toBe("center");
+    expect(styles["--ak-px-base"]).toBe("var(--ak-layout-page-gutter)");
+    expect(styles["--ak-max-width-base"]).toBe("var(--ak-layout-content-max-width)");
+    expect(styles["--ak-flex-grow-base"]).toBe(1);
+    expect(styles["--ak-display-base"]).toBe("none");
+    expect(styles["--ak-display-lg"]).toBe("flex");
+    expect(styles["--ak-background-base"]).toBe("var(--ak-color-surface)");
   });
 });
 

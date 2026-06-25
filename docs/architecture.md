@@ -29,6 +29,6 @@ When a surface needs behavior:
 1. Add the primitive or control behavior in `@askrjs/ui`.
 2. Add the visual treatment in `@askrjs/themes`.
 3. Re-export from the theme entrypoint that matches the concern: `controls`,
-   `surfaces`, `navs`, or `shells`.
+   `surfaces`, `navs`, or `core`.
 
 When a surface only needs layout or styling, keep it in `@askrjs/themes`.

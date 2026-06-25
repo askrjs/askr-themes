@@ -1,1 +1,172 @@
-/* Layout primitive contract placeholders for generated themes. */
+:where([data-ak-layout="true"]) {
+  box-sizing: border-box;
+  display: var(--ak-display-base, flex);
+  flex-direction: var(--ak-flex-direction-base, column);
+  flex-wrap: var(--ak-flex-wrap-base, nowrap);
+  align-items: var(--ak-align-items-base, stretch);
+  justify-content: var(--ak-justify-content-base, flex-start);
+  gap: var(--ak-gap-base, 0);
+  flex-grow: var(--ak-flex-grow-base, 0);
+  flex-shrink: var(--ak-flex-shrink-base, 1);
+  flex-basis: var(--ak-flex-basis-base, auto);
+  min-width: var(--ak-min-width-base, 0);
+  max-width: var(--ak-max-width-base, none);
+  width: var(--ak-width-base, auto);
+  min-height: var(--ak-min-height-base, auto);
+  max-height: var(--ak-max-height-base, none);
+  height: var(--ak-height-base, auto);
+  margin: var(--ak-m-base, 0);
+  margin-inline: var(--ak-mx-base, var(--ak-m-base, 0));
+  margin-block: var(--ak-my-base, var(--ak-m-base, 0));
+  padding: var(--ak-p-base, 0);
+  padding-inline: var(--ak-px-base, var(--ak-p-base, 0));
+  padding-block: var(--ak-py-base, var(--ak-p-base, 0));
+  position: var(--ak-position-base, static);
+  inset: var(--ak-inset-base, auto);
+  top: var(--ak-top-base, auto);
+  right: var(--ak-right-base, auto);
+  bottom: var(--ak-bottom-base, auto);
+  left: var(--ak-left-base, auto);
+  z-index: var(--ak-z-index-base, auto);
+  overflow: var(--ak-overflow-base, visible);
+  overflow-x: var(--ak-overflow-x-base, var(--ak-overflow-base, visible));
+  overflow-y: var(--ak-overflow-y-base, var(--ak-overflow-base, visible));
+  border: var(--ak-border-base, 0 solid transparent);
+  border-bottom: var(--ak-border-bottom-base, var(--ak-border-base, 0 solid transparent));
+  border-right: var(--ak-border-right-base, var(--ak-border-base, 0 solid transparent));
+  border-radius: var(--ak-border-radius-base, 0);
+  background: var(--ak-background-base, transparent);
+  box-shadow: var(--ak-box-shadow-base, none);
+}
+
+@media (min-width: 40rem) {
+  :where([data-ak-layout="true"]) {
+    display: var(--ak-display-sm, var(--ak-display-base, flex));
+    flex-direction: var(--ak-flex-direction-sm, var(--ak-flex-direction-base, column));
+    flex-wrap: var(--ak-flex-wrap-sm, var(--ak-flex-wrap-base, nowrap));
+    align-items: var(--ak-align-items-sm, var(--ak-align-items-base, stretch));
+    justify-content: var(--ak-justify-content-sm, var(--ak-justify-content-base, flex-start));
+    gap: var(--ak-gap-sm, var(--ak-gap-base, 0));
+    flex-grow: var(--ak-flex-grow-sm, var(--ak-flex-grow-base, 0));
+    flex-shrink: var(--ak-flex-shrink-sm, var(--ak-flex-shrink-base, 1));
+    flex-basis: var(--ak-flex-basis-sm, var(--ak-flex-basis-base, auto));
+    min-width: var(--ak-min-width-sm, var(--ak-min-width-base, 0));
+    max-width: var(--ak-max-width-sm, var(--ak-max-width-base, none));
+    width: var(--ak-width-sm, var(--ak-width-base, auto));
+    min-height: var(--ak-min-height-sm, var(--ak-min-height-base, auto));
+    max-height: var(--ak-max-height-sm, var(--ak-max-height-base, none));
+    height: var(--ak-height-sm, var(--ak-height-base, auto));
+    margin: var(--ak-m-sm, var(--ak-m-base, 0));
+    margin-inline: var(--ak-mx-sm, var(--ak-mx-base, var(--ak-m-sm, var(--ak-m-base, 0))));
+    margin-block: var(--ak-my-sm, var(--ak-my-base, var(--ak-m-sm, var(--ak-m-base, 0))));
+    padding: var(--ak-p-sm, var(--ak-p-base, 0));
+    padding-inline: var(--ak-px-sm, var(--ak-px-base, var(--ak-p-sm, var(--ak-p-base, 0))));
+    padding-block: var(--ak-py-sm, var(--ak-py-base, var(--ak-p-sm, var(--ak-p-base, 0))));
+    position: var(--ak-position-sm, var(--ak-position-base, static));
+    inset: var(--ak-inset-sm, var(--ak-inset-base, auto));
+    top: var(--ak-top-sm, var(--ak-top-base, auto));
+    right: var(--ak-right-sm, var(--ak-right-base, auto));
+    bottom: var(--ak-bottom-sm, var(--ak-bottom-base, auto));
+    left: var(--ak-left-sm, var(--ak-left-base, auto));
+    z-index: var(--ak-z-index-sm, var(--ak-z-index-base, auto));
+    overflow: var(--ak-overflow-sm, var(--ak-overflow-base, visible));
+    overflow-x: var(--ak-overflow-x-sm, var(--ak-overflow-x-base, var(--ak-overflow-sm, var(--ak-overflow-base, visible))));
+    overflow-y: var(--ak-overflow-y-sm, var(--ak-overflow-y-base, var(--ak-overflow-sm, var(--ak-overflow-base, visible))));
+    border: var(--ak-border-sm, var(--ak-border-base, 0 solid transparent));
+    border-bottom: var(--ak-border-bottom-sm, var(--ak-border-bottom-base, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))));
+    border-right: var(--ak-border-right-sm, var(--ak-border-right-base, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))));
+    border-radius: var(--ak-border-radius-sm, var(--ak-border-radius-base, 0));
+    background: var(--ak-background-sm, var(--ak-background-base, transparent));
+    box-shadow: var(--ak-box-shadow-sm, var(--ak-box-shadow-base, none));
+  }
+}
+
+@media (min-width: 48rem) {
+  :where([data-ak-layout="true"]) {
+    display: var(--ak-display-md, var(--ak-display-sm, var(--ak-display-base, flex)));
+    flex-direction: var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-base, column)));
+    align-items: var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-base, stretch)));
+    justify-content: var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-base, flex-start)));
+    gap: var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-base, 0)));
+    flex-grow: var(--ak-flex-grow-md, var(--ak-flex-grow-sm, var(--ak-flex-grow-base, 0)));
+    flex-shrink: var(--ak-flex-shrink-md, var(--ak-flex-shrink-sm, var(--ak-flex-shrink-base, 1)));
+    min-width: var(--ak-min-width-md, var(--ak-min-width-sm, var(--ak-min-width-base, 0)));
+    max-width: var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-base, none)));
+    width: var(--ak-width-md, var(--ak-width-sm, var(--ak-width-base, auto)));
+    min-height: var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-base, auto)));
+    height: var(--ak-height-md, var(--ak-height-sm, var(--ak-height-base, auto)));
+    margin: var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0)));
+    margin-inline: var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-base, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))))));
+    margin-block: var(--ak-my-md, var(--ak-my-sm, var(--ak-my-base, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))))));
+    padding: var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0)));
+    padding-inline: var(--ak-px-md, var(--ak-px-sm, var(--ak-px-base, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))))));
+    padding-block: var(--ak-py-md, var(--ak-py-sm, var(--ak-py-base, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))))));
+    position: var(--ak-position-md, var(--ak-position-sm, var(--ak-position-base, static)));
+    top: var(--ak-top-md, var(--ak-top-sm, var(--ak-top-base, auto)));
+    z-index: var(--ak-z-index-md, var(--ak-z-index-sm, var(--ak-z-index-base, auto)));
+    border: var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent)));
+    border-bottom: var(--ak-border-bottom-md, var(--ak-border-bottom-sm, var(--ak-border-bottom-base, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))));
+    border-right: var(--ak-border-right-md, var(--ak-border-right-sm, var(--ak-border-right-base, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))));
+    border-radius: var(--ak-border-radius-md, var(--ak-border-radius-sm, var(--ak-border-radius-base, 0)));
+    background: var(--ak-background-md, var(--ak-background-sm, var(--ak-background-base, transparent)));
+    box-shadow: var(--ak-box-shadow-md, var(--ak-box-shadow-sm, var(--ak-box-shadow-base, none)));
+  }
+}
+
+@media (min-width: 64rem) {
+  :where([data-ak-layout="true"]) {
+    display: var(--ak-display-lg, var(--ak-display-md, var(--ak-display-sm, var(--ak-display-base, flex))));
+    flex-direction: var(--ak-flex-direction-lg, var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-base, column))));
+    align-items: var(--ak-align-items-lg, var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-base, stretch))));
+    justify-content: var(--ak-justify-content-lg, var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-base, flex-start))));
+    gap: var(--ak-gap-lg, var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-base, 0))));
+    flex-grow: var(--ak-flex-grow-lg, var(--ak-flex-grow-md, var(--ak-flex-grow-sm, var(--ak-flex-grow-base, 0))));
+    flex-shrink: var(--ak-flex-shrink-lg, var(--ak-flex-shrink-md, var(--ak-flex-shrink-sm, var(--ak-flex-shrink-base, 1))));
+    min-width: var(--ak-min-width-lg, var(--ak-min-width-md, var(--ak-min-width-sm, var(--ak-min-width-base, 0))));
+    max-width: var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-base, none))));
+    width: var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-base, auto))));
+    min-height: var(--ak-min-height-lg, var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-base, auto))));
+    height: var(--ak-height-lg, var(--ak-height-md, var(--ak-height-sm, var(--ak-height-base, auto))));
+    margin: var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))));
+    margin-inline: var(--ak-mx-lg, var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-base, var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))))))));
+    margin-block: var(--ak-my-lg, var(--ak-my-md, var(--ak-my-sm, var(--ak-my-base, var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))))))));
+    padding: var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))));
+    padding-inline: var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-base, var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))))))));
+    padding-block: var(--ak-py-lg, var(--ak-py-md, var(--ak-py-sm, var(--ak-py-base, var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))))))));
+    position: var(--ak-position-lg, var(--ak-position-md, var(--ak-position-sm, var(--ak-position-base, static))));
+    top: var(--ak-top-lg, var(--ak-top-md, var(--ak-top-sm, var(--ak-top-base, auto))));
+    z-index: var(--ak-z-index-lg, var(--ak-z-index-md, var(--ak-z-index-sm, var(--ak-z-index-base, auto))));
+    border: var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))));
+    border-bottom: var(--ak-border-bottom-lg, var(--ak-border-bottom-md, var(--ak-border-bottom-sm, var(--ak-border-bottom-base, var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))))));
+    border-right: var(--ak-border-right-lg, var(--ak-border-right-md, var(--ak-border-right-sm, var(--ak-border-right-base, var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))))));
+    border-radius: var(--ak-border-radius-lg, var(--ak-border-radius-md, var(--ak-border-radius-sm, var(--ak-border-radius-base, 0))));
+    background: var(--ak-background-lg, var(--ak-background-md, var(--ak-background-sm, var(--ak-background-base, transparent))));
+    box-shadow: var(--ak-box-shadow-lg, var(--ak-box-shadow-md, var(--ak-box-shadow-sm, var(--ak-box-shadow-base, none))));
+  }
+}
+
+@media (min-width: 80rem) {
+  :where([data-ak-layout="true"]) {
+    display: var(--ak-display-xl, var(--ak-display-lg, var(--ak-display-md, var(--ak-display-sm, var(--ak-display-base, flex)))));
+    flex-direction: var(--ak-flex-direction-xl, var(--ak-flex-direction-lg, var(--ak-flex-direction-md, var(--ak-flex-direction-sm, var(--ak-flex-direction-base, column)))));
+    align-items: var(--ak-align-items-xl, var(--ak-align-items-lg, var(--ak-align-items-md, var(--ak-align-items-sm, var(--ak-align-items-base, stretch)))));
+    justify-content: var(--ak-justify-content-xl, var(--ak-justify-content-lg, var(--ak-justify-content-md, var(--ak-justify-content-sm, var(--ak-justify-content-base, flex-start)))));
+    gap: var(--ak-gap-xl, var(--ak-gap-lg, var(--ak-gap-md, var(--ak-gap-sm, var(--ak-gap-base, 0)))));
+    width: var(--ak-width-xl, var(--ak-width-lg, var(--ak-width-md, var(--ak-width-sm, var(--ak-width-base, auto)))));
+    max-width: var(--ak-max-width-xl, var(--ak-max-width-lg, var(--ak-max-width-md, var(--ak-max-width-sm, var(--ak-max-width-base, none)))));
+    min-height: var(--ak-min-height-xl, var(--ak-min-height-lg, var(--ak-min-height-md, var(--ak-min-height-sm, var(--ak-min-height-base, auto)))));
+    margin: var(--ak-m-xl, var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0)))));
+    margin-inline: var(--ak-mx-xl, var(--ak-mx-lg, var(--ak-mx-md, var(--ak-mx-sm, var(--ak-mx-base, var(--ak-m-xl, var(--ak-m-lg, var(--ak-m-md, var(--ak-m-sm, var(--ak-m-base, 0))))))))));
+    padding: var(--ak-p-xl, var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0)))));
+    padding-inline: var(--ak-px-xl, var(--ak-px-lg, var(--ak-px-md, var(--ak-px-sm, var(--ak-px-base, var(--ak-p-xl, var(--ak-p-lg, var(--ak-p-md, var(--ak-p-sm, var(--ak-p-base, 0))))))))));
+    position: var(--ak-position-xl, var(--ak-position-lg, var(--ak-position-md, var(--ak-position-sm, var(--ak-position-base, static)))));
+    top: var(--ak-top-xl, var(--ak-top-lg, var(--ak-top-md, var(--ak-top-sm, var(--ak-top-base, auto)))));
+    z-index: var(--ak-z-index-xl, var(--ak-z-index-lg, var(--ak-z-index-md, var(--ak-z-index-sm, var(--ak-z-index-base, auto)))));
+    border: var(--ak-border-xl, var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent)))));
+    border-bottom: var(--ak-border-bottom-xl, var(--ak-border-bottom-lg, var(--ak-border-bottom-md, var(--ak-border-bottom-sm, var(--ak-border-bottom-base, var(--ak-border-xl, var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))))))));
+    border-right: var(--ak-border-right-xl, var(--ak-border-right-lg, var(--ak-border-right-md, var(--ak-border-right-sm, var(--ak-border-right-base, var(--ak-border-xl, var(--ak-border-lg, var(--ak-border-md, var(--ak-border-sm, var(--ak-border-base, 0 solid transparent))))))))));
+    border-radius: var(--ak-border-radius-xl, var(--ak-border-radius-lg, var(--ak-border-radius-md, var(--ak-border-radius-sm, var(--ak-border-radius-base, 0)))));
+    background: var(--ak-background-xl, var(--ak-background-lg, var(--ak-background-md, var(--ak-background-sm, var(--ak-background-base, transparent)))));
+    box-shadow: var(--ak-box-shadow-xl, var(--ak-box-shadow-lg, var(--ak-box-shadow-md, var(--ak-box-shadow-sm, var(--ak-box-shadow-base, none)))));
+  }
+}

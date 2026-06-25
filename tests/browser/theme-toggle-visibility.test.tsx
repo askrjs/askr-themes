@@ -3,8 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
-import { NavBrand, NavGroup, Navbar } from "../../src/navs";
-import { Shell, ShellMain, ShellNav } from "../../src/shells";
+import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
 import { ThemeProvider, ThemeToggle, type ThemeToggleRenderContext } from "../../src/theme";
 
 import "../../src/themes/default/index.css";
@@ -45,14 +44,13 @@ describe("theme toggle visibility", () => {
   it("should keep toggle content visible after switching to dark mode", async () => {
     route("/theme-visibility", () => (
       <ThemeProvider defaultTheme="light" storageKey="askr-theme-toggle-visibility">
-        <Shell variant="topbar">
-          <ShellNav>
-            <Navbar aria-label="Theme visibility">
-              <NavBrand>
-                <a href="/">
-                  <strong>Askr</strong>
-                </a>
-              </NavBrand>
+        <Header>
+          <Container>
+            <Block direction="row" align="center" justify="between" paddingY="md">
+              <a href="/">
+                <strong>Askr</strong>
+              </a>
+              <Navbar aria-label="Theme visibility">
               <NavGroup align="end">
                 <ThemeToggle
                   lightIcon={
@@ -86,12 +84,13 @@ describe("theme toggle visibility", () => {
                 />
                 <ThemeToggle>{({ nextTheme }: ThemeToggleRenderContext) => nextTheme}</ThemeToggle>
               </NavGroup>
-            </Navbar>
-          </ShellNav>
-          <ShellMain>
-            <p>Shell content</p>
-          </ShellMain>
-        </Shell>
+              </Navbar>
+            </Block>
+          </Container>
+        </Header>
+        <Main>
+          <p>Main content</p>
+        </Main>
       </ThemeProvider>
     ));
 

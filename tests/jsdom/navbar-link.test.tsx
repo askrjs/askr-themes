@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
+import { clearRoutes, getManifest, Link, route } from "@askrjs/askr/router";
 
-import { NavItem, NavLink, Pagination, PaginationLink } from "../../src/navs";
+import { Block, NavBrand, NavItem, NavLink, Navbar } from "../../src/core";
+import { Pagination, PaginationLink } from "../../src/navs";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
 
 type ElementLike = {
@@ -77,6 +78,46 @@ describe("navbar link jsdom regression", () => {
     expect(docsLink?.getAttribute("data-active")).toBe("true");
     expect(childLink?.getAttribute("aria-current")).toBeNull();
     expect(childLink?.getAttribute("data-active")).toBeNull();
+  });
+
+  it("should supports router Link as a NavBrand child", async () => {
+    window.history.replaceState({}, "", "/docs");
+    route("/", () => <div id="page">Home page</div>);
+    route("/docs", () => (
+      <>
+        <Navbar aria-label="Primary">
+          <NavBrand asChild>
+            <Link href="/">Askr</Link>
+          </NavBrand>
+          <NavLink href="/docs" match="exact">
+            Docs
+          </NavLink>
+        </Navbar>
+        <div id="page">Docs page</div>
+      </>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLAnchorElement | null;
+
+    expect(brand?.tagName).toBe("A");
+    expect(brand?.getAttribute("href")).toBe("/");
+    expect(brand?.textContent).toBe("Askr");
+
+    const wasNotCancelled = brand?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+    await settle();
+
+    expect(wasNotCancelled).toBe(false);
+    expect(window.location.pathname).toBe("/");
+    expect(container?.querySelector("#page")?.textContent).toBe("Home page");
   });
 
   it("should keeps parent NavLink active on child routes by default", async () => {
@@ -470,7 +511,7 @@ describe("navbar link jsdom regression", () => {
     expect(item.props.href).toBe("/docs");
   });
 
-  it("should passes NavItem styling and props through asChild without leaking match", () => {
+  it("should passes NavItem layout props through asChild without leaking removed route or variant props", () => {
     const item = NavItem({
       asChild: true,
       children: {
@@ -482,11 +523,16 @@ describe("navbar link jsdom regression", () => {
       },
       match: "exact",
       variant: "icon",
+      active: true,
     } as unknown as Parameters<typeof NavItem>[0]) as ElementLike;
 
     expect(item.props.match).toBeUndefined();
+    expect(item.props.variant).toBeUndefined();
+    expect(item.type).toBe(Block);
     expect(item.props["data-slot"]).toBe("nav-item");
-    expect(item.props["data-variant"]).toBe("icon");
-    expect(String(item.props.class)).toContain("navbar-item-icon");
+    expect(item.props["data-active"]).toBe("true");
+    expect(item.props.paddingX).toBe("sm");
+    expect(item.props.paddingY).toBe("xs");
+    expect(item.props.radius).toBe("md");
   });
 });
