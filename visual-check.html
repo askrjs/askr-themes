@@ -428,8 +428,16 @@
       }
 
       .compact-table-wrap {
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
         border-radius: var(--ak-radius-lg);
+      }
+
+      .preview-surface :where([data-slot="navbar"]) {
+        display: flex;
+        align-items: center;
+        gap: var(--ak-space-md);
+        inline-size: 100%;
       }
 
       @media (max-width: 64rem) {
@@ -572,35 +580,40 @@
             </ol>
           </nav>
           <header class="header" data-slot="header">
-            <nav class="navbar" data-slot="navbar" data-orientation="horizontal" data-responsive-collapsed="false">
+            <nav class="navbar" data-slot="navbar" data-orientation="horizontal" data-collapse-at="md">
               <div class="nav-brand" data-slot="nav-brand">
                 <a href="#">
                   <span data-slot="icon" aria-hidden="true">A</span>
                   <strong>Askr Production Workspace</strong>
                 </a>
               </div>
-              <div data-slot="navbar-content">
-                <div class="nav-group" data-slot="nav-group">
-                  <div data-slot="nav-group-body">
-                    <a class="nav-item" data-slot="nav-item" href="#" aria-current="page">
-                      <span>Components</span>
-                    </a>
-                    <a class="nav-item" data-slot="nav-item" href="#">
-                      <span>Usage analytics</span>
-                    </a>
-                    <a class="nav-item" data-slot="nav-item" href="#">
-                      <span>Long documentation destination</span>
-                    </a>
+              <details data-slot="navbar-collapse" open>
+                <summary aria-label="Menu" data-slot="navbar-toggle">
+                  <span data-slot="navbar-toggle-label">Menu</span>
+                </summary>
+                <div data-slot="navbar-content">
+                  <div class="nav-group" data-slot="nav-group">
+                    <div data-slot="nav-group-body">
+                      <a class="nav-item" data-slot="nav-item" href="#" aria-current="page">
+                        <span>Components</span>
+                      </a>
+                      <a class="nav-item" data-slot="nav-item" href="#">
+                        <span>Usage analytics</span>
+                      </a>
+                      <a class="nav-item" data-slot="nav-item" href="#">
+                        <span>Long documentation destination</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="nav-group" data-slot="nav-group" data-visual-end-group="true">
+                    <div data-slot="nav-group-body">
+                      <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
+                        Aa
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div class="nav-group" data-slot="nav-group" data-visual-end-group="true">
-                  <div data-slot="nav-group-body">
-                    <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
-                      Aa
-                    </button>
-                  </div>
-                </div>
-              </div>
+              </details>
             </nav>
           </header>
           <nav class="nav" data-slot="nav" data-variant="tabs" aria-label="Tabs">

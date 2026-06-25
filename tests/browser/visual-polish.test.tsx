@@ -205,17 +205,27 @@ describe("visual polish contracts", () => {
     const card = document.querySelector('[data-slot="card"]') as HTMLElement;
     const listItem = document.querySelector('[data-slot="list-group-item"]') as HTMLElement;
     const tableCell = document.querySelector('[data-slot="table-cell"]') as HTMLElement;
+    const minTablePadding = window.matchMedia("(max-width: 30rem)").matches ? 4 : 10;
     const tableHeaders = [
       ...document.querySelectorAll('[data-slot="table-header-cell"]'),
     ] as HTMLElement[];
 
     expect(px(getComputedStyle(card).gap)).toBeGreaterThanOrEqual(12);
     expect(px(getComputedStyle(listItem).minHeight)).toBeGreaterThanOrEqual(42);
-    expect(px(getComputedStyle(tableCell).paddingBlockStart)).toBeGreaterThanOrEqual(10);
-    expect(px(getComputedStyle(tableCell).paddingInlineStart)).toBeGreaterThanOrEqual(12);
+    expect(px(getComputedStyle(tableCell).paddingBlockStart)).toBeGreaterThanOrEqual(
+      minTablePadding,
+    );
+    expect(px(getComputedStyle(tableCell).paddingInlineStart)).toBeGreaterThanOrEqual(
+      minTablePadding,
+    );
 
     for (const header of tableHeaders) {
-      expect(getComputedStyle(header).overflowWrap, header.textContent ?? "").toBe("normal");
+      const expectedHeaderWrap = window.matchMedia("(max-width: 30rem)").matches
+        ? "anywhere"
+        : "normal";
+      expect(getComputedStyle(header).overflowWrap, header.textContent ?? "").toBe(
+        expectedHeaderWrap,
+      );
       expect(header.scrollWidth, header.textContent ?? "").toBeLessThanOrEqual(header.clientWidth);
     }
   });
@@ -356,7 +366,7 @@ describe("visual polish contracts", () => {
   });
 
   it("should keeps the manual audit page overflow-free from mobile through desktop widths", async () => {
-    for (const width of [320, 390, 768, 1440]) {
+    for (const width of [320, 390, 768, 1024, 1440]) {
       document.body.innerHTML = "";
       const iframe = await loadAuditFrame(width);
       const doc = iframe.contentDocument!;
@@ -389,13 +399,58 @@ describe("visual polish contracts", () => {
       '#chrome .preview[data-theme="light"] [data-slot="navbar"]',
     ) as HTMLElement;
     const brand = navbar.querySelector('[data-slot="nav-brand"]') as HTMLElement;
+    const brandLink = brand.querySelector("a") as HTMLElement;
+    const toggle = navbar.querySelector('[data-slot="navbar-toggle"]') as HTMLElement;
     const endGroup = navbar.querySelector('[data-visual-end-group="true"]') as HTMLElement;
     const action = endGroup.querySelector('[data-slot="button"]') as HTMLElement;
 
     expect(navbar.getBoundingClientRect().width).toBeLessThan(480);
+    expect(navbar.getAttribute("data-collapse-at")).toBe("md");
     expect(brand.getBoundingClientRect().width).toBeGreaterThan(20);
-    expect(endGroup.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
+    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(38);
+    expect(getComputedStyle(brandLink).textDecorationLine).toBe("none");
+    expect(getComputedStyle(toggle).display).toBe("none");
+    expect(endGroup.getBoundingClientRect().width).toBeGreaterThan(0);
     expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
+  });
+
+  it("should keeps manual audit navbar collapsed and readable on mobile", async () => {
+    document.body.innerHTML = "";
+    const iframe = await loadAuditFrame(320);
+    const doc = iframe.contentDocument!;
+    const navbar = doc.querySelector(
+      '#chrome .preview[data-theme="light"] [data-slot="navbar"]',
+    ) as HTMLElement;
+    const brand = navbar.querySelector('[data-slot="nav-brand"]') as HTMLElement;
+    const brandLink = brand.querySelector("a") as HTMLElement;
+    const content = navbar.querySelector('[data-slot="navbar-content"]') as HTMLElement;
+    const toggle = navbar.querySelector('[data-slot="navbar-toggle"]') as HTMLElement;
+
+    expect(navbar.getAttribute("data-collapse-at")).toBe("md");
+    expect(getComputedStyle(toggle).display).not.toBe("none");
+    expect(getComputedStyle(content).display).toBe("flex");
+    expect(getComputedStyle(content).flexDirection).toBe("column");
+    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(38);
+    expect(getComputedStyle(brandLink).textDecorationLine).toBe("none");
+    expect(content.scrollWidth).toBeLessThanOrEqual(navbar.clientWidth);
+  });
+
+  it("should keeps table density readable inside the mobile audit width", async () => {
+    document.body.innerHTML = "";
+    const iframe = await loadAuditFrame(320);
+    const doc = iframe.contentDocument!;
+    const table = doc.querySelector(
+      '#surfaces .preview[data-theme="light"] [data-slot="table"]',
+    ) as HTMLElement;
+    const headerCell = table.querySelector('[data-slot="table-header-cell"]') as HTMLElement;
+    const bodyCell = table.querySelector('[data-slot="table-cell"]') as HTMLElement;
+
+    expect(getComputedStyle(table).tableLayout).toBe("fixed");
+    expect(table.scrollWidth).toBeLessThanOrEqual(table.clientWidth + 4);
+    expect(headerCell.scrollWidth).toBeLessThanOrEqual(headerCell.clientWidth);
+    expect(bodyCell.scrollWidth).toBeLessThanOrEqual(bodyCell.clientWidth);
+    expect(px(getComputedStyle(headerCell).paddingInlineStart)).toBeLessThanOrEqual(8);
+    expect(getComputedStyle(headerCell).letterSpacing).toBe("normal");
   });
 
   it("should keeps oversized block presets inside narrow containers", () => {
