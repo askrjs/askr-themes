@@ -17,7 +17,6 @@ export function Alert(props: AlertProps): JSX.Element {
     class: className,
     description,
     dismissLabel = "Dismiss alert",
-    dismissible = false,
     icon,
     onDismiss,
     ref,
@@ -27,7 +26,7 @@ export function Alert(props: AlertProps): JSX.Element {
     role,
     ...rest
   } = props;
-  const shouldRenderDismiss = dismissible && onDismiss !== undefined;
+  const shouldRenderDismiss = onDismiss !== undefined;
   const resolvedRole = role ?? resolveAlertRole(variant);
   const hasVariant = variant !== "default";
 

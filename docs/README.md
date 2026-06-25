@@ -128,8 +128,23 @@ import {
 } from "@askrjs/themes/core";
 import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
 import { Button, ButtonGroup, Field, InputGroup } from "@askrjs/themes/controls";
-import { AspectRatio, Card, CardActions, Alert, Badge, ListGroup, Spinner } from "@askrjs/themes/surfaces";
-import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "@askrjs/themes/overlays";
+import {
+  AspectRatio,
+  Card,
+  CardActions,
+  Alert,
+  Badge,
+  ListGroup,
+  Spinner,
+} from "@askrjs/themes/surfaces";
+import {
+  Dialog,
+  DialogContent,
+  Dropdown,
+  DropdownContent,
+  DropdownItem,
+  DropdownTrigger,
+} from "@askrjs/themes/overlays";
 ```
 
 `@askrjs/themes/core` exports the stable semantic core:
@@ -170,7 +185,9 @@ anchors. `NavItem` has one shape: use `active` for manual state and `class` or
   <NavBrand asChild>
     <Link href="/">Askr</Link>
   </NavBrand>
-  <NavLink href="/dashboard" match="exact">Dashboard</NavLink>
+  <NavLink href="/dashboard" match="exact">
+    Dashboard
+  </NavLink>
   <NavLink href="/projects">Projects</NavLink>
   <NavDropdown label="More">
     <DropdownItem asChild>
@@ -183,6 +200,11 @@ anchors. `NavItem` has one shape: use `active` for manual state and `class` or
 Keep app-specific composition in userland until the pattern is proven stable.
 Good recipe candidates include centered pages, sidebar layouts, split pages,
 form pages, responsive rows, panel grids, card lists, and form actions.
+
+Use `Dialog` for modal surfaces and `AlertDialog` for destructive confirmations.
+Do not introduce a separate `Modal` component. Use `Badge` for small status or
+metadata labels, and `Alert` for inline feedback. Keep chips/tags as recipes
+until a product needs a distinct interactive or removable token contract.
 
 ```tsx
 export function AccountPage() {

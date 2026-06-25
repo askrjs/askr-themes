@@ -31,17 +31,34 @@ import {
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
-import { Breadcrumb, Pagination, PaginationEllipsis, PaginationItem, PaginationLink } from "../../src/navs";
 import {
+  Breadcrumb,
+  Pagination,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+} from "../../src/navs";
+import {
+  ALERT_DIALOG_A11Y_CONTRACT,
+  AlertDialog,
+  DIALOG_A11Y_CONTRACT,
+  Dialog,
   DROPDOWN_A11Y_CONTRACT,
   Dropdown,
   DropdownContent,
   DropdownItem,
   DropdownTrigger,
+  HoverCard,
   MENUBAR_A11Y_CONTRACT,
   MENU_A11Y_CONTRACT,
   Menu,
   Menubar,
+  POPOVER_A11Y_CONTRACT,
+  Popover,
+  TOAST_A11Y_CONTRACT,
+  TOOLTIP_A11Y_CONTRACT,
+  Toast,
+  Tooltip,
 } from "../../src/overlays";
 import {
   Alert,
@@ -104,10 +121,16 @@ describe("package surface", () => {
       PaginationItem,
       PaginationLink,
       PaginationEllipsis,
+      Dialog,
+      AlertDialog,
       Dropdown,
       DropdownTrigger,
       DropdownContent,
       DropdownItem,
+      Popover,
+      Tooltip,
+      HoverCard,
+      Toast,
       Menu,
       Menubar,
       ListGroup,
@@ -119,7 +142,12 @@ describe("package surface", () => {
       expect(typeof component).toBe("function");
     }
 
+    expect(DIALOG_A11Y_CONTRACT).toBeTruthy();
+    expect(ALERT_DIALOG_A11Y_CONTRACT).toBeTruthy();
     expect(DROPDOWN_A11Y_CONTRACT).toBeTruthy();
+    expect(POPOVER_A11Y_CONTRACT).toBeTruthy();
+    expect(TOOLTIP_A11Y_CONTRACT).toBeTruthy();
+    expect(TOAST_A11Y_CONTRACT).toBeTruthy();
     expect(MENU_A11Y_CONTRACT).toBeTruthy();
     expect(MENUBAR_A11Y_CONTRACT).toBeTruthy();
     expect(SEPARATOR_A11Y_CONTRACT).toBeTruthy();
