@@ -8,17 +8,15 @@ export {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "./components/breadcrumb";
-export { BREADCRUMB_A11Y_CONTRACT } from "./components/breadcrumb";
 export type * from "./components/breadcrumb";
-export { Nav } from "./components/nav";
+export { Pill, Pills, Tab, Tabs } from "./components/nav";
 export type {
-  NavAsChildProps,
-  NavDivProps,
-  NavListProps,
-  NavNavProps,
-  NavOrientation,
-  NavProps,
-  NavVariant,
+  PillProps,
+  PillsAsChildProps,
+  PillsProps,
+  TabProps,
+  TabsAsChildProps,
+  TabsProps,
 } from "./components/nav";
 export {
   Pagination,

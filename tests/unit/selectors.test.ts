@@ -18,7 +18,6 @@ const CLASS_UTILITY_FILES = new Set([
   "input-group.css",
   "input.css",
   "label.css",
-  "list-group.css",
   "nav.css",
   "pagination.css",
   "patterns.css",
@@ -41,7 +40,7 @@ const PLAIN_CLASS_CONTRACT_FILES = new Set([
   "input-group.css",
   "input.css",
   "label.css",
-  "list-group.css",
+  "nav.css",
   "pagination.css",
   "patterns.css",
   "utilities.css",
@@ -115,15 +114,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
   ],
   "input.css": ["input", "input-lg", "input-sm"],
   "label.css": ["label"],
-  "list-group.css": [
-    "active",
-    "disabled",
-    "list-group",
-    "list-group-flush",
-    "list-group-horizontal",
-    "list-group-item",
-    "list-group-item-action",
-  ],
+  "nav.css": ["nav-item", "navbar-item", "pill", "pills", "tab", "tabs"],
   "pagination.css": [
     "active",
     "disabled",
@@ -139,47 +130,8 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "empty-state-description",
     "empty-state-icon",
     "empty-state-title",
-    "eyebrow",
-    "icon-badge",
-    "section-header",
-    "section-header-copy",
-    "section-header-description",
-    "site-footer",
   ],
-  "utilities.css": [
-    "flex-col",
-    "flex-col-reverse",
-    "flex-nowrap",
-    "flex-row-reverse",
-    "flex-wrap-reverse",
-    "gap-1",
-    "gap-2",
-    "gap-3",
-    "gap-4",
-    "gap-lg",
-    "gap-md",
-    "gap-sm",
-    "gap-xl",
-    "gap-xs",
-    "gap-x-lg",
-    "gap-x-md",
-    "gap-x-sm",
-    "gap-y-lg",
-    "gap-y-md",
-    "gap-y-sm",
-    "sr-only",
-    "items-baseline",
-    "items-center",
-    "items-end",
-    "items-start",
-    "items-stretch",
-    "justify-between",
-    "justify-center",
-    "justify-end",
-    "justify-start",
-    "text-bold",
-    "text-muted",
-  ],
+  "utilities.css": ["sr-only", "text-bold", "text-muted"],
   "select.css": [
     "select-content",
     "select-group",
@@ -448,6 +400,15 @@ describe("CSS selector contract", () => {
   }
 });
 
+describe("typography selector contract", () => {
+  it("should not expose typography classes", () => {
+    const css = readFileSync(join(COMPONENTS_DIR, "base", "typography.css"), "utf-8");
+    const classNames = [...css.matchAll(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/g)].map((match) => match[1]);
+
+    expect(classNames).toEqual([]);
+  });
+});
+
 describe("plain class contract", () => {
   const files = getComponentCssFiles().filter((file) =>
     PLAIN_CLASS_CONTRACT_FILES.has(file.split(/[/\\]/).pop()!),
@@ -502,6 +463,26 @@ describe("legacy shell selector cleanup", () => {
       expect(
         violations,
         `Removed shell slots must stay out of CSS: ${violations.join(", ")}`,
+      ).toEqual([]);
+    });
+  }
+});
+
+describe("legacy layout utility cleanup", () => {
+  const forbiddenLayoutUtilityPattern =
+    /\.(?:flex-(?:col|col-reverse|nowrap|row-reverse|wrap-reverse)|gap(?:-[xy])?-(?:1|2|3|4|xs|sm|md|lg|xl)|items-(?:baseline|center|end|start|stretch)|justify-(?:between|center|end|start))\b/g;
+  const files = getComponentCssFiles();
+
+  for (const file of files) {
+    const filename = file.split(/[/\\]/).pop()!;
+
+    it(`should ${filename}: does not expose removed layout utility classes`, () => {
+      const css = readFileSync(file, "utf-8");
+      const violations = [...css.matchAll(forbiddenLayoutUtilityPattern)].map((match) => match[0]);
+
+      expect(
+        violations,
+        `Layout utility classes would compete with Block: ${violations.join(", ")}`,
       ).toEqual([]);
     });
   }

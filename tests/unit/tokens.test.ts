@@ -18,6 +18,7 @@ const TEMPLATE_TOKENS_FILE = TEMPLATE_THEME_TOKENS_FILE;
 
 const REQUIRED_ROOT_TOKENS = [
   "--ak-font-family-body",
+  "--ak-font-family-display",
   "--ak-font-family-mono",
   "--ak-font-size-xs",
   "--ak-font-size-sm",
@@ -141,6 +142,7 @@ const REQUIRED_TOKEN_CATEGORIES = {
   color: REQUIRED_COLOR_TOKENS,
   typography: [
     "--ak-font-family-body",
+    "--ak-font-family-display",
     "--ak-font-size-md",
     "--ak-font-weight-medium",
     "--ak-line-height-normal",

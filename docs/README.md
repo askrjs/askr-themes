@@ -129,7 +129,7 @@ import {
   Toolbar,
   EmptyState,
 } from "@askrjs/themes/core";
-import { Nav, Breadcrumb, Pagination } from "@askrjs/themes/navs";
+import { Breadcrumb, Pagination, Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
 import {
   Button,
   ButtonGroup,
@@ -146,7 +146,6 @@ import {
   CardActions,
   Alert,
   Badge,
-  ListGroup,
   Progress,
   Spinner,
   Table,
@@ -185,9 +184,8 @@ export {
 };
 ```
 
-If the default theme styles a `@askrjs/ui` primitive, import it from the matching
-`@askrjs/themes/*` family. `@askrjs/ui` owns behavior; `@askrjs/themes` is the
-KISS import path for styled app components.
+Themes re-exports the small set of styled primitives that are common in app
+code. Advanced behavior primitives stay in `@askrjs/ui`.
 
 ## Recipes
 
@@ -213,6 +211,23 @@ anchors. `NavItem` has one shape: use `active` for manual state and `class` or
     </DropdownItem>
   </NavDropdown>
 </Navbar>
+```
+
+Use `Tabs` and `Tab` for local section navigation. Use `Pills` and `Pill` when
+the same navigation should be compact and rounded. The item name carries the
+visual shape, so there is no nav variant prop.
+
+```tsx
+<Tabs aria-label="Settings sections">
+  <Tab href="/settings/profile">Profile</Tab>
+  <Tab href="/settings/billing">Billing</Tab>
+  <Tab href="/settings/security">Security</Tab>
+</Tabs>
+
+<Pills aria-label="Project views">
+  <Pill href="/projects/open">Open</Pill>
+  <Pill href="/projects/archived">Archived</Pill>
+</Pills>
 ```
 
 Keep app-specific composition in userland until the pattern is proven stable.

@@ -1,21 +1,3 @@
-:where(.nav, [data-slot="nav"]) {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--ak-space-xs);
-}
-
-:where(.nav[data-orientation="vertical"], [data-slot="nav"][data-orientation="vertical"]) {
-  flex-direction: column;
-  align-items: stretch;
-}
-
-:where(ul.nav, ul[data-slot="nav"]) {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
 :where(.nav-item, .navbar-item, [data-slot="nav-item"]) {
   display: inline-flex;
   align-items: center;
@@ -37,27 +19,11 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where(.nav[data-orientation="vertical"], [data-slot="nav"][data-orientation="vertical"])
-  :where(.nav-item, .navbar-item, [data-slot="nav-item"]) {
-  inline-size: 100%;
-  justify-content: flex-start;
-}
-
 :where(.nav-item:hover, .navbar-item:hover, [data-slot="nav-item"]:hover) {
   color: var(--ak-color-text);
   background: var(--ak-color-surface-muted);
   border-color: color-mix(in srgb, var(--ak-color-border) 78%, var(--ak-color-surface) 22%);
   box-shadow: var(--ak-shadow-sm);
-}
-
-:where(.nav-item-icon, .navbar-item-icon, [data-slot="nav-item"][data-variant="icon"]) {
-  justify-content: center;
-  inline-size: var(--ak-density-control-height-md);
-  min-block-size: var(--ak-density-control-height-md);
-  padding-inline: 0;
-  border: 1px solid transparent;
-  color: var(--ak-color-text);
-  line-height: 1;
 }
 
 :where(
@@ -79,26 +45,62 @@
   box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where(.nav[data-variant="tabs"], [data-slot="nav"][data-variant="tabs"]) {
+:where(.tabs, [data-slot="tabs"]) {
+  display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: var(--ak-space-2xs, 0.125rem);
   padding-block-end: var(--ak-space-2xs, 0.125rem);
   box-shadow: inset 0 -1px 0 var(--ak-color-border);
 }
 
-:where(.nav[data-variant="tabs"], [data-slot="nav"][data-variant="tabs"])
-  :where(.nav-item, .navbar-item, [data-slot="nav-item"]) {
+:where(.tab, [data-slot="tab"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ak-space-sm);
   min-block-size: var(--ak-density-control-height-md);
+  min-inline-size: 0;
   padding-inline: var(--ak-space-md);
+  border: 1px solid transparent;
   border-radius: calc(var(--ak-radius-md) + 2px) calc(var(--ak-radius-md) + 2px) 0 0;
-  border-color: transparent;
-  background: transparent;
   color: var(--ak-color-text-muted);
-  box-shadow: none;
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  transition:
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where(.nav[data-variant="pills"], [data-slot="nav"][data-variant="pills"]) {
+:where(.tab:hover, [data-slot="tab"]:hover) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-surface-muted);
+}
+
+:where(
+  .tab[aria-current="page"],
+  [data-slot="tab"][aria-current="page"],
+  .tab[data-active="true"],
+  [data-slot="tab"][data-active="true"]
+) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-surface);
+  border-color: var(--ak-color-border);
+  border-block-end-color: var(--ak-color-surface);
+  box-shadow: 0 1px 0 var(--ak-color-surface);
+}
+
+:where(.tab:focus-visible, [data-slot="tab"]:focus-visible) {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where(.pills, [data-slot="pills"]) {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: var(--ak-space-xs);
   padding: var(--ak-space-2xs, 0.125rem);
   border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
@@ -106,11 +108,46 @@
   background: color-mix(in srgb, var(--ak-color-surface-muted) 88%, var(--ak-color-surface));
 }
 
-:where(.nav[data-variant="pills"], [data-slot="nav"][data-variant="pills"])
-  :where(.nav-item, .navbar-item, [data-slot="nav-item"]) {
+:where(.pill, [data-slot="pill"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ak-space-sm);
+  min-block-size: var(--ak-density-control-height-md);
+  min-inline-size: 0;
+  padding-inline: var(--ak-density-control-padding-x-sm);
+  border: 1px solid transparent;
   border-radius: 999px;
-  border-color: transparent;
-  background: transparent;
   color: var(--ak-color-text-muted);
-  box-shadow: none;
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  transition:
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where(.pill:hover, [data-slot="pill"]:hover) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-surface);
+  border-color: color-mix(in srgb, var(--ak-color-border) 78%, var(--ak-color-surface) 22%);
+}
+
+:where(
+  .pill[aria-current="page"],
+  [data-slot="pill"][aria-current="page"],
+  .pill[data-active="true"],
+  [data-slot="pill"][data-active="true"]
+) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-selected);
+  border-color: var(--ak-color-selected-border);
+  box-shadow: var(--ak-shadow-sm);
+}
+
+:where(.pill:focus-visible, [data-slot="pill"]:focus-visible) {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }

@@ -18,11 +18,14 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-  Nav,
+  Pill,
+  Pills,
   Pagination,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
+  Tab,
+  Tabs,
 } from "../../src/navs";
 
 type ElementLike = {
@@ -74,7 +77,12 @@ describe("navigation contracts", () => {
   });
 
   it("should renders block-first nav primitives with canonical slots", () => {
-    const nav = asElement(Nav({ children: "nav" }));
+    const tabs = asElement(Tabs({ children: "tabs" }));
+    const tab = asElement(Tab({ href: "/settings/profile", active: true, children: "Profile" }));
+    const tabChild = asElement(tab.props.children);
+    const pills = asElement(Pills({ children: "pills" }));
+    const pill = asElement(Pill({ href: "/settings/billing", active: true, children: "Billing" }));
+    const pillChild = asElement(pill.props.children);
     const navbar = asElement(Navbar({ children: "navbar" }));
     const brand = asElement(NavBrand({ children: "brand" }));
     const brandLink = asElement(NavBrand({ as: "a", href: "/", children: "brand" }));
@@ -107,8 +115,20 @@ describe("navigation contracts", () => {
     const linkChild = asElement(link.props.children);
     const sidebar = asElement(Sidebar({ children: "sidebar" }));
 
-    expect(nav.type).toBe("nav");
-    expect(nav.props["data-slot"]).toBe("nav");
+    expect(tabs.type).toBe("nav");
+    expect(tabs.props["data-slot"]).toBe("tabs");
+    expect(tab.type).toBe(Block);
+    expect(tab.props["data-slot"]).toBe("tab");
+    expect(tab.props["data-active"]).toBe("true");
+    expect(tabChild.type).toBe(Link);
+    expect(tabChild.props.href).toBe("/settings/profile");
+    expect(pills.type).toBe("nav");
+    expect(pills.props["data-slot"]).toBe("pills");
+    expect(pill.type).toBe(Block);
+    expect(pill.props["data-slot"]).toBe("pill");
+    expect(pill.props["data-active"]).toBe("true");
+    expect(pillChild.type).toBe(Link);
+    expect(pillChild.props.href).toBe("/settings/billing");
     expect(navbar.type).toBe(Block);
     expect(navbar.props.as).toBe("nav");
     expect(navbar.props["data-slot"]).toBe("navbar");

@@ -1,13 +1,12 @@
-export { Nav, NavItem, NavLink } from "./nav";
+export { NavItem, NavLink, Pill, Pills, Tab, Tabs } from "./nav";
 export type {
-  NavAsChildProps,
-  NavDivProps,
   NavItemAsChildProps,
   NavItemProps,
   NavLinkProps,
-  NavListProps,
-  NavNavProps,
-  NavOrientation,
-  NavProps,
-  NavVariant,
+  PillProps,
+  PillsAsChildProps,
+  PillsProps,
+  TabProps,
+  TabsAsChildProps,
+  TabsProps,
 } from "./nav.types";

@@ -19,7 +19,7 @@ import {
   Sidebar,
   Toolbar,
 } from "../../src/core";
-import { Badge, Divider, Separator, Skeleton } from "../../src/surfaces";
+import { Badge, Separator, Skeleton } from "../../src/surfaces";
 
 type ElementLike = {
   type: unknown;
@@ -142,10 +142,9 @@ describe("block-first components", () => {
     expect(EmptyState({ title: "No projects", action: "Create project" })).toBeTruthy();
   });
 
-  it("should keeps visual display primitives and divider aliases", () => {
+  it("should keeps visual display primitives with one separator name", () => {
     expect(Badge({ children: "new", variant: "secondary" })).toBeTruthy();
     expect(Skeleton({})).toBeTruthy();
     expect(Separator({ orientation: "vertical" })).toBeTruthy();
-    expect(Divider({ decorative: true })).toBeTruthy();
   });
 });

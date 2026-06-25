@@ -40,8 +40,6 @@
 }
 
 [data-slot="dropdown-group"],
-[data-slot="menu-group"],
-[data-slot="menubar-group"],
 [data-slot="select-group"] {
   display: block;
 }
