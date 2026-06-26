@@ -2,71 +2,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
+import * as components from "../../src/components";
 import {
-  Aside,
-  Block,
-  Container,
-  EmptyState,
-  Header,
-  Main,
-  Navbar,
-  NavBrand,
-  NavDropdown,
-  NavGroup,
-  NavItem,
-  NavLink,
-  Page,
-  PageHeader,
-  Section,
-  Sidebar,
-  Toolbar,
-} from "../../src/core";
-import {
-  Button,
-  ButtonGroup,
-  Checkbox,
-  Close,
-  Field,
-  FieldError,
-  FieldHint,
-  Input,
-  InputGroup,
-  InputGroupText,
-  Label,
-  Select,
-  Switch,
-  Textarea,
-} from "../../src/controls";
-import {
-  Pill,
-  Pills,
-  Tab,
-  Tabs,
-} from "../../src/navs";
-import {
-  AlertDialog,
-  Dialog,
-  Dropdown,
-  DropdownContent,
-  DropdownItem,
-  DropdownTrigger,
-  Popover,
-  Toast,
-  Tooltip,
-} from "../../src/overlays";
-import {
-  Alert,
-  AspectRatio,
-  Avatar,
-  Badge,
-  Card,
-  Progress,
-  ProgressCircle,
-  Separator,
-  Skeleton,
-  Spinner,
-  Table,
-} from "../../src/surfaces";
+  SHADCN_CHART_COMPONENT,
+  SHADCN_THEME_COMPONENT_SUBPATHS,
+  SHADCN_THEME_COMPONENTS,
+} from "../../src/parity";
 import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
 import {
   DEFAULT_THEME_INDEX_FILE,
@@ -77,116 +18,67 @@ import {
 
 const DEFAULT_INDEX = DEFAULT_THEME_INDEX_FILE;
 const TEMPLATE_INDEX = TEMPLATE_THEME_INDEX_FILE;
-const REMOVED_CARD_CSS_EXPORT = ["./default/card", "css"].join(".");
-const REMOVED_BUTTON_CSS_EXPORT = ["./default/button", "css"].join(".");
-const REMOVED_LIST_CSS_EXPORT = ["./default/list", "group.css"].join("-");
-const REMOVED_CAT_PRESETS_EXPORT = ["./cat", "presets"].join("-");
+const COMPONENT_EXPORT_TARGET = {
+  types: "./dist/components.d.ts",
+  import: "./dist/components.js",
+};
+const REMOVED_FAMILY_EXPORTS = [
+  "./controls",
+  "./core",
+  "./feedback",
+  "./layouts",
+  "./navs",
+  "./overlays",
+  "./shells",
+  "./surfaces",
+] as const;
 const A11Y_EXPORT_PATTERN = new RegExp(
   `${["A11Y", "CONTRACT"].join("_")}|${["A11y", "Contract"].join("")}`,
 );
 
 describe("package surface", () => {
-  it("should exposes the block-first core and curated visual families", () => {
-    for (const component of [
-      Block,
-      Container,
-      Header,
-      Main,
-      Section,
-      Aside,
-      Sidebar,
-      Navbar,
-      NavBrand,
-      NavDropdown,
-      NavGroup,
-      NavItem,
-      NavLink,
-      Page,
-      PageHeader,
-      Toolbar,
-      EmptyState,
-      Button,
-      ThemeProvider,
-      ThemePicker,
-      ThemeToggle,
-      ButtonGroup,
-      Checkbox,
-      Close,
-      Field,
-      FieldHint,
-      FieldError,
-      Input,
-      InputGroup,
-      InputGroupText,
-      Label,
-      Select,
-      Switch,
-      Textarea,
-      Alert,
-      AspectRatio,
-      Avatar,
-      Separator,
-      Skeleton,
-      Spinner,
-      Progress,
-      ProgressCircle,
-      Tabs,
-      Tab,
-      Pills,
-      Pill,
-      Dialog,
-      AlertDialog,
-      Dropdown,
-      DropdownTrigger,
-      DropdownContent,
-      DropdownItem,
-      Popover,
-      Tooltip,
-      Toast,
-      Badge,
-      Card,
-      Table,
-    ]) {
-      expect(typeof component).toBe("function");
+  it("should exposes the shadcn-style component catalog from the aggregate entrypoint", () => {
+    const namespace = components as Record<string, unknown>;
+
+    for (const component of SHADCN_THEME_COMPONENTS) {
+      expect(typeof namespace[component], component).toBe("function");
     }
 
+    expect(namespace[SHADCN_CHART_COMPONENT]).toBeUndefined();
+    expect(typeof ThemeProvider).toBe("function");
+    expect(typeof ThemePicker).toBe("function");
+    expect(typeof ThemeToggle).toBe("function");
   });
 
-  it("should publishes curated entrypoints without a components catch-all", () => {
+  it("should publishes component subpaths and keeps charts out of themes", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
 
-    expect(pkg.exports?.["./core"]).toBeTruthy();
+    expect(pkg.exports?.["./components"]).toEqual(COMPONENT_EXPORT_TARGET);
     expect(pkg.exports?.["./theme"]).toBeTruthy();
-    expect(pkg.exports?.["./controls"]).toBeTruthy();
-    expect(pkg.exports?.["./surfaces"]).toBeTruthy();
-    expect(pkg.exports?.["./feedback"]).toBeUndefined();
-    expect(pkg.exports?.["./navs"]).toBeTruthy();
-    expect(pkg.exports?.["./overlays"]).toBeTruthy();
+    expect(pkg.exports?.["./default"]).toBe("./src/themes/default/index.css");
     expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
-    expect(pkg.exports?.[REMOVED_CAT_PRESETS_EXPORT]).toBeUndefined();
-    expect(pkg.exports?.["./layouts"]).toBeUndefined();
-    expect(pkg.exports?.["./shells"]).toBeUndefined();
-    expect(pkg.exports?.["./components"]).toBeUndefined();
-    expect(pkg.exports?.["./default/tokens.css"]).toBe("./src/themes/default/tokens.css");
-    expect(pkg.exports?.[REMOVED_CARD_CSS_EXPORT]).toBeUndefined();
-    expect(pkg.exports?.[REMOVED_BUTTON_CSS_EXPORT]).toBeUndefined();
-    expect(pkg.exports?.[REMOVED_LIST_CSS_EXPORT]).toBeUndefined();
+    expect(pkg.exports?.["./chart"]).toBeUndefined();
+    expect(pkg.exports?.["./charts"]).toBeUndefined();
+
+    for (const subpath of SHADCN_THEME_COMPONENT_SUBPATHS) {
+      expect(pkg.exports?.[`./${subpath}`], subpath).toEqual(COMPONENT_EXPORT_TARGET);
+    }
+
+    for (const entrypoint of REMOVED_FAMILY_EXPORTS) {
+      expect(pkg.exports?.[entrypoint], entrypoint).toBeUndefined();
+    }
   });
 
   it("should keeps accessibility contracts out of app-facing barrels", () => {
     const barrels = [
-      "src/core.ts",
-      "src/controls.ts",
-      "src/navs.ts",
-      "src/overlays.ts",
-      "src/surfaces.ts",
+      "src/components.ts",
+      "src/theme.ts",
       "src/components/badge/index.ts",
       "src/components/block/index.ts",
-      "src/components/container/index.ts",
-      "src/components/header/index.ts",
-      "src/components/section/index.ts",
+      "src/components/card/index.ts",
+      "src/components/catalog.tsx",
       "src/components/separator/index.ts",
       "src/components/skeleton/index.ts",
     ];
@@ -198,68 +90,6 @@ describe("package surface", () => {
         A11Y_EXPORT_PATTERN,
       );
     }
-  });
-
-  it("should keeps weak anatomy helpers out of public barrels", () => {
-    const navsEntrypoint = readFileSync(join(ROOT_DIR, "src/navs.ts"), "utf-8");
-    const surfacesEntrypoint = readFileSync(join(ROOT_DIR, "src/surfaces.ts"), "utf-8");
-    const cardEntrypoint = readFileSync(join(ROOT_DIR, "src/components/card/index.ts"), "utf-8");
-
-    for (const removed of ["Breadcrumb", "Pagination"]) {
-      expect(navsEntrypoint).not.toContain(removed);
-    }
-
-    for (const removed of [
-      "CardHeader",
-      "CardTitle",
-      "CardDescription",
-      "CardContent",
-      "CardFooter",
-      "CardActions",
-    ]) {
-      expect(surfacesEntrypoint).not.toContain(removed);
-      expect(cardEntrypoint).not.toContain(removed);
-    }
-  });
-
-  it("should keeps NavItem as a single link preset without dead variants", () => {
-    const navTypes = readFileSync(join(ROOT_DIR, "src/components/nav/nav.types.ts"), "utf-8");
-    const navIndex = readFileSync(join(ROOT_DIR, "src/components/nav/index.ts"), "utf-8");
-    const navbarIndex = readFileSync(join(ROOT_DIR, "src/components/navbar/index.ts"), "utf-8");
-
-    for (const source of [navTypes, navIndex, navbarIndex]) {
-      expect(source).not.toContain("NavItemVariant");
-    }
-
-    expect(navTypes).not.toMatch(/NavItemOwnProps[^{]*{[^}]*variant\?/s);
-  });
-
-  it("should keeps Block as the only public layout vocabulary", () => {
-    const removedLayoutHelper = join(ROOT_DIR, "src/components/_internal", "layout.ts");
-    const visualAudit = readFileSync(join(ROOT_DIR, "visual-check.html"), "utf-8");
-    const readme = readFileSync(join(ROOT_DIR, "docs/README.md"), "utf-8");
-    const guide = readFileSync(join(ROOT_DIR, "docs/askr-themes.md"), "utf-8");
-    const forbiddenBreakpoint = ["initial", ":"].join("");
-    const forbiddenSlot = (slot: string) => `data-slot="${slot}"`;
-
-    expect(existsSync(removedLayoutHelper)).toBe(false);
-
-    for (const source of [visualAudit, readme, guide]) {
-      expect(source).not.toContain(forbiddenBreakpoint);
-      expect(source).not.toContain(forbiddenSlot("stack"));
-      expect(source).not.toContain(forbiddenSlot("flex"));
-    }
-  });
-
-  it("should keeps EmptyState owned by core and Spinner owned by surfaces", () => {
-    const coreEntrypoint = readFileSync(join(ROOT_DIR, "src/core.ts"), "utf-8");
-    const surfacesEntrypoint = readFileSync(join(ROOT_DIR, "src/surfaces.ts"), "utf-8");
-    const feedbackEntrypoint = join(ROOT_DIR, "src/feedback.ts");
-
-    expect(coreEntrypoint).toContain('export { EmptyState } from "./components/empty-state";');
-    expect(surfacesEntrypoint).toContain('export { Spinner } from "./components/spinner";');
-    expect(coreEntrypoint).not.toContain("Spinner");
-    expect(existsSync(feedbackEntrypoint)).toBe(false);
   });
 
   it("should keeps default CSS package exports pointed at real files", () => {
@@ -281,18 +111,15 @@ describe("package surface", () => {
       exports?: Record<string, unknown>;
     };
 
-    for (const entrypoint of ["./presets"] as const) {
-      const target = pkg.exports?.[entrypoint];
+    const target = pkg.exports?.["./presets"];
 
-      expect(typeof target).toBe("string");
-      expect(
-        existsSync(join(ROOT_DIR, target as string)),
-        `${entrypoint} points at ${target}`,
-      ).toBe(true);
-    }
+    expect(typeof target).toBe("string");
+    expect(existsSync(join(ROOT_DIR, target as string)), `./presets points at ${target}`).toBe(
+      true,
+    );
   });
 
-  it("should does not wire recipe layout imports into the shipped bundles", () => {
+  it("should keeps recipe layout imports out of the shipped theme CSS", () => {
     const defaultIndex = readFileSync(DEFAULT_INDEX, "utf-8");
     const templateIndex = readFileSync(TEMPLATE_INDEX, "utf-8");
 

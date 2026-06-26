@@ -43,7 +43,7 @@ describe("visual polish contracts", () => {
     const controls = [...document.body.children] as HTMLElement[];
     const heights = controls.map((control) => px(getComputedStyle(control).minHeight));
 
-    expect(new Set(heights)).toEqual(new Set([38]));
+    expect(new Set(heights)).toEqual(new Set([36]));
 
     for (const control of controls) {
       const style = getComputedStyle(control);
@@ -70,8 +70,8 @@ describe("visual polish contracts", () => {
 
     for (const row of rows) {
       const style = getComputedStyle(row);
-      expect(px(style.minHeight), row.outerHTML).toBe(38);
-      expect(px(style.paddingInlineStart), row.outerHTML).toBeGreaterThanOrEqual(14);
+      expect(px(style.minHeight), row.outerHTML).toBe(32);
+      expect(px(style.paddingInlineStart), row.outerHTML).toBeGreaterThanOrEqual(8);
       expect(style.alignItems, row.outerHTML).toBe("center");
     }
 
@@ -120,7 +120,11 @@ describe("visual polish contracts", () => {
 
       expect(style.backgroundColor, selector).not.toBe("rgba(0, 0, 0, 0)");
       expect(style.backgroundColor, selector).not.toBe("rgb(255, 255, 255)");
-      expect(style.boxShadow, selector).not.toBe("none");
+      if (selector === '[data-slot="tooltip-content"]') {
+        expect(style.boxShadow, selector).toBe("none");
+      } else {
+        expect(style.boxShadow, selector).not.toBe("none");
+      }
       expect(px(style.borderTopLeftRadius), selector).toBeGreaterThanOrEqual(8);
     }
   });
@@ -231,7 +235,7 @@ describe("visual polish contracts", () => {
     expect(buttonGroup.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
     expect(getComputedStyle(label).overflowWrap).toBe("anywhere");
     expect(themePicker.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
-    expect(px(getComputedStyle(themePicker).minHeight)).toBe(38);
+    expect(px(getComputedStyle(themePicker).minHeight)).toBe(36);
   });
 
   it("should keeps status, loading, and media primitives resilient under long content", () => {
@@ -350,11 +354,11 @@ describe("visual polish contracts", () => {
     expect(navbar.getBoundingClientRect().width).toBeLessThan(480);
     expect(navbar.getAttribute("data-collapse-at")).toBe("md");
     expect(brand.getBoundingClientRect().width).toBeGreaterThan(20);
-    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(38);
+    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(36);
     expect(getComputedStyle(brandLink).textDecorationLine).toBe("none");
     expect(getComputedStyle(toggle).display).toBe("none");
     expect(endGroup.getBoundingClientRect().width).toBeGreaterThan(0);
-    expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
+    expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(36);
   });
 
   it("should keeps manual audit navbar collapsed and readable on mobile", async () => {
@@ -373,7 +377,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(toggle).display).not.toBe("none");
     expect(getComputedStyle(content).display).toBe("flex");
     expect(getComputedStyle(content).flexDirection).toBe("column");
-    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(38);
+    expect(brandLink.getBoundingClientRect().height).toBeGreaterThanOrEqual(36);
     expect(getComputedStyle(brandLink).textDecorationLine).toBe("none");
     expect(content.scrollWidth).toBeLessThanOrEqual(navbar.clientWidth);
   });

@@ -36,8 +36,9 @@ function hasRenderableChildren(children: readonly unknown[]): boolean {
 
 export function Navbar(props: NavbarProps): JSX.Element {
   const {
+    breakpoint,
     children,
-    collapseAt = false,
+    collapseAt = breakpoint ?? false,
     collapseIcon,
     collapseLabel = "Menu",
     ...rest
@@ -111,10 +112,10 @@ export function NavBrand(props: NavBrandProps): JSX.Element {
 }
 
 export function NavGroup(props: NavGroupProps): JSX.Element {
-  const { children, title, ...rest } = props;
+  const { align, children, label, title = label, ...rest } = props;
 
   return (
-    <Block gap="sm" {...rest} data-slot="nav-group">
+    <Block align={align} gap="sm" {...rest} data-align={align} data-slot="nav-group">
       {title !== undefined ? (
         <div data-slot="nav-group-label">
           {title}

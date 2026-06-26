@@ -1,6 +1,7 @@
 :where(.nav-item, .navbar-item, [data-slot="nav-item"]) {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--ak-space-sm);
   min-block-size: var(--ak-density-control-height-md);
   min-inline-size: 0;
@@ -11,6 +12,7 @@
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
   overflow-wrap: anywhere;
+  text-align: center;
   text-decoration: none;
   transition:
     color var(--ak-duration-fast) var(--ak-ease-standard),
@@ -21,9 +23,26 @@
 
 :where(.nav-item:hover, .navbar-item:hover, [data-slot="nav-item"]:hover) {
   color: var(--ak-color-text);
-  background: var(--ak-color-surface-muted);
-  border-color: color-mix(in srgb, var(--ak-color-border) 78%, var(--ak-color-surface) 22%);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-accent);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+:where([data-slot="navbar"] [data-slot="nav-item"]) {
+  min-block-size: var(--ak-density-control-height-md);
+  padding-inline: var(--ak-space-md);
+  border-color: transparent;
+  border-radius: var(--ak-radius-md);
+  color: var(--ak-color-text-muted);
+  line-height: var(--ak-type-2-line-height);
+  overflow-wrap: anywhere;
+}
+
+:where([data-slot="navbar"] [data-slot="nav-item"]:hover) {
+  color: var(--ak-color-text);
+  background: color-mix(in srgb, var(--ak-color-surface-muted) 82%, transparent);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 :where(
@@ -34,15 +53,25 @@
   .navbar-item[data-active="true"],
   [data-slot="nav-item"][data-active="true"]
 ) {
+  color: var(--ak-color-primary-ink);
+  background: var(--ak-color-primary-soft);
+  border-color: color-mix(in srgb, var(--ak-color-primary) 16%, var(--ak-color-border));
+  box-shadow: var(--ak-shadow-xs);
+}
+
+:where(
+  [data-slot="navbar"] [data-slot="nav-item"][aria-current="page"],
+  [data-slot="navbar"] [data-slot="nav-item"][data-active="true"]
+) {
   color: var(--ak-color-text);
   background: var(--ak-color-selected);
   border-color: var(--ak-color-selected-border);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: none;
 }
 
 :where(.nav-item:focus-visible, .navbar-item:focus-visible, [data-slot="nav-item"]:focus-visible) {
   outline: none;
-  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.tabs, [data-slot="tabs"]) {
@@ -51,7 +80,7 @@
   align-items: flex-end;
   gap: var(--ak-space-2xs, 0.125rem);
   padding-block-end: var(--ak-space-2xs, 0.125rem);
-  box-shadow: inset 0 -1px 0 var(--ak-color-border);
+  box-shadow: none;
 }
 
 :where(.tab, [data-slot="tab"]) {
@@ -62,7 +91,7 @@
   min-inline-size: 0;
   padding-inline: var(--ak-space-md);
   border: 1px solid transparent;
-  border-radius: calc(var(--ak-radius-md) + 2px) calc(var(--ak-radius-md) + 2px) 0 0;
+  border-radius: var(--ak-radius-md);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-medium);
@@ -87,15 +116,14 @@
   [data-slot="tab"][data-active="true"]
 ) {
   color: var(--ak-color-text);
-  background: var(--ak-color-surface);
-  border-color: var(--ak-color-border);
-  border-block-end-color: var(--ak-color-surface);
-  box-shadow: 0 1px 0 var(--ak-color-surface);
+  background: var(--ak-color-bg);
+  border-color: transparent;
+  box-shadow: var(--ak-shadow-xs);
 }
 
 :where(.tab:focus-visible, [data-slot="tab"]:focus-visible) {
   outline: none;
-  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.pills, [data-slot="pills"]) {
@@ -103,9 +131,9 @@
   flex-wrap: wrap;
   gap: var(--ak-space-xs);
   padding: var(--ak-space-2xs, 0.125rem);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 88%, var(--ak-color-surface));
+  border: 0;
+  border-radius: var(--ak-radius-md);
+  background: var(--ak-color-surface-muted);
 }
 
 :where(.pill, [data-slot="pill"]) {
@@ -131,8 +159,8 @@
 
 :where(.pill:hover, [data-slot="pill"]:hover) {
   color: var(--ak-color-text);
-  background: var(--ak-color-surface);
-  border-color: color-mix(in srgb, var(--ak-color-border) 78%, var(--ak-color-surface) 22%);
+  background: var(--ak-color-accent);
+  border-color: transparent;
 }
 
 :where(
@@ -144,10 +172,10 @@
   color: var(--ak-color-text);
   background: var(--ak-color-selected);
   border-color: var(--ak-color-selected-border);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: none;
 }
 
 :where(.pill:focus-visible, [data-slot="pill"]:focus-visible) {
   outline: none;
-  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }

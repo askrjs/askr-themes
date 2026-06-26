@@ -2,21 +2,22 @@
   --_button-height: var(--ak-density-control-height-md);
   --_button-padding-x: var(--ak-density-control-padding-x-md);
   --_button-radius: var(--ak-radius-md);
-  --_button-border: var(--ak-color-border);
+  --_button-border: transparent;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.375rem;
+  gap: var(--ak-space-sm);
   min-height: var(--_button-height);
+  padding-block: 0;
   padding-inline: var(--_button-padding-x);
   border: 1px solid var(--_button-border);
   border-radius: var(--_button-radius);
-  background: var(--ak-color-surface);
-  color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-primary);
+  color: var(--ak-color-text-inverse);
+  box-shadow: none;
   font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-semibold);
+  font-weight: var(--ak-font-weight-medium);
   line-height: 1;
   letter-spacing: 0;
   text-decoration: none;
@@ -44,7 +45,18 @@
   min-inline-size: 0;
 }
 
-:where([data-slot="theme-toggle-content"]) > :where([data-slot="icon"], svg) {
+:where([data-slot="theme-toggle-icon"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+:where([data-slot="theme-toggle-icon"][hidden]) {
+  display: none;
+}
+
+:where([data-slot="theme-toggle-content"]) :where([data-slot="icon"], svg) {
   flex: none;
   inline-size: var(--_ak-theme-toggle-icon-size);
   block-size: var(--_ak-theme-toggle-icon-size);
@@ -54,88 +66,78 @@
 :where(.btn) > :where([data-slot="icon"], svg),
 :where([data-slot="button"]) > :where([data-slot="icon"], svg) {
   flex: none;
+  inline-size: var(--ak-icon-size-sm);
+  block-size: var(--ak-icon-size-sm);
   color: currentColor;
+  pointer-events: none;
+}
+
+:where([data-slot="button"][data-width="full"]) {
+  inline-size: 100%;
 }
 
 :where(.btn:hover, [data-slot="button"]:hover) {
-  background: var(--ak-color-surface-muted);
-  border-color: var(--ak-color-border-strong);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-primary-hover);
 }
 
 :where(.btn:active, [data-slot="button"]:active) {
-  background: color-mix(in srgb, var(--ak-color-active) 100%, var(--ak-color-surface));
-  border-color: var(--ak-color-border-strong);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-primary-active);
 }
 
 :where(.btn:focus-visible, [data-slot="button"]:focus-visible) {
   outline: none;
-  box-shadow:
-    0 0 0 1px var(--ak-color-surface),
-    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+  border-color: var(--ak-color-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.btn[data-disabled], .btn:disabled, [data-slot="button"][data-disabled]) {
-  background: var(--ak-color-disabled-surface);
-  border-color: var(--ak-color-disabled-border);
-  box-shadow: none;
-  color: var(--ak-color-disabled-text);
-  cursor: not-allowed;
   pointer-events: none;
-  opacity: 1;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 :where(.btn-primary, [data-slot="button"][data-variant="primary"]) {
   background: var(--ak-color-primary);
-  border-color: color-mix(in srgb, var(--ak-color-primary-active) 64%, var(--ak-color-primary));
+  border-color: transparent;
   color: var(--ak-color-text-inverse);
-  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-primary:hover, [data-slot="button"][data-variant="primary"]:hover) {
   background: var(--ak-color-primary-hover);
-  border-color: var(--ak-color-primary-hover);
-  box-shadow: var(--ak-shadow-sm);
 }
 
 :where(.btn-primary:active, [data-slot="button"][data-variant="primary"]:active) {
   background: var(--ak-color-primary-active);
-  border-color: var(--ak-color-primary-active);
 }
 
 :where(.btn-secondary, [data-slot="button"][data-variant="secondary"]) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface));
-  border-color: color-mix(in srgb, var(--ak-color-primary) 18%, var(--ak-color-border));
-  color: var(--ak-color-primary-ink);
-}
-
-:where(.btn-secondary:hover, [data-slot="button"][data-variant="secondary"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 30%, var(--ak-color-surface));
-  border-color: color-mix(in srgb, var(--ak-color-primary) 26%, var(--ak-color-border-strong));
-  box-shadow: var(--ak-shadow-sm);
-}
-
-:where(.btn-secondary:active, [data-slot="button"][data-variant="secondary"]:active) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 58%, var(--ak-color-active));
-  border-color: color-mix(in srgb, var(--ak-color-primary) 22%, var(--ak-color-border));
-}
-
-:where(.btn-outline, [data-slot="button"][data-variant="outline"]) {
-  background: var(--ak-color-surface);
-  border-color: var(--ak-color-border);
+  background: var(--ak-color-surface-muted);
+  border-color: transparent;
   color: var(--ak-color-text);
 }
 
+:where(.btn-secondary:hover, [data-slot="button"][data-variant="secondary"]:hover) {
+  background: color-mix(in oklch, var(--ak-color-surface-muted) 80%, transparent);
+}
+
+:where(.btn-secondary:active, [data-slot="button"][data-variant="secondary"]:active) {
+  background: var(--ak-color-active);
+}
+
+:where(.btn-outline, [data-slot="button"][data-variant="outline"]) {
+  background: var(--ak-color-bg);
+  border-color: var(--ak-color-input);
+  color: var(--ak-color-text);
+  box-shadow: var(--ak-shadow-xs);
+}
+
 :where(.btn-outline:hover, [data-slot="button"][data-variant="outline"]:hover) {
-  background: var(--ak-color-surface-muted);
-  border-color: var(--ak-color-border-strong);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
 }
 
 :where(.btn-outline:active, [data-slot="button"][data-variant="outline"]:active) {
-  background: color-mix(in srgb, var(--ak-color-active) 72%, var(--ak-color-surface-muted));
-  border-color: var(--ak-color-border-strong);
+  background: var(--ak-color-active);
 }
 
 :where(.btn-ghost, [data-slot="button"][data-variant="ghost"]) {
@@ -145,29 +147,28 @@
 }
 
 :where(.btn-ghost:hover, [data-slot="button"][data-variant="ghost"]:hover) {
-  background: var(--ak-color-hover);
-  border-color: transparent;
+  background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
 }
 
 :where(.btn-ghost:active, [data-slot="button"][data-variant="ghost"]:active) {
   background: var(--ak-color-active);
-  border-color: transparent;
 }
 
 :where(.btn-destructive, [data-slot="button"][data-variant="destructive"]) {
   background: var(--ak-color-danger);
-  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 40%, var(--ak-color-danger));
+  border-color: transparent;
   color: var(--ak-color-text-inverse);
 }
 
 :where(.btn-destructive:hover, [data-slot="button"][data-variant="destructive"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-danger) 94%, var(--ak-color-danger-ink) 6%);
-  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 48%, var(--ak-color-danger));
+  background: color-mix(in oklch, var(--ak-color-danger) 90%, transparent);
 }
 
-:where(.btn-destructive:active, [data-slot="button"][data-variant="destructive"]:active) {
-  background: color-mix(in srgb, var(--ak-color-danger) 88%, var(--ak-color-danger-ink) 12%);
-  border-color: color-mix(in srgb, var(--ak-color-danger-ink) 56%, var(--ak-color-danger));
+:where(.btn-destructive:focus-visible, [data-slot="button"][data-variant="destructive"]:focus-visible) {
+  border-color: var(--ak-color-danger);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width)
+    color-mix(in oklch, var(--ak-color-danger) 20%, transparent);
 }
 
 :where(.btn-link, [data-slot="button"][data-variant="link"]) {
@@ -178,6 +179,7 @@
   background: transparent;
   box-shadow: none;
   color: var(--ak-color-link);
+  text-underline-offset: 4px;
 }
 
 :where(.btn-link:hover, [data-slot="button"][data-variant="link"]:hover) {
@@ -186,7 +188,6 @@
   box-shadow: none;
   color: var(--ak-color-link-hover);
   text-decoration: underline;
-  text-underline-offset: 0.14em;
 }
 
 :where(.btn-link:active, [data-slot="button"][data-variant="link"]:active) {
@@ -202,14 +203,17 @@
   inline-size: var(--_button-height);
   padding-inline: 0;
   border-color: transparent;
-  border-radius: var(--ak-radius-round);
   background: transparent;
   box-shadow: none;
+  color: var(--ak-color-text-subtle);
+  opacity: 0.7;
 }
 
 :where(.btn-close:hover) {
-  background: var(--ak-color-hover);
+  background: var(--ak-color-accent);
   border-color: transparent;
+  color: var(--ak-color-text);
+  opacity: 1;
 }
 
 :where(.btn-close:active) {
@@ -219,9 +223,7 @@
 
 :where(.btn-close:focus-visible) {
   outline: none;
-  box-shadow:
-    0 0 0 1px var(--ak-color-surface),
-    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.btn-close[data-disabled], .btn-close:disabled) {
@@ -231,12 +233,19 @@
   color: var(--ak-color-disabled-text);
   cursor: not-allowed;
   pointer-events: none;
-  opacity: 1;
+  opacity: 0.5;
 }
 
 :where(.btn-sm, [data-slot="button"][data-size="sm"]) {
   --_button-height: var(--ak-density-control-height-sm);
   --_button-padding-x: var(--ak-density-control-padding-x-sm);
+  gap: 0.375rem;
+}
+
+:where([data-slot="button"][data-size="xs"]) {
+  --_button-height: var(--ak-density-control-height-xs);
+  --_button-padding-x: var(--ak-density-control-padding-x-xs);
+  gap: 0.25rem;
   font-size: var(--ak-font-size-xs);
 }
 
@@ -247,6 +256,30 @@
 }
 
 :where(.btn-icon, [data-slot="button"][data-size="icon"]) {
+  flex: none;
+  inline-size: var(--_button-height);
+  min-inline-size: var(--_button-height);
+  padding-inline: 0;
+}
+
+:where([data-slot="button"][data-size="icon-xs"]) {
+  --_button-height: var(--ak-density-control-height-xs);
+  flex: none;
+  inline-size: var(--_button-height);
+  min-inline-size: var(--_button-height);
+  padding-inline: 0;
+}
+
+:where([data-slot="button"][data-size="icon-sm"]) {
+  --_button-height: var(--ak-density-control-height-sm);
+  flex: none;
+  inline-size: var(--_button-height);
+  min-inline-size: var(--_button-height);
+  padding-inline: 0;
+}
+
+:where([data-slot="button"][data-size="icon-lg"]) {
+  --_button-height: var(--ak-density-control-height-lg);
   flex: none;
   inline-size: var(--_button-height);
   min-inline-size: var(--_button-height);

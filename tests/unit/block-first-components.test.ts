@@ -3,8 +3,19 @@ import { describe, expect, it } from "vite-plus/test";
 import {
   Aside,
   Block,
+  Brand,
+  BrandLabel,
+  BrandMark,
   Container,
   EmptyState,
+  Footer,
+  FooterContent,
+  FooterDescription,
+  FooterLink,
+  FooterLinks,
+  FooterSection,
+  FooterTitle,
+  Grid,
   Header,
   Main,
   Navbar,
@@ -17,6 +28,7 @@ import {
   PageHeader,
   Section,
   Sidebar,
+  Text,
   Toolbar,
 } from "../../src/core";
 import { Badge, Separator, Skeleton } from "../../src/surfaces";
@@ -50,7 +62,18 @@ describe("block-first components", () => {
   it("should exposes the stable core surface", () => {
     for (const component of [
       Block,
+      Brand,
+      BrandLabel,
+      BrandMark,
       Container,
+      Footer,
+      FooterContent,
+      FooterDescription,
+      FooterLink,
+      FooterLinks,
+      FooterSection,
+      FooterTitle,
+      Grid,
       Header,
       Main,
       Section,
@@ -66,6 +89,7 @@ describe("block-first components", () => {
       PageHeader,
       Toolbar,
       EmptyState,
+      Text,
     ]) {
       expect(typeof component).toBe("function");
     }
@@ -100,6 +124,17 @@ describe("block-first components", () => {
 
   it("should builds semantic wrappers on Block", () => {
     const container = asElement(Container({ children: "container" }));
+    const brandRoot = asElement(
+      Brand({ children: [BrandMark({ children: "D" }), BrandLabel({ children: "Destroyer" })] }),
+    );
+    const grid = asElement(Grid({ columns: { base: 1, lg: 3 }, gap: "lg", children: "grid" }));
+    const footer = asElement(Footer({ children: "footer" }));
+    const footerContent = asElement(FooterContent({ children: "content" }));
+    const footerSection = asElement(FooterSection({ children: "section" }));
+    const footerTitle = asElement(FooterTitle({ children: "Title" }));
+    const footerDescription = asElement(FooterDescription({ children: "Description" }));
+    const footerLinks = asElement(FooterLinks({ children: "links" }));
+    const footerLink = asElement(FooterLink({ href: "#docs", children: "Docs" }));
     const header = asElement(Header({ sticky: true, children: "header" }));
     const main = asElement(Main({ children: "main" }));
     const section = asElement(Section({ children: "section" }));
@@ -117,6 +152,30 @@ describe("block-first components", () => {
     expect(container.type).toBe(Block);
     expect(container.props["data-slot"]).toBe("container");
     expect(container.props.maxWidth).toBe("page");
+    expect(brandRoot.props["data-slot"]).toBe("brand");
+    expect(asElement((brandRoot.props.children as ElementLike[])[0]).props["data-slot"]).toBe(
+      "brand-mark",
+    );
+    expect(asElement((brandRoot.props.children as ElementLike[])[1]).props["data-slot"]).toBe(
+      "brand-label",
+    );
+    expect(grid.type).toBe("div");
+    expect(grid.props["data-slot"]).toBe("grid");
+    expect(String(grid.props.class)).toContain("ak-style-");
+    expect(footer.props.as).toBe("footer");
+    expect(footer.props["data-slot"]).toBe("footer");
+    expect(footer.props.background).toBe("muted");
+    expect(footer.props.borderTop).toBe(true);
+    expect(footerContent.props["data-slot"]).toBe("footer-content");
+    expect(footerSection.props["data-slot"]).toBe("footer-section");
+    expect(footerTitle.type).toBe("h2");
+    expect(footerTitle.props["data-slot"]).toBe("footer-title");
+    expect(footerDescription.type).toBe("p");
+    expect(footerDescription.props["data-slot"]).toBe("footer-description");
+    expect(footerLinks.type).toBe("nav");
+    expect(footerLinks.props["data-slot"]).toBe("footer-links");
+    expect(footerLink.type).toBe("a");
+    expect(footerLink.props["data-slot"]).toBe("footer-link");
     expect(header.props.as).toBe("header");
     expect(header.props.sticky).toBe(true);
     expect(main.props.as).toBe("main");
@@ -140,6 +199,7 @@ describe("block-first components", () => {
     expect(PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" })).toBeTruthy();
     expect(Toolbar({ title: "Projects", actions: "actions" })).toBeTruthy();
     expect(EmptyState({ title: "No projects", action: "Create project" })).toBeTruthy();
+    expect(Text({ tone: "muted", size: "sm", children: "Copy" })).toBeTruthy();
   });
 
   it("should keeps visual display primitives with one separator name", () => {

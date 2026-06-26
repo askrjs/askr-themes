@@ -1,11 +1,10 @@
 # @askrjs/themes
 
-CSS tokens, structural presets, and styled composition helpers for Askr apps.
+CSS tokens and a shadcn-style styled component catalog for Askr apps.
 
 `@askrjs/themes` is the visual companion to `@askrjs/ui` and
-`@askrjs/charts`. It owns the default theme, Block-first structural presets,
-and theme-aware component styling while behavior and data contracts stay in
-the other packages.
+`@askrjs/charts`. It owns the default theme and styled component catalog while
+behavior stays in `@askrjs/ui` and chart components stay in `@askrjs/charts`.
 
 ## Install
 
@@ -33,11 +32,11 @@ Then set `data-theme` to `tabby`, `ginger`, `tuxedo`, `calico`, or `torty`.
 For picker/toggle composition, import `CAT_THEME_OPTIONS` and `CAT_THEME_NAMES`
 from `@askrjs/themes/theme`.
 
-Then use the theme helpers and curated component surfaces:
+Then use the theme helpers and component catalog:
 
 ```tsx
 import { ThemeProvider, ThemeToggle } from "@askrjs/themes/theme";
-import { Button, ButtonGroup, Field, Input, InputGroup, Label } from "@askrjs/themes/controls";
+import { Button, ButtonGroup, Field, Input, InputGroup, Label } from "@askrjs/themes/components";
 
 export function AppShell() {
   return (
@@ -60,16 +59,14 @@ export function AppShell() {
 
 ## What To Import
 
+- `@askrjs/themes/components` for the styled component catalog.
+- `@askrjs/themes/<component>` for package subpaths such as
+  `@askrjs/themes/button`, `@askrjs/themes/card`, and
+  `@askrjs/themes/dialog`.
 - `@askrjs/themes/theme` for `ThemeProvider`, `ThemePicker`, `ThemeToggle`,
-  and `useTheme`
-- `@askrjs/themes/controls` for theme-styled controls such as `Button`,
-  `ButtonGroup`, `Close`, `Field`, and `InputGroup`
-- `@askrjs/themes/core` for `Block`, semantic structure, app chrome, and common
-  page helpers
-- `@askrjs/themes/navs` for breadcrumb, standalone nav, and pagination
-- `@askrjs/themes/surfaces` for cards, badges, alerts, lists, skeletons, and
-  spinners
-- `@askrjs/themes/overlays` for dropdown, menu, menubar, and overlay wrappers
+  and `useTheme`.
+- `@askrjs/charts` for charts; chart components are intentionally not exported
+  from `@askrjs/themes`.
 
 ## Theme Contract
 

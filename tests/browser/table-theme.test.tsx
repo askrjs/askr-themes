@@ -63,7 +63,7 @@ describe("table theme smoke test", () => {
     expect(table?.getAttribute("data-slot")).toBe("table");
     expect(headerCell?.getAttribute("data-slot")).toBe("table-header-cell");
     expect(bodyCell?.getAttribute("data-slot")).toBe("table-cell");
-    expect(getComputedStyle(table!).borderRadius).not.toBe("0px");
+    expect(getComputedStyle(table!).borderCollapse).toBe("collapse");
     expect(getComputedStyle(bodyCell!).paddingInlineStart).not.toBe("0px");
   });
 });

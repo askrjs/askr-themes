@@ -65,6 +65,14 @@ describe("theme toggle visibility", () => {
                       width="24"
                     >
                       <circle cx="12" cy="12" r="5" />
+                      <path d="M12 2v2" />
+                      <path d="M12 20v2" />
+                      <path d="m4.93 4.93 1.41 1.41" />
+                      <path d="m17.66 17.66 1.41 1.41" />
+                      <path d="M2 12h2" />
+                      <path d="M20 12h2" />
+                      <path d="m6.34 17.66-1.41 1.41" />
+                      <path d="m19.07 4.93-1.41 1.41" />
                     </svg>
                   }
                   darkIcon={
@@ -104,14 +112,26 @@ describe("theme toggle visibility", () => {
     expect(toggles).toHaveLength(2);
     const [iconToggle, textToggle] = toggles;
     const iconContent = iconToggle?.querySelector('[data-slot="theme-toggle-content"]');
-    const icon = iconToggle?.querySelector("svg");
+    const iconSlots = iconToggle?.querySelectorAll('[data-slot="theme-toggle-icon"]');
+    const visibleIconSlot = iconToggle?.querySelector(
+      '[data-slot="theme-toggle-icon"]:not([hidden])',
+    );
+    const icon = visibleIconSlot?.querySelector("svg");
 
     expect(iconToggle).not.toBeNull();
     expect(textToggle).not.toBeNull();
     expect(icon).not.toBeNull();
     expect(iconContent).not.toBeNull();
-    expect(iconToggle?.querySelectorAll("svg")).toHaveLength(1);
+    expect(iconSlots).toHaveLength(2);
+    expect(iconToggle?.querySelectorAll("svg")).toHaveLength(2);
+    expect(visibleIconSlot?.getAttribute("data-theme-toggle-icon")).toBe("light");
+    expect(
+      iconToggle
+        ?.querySelector('[data-theme-toggle-icon="dark"]')
+        ?.hasAttribute("hidden"),
+    ).toBe(true);
     expect(icon?.getAttribute("data-icon")).toBe("sun");
+    expect(icon?.children).toHaveLength(9);
     expect(getComputedStyle(icon as SVGElement).inlineSize).toBe("14px");
     expect(getComputedStyle(icon as SVGElement).blockSize).toBe("14px");
     document.documentElement.style.setProperty("--ak-theme-toggle-icon-size", "22px");
@@ -128,18 +148,60 @@ describe("theme toggle visibility", () => {
     ] as [HTMLButtonElement, HTMLButtonElement];
     expect(togglesAfter).toHaveLength(2);
     const [iconToggleAfter, textToggleAfter] = togglesAfter;
-    const iconAfter = iconToggleAfter?.querySelector("svg");
+    const visibleIconSlotAfter = iconToggleAfter?.querySelector(
+      '[data-slot="theme-toggle-icon"]:not([hidden])',
+    );
+    const iconAfter = visibleIconSlotAfter?.querySelector("svg");
 
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(iconToggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(iconToggleAfter?.querySelector('[data-slot="theme-toggle-content"]')).not.toBeNull();
-    expect(iconToggleAfter?.querySelectorAll("svg")).toHaveLength(1);
+    expect(iconToggleAfter?.querySelectorAll("svg")).toHaveLength(2);
+    expect(visibleIconSlotAfter?.getAttribute("data-theme-toggle-icon")).toBe("dark");
+    expect(
+      iconToggleAfter
+        ?.querySelector('[data-theme-toggle-icon="light"]')
+        ?.hasAttribute("hidden"),
+    ).toBe(true);
     expect(iconAfter).not.toBeNull();
     expect(iconAfter?.getAttribute("data-icon")).toBe("moon");
+    expect(iconAfter?.children).toHaveLength(1);
     expect(getComputedStyle(iconAfter as SVGElement).inlineSize).toBe("22px");
     expect(getComputedStyle(iconAfter as SVGElement).blockSize).toBe("22px");
     expect(textToggleAfter?.textContent).toBe("light");
     expect(textToggleAfter?.getAttribute("data-theme-choice")).toBe("dark");
     expect(textToggleAfter?.getAttribute("data-next-theme")).toBe("light");
+
+    iconToggleAfter?.click();
+    await settle();
+
+    const togglesAgain = [
+      ...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? []),
+    ] as [HTMLButtonElement, HTMLButtonElement];
+    expect(togglesAgain).toHaveLength(2);
+    const [iconToggleAgain, textToggleAgain] = togglesAgain;
+    const visibleIconSlotAgain = iconToggleAgain?.querySelector(
+      '[data-slot="theme-toggle-icon"]:not([hidden])',
+    );
+    const iconAgain = visibleIconSlotAgain?.querySelector("svg");
+
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(iconToggleAgain?.getAttribute("data-theme-choice")).toBe("light");
+    expect(iconToggleAgain?.querySelector('[data-slot="theme-toggle-content"]')).not.toBeNull();
+    expect(iconToggleAgain?.querySelectorAll("svg")).toHaveLength(2);
+    expect(visibleIconSlotAgain?.getAttribute("data-theme-toggle-icon")).toBe("light");
+    expect(
+      iconToggleAgain
+        ?.querySelector('[data-theme-toggle-icon="dark"]')
+        ?.hasAttribute("hidden"),
+    ).toBe(true);
+    expect(iconAgain).not.toBeNull();
+    expect(iconAgain?.getAttribute("data-icon")).toBe("sun");
+    expect(iconAgain?.children).toHaveLength(9);
+    expect(getComputedStyle(iconAgain as SVGElement).inlineSize).toBe("22px");
+    expect(getComputedStyle(iconAgain as SVGElement).blockSize).toBe("22px");
+    expect(textToggleAgain?.textContent).toBe("dark");
+    expect(textToggleAgain?.getAttribute("data-theme-choice")).toBe("light");
+    expect(textToggleAgain?.getAttribute("data-next-theme")).toBe("dark");
   });
 });

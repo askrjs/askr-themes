@@ -120,7 +120,12 @@ function ThemeProbe(props: { id?: string } = {}): JSX.Element {
 }
 
 function getThemeIcon(label: string): string | null {
-  return document.querySelector(`[aria-label="${label}"] svg`)?.getAttribute("data-icon") ?? null;
+  const toggle = document.querySelector(`[aria-label="${label}"]`);
+  const icon =
+    toggle?.querySelector('[data-slot="theme-toggle-icon"]:not([hidden]) svg') ??
+    toggle?.querySelector("svg");
+
+  return icon?.getAttribute("data-icon") ?? null;
 }
 
 function getSelectedValues(picker: HTMLSelectElement | null): string[] {
@@ -330,10 +335,23 @@ describe("theme contracts", () => {
     expect(probeAfter?.getAttribute("data-theme")).toBe("system");
     expect(picker?.value).toBe("system");
     expect(toggleAfter?.getAttribute("data-theme-choice")).toBe("system");
-    expect(toggleAfter?.getAttribute("data-next-theme")).toBe("light");
+    expect(toggleAfter?.getAttribute("data-next-theme")).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
     expect(window.localStorage.getItem("askr-theme")).toBe("system");
+
+    toggleAfter?.click();
+    await settle();
+
+    const toggleAfterSystemPress = container?.querySelector(
+      '[data-theme-control="toggle"]',
+    ) as HTMLButtonElement | null;
+
+    expect(toggleAfterSystemPress?.getAttribute("data-theme-choice")).toBe("dark");
+    expect(toggleAfterSystemPress?.getAttribute("data-next-theme")).toBe("light");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
+    expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
   it("should isolate custom storage keys from the default theme key", async () => {
@@ -523,7 +541,7 @@ describe("theme contracts", () => {
     changePicker(picker, "system");
     await settle();
 
-    expect(getThemeIcon("Icon toggle")).toBe("sun");
+    expect(getThemeIcon("Icon toggle")).toBe("moon");
     expect(picker?.value).toBe("system");
     expect(getSelectedValues(picker)).toEqual(["system"]);
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
@@ -567,7 +585,7 @@ describe("theme contracts", () => {
     click("Set system");
     await settle();
 
-    expect(getThemeIcon("Icon toggle")).toBe("sun");
+    expect(getThemeIcon("Icon toggle")).toBe("moon");
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
 
@@ -617,7 +635,7 @@ describe("theme contracts", () => {
     await settle();
 
     expect(getThemeIcon("Outer icon toggle")).toBe("sun");
-    expect(getThemeIcon("Inner icon toggle")).toBe("sun");
+    expect(getThemeIcon("Inner icon toggle")).toBe("moon");
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
   });

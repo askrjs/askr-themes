@@ -51,13 +51,9 @@
   pointer-events: none;
 }
 
-:where([data-slot="dialog-content"]) {
-  --_dialog-surface: var(--ak-color-surface-overlay);
-  --_dialog-border: color-mix(
-    in srgb,
-    var(--ak-color-border-subtle) 88%,
-    var(--_dialog-surface) 12%
-  );
+:where([data-slot="dialog-content"], [data-slot="sheet-content"]) {
+  --_dialog-surface: var(--ak-color-bg);
+  --_dialog-border: var(--ak-color-border);
 
   display: grid;
   gap: var(--ak-space-md);
@@ -72,7 +68,7 @@
   border-radius: var(--ak-radius-lg);
   background: var(--_dialog-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-md);
+  box-shadow: var(--ak-shadow-lg);
   z-index: var(--ak-z-modal);
   transform-origin: center;
   animation: ak-scale-in var(--ak-duration-normal) var(--ak-ease-standard);
@@ -83,11 +79,72 @@
   pointer-events: none;
 }
 
+:where([data-slot="sheet-content"]) {
+  position: fixed;
+  inset: auto 0 0 auto;
+  inline-size: min(24rem, 100vw);
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  border-radius: 0;
+}
+
+:where([data-slot="sheet-content"][data-side="left"]) {
+  inset: 0 auto 0 0;
+  border-inline-end: 1px solid var(--_dialog-border);
+  border-inline-start: 0;
+}
+
+:where([data-slot="sheet-content"][data-side="right"]) {
+  inset: 0 0 0 auto;
+  border-inline-start: 1px solid var(--_dialog-border);
+  border-inline-end: 0;
+}
+
+:where([data-slot="sheet-content"][data-side="top"]) {
+  inset: 0 0 auto;
+  inline-size: 100vw;
+  block-size: auto;
+  max-block-size: calc(100dvh - 1rem);
+  border-block-end: 1px solid var(--_dialog-border);
+}
+
+:where([data-slot="sheet-content"][data-side="bottom"]) {
+  inset: auto 0 0;
+  inline-size: 100vw;
+  block-size: auto;
+  max-block-size: calc(100dvh - 1rem);
+  border-block-start: 1px solid var(--_dialog-border);
+}
+
+:where([data-slot="sheet-header"], [data-slot="sheet-footer"]) {
+  display: grid;
+  gap: var(--ak-space-sm);
+}
+
+:where([data-slot="sheet-footer"]) {
+  margin-block-start: var(--ak-space-sm);
+}
+
+:where([data-slot="sheet-title"]) {
+  margin: 0;
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-lg);
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: var(--ak-line-height-tight);
+}
+
+:where([data-slot="sheet-description"]) {
+  margin: 0;
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+}
+
 :where([data-slot="dialog-title"]) {
   margin: 0;
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-lg);
-  font-weight: var(--ak-font-weight-bold);
+  font-weight: var(--ak-font-weight-semibold);
   line-height: var(--ak-line-height-tight);
   overflow-wrap: anywhere;
 }
@@ -104,11 +161,11 @@
   justify-content: center;
   min-height: var(--ak-density-control-height-md);
   padding: 0 var(--ak-density-control-padding-x-md);
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  border: 1px solid var(--ak-color-input);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: var(--ak-shadow-xs);
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
   line-height: 1;
@@ -121,28 +178,24 @@
 }
 
 :where([data-slot="dialog-close"]:hover) {
-  background: var(--ak-color-surface-muted);
-  border-color: var(--ak-color-border-strong);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-accent);
+  border-color: var(--ak-color-input);
+  box-shadow: var(--ak-shadow-xs);
 }
 
 :where([data-slot="dialog-close"]:focus-visible) {
   outline: none;
-  box-shadow:
-    0 0 0 1px var(--_dialog-surface),
-    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="dialog-close"][data-disabled]) {
-  background: var(--ak-color-disabled-surface);
-  border-color: var(--ak-color-disabled-border);
-  color: var(--ak-color-disabled-text);
+  opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :where([data-slot="dialog-overlay"], [data-slot="dialog-content"]) {
+  :where([data-slot="dialog-overlay"], [data-slot="dialog-content"], [data-slot="sheet-content"]) {
     animation: none;
   }
 }

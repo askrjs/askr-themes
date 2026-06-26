@@ -1,15 +1,21 @@
 :where([data-slot="table"]) {
   inline-size: 100%;
   min-inline-size: 0;
-  border-collapse: separate;
+  border-collapse: collapse;
   border-spacing: 0;
   table-layout: fixed;
-  border: 1px solid color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
-  border-radius: var(--ak-radius-md);
-  background: var(--ak-color-surface-raised);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: none;
   overflow: hidden;
+}
+
+:where([data-slot="data-table"]) {
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface);
 }
 
 :where([data-slot="table-caption"]) {
@@ -26,11 +32,11 @@
 }
 
 :where([data-slot="table-body"]) {
-  background: var(--ak-color-surface-raised);
+  background: transparent;
 }
 
 :where([data-slot="table-foot"]) {
-  background: var(--ak-color-surface-muted);
+  background: transparent;
 }
 
 :where([data-slot="table-row"]) {
@@ -39,13 +45,13 @@
 }
 
 :where([data-slot="table-row"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-hover) 70%, transparent);
+  background: var(--ak-color-hover);
 }
 
 :where([data-slot="table-header-cell"]),
 :where([data-slot="table-cell"]) {
-  padding: 0.7rem var(--ak-space-md);
-  border-block-end: 1px solid var(--ak-color-border-subtle);
+  padding: var(--ak-space-sm);
+  border-block-end: 1px solid var(--ak-color-border);
   color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
@@ -54,12 +60,16 @@
   overflow-wrap: anywhere;
 }
 
+:where([data-slot="table-body"] [data-slot="table-row"]:last-child [data-slot="table-cell"]) {
+  border-block-end: 0;
+}
+
 :where([data-slot="table-header-cell"]) {
   color: var(--ak-color-text-muted);
   font-weight: var(--ak-font-weight-semibold);
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   overflow-wrap: normal;
-  text-transform: uppercase;
+  text-transform: none;
   word-break: normal;
   white-space: normal;
 }

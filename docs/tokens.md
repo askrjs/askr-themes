@@ -45,6 +45,11 @@ The default token set is tuned for admin and internal tools: neutral surfaces,
 one primary accent, compact density, restrained radius values, and border-led
 separation.
 
+Typography tokens are intentionally static. Base heading styles step down at
+documented breakpoints instead of scaling continuously with viewport width, and
+the public type-scale tracking tokens default to `0em` so compact product
+surfaces do not inherit display-style compression.
+
 The optional cat preset layer keeps the same semantic token contract while
 changing only the color surface. Import `@askrjs/themes/presets` after the
 default theme to enable `tabby`, `ginger`, `tuxedo`, `calico`, and `torty` as

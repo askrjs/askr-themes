@@ -27,11 +27,24 @@ const THEMES_COMPONENTS_DIR = path.join(themesRoot, "src", "themes", "default", 
 
 const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "block",
+  "calendar-day",
   "center",
   "flex",
   "icon",
   "pill",
   "pills",
+  "sidebar-content",
+  "sidebar-footer",
+  "sidebar-group",
+  "sidebar-group-content",
+  "sidebar-group-label",
+  "sidebar-header",
+  "sidebar-inset",
+  "sidebar-menu",
+  "sidebar-menu-badge",
+  "sidebar-menu-item",
+  "sidebar-provider",
+  "sidebar-rail",
   "tab",
   "tabs",
   "theme-provider",
@@ -208,7 +221,12 @@ function extractSourceSlots(dirPath: string): Set<string> {
 
   for (const file of files) {
     const content = fs.readFileSync(file, "utf-8");
-    const patterns = [/['"]data-slot['"]\s*:\s*['"]([^'"]+)['"]/g, /data-slot="([^"]+)"/g];
+    const patterns = [
+      /['"]data-slot['"]\s*:\s*['"]([^'"]+)['"]/g,
+      /data-slot="([^"]+)"/g,
+      /\bslot\s*:\s*['"]([^'"]+)['"]/g,
+      /buttonPart\([\s\S]*?,\s*['"]([^'"]+)['"]/g,
+    ];
 
     for (const pattern of patterns) {
       let match: RegExpExecArray | null;

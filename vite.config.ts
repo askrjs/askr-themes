@@ -9,6 +9,7 @@ export default defineConfig({
   },
   pack: {
     entry: {
+      components: "src/components.ts",
       core: "src/core.ts",
       controls: "src/controls.ts",
       navs: "src/navs.ts",
@@ -32,6 +33,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
+        components: "src/components.ts",
         core: "src/core.ts",
         controls: "src/controls.ts",
         navs: "src/navs.ts",

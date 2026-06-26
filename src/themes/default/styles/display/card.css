@@ -1,12 +1,12 @@
 :where(.card, [data-slot="card"]) {
   display: grid;
-  gap: var(--ak-space-md);
-  padding: var(--ak-layout-panel-padding);
-  border: 1px solid
-    color-mix(in srgb, var(--ak-color-border-subtle) 86%, var(--ak-color-surface) 14%);
-  border-radius: var(--ak-radius-md);
+  gap: var(--ak-space-6);
+  padding: var(--ak-space-6) 0;
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-xl);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
+  overflow: hidden;
   box-shadow: var(--ak-shadow-sm);
 }
 
@@ -14,4 +14,15 @@
   background: var(--ak-color-surface-raised);
   border-color: var(--ak-color-border);
   box-shadow: var(--ak-shadow-md);
+}
+
+:where(.card, [data-slot="card"]) :where(h2, h3, h4, h5, h6) {
+  margin: 0;
+  font-size: var(--ak-font-size-lg);
+  line-height: var(--ak-line-height-tight);
+  letter-spacing: 0;
+}
+
+:where(.card, [data-slot="card"]) :where(p) {
+  margin: 0;
 }

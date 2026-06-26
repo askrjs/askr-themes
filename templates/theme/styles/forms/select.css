@@ -1,7 +1,7 @@
 :where(.select-trigger, [data-slot="select-trigger"]) {
   --_select-height: var(--ak-density-control-height-md);
   --_select-padding-x: var(--ak-density-control-padding-x-md);
-  --_select-border: color-mix(in srgb, var(--ak-color-border) 84%, var(--ak-color-surface) 16%);
+  --_select-border: var(--ak-color-input);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -13,11 +13,11 @@
   padding-inline: var(--_select-padding-x);
   border: 1px solid var(--_select-border);
   border-radius: var(--ak-radius-md);
-  background: var(--ak-color-surface);
+  background: transparent;
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: var(--ak-shadow-xs);
   font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-medium);
+  font-weight: var(--ak-font-weight-regular);
   line-height: 1;
   cursor: pointer;
   transition:
@@ -27,33 +27,32 @@
 }
 
 :where(.select-trigger:hover, [data-slot="select-trigger"]:hover) {
-  background: var(--ak-color-surface-muted);
-  border-color: var(--ak-color-border-strong);
+  border-color: var(--ak-color-input);
 }
 
 :where(.select-trigger:focus-visible, [data-slot="select-trigger"]:focus-visible) {
   outline: none;
-  border-color: var(--ak-color-primary);
+  border-color: var(--ak-color-ring);
   box-shadow:
     0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
-    var(--ak-shadow-sm);
+    var(--ak-shadow-xs);
 }
 
 :where(.select-trigger[data-state="open"], [data-slot="select-trigger"][data-state="open"]) {
-  border-color: var(--ak-color-primary);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--ak-color-surface));
+  border-color: var(--ak-color-ring);
+  background: transparent;
   box-shadow:
     0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
-    var(--ak-shadow-sm);
+    var(--ak-shadow-xs);
 }
 
 :where(.select-trigger[data-disabled], [data-slot="select-trigger"][data-disabled]) {
-  background: var(--ak-color-disabled-surface);
-  border-color: var(--ak-color-disabled-border);
+  background: var(--ak-color-disabled-bg);
+  border-color: var(--ak-color-input);
   box-shadow: none;
-  color: var(--ak-color-disabled-text);
   pointer-events: none;
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 :where(.select-trigger-sm, [data-slot="select-trigger"][data-size="sm"]) {
@@ -95,12 +94,8 @@
 }
 
 :where(.select-content, [data-slot="select-content"]) {
-  --_select-surface: var(--ak-color-surface-overlay);
-  --_select-border: color-mix(
-    in srgb,
-    var(--ak-color-border-subtle) 88%,
-    var(--_select-surface) 12%
-  );
+  --_select-surface: var(--ak-color-popover);
+  --_select-border: var(--ak-color-border);
 
   display: grid;
   gap: 0.25rem;
@@ -109,9 +104,9 @@
   max-inline-size: min(100%, calc(100vw - 1rem));
   max-block-size: min(20rem, calc(100vh - 4rem));
   overflow-y: auto;
-  padding: calc(var(--ak-space-sm) + 0.125rem);
+  padding: var(--ak-space-xs);
   border: 1px solid var(--_select-border);
-  border-radius: var(--ak-radius-lg);
+  border-radius: var(--ak-radius-md);
   background: var(--_select-surface);
   box-shadow: var(--ak-shadow-md);
   z-index: var(--ak-z-dropdown);
@@ -129,8 +124,8 @@
   display: flex;
   align-items: center;
   inline-size: 100%;
-  min-height: var(--ak-density-control-height-md);
-  padding: 0 var(--ak-density-control-padding-x-md);
+  min-height: 2rem;
+  padding: 0 var(--ak-space-sm);
   border: 0;
   border-radius: var(--ak-radius-md);
   background: transparent;
@@ -138,7 +133,7 @@
   cursor: pointer;
   font-family: inherit;
   font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-medium);
+  font-weight: var(--ak-font-weight-regular);
   overflow-wrap: anywhere;
   text-align: start;
   transition:
@@ -147,22 +142,23 @@
 }
 
 :where(.select-item[data-state="checked"], [data-slot="select-item"][data-state="checked"]) {
-  background: var(--ak-color-primary-soft);
-  color: var(--ak-color-primary-ink);
+  background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
 }
 
 :where(.select-item:hover, [data-slot="select-item"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-hover) 68%, var(--ak-color-surface));
+  background: var(--ak-color-accent);
 }
 
 :where(.select-item:focus-visible, [data-slot="select-item"]:focus-visible) {
   outline: none;
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 32%, var(--ak-color-surface));
-  box-shadow: inset 0 0 0 1px var(--ak-color-focus-ring);
+  background: var(--ak-color-accent);
+  box-shadow: none;
 }
 
 :where(.select-item[data-disabled], [data-slot="select-item"][data-disabled]) {
-  color: var(--ak-color-disabled-text);
+  color: var(--ak-color-text-muted);
+  opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }

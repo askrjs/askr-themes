@@ -146,7 +146,7 @@ describe("theme route persistence", () => {
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
-  it("should replace the icon instead of accumulating icons on repeated toggles", async () => {
+  it("should keep a single visible icon on repeated toggles", async () => {
     const AppLayout = () => (
       <ThemeProvider defaultTheme="light">
         <ThemeToggle
@@ -166,31 +166,39 @@ describe("theme route persistence", () => {
 
     const getToggle = () =>
       container?.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement | null;
-    const getIcon = () => getToggle()?.querySelector("svg") as SVGElement | null;
+    const getIconSlots = () => getToggle()?.querySelectorAll('[data-slot="theme-toggle-icon"]');
+    const getVisibleIcon = () =>
+      getToggle()?.querySelector(
+        '[data-slot="theme-toggle-icon"]:not([hidden]) svg',
+      ) as SVGElement | null;
 
-    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
-    expect(getIcon()?.getAttribute("data-icon")).toBe("sun");
+    expect(getIconSlots()).toHaveLength(2);
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(2);
+    expect(getVisibleIcon()?.getAttribute("data-icon")).toBe("sun");
 
     getToggle()?.click();
     await settle();
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("dark");
-    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
-    expect(getIcon()?.getAttribute("data-icon")).toBe("moon");
+    expect(getIconSlots()).toHaveLength(2);
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(2);
+    expect(getVisibleIcon()?.getAttribute("data-icon")).toBe("moon");
 
     getToggle()?.click();
     await settle();
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("light");
-    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
-    expect(getIcon()?.getAttribute("data-icon")).toBe("sun");
+    expect(getIconSlots()).toHaveLength(2);
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(2);
+    expect(getVisibleIcon()?.getAttribute("data-icon")).toBe("sun");
 
     getToggle()?.click();
     await settle();
 
     expect(getToggle()?.getAttribute("data-theme-choice")).toBe("dark");
-    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(1);
-    expect(getIcon()?.getAttribute("data-icon")).toBe("moon");
+    expect(getIconSlots()).toHaveLength(2);
+    expect(getToggle()?.querySelectorAll("svg")).toHaveLength(2);
+    expect(getVisibleIcon()?.getAttribute("data-icon")).toBe("moon");
   });
 
   it("should mounts theme controls without render-time state errors", async () => {

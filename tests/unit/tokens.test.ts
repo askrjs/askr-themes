@@ -12,6 +12,7 @@ import {
 
 const COMPONENTS_DIR = DEFAULT_THEME_STYLES_DIR;
 const TOKENS_FILE = DEFAULT_THEME_TOKENS_FILE;
+const TYPOGRAPHY_FILE = join(DEFAULT_THEME_STYLES_DIR, "base", "typography.css");
 const OFFICIAL_THEMES = ["default"] as const;
 const TEMPLATE_COMPONENTS_DIR = TEMPLATE_THEME_STYLES_DIR;
 const TEMPLATE_TOKENS_FILE = TEMPLATE_THEME_TOKENS_FILE;
@@ -49,6 +50,7 @@ const REQUIRED_ROOT_TOKENS = [
   "--ak-radius-round",
   "--ak-border-width-sm",
   "--ak-border-width-md",
+  "--ak-shadow-xs",
   "--ak-shadow-sm",
   "--ak-shadow-md",
   "--ak-shadow-lg",
@@ -79,9 +81,11 @@ const REQUIRED_ROOT_TOKENS = [
   "--ak-layout-content-max-width",
   "--ak-layout-page-gutter",
   "--ak-layout-panel-padding",
+  "--ak-density-control-height-xs",
   "--ak-density-control-height-sm",
   "--ak-density-control-height-md",
   "--ak-density-control-height-lg",
+  "--ak-density-control-padding-x-xs",
   "--ak-density-control-padding-x-sm",
   "--ak-density-control-padding-x-md",
   "--ak-density-control-padding-x-lg",
@@ -136,6 +140,12 @@ const REQUIRED_COLOR_TOKENS = [
   "--ak-color-hover",
   "--ak-color-active",
   "--ak-color-backdrop",
+  "--ak-color-accent",
+  "--ak-color-accent-ink",
+  "--ak-color-input",
+  "--ak-color-popover",
+  "--ak-color-popover-ink",
+  "--ak-color-ring",
 ] as const;
 
 const REQUIRED_TOKEN_CATEGORIES = {
@@ -148,10 +158,20 @@ const REQUIRED_TOKEN_CATEGORIES = {
     "--ak-line-height-normal",
   ],
   spacing: ["--ak-space-xs", "--ak-space-md", "--ak-space-xl", "--ak-space-1"],
-  density: ["--ak-density-control-height-md", "--ak-density-control-padding-x-md"],
+  density: [
+    "--ak-density-control-height-xs",
+    "--ak-density-control-height-md",
+    "--ak-density-control-padding-x-xs",
+    "--ak-density-control-padding-x-md",
+  ],
   layout: ["--ak-layout-navbar-height", "--ak-layout-sidebar-width", "--ak-layout-page-gutter"],
-  elevation: ["--ak-shadow-sm", "--ak-shadow-md", "--ak-shadow-lg"],
-  focus: ["--ak-focus-ring-width", "--ak-focus-ring-offset", "--ak-color-focus-ring"],
+  elevation: ["--ak-shadow-xs", "--ak-shadow-sm", "--ak-shadow-md", "--ak-shadow-lg"],
+  focus: [
+    "--ak-focus-ring-width",
+    "--ak-focus-ring-offset",
+    "--ak-color-focus-ring",
+    "--ak-color-ring",
+  ],
   motion: ["--ak-duration-fast", "--ak-duration-normal", "--ak-ease-standard"],
   zIndex: ["--ak-z-dropdown", "--ak-z-modal", "--ak-z-tooltip"],
   state: [
@@ -525,6 +545,18 @@ describe("token completeness", () => {
     expect(css).toContain("--ak-space-8: var(--ak-space-3xl);");
   });
 
+  it("should keep base typography predictable for app screens", () => {
+    const tokensCss = readFileSync(TOKENS_FILE, "utf-8");
+    const typographyCss = readFileSync(TYPOGRAPHY_FILE, "utf-8");
+
+    expect(tokensCss).not.toMatch(/--ak-type-\d-letter-spacing:\s*-/);
+    expect(tokensCss).not.toMatch(/--ak-font-size-(heading|display):\s*clamp\([^;]*vw/);
+    expect(typographyCss).not.toMatch(/font-size:\s*clamp\([^;]*vw/);
+    expect(typographyCss).toContain("font-size: var(--ak-type-8-size);");
+    expect(typographyCss).toContain("font-size: var(--ak-type-7-size);");
+    expect(typographyCss).toContain("font-size: var(--ak-type-6-size);");
+  });
+
   it("should not consume deprecated alias tokens in official theme component CSS", () => {
     const aliasReferences = [
       ...getAllThemeComponentCss().matchAll(
@@ -533,5 +565,38 @@ describe("token completeness", () => {
     ].map((match) => match[1]);
 
     expect(aliasReferences).toEqual([]);
+  });
+
+  it("should keep shadcn-compatible semantic tokens behind the ak namespace", () => {
+    const tokensCss = readFileSync(TOKENS_FILE, "utf-8");
+    const forbiddenShadcnAliases = [
+      "--background",
+      "--foreground",
+      "--card",
+      "--card-foreground",
+      "--popover",
+      "--popover-foreground",
+      "--primary",
+      "--primary-foreground",
+      "--secondary",
+      "--secondary-foreground",
+      "--muted",
+      "--muted-foreground",
+      "--accent",
+      "--accent-foreground",
+      "--destructive",
+      "--border",
+      "--input",
+      "--ring",
+    ];
+
+    for (const token of forbiddenShadcnAliases) {
+      expect(tokensCss).not.toContain(`${token}:`);
+    }
+
+    expect(tokensCss).toContain("--ak-color-bg: oklch(1 0 0);");
+    expect(tokensCss).toContain("--ak-color-primary: oklch(0.205 0 0);");
+    expect(tokensCss).toContain("--ak-color-ring: var(--ak-color-border-strong);");
+    expect(tokensCss).toContain("--ak-color-popover: var(--ak-color-surface-overlay);");
   });
 });

@@ -43,8 +43,8 @@ import {
   PageHeader,
   Toolbar,
   EmptyState,
-} from "@askrjs/themes/core";
-import { DropdownItem } from "@askrjs/themes/overlays";
+} from "@askrjs/themes/components";
+import { DropdownItem } from "@askrjs/themes/components";
 ```
 
 The mental model is intentionally small:
@@ -128,8 +128,8 @@ import {
   Sidebar,
   Toolbar,
   EmptyState,
-} from "@askrjs/themes/core";
-import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
+} from "@askrjs/themes/components";
+import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/components";
 import {
   Button,
   ButtonGroup,
@@ -138,7 +138,7 @@ import {
   InputGroup,
   Label,
   Select,
-} from "@askrjs/themes/controls";
+} from "@askrjs/themes/components";
 import {
   AspectRatio,
   Avatar,
@@ -148,7 +148,7 @@ import {
   Progress,
   Spinner,
   Table,
-} from "@askrjs/themes/surfaces";
+} from "@askrjs/themes/components";
 import {
   Dialog,
   DialogContent,
@@ -156,10 +156,10 @@ import {
   DropdownContent,
   DropdownItem,
   DropdownTrigger,
-} from "@askrjs/themes/overlays";
+} from "@askrjs/themes/components";
 ```
 
-`@askrjs/themes/core` exports the stable semantic core:
+`@askrjs/themes/components` exports the stable semantic core:
 
 ```ts
 export {
