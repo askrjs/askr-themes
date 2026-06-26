@@ -192,6 +192,11 @@
 }
 
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-group-label"]),
+:where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-button"] > :not(svg):not([data-slot="icon"])),
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-badge"]) {
   display: none;
+}
+
+:where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-button"]) {
+  justify-content: center;
 }

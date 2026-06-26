@@ -101,8 +101,8 @@
   display: grid;
   gap: 0.25rem;
   box-sizing: border-box;
-  min-inline-size: min(12rem, 100%);
-  max-inline-size: min(100%, calc(100vw - 1rem));
+  min-inline-size: min(12rem, calc(100vw - 1rem));
+  max-inline-size: calc(100vw - 1rem);
   max-block-size: min(20rem, calc(100vh - 4rem));
   overflow-y: auto;
   padding: var(--ak-space-sm);
