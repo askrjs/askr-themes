@@ -2,7 +2,7 @@ import { Block } from "../block";
 import type { HeaderProps } from "./header.types";
 
 export function Header(props: HeaderProps): JSX.Element {
-  const { children, sticky = false, ...rest } = props;
+  const { children, position, sticky = position === "sticky", ...rest } = props;
 
   return (
     <Block

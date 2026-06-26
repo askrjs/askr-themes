@@ -113,7 +113,7 @@ shape is the semantic choice.
 
 ## Controls And Forms
 
-Controls imported from `@askrjs/themes/controls` are styled through the theme
+Controls imported from `@askrjs/themes/components` are styled through the theme
 even when the behavior comes from `@askrjs/ui`.
 
 | Component     | Shape                                                         | Stable slots                                                                                                                              | Aliases                                                                                                                                                         | Style here                                                    | Avoid                                                  |

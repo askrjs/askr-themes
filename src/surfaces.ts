@@ -66,3 +66,5 @@ export { Skeleton } from "./components/skeleton";
 export type * from "./components/skeleton";
 export { Spinner } from "./components/spinner";
 export type * from "./components/spinner";
+export { Stat, StatDescription, StatLabel, StatValue } from "./components/stat";
+export type * from "./components/stat";

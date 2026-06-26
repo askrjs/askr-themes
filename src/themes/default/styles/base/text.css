@@ -1,0 +1,42 @@
+:where([data-slot="text"]) {
+  margin: 0;
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-md);
+  line-height: var(--ak-line-height-normal);
+}
+
+:where([data-slot="text"][data-size="sm"]) {
+  font-size: var(--ak-font-size-sm);
+}
+
+:where([data-slot="text"][data-size="lg"]) {
+  font-size: var(--ak-font-size-lg);
+}
+
+:where([data-slot="text"][data-tone="muted"]) {
+  color: var(--ak-color-text-muted);
+}
+
+:where([data-slot="text"][data-tone="subtle"]) {
+  color: var(--ak-color-text-subtle);
+}
+
+:where([data-slot="text"][data-tone="inverse"]) {
+  color: var(--ak-color-text-inverse);
+}
+
+:where([data-slot="text"][data-weight="normal"]) {
+  font-weight: var(--ak-font-weight-normal);
+}
+
+:where([data-slot="text"][data-weight="medium"]) {
+  font-weight: var(--ak-font-weight-medium);
+}
+
+:where([data-slot="text"][data-weight="semibold"]) {
+  font-weight: var(--ak-font-weight-semibold);
+}
+
+:where([data-slot="text"][data-weight="bold"]) {
+  font-weight: var(--ak-font-weight-bold);
+}

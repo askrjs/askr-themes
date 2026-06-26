@@ -1,0 +1,15 @@
+export const SHADCN_NEW_YORK_V4_COMPUTED = {
+  buttonHeight: 36,
+  calendarDaySize: 32,
+  cardRadius: 12,
+  commandRowHeight: 32,
+  controlFontSize: "14px",
+  disabledOpacity: "0.5",
+  focusRingWidth: 3,
+  inputHeight: 36,
+  itemXsPaddingBlock: 4,
+  menuRowHeight: 32,
+  sidebarMenuButtonHeight: 32,
+  sheetWidth: 384,
+  tabsTriggerHeight: 32,
+} as const;

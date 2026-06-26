@@ -1,0 +1,39 @@
+:where([data-slot="grid"]) {
+  display: grid;
+  grid-template-columns: var(--ak-grid-columns-base, minmax(0, 1fr));
+  align-items: var(--ak-grid-align-base, stretch);
+  gap: var(--ak-grid-gap-base, var(--ak-space-lg));
+  min-inline-size: 0;
+}
+
+@media (min-width: 40rem) {
+  :where([data-slot="grid"]) {
+    grid-template-columns: var(--ak-grid-columns-sm, var(--ak-grid-columns-base, minmax(0, 1fr)));
+    align-items: var(--ak-grid-align-sm, var(--ak-grid-align-base, stretch));
+    gap: var(--ak-grid-gap-sm, var(--ak-grid-gap-base, var(--ak-space-lg)));
+  }
+}
+
+@media (min-width: 48rem) {
+  :where([data-slot="grid"]) {
+    grid-template-columns: var(--ak-grid-columns-md, var(--ak-grid-columns-sm, var(--ak-grid-columns-base, minmax(0, 1fr))));
+    align-items: var(--ak-grid-align-md, var(--ak-grid-align-sm, var(--ak-grid-align-base, stretch)));
+    gap: var(--ak-grid-gap-md, var(--ak-grid-gap-sm, var(--ak-grid-gap-base, var(--ak-space-lg))));
+  }
+}
+
+@media (min-width: 64rem) {
+  :where([data-slot="grid"]) {
+    grid-template-columns: var(--ak-grid-columns-lg, var(--ak-grid-columns-md, var(--ak-grid-columns-sm, var(--ak-grid-columns-base, minmax(0, 1fr)))));
+    align-items: var(--ak-grid-align-lg, var(--ak-grid-align-md, var(--ak-grid-align-sm, var(--ak-grid-align-base, stretch))));
+    gap: var(--ak-grid-gap-lg, var(--ak-grid-gap-md, var(--ak-grid-gap-sm, var(--ak-grid-gap-base, var(--ak-space-lg)))));
+  }
+}
+
+@media (min-width: 80rem) {
+  :where([data-slot="grid"]) {
+    grid-template-columns: var(--ak-grid-columns-xl, var(--ak-grid-columns-lg, var(--ak-grid-columns-md, var(--ak-grid-columns-sm, var(--ak-grid-columns-base, minmax(0, 1fr))))));
+    align-items: var(--ak-grid-align-xl, var(--ak-grid-align-lg, var(--ak-grid-align-md, var(--ak-grid-align-sm, var(--ak-grid-align-base, stretch)))));
+    gap: var(--ak-grid-gap-xl, var(--ak-grid-gap-lg, var(--ak-grid-gap-md, var(--ak-grid-gap-sm, var(--ak-grid-gap-base, var(--ak-space-lg))))));
+  }
+}

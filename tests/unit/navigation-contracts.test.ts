@@ -63,6 +63,7 @@ describe("navigation contracts", () => {
     const responsiveNavbarContent = findElementBySlot(responsiveNavbarChildren, "navbar-content");
     const responsiveNavbarToggle = findElementBySlot(responsiveNavbarChildren, "navbar-toggle");
     const group = asElement(NavGroup({ title: "Docs", children: "links" }));
+    const endGroup = asElement(NavGroup({ align: "end", children: "actions" }));
     const dropdown = asElement(NavDropdown({ label: "More", children: "items" }));
     const item = asElement(
       NavItem({ href: "https://example.com/docs", active: true, children: "Docs" }),
@@ -110,6 +111,8 @@ describe("navigation contracts", () => {
     expect(responsiveNavbarContent?.props.children).toEqual([docsItem]);
     expect(group.type).toBe(Block);
     expect(group.props["data-slot"]).toBe("nav-group");
+    expect(endGroup.props.align).toBe("end");
+    expect(endGroup.props["data-align"]).toBe("end");
     expect(dropdown.props.children).toBeTruthy();
     expect(item.type).toBe(Block);
     expect(item.props.as).toBe("a");

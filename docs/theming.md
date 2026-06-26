@@ -144,21 +144,14 @@ the active scope:
 default theme also provides a small set of class aliases for raw HTML.
 See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
-The public package surface is organized into curated entrypoints rather than a
-generic catch-all: use `core` for structure, `controls` for actions and forms,
-`surfaces` for display, `navs` for tabs and pills, and `overlays` for floating UI.
-Themes re-exports the small set of styled primitives that are common in app
-code. `@askrjs/ui` owns advanced primitives and behavior details.
-Use `controls` for styled components such as Button, Input, Select, Checkbox,
-Switch, Field, and InputGroup. Use `surfaces` for styled components such as
-Alert, Badge, Card, Table, Avatar, Progress, Spinner, and Skeleton.
-Use `navs` for Tabs, Tab, Pills, and Pill.
-Use `overlays` for the styled overlay primitives shipped with the default CSS:
-Dialog, AlertDialog, Dropdown, Popover, Tooltip, and Toast. `Dialog` is the
-canonical modal surface name; a separate `Modal` component would duplicate the
-same behavior.
-`EmptyState` belongs to `core` because it is a stable composition preset, not a
-surface export.
+The public package surface is organized as a component catalog:
+`@askrjs/themes/components` exports the aggregate catalog, and component
+subpaths such as `@askrjs/themes/button`, `@askrjs/themes/card`, and
+`@askrjs/themes/dialog` point at the same styled catalog build. `@askrjs/ui`
+owns advanced behavior details; `@askrjs/themes` owns the visual shell around
+those primitives. `Dialog` is the canonical modal surface name; `Drawer` and
+`Sheet` are dialog-backed catalog names for shadcn parity. Chart components stay
+in `@askrjs/charts`.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay
 theme-owned because they are visual composition only.

@@ -1,3 +1,8 @@
 :where([data-slot="header"]) {
+  border-block-end: 1px solid var(--ak-color-border);
+  background: color-mix(in srgb, var(--ak-color-bg) 92%, transparent);
   color: var(--ak-color-text);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ak-color-border) 72%, transparent);
 }

@@ -3,14 +3,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  inline-size: 3.3rem;
-  block-size: 2rem;
+  inline-size: 2rem;
+  block-size: 1rem;
   flex: none;
-  padding: 0.2rem;
-  border: 1px solid var(--ak-color-border-strong);
+  padding: 0.125rem;
+  border: 1px solid transparent;
   border-radius: var(--ak-radius-round);
-  background: var(--ak-color-surface-muted);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-input);
+  box-shadow: none;
   color: var(--ak-color-text);
   cursor: pointer;
   transition:
@@ -23,49 +23,44 @@
 :where([data-slot="switch"])::after {
   content: "";
   display: block;
-  inline-size: 1.45rem;
-  block-size: 1.45rem;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
   border-radius: var(--ak-radius-round);
   background: var(--ak-color-surface);
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: var(--ak-shadow-xs);
   transition:
     transform var(--ak-duration-fast) var(--ak-ease-standard),
     background var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where([data-slot="switch"][data-state="checked"]) {
-  border-color: color-mix(in srgb, var(--ak-color-primary-active) 42%, var(--ak-color-primary));
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 42%, var(--ak-color-primary));
+  border-color: transparent;
+  background: var(--ak-color-primary);
 }
 
 :where([data-slot="switch"][data-state="checked"])::after {
-  transform: translateX(1.275rem);
+  transform: translateX(1rem);
 }
 
 :where([data-slot="switch"]:hover) {
-  border-color: var(--ak-color-border-strong);
-  box-shadow:
-    var(--ak-shadow-sm),
-    0 0 0 4px color-mix(in srgb, var(--ak-color-primary-soft) 56%, transparent);
+  background: color-mix(in oklch, var(--ak-color-input) 85%, black);
 }
 
 :where([data-slot="switch"]:focus-visible) {
   outline: none;
-  box-shadow:
-    0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
-    var(--ak-shadow-sm);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="switch"][data-disabled]) {
-  background: var(--ak-color-disabled-surface);
-  border-color: var(--ak-color-disabled-border);
+  background: var(--ak-color-input);
+  border-color: transparent;
   box-shadow: none;
-  opacity: 1;
+  opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
 
 :where([data-slot="switch"][data-disabled])::after {
-  background: var(--ak-color-disabled-bg);
+  background: var(--ak-color-surface);
   box-shadow: none;
 }

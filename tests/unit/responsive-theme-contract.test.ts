@@ -107,6 +107,15 @@ describe("responsive theme contract", () => {
     }
   });
 
+  it("should preserve block axis spacing through the xl breakpoint", () => {
+    const xlBlock = defaultLayout.match(
+      /@media \(min-width: 80rem\) \{\s*:where\(\[data-ak-layout="true"\]\) \{([\s\S]*?)\n  \}\n\}/,
+    )?.[1];
+
+    expect(xlBlock).toContain("margin-block: var(--ak-my-xl");
+    expect(xlBlock).toContain("padding-block: var(--ak-py-xl");
+  });
+
   it("should keeps the generated theme template aligned with the default Navbar contract", () => {
     expect(templateNavbar).toBe(defaultNavbar);
   });

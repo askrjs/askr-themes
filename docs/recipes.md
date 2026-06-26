@@ -36,9 +36,9 @@ Do not:
 
 ```tsx
 import { Link } from "@askrjs/askr/router";
-import { Block, Container, Header, NavBrand } from "@askrjs/themes/core";
-import { Button, Field, FieldError, Input, Label } from "@askrjs/themes/controls";
-import { Card } from "@askrjs/themes/surfaces";
+import { Block, Container, Header, NavBrand } from "@askrjs/themes/components";
+import { Button, Field, FieldError, Input, Label } from "@askrjs/themes/components";
+import { Card } from "@askrjs/themes/components";
 import { ThemeToggle } from "@askrjs/themes/theme";
 
 export function LoginPage({ error }: { error?: string }) {
@@ -119,7 +119,7 @@ Use when auth pages need a brand and one or two global actions.
 
 ```tsx
 import { Link } from "@askrjs/askr/router";
-import { Block, Container, Header, NavBrand, NavItem } from "@askrjs/themes/core";
+import { Block, Container, Header, NavBrand, NavItem } from "@askrjs/themes/components";
 import { ThemeToggle } from "@askrjs/themes/theme";
 
 export function AuthHeader() {
@@ -181,8 +181,8 @@ import {
   NavLink,
   PageHeader,
   Sidebar,
-} from "@askrjs/themes/core";
-import { Button } from "@askrjs/themes/controls";
+} from "@askrjs/themes/components";
+import { Button } from "@askrjs/themes/components";
 import { ThemeToggle } from "@askrjs/themes/theme";
 
 export function AdminShell({ children }: { children?: unknown }) {
@@ -260,7 +260,7 @@ exports, because labels, separators, routing behavior, and disabled states vary
 quickly between products.
 
 ```tsx
-import { Block } from "@askrjs/themes/core";
+import { Block } from "@askrjs/themes/components";
 
 export function PathTrail() {
   return (
@@ -292,7 +292,7 @@ export function PagedLinks() {
 Use for account, workspace, billing, and integration settings.
 
 ```tsx
-import { Block, Page, PageHeader } from "@askrjs/themes/core";
+import { Block, Page, PageHeader } from "@askrjs/themes/components";
 import {
   Button,
   Field,
@@ -304,8 +304,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@askrjs/themes/controls";
-import { Card } from "@askrjs/themes/surfaces";
+} from "@askrjs/themes/components";
+import { Card } from "@askrjs/themes/components";
 
 export function SettingsPage() {
   return (
@@ -356,8 +356,8 @@ enough stable content to justify it.
 Use for searchable admin data with an empty or error state.
 
 ```tsx
-import { Block, EmptyState, Page, PageHeader, Toolbar } from "@askrjs/themes/core";
-import { Button, Field, Input, Label } from "@askrjs/themes/controls";
+import { Block, EmptyState, Page, PageHeader, Toolbar } from "@askrjs/themes/components";
+import { Button, Field, Input, Label } from "@askrjs/themes/components";
 import {
   Alert,
   Badge,
@@ -368,7 +368,7 @@ import {
   TableHead,
   TableHeaderCell,
   TableRow,
-} from "@askrjs/themes/surfaces";
+} from "@askrjs/themes/components";
 
 export function ProjectsTablePage({
   projects,
@@ -463,14 +463,14 @@ Optional app CSS:
 Use for compact row or account actions.
 
 ```tsx
-import { Button } from "@askrjs/themes/controls";
+import { Button } from "@askrjs/themes/components";
 import {
   Dropdown,
   DropdownContent,
   DropdownItem,
   DropdownSeparator,
   DropdownTrigger,
-} from "@askrjs/themes/overlays";
+} from "@askrjs/themes/components";
 
 export function ProjectActions() {
   return (
@@ -514,8 +514,8 @@ Optional app CSS:
 Use when a page has primary content plus stable secondary metadata.
 
 ```tsx
-import { Block, Page, PageHeader } from "@askrjs/themes/core";
-import { Badge, Card } from "@askrjs/themes/surfaces";
+import { Block, Page, PageHeader } from "@askrjs/themes/components";
+import { Badge, Card } from "@askrjs/themes/components";
 
 export function ProjectDetailPage() {
   return (

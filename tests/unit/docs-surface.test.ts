@@ -1,217 +1,61 @@
-import { describe, expect, it } from "vite-plus/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { describe, expect, it } from "vite-plus/test";
 
-import { DOCS_DIR, PACKAGE_JSON } from "./test-paths";
+import {
+  SHADCN_CHART_COMPONENT,
+  SHADCN_THEME_COMPONENT_SUBPATHS,
+} from "../../src/parity";
+import { DOCS_DIR, PACKAGE_JSON, ROOT_DIR } from "./test-paths";
 
+const README = join(ROOT_DIR, "README.md");
 const THEMES_DOC = join(DOCS_DIR, "askr-themes.md");
 const THEMING_DOC = join(DOCS_DIR, "theming.md");
-const README_DOC = join(DOCS_DIR, "README.md");
-const TOKENS_DOC = join(DOCS_DIR, "tokens.md");
-const COMPONENT_ANATOMY_DOC = join(DOCS_DIR, "component-anatomy.md");
-const CUSTOMIZATION_DOC = join(DOCS_DIR, "customization.md");
-const RECIPES_DOC = join(DOCS_DIR, "recipes.md");
-const REMOVED_LIST_SURFACE = ["List", "Group"].join("");
+const ARCHITECTURE_DOC = join(DOCS_DIR, "architecture.md");
 
 describe("docs surface", () => {
-  it("should documents curated entrypoints instead of a components catch-all", () => {
+  it("should documents the component catalog package surface", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
 
+    expect(pkg.exports?.["./components"]).toBeTruthy();
     expect(pkg.exports?.["./theme"]).toBeTruthy();
-    expect(pkg.exports?.["./core"]).toBeTruthy();
-    expect(pkg.exports?.["./controls"]).toBeTruthy();
-    expect(pkg.exports?.["./surfaces"]).toBeTruthy();
-    expect(pkg.exports?.["./feedback"]).toBeUndefined();
-    expect(pkg.exports?.["./navs"]).toBeTruthy();
-    expect(pkg.exports?.["./overlays"]).toBeTruthy();
-    expect(pkg.exports?.["./layouts"]).toBeUndefined();
-    expect(pkg.exports?.["./shells"]).toBeUndefined();
-    expect(pkg.exports?.["./logos"]).toBeUndefined();
-    expect(pkg.exports?.["./components"]).toBeUndefined();
+    expect(pkg.exports?.["./core"]).toBeUndefined();
+    expect(pkg.exports?.["./controls"]).toBeUndefined();
+    expect(pkg.exports?.["./surfaces"]).toBeUndefined();
+    expect(pkg.exports?.["./navs"]).toBeUndefined();
+    expect(pkg.exports?.["./overlays"]).toBeUndefined();
   });
 
-  it("should documents the same curated families and canonical names", () => {
-    const themesDoc = readFileSync(THEMES_DOC, "utf-8");
+  it("should keeps docs aligned with the new component catalog imports", () => {
+    const docs = [
+      readFileSync(README, "utf-8"),
+      readFileSync(THEMES_DOC, "utf-8"),
+      readFileSync(THEMING_DOC, "utf-8"),
+      readFileSync(ARCHITECTURE_DOC, "utf-8"),
+    ].join("\n");
+
+    expect(docs).toContain("@askrjs/themes/components");
+    expect(docs).toContain("@askrjs/themes/button");
+    expect(docs).toContain("@askrjs/themes/card");
+    expect(docs).toContain("@askrjs/themes/dialog");
+    expect(docs).toContain("@askrjs/charts");
+    expect(docs).not.toContain("@askrjs/themes/core");
+    expect(docs).not.toContain("@askrjs/themes/controls");
+    expect(docs).not.toContain("@askrjs/themes/surfaces");
+    expect(docs).not.toContain("@askrjs/themes/navs");
+    expect(docs).not.toContain("@askrjs/themes/overlays");
+  });
+
+  it("should documents non-chart shadcn parity without moving charts into themes", () => {
+    const readme = readFileSync(README, "utf-8");
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
-    const readmeDoc = readFileSync(README_DOC, "utf-8");
-    const tokensDoc = readFileSync(TOKENS_DOC, "utf-8");
-    const componentAnatomyDoc = readFileSync(COMPONENT_ANATOMY_DOC, "utf-8");
-    const customizationDoc = readFileSync(CUSTOMIZATION_DOC, "utf-8");
-    const recipesDoc = readFileSync(RECIPES_DOC, "utf-8");
 
-    expect(themesDoc).toContain("## Design Model");
-    expect(themesDoc).toContain("## Public API");
-    expect(themesDoc).toContain("## Block");
-    expect(themesDoc).toContain("## Semantic Wrappers");
-    expect(themesDoc).toContain("## Common Composition");
-    expect(themesDoc).toContain("## Status And Overlays");
-    expect(themesDoc).toContain("`Block` is the only layout engine.");
-    expect(themesDoc).toContain("@askrjs/themes/core");
-    expect(themesDoc).toContain("@askrjs/themes/controls");
-    expect(themesDoc).toContain("@askrjs/themes/surfaces");
-    expect(themesDoc).not.toContain("@askrjs/themes/feedback");
-    expect(themesDoc).toContain("@askrjs/themes/navs");
-    expect(themesDoc).toContain("@askrjs/themes/overlays");
-    expect(themesDoc).not.toContain("@askrjs/themes/layouts");
-    expect(themesDoc).not.toContain("@askrjs/themes/shells");
-    expect(themesDoc).not.toContain("@askrjs/themes/logos");
-    expect(themesDoc).toContain("Block,");
-    expect(themesDoc).toContain("Container,");
-    expect(themesDoc).toContain("Header,");
-    expect(themesDoc).toContain("Main,");
-    expect(themesDoc).toContain("Section,");
-    expect(themesDoc).toContain("Aside,");
-    expect(themesDoc).toContain("Sidebar,");
-    expect(themesDoc).toContain("Navbar,");
-    expect(themesDoc).toContain("NavBrand,");
-    expect(themesDoc).toContain("NavDropdown,");
-    expect(themesDoc).toContain("NavGroup,");
-    expect(themesDoc).toContain("NavItem,");
-    expect(themesDoc).toContain("Page,");
-    expect(themesDoc).toContain("PageHeader,");
-    expect(themesDoc).toContain("Toolbar,");
-    expect(themesDoc).toContain("EmptyState,");
-    expect(themesDoc).toContain("Use explicit prop names.");
-    expect(themesDoc).toContain("Application-specific layouts stay as recipes");
-    expect(themesDoc).toContain("NavLink");
-    expect(themesDoc).toContain("InputGroup");
-    expect(themesDoc).toContain("Field");
-    expect(themesDoc).toContain("Tabs");
-    expect(themesDoc).toContain("Tab");
-    expect(themesDoc).toContain("Pills");
-    expect(themesDoc).toContain("Pill");
-    expect(themesDoc).not.toContain(REMOVED_LIST_SURFACE);
-    expect(themesDoc).not.toContain("Pagination");
-    expect(themesDoc).not.toContain("Breadcrumb");
-    expect(themesDoc).toContain("Spinner");
-    expect(themesDoc).toContain("Themes re-exports the small set of styled primitives");
-    expect(themesDoc).toContain("and advanced primitives");
-    expect(themesDoc).toContain("Do not create a second `Modal` abstraction.");
-    expect(themesDoc).toContain("Chips and tags stay as recipes for now.");
-
-    expect(themingDoc).toContain("## Selector Contract");
-    expect(themingDoc).toContain("## Cat Presets");
-    expect(themingDoc).toContain("@askrjs/themes/presets");
-    expect(themingDoc).toContain("`tabby`");
-    expect(themingDoc).toContain("`ginger`");
-    expect(themingDoc).toContain("`tuxedo`");
-    expect(themingDoc).toContain("`calico`");
-    expect(themingDoc).toContain("`torty`");
-    expect(themingDoc).toContain("use `core` for structure");
-    expect(themingDoc).toContain("Block");
-    expect(themingDoc).toContain("Alert");
-    expect(themingDoc).toContain("ButtonGroup");
-    expect(themingDoc).toContain("InputGroup");
-    expect(themingDoc).toContain("Field");
-    expect(themingDoc).toContain("Tabs");
-    expect(themingDoc).toContain("Tab");
-    expect(themingDoc).toContain("Pills");
-    expect(themingDoc).toContain("Pill");
-    expect(themingDoc).not.toContain(REMOVED_LIST_SURFACE);
-    expect(themingDoc).not.toContain("Pagination");
-    expect(themingDoc).not.toContain("CardActions");
-    expect(themingDoc).toContain("Header");
-    expect(themingDoc).not.toContain("Breadcrumb");
-    expect(themingDoc).toContain("Spinner");
-    expect(themingDoc).toContain("Themes re-exports the small set of styled primitives");
-    expect(themingDoc).toContain(
-      "Use `controls` for styled components such as Button, Input, Select",
-    );
-    expect(themingDoc).toContain("Alert, Badge, Card, Table");
-    expect(themingDoc).toContain("`EmptyState` belongs to `core`");
-    expect(themingDoc).toContain("canonical modal surface name");
-    expect(themingDoc).toContain("Chips and tags should stay local recipes");
-
-    expect(readmeDoc).toContain("@askrjs/themes/core");
-    expect(readmeDoc).toContain("@askrjs/themes/navs");
-    expect(readmeDoc).toContain("@askrjs/themes/surfaces");
-    expect(readmeDoc).not.toContain("@askrjs/themes/feedback");
-    expect(readmeDoc).toContain("@askrjs/themes/theme");
-    expect(readmeDoc).toContain("@askrjs/themes/overlays");
-    expect(readmeDoc).not.toContain("@askrjs/themes/layouts");
-    expect(readmeDoc).not.toContain("@askrjs/themes/shells");
-    expect(readmeDoc).not.toContain("@askrjs/themes/logos");
-    expect(readmeDoc).toContain("ButtonGroup");
-    expect(readmeDoc).toContain("InputGroup");
-    expect(readmeDoc).toContain("Field");
-    expect(readmeDoc).not.toContain("Pagination");
-    expect(readmeDoc).not.toContain("Breadcrumb");
-    expect(readmeDoc).toContain("Card");
-    expect(readmeDoc).toContain("DropdownContent");
-    expect(readmeDoc).toContain("Themes re-exports the small set of styled primitives");
-    expect(readmeDoc).toContain("./component-anatomy.md");
-    expect(readmeDoc).toContain("./customization.md");
-    expect(readmeDoc).toContain("./recipes.md");
-    expect(readmeDoc).toContain("Keep chips/tags as recipes");
-    expect(themingDoc).not.toContain("@askrjs/themes/feedback");
-
-    expect(tokensDoc).toContain("## Semantic Registry");
-    expect(tokensDoc).toContain("tabby");
-    expect(tokensDoc).toContain("ginger");
-    expect(tokensDoc).toContain("tuxedo");
-    expect(tokensDoc).toContain("calico");
-    expect(tokensDoc).toContain("torty");
-    expect(tokensDoc).toContain("component-specific token");
-    expect(tokensDoc).toContain("Color");
-    expect(tokensDoc).toContain("Typography");
-    expect(tokensDoc).toContain("Spacing");
-    expect(tokensDoc).toContain("Density");
-    expect(tokensDoc).toContain("Layout");
-    expect(tokensDoc).toContain("Elevation");
-    expect(tokensDoc).toContain("Focus");
-    expect(tokensDoc).toContain("Motion");
-    expect(tokensDoc).toContain("Z-index");
-    expect(tokensDoc).toContain("State");
-
-    expect(componentAnatomyDoc).toContain("# Component Anatomy");
-    expect(componentAnatomyDoc).toContain("`data-slot` values are safe app styling hooks");
-    expect(componentAnatomyDoc).toContain("`Block` remains the only layout engine.");
-    expect(componentAnatomyDoc).toContain("`navbar-collapse`");
-    expect(componentAnatomyDoc).toContain("`navbar-toggle`");
-    expect(componentAnatomyDoc).toContain("`navbar-toggle-label`");
-    expect(componentAnatomyDoc).toContain("`navbar-content`");
-    expect(componentAnatomyDoc).toContain("`NavBrand` remains visible outside collapsed content.");
-    expect(componentAnatomyDoc).toContain("Do not depend on old slots such as `navbar-shell`");
-    expect(componentAnatomyDoc).toContain("`NavLink`");
-    expect(componentAnatomyDoc).toContain("`NavDropdown`");
-    expect(componentAnatomyDoc).toContain("`Tabs`");
-    expect(componentAnatomyDoc).toContain("`Tab`");
-    expect(componentAnatomyDoc).toContain("`Pills`");
-    expect(componentAnatomyDoc).toContain("`Pill`");
-    expect(componentAnatomyDoc).toContain("`dropdown-content`");
-    expect(componentAnatomyDoc).toContain("`theme-toggle-content`");
-    expect(componentAnatomyDoc).not.toContain("`card-actions`");
-    expect(componentAnatomyDoc).toContain("`field-error`");
-    expect(componentAnatomyDoc).toContain("`input`");
-    expect(componentAnatomyDoc).toContain("`button`");
-    expect(componentAnatomyDoc).toContain("Do not add broad layout props");
-
-    expect(customizationDoc).toContain("# Safe Customization");
-    expect(customizationDoc).toContain("Override tokens for broad visual decisions.");
-    expect(customizationDoc).toContain("Use stable `data-slot` hooks for app-scoped CSS.");
-    expect(customizationDoc).toContain(
-      "Alias classes exist only where they are intentionally supported",
-    );
-    expect(customizationDoc).toContain("Do not recreate CSS as props.");
-    expect(customizationDoc).toContain('<Card width="lg" density="compact" shadowColor="blue" />');
-    expect(customizationDoc).toContain('.settings-page :where([data-slot="card"])');
-    expect(customizationDoc).toContain('.account-menu :where([data-slot="dropdown-content"])');
-    expect(customizationDoc).toContain("Use `class` for reusable app styling");
-    expect(customizationDoc).toContain("Use `style` for one-off dynamic values");
-
-    expect(recipesDoc).toContain("# App Recipes");
-    expect(recipesDoc).toContain("## Simple Login Page");
-    expect(recipesDoc).toContain("## Admin Shell");
-    expect(recipesDoc).toContain("## Local Nav Patterns");
-    expect(recipesDoc).toContain("## Settings Form Page");
-    expect(recipesDoc).toContain("## Data Table Page");
-    expect(recipesDoc).toContain("## Dropdown Action Menu");
-    expect(recipesDoc).toContain("Do not bake that decision into core.");
-    expect(recipesDoc).toContain("Header actions remain visible on mobile.");
-    expect(recipesDoc).toContain("Keep app-specific shells");
-    expect(recipesDoc).toContain("SelectContent");
-    expect(recipesDoc).not.toContain('<DropdownItem variant="danger"');
+    expect(readme).toContain("shadcn-style");
+    expect(themingDoc).toMatch(/Chart components stay\s+in `@askrjs\/charts`/);
+    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("chart");
+    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("charts");
+    expect(SHADCN_CHART_COMPONENT).toBe("Chart");
   });
 });

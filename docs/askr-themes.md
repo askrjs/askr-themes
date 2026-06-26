@@ -65,9 +65,9 @@ import {
   Sidebar,
   Toolbar,
   EmptyState,
-} from "@askrjs/themes/core";
-import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/navs";
-import { Button, Field, Input, InputGroup, Select } from "@askrjs/themes/controls";
+} from "@askrjs/themes/components";
+import { Pill, Pills, Tab, Tabs } from "@askrjs/themes/components";
+import { Button, Field, Input, InputGroup, Select } from "@askrjs/themes/components";
 import {
   AspectRatio,
   Avatar,
@@ -77,7 +77,7 @@ import {
   Progress,
   Spinner,
   Table,
-} from "@askrjs/themes/surfaces";
+} from "@askrjs/themes/components";
 import {
   Dialog,
   DialogContent,
@@ -87,7 +87,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DropdownItem,
-} from "@askrjs/themes/overlays";
+} from "@askrjs/themes/components";
 ```
 
 Themes re-exports the small set of styled primitives that are common in app
@@ -283,7 +283,7 @@ there is no separate dismissible flag.
 
 Use `Dialog` for modal content and `AlertDialog` for destructive confirmations.
 Do not create a second `Modal` abstraction. Use `Popover`, `Tooltip`, and
-`Toast` from `@askrjs/themes/overlays` for common floating UI. Import advanced
+`Toast` from `@askrjs/themes/components` for common floating UI. Import advanced
 overlay primitives from `@askrjs/ui`.
 
 ```tsx

@@ -35,8 +35,8 @@
 }
 
 :where([data-slot="toast"]) {
-  --_toast-surface: var(--ak-color-surface-overlay);
-  --_toast-border: color-mix(in srgb, var(--ak-color-border-subtle) 88%, var(--_toast-surface) 12%);
+  --_toast-surface: var(--ak-color-bg);
+  --_toast-border: var(--ak-color-border);
 
   display: grid;
   gap: var(--ak-space-sm);
@@ -44,10 +44,10 @@
   min-inline-size: 0;
   padding: calc(var(--ak-layout-panel-padding) - 0.15rem) var(--ak-layout-panel-padding);
   border: 1px solid var(--_toast-border);
-  border-radius: var(--ak-radius-lg);
+  border-radius: var(--ak-radius-md);
   background: var(--_toast-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-md);
+  box-shadow: var(--ak-shadow-lg);
   transform-origin: bottom right;
   animation: ak-toast-in var(--ak-duration-normal) var(--ak-ease-standard);
 }
@@ -58,9 +58,9 @@
 }
 
 :where([data-slot="toast-title"]) {
-  font-weight: var(--ak-font-weight-bold);
-  line-height: var(--ak-line-height-tight);
-  letter-spacing: -0.005em;
+  font-weight: var(--ak-font-weight-semibold);
+  line-height: 1;
+  letter-spacing: 0;
   overflow-wrap: anywhere;
 }
 
@@ -75,7 +75,7 @@
 :where([data-slot="toast-close"]) {
   --_button-height: var(--ak-density-control-height-sm);
   --_button-padding-x: var(--ak-density-control-padding-x-sm);
-  --_button-border: color-mix(in srgb, var(--ak-color-border) 84%, var(--_toast-surface) 16%);
+  --_button-border: var(--ak-color-input);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -85,11 +85,11 @@
   padding-inline: var(--_button-padding-x);
   border: 1px solid var(--_button-border);
   border-radius: var(--ak-radius-md);
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 12%, var(--_toast-surface));
-  color: var(--ak-color-text);
+  background: var(--ak-color-primary);
+  color: var(--ak-color-text-inverse);
   box-shadow: none;
   font-size: var(--ak-font-size-xs);
-  font-weight: var(--ak-font-weight-semibold);
+  font-weight: var(--ak-font-weight-medium);
   line-height: 1;
   cursor: pointer;
   transition:
@@ -100,17 +100,15 @@
 
 :where([data-slot="toast-action"]:hover),
 :where([data-slot="toast-close"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-primary-soft) 22%, var(--ak-color-surface-muted));
-  border-color: var(--ak-color-border-strong);
-  box-shadow: var(--ak-shadow-sm);
+  background: var(--ak-color-primary-hover);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 :where([data-slot="toast-action"]:focus-visible),
 :where([data-slot="toast-close"]:focus-visible) {
   outline: none;
-  box-shadow:
-    0 0 0 1px var(--_toast-surface),
-    0 0 0 calc(var(--ak-focus-ring-width) + 1px) var(--ak-color-focus-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="toast-close"]) {
@@ -120,19 +118,18 @@
   border-color: transparent;
   border-radius: var(--ak-radius-round);
   background: transparent;
+  color: var(--ak-color-text-subtle);
 }
 
 :where([data-slot="toast-close"]:hover) {
-  background: var(--ak-color-hover);
+  background: var(--ak-color-accent);
   border-color: transparent;
   box-shadow: none;
 }
 
 :where([data-slot="toast-action"][data-disabled]),
 :where([data-slot="toast-close"][data-disabled]) {
-  background: var(--ak-color-disabled-surface);
-  border-color: var(--ak-color-disabled-border);
-  color: var(--ak-color-disabled-text);
+  opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }

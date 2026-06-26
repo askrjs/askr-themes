@@ -34,6 +34,7 @@ export type BlockElement =
   | "span"
   | "main"
   | "header"
+  | "footer"
   | "section"
   | "aside"
   | "nav"

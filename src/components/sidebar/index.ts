@@ -1,2 +1,26 @@
-export { Sidebar } from "./sidebar";
-export type { SidebarProps } from "./sidebar.types";
+export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from "./sidebar";
+export type {
+  SidebarButtonProps,
+  SidebarCollapsible,
+  SidebarPartProps,
+  SidebarProps,
+  SidebarSide,
+  SidebarVariant,
+} from "./sidebar.types";

@@ -65,6 +65,8 @@ export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
 ];
 
 const DEFAULT_STORAGE_KEY = "askr-theme";
+const STATIC_CHILDREN = Symbol.for("askr.static-children");
+const STATIC_CHILD_SLOTS_CACHE = Symbol.for("__askrStaticChildSlots");
 // Passive mount sync should not overwrite a newer user/provider-initiated change.
 let rootThemeRevision = 0;
 let explicitRootThemeOwner: symbol | undefined;
@@ -224,7 +226,7 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   } = props;
 
   const currentTheme = theme.theme();
-  const nextTheme = getNextTheme(currentTheme, themes);
+  const nextTheme = getNextTheme(currentTheme, themes, getResolvedSystemTheme());
   const renderContext = { theme: currentTheme, nextTheme };
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"];
   const themedIcon = resolveThemeToggleIcon(currentTheme, nextTheme, {
@@ -232,9 +234,15 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
     darkIcon,
     systemIcon,
   });
-  const renderedIcon = cloneThemeToggleIcon(themedIcon);
+  const renderedIcon = cloneThemeToggleIcon(themedIcon, currentTheme);
+  const renderedIconSlots =
+    renderThemeToggleIconSlots(currentTheme, {
+      lightIcon,
+      darkIcon,
+      systemIcon,
+    }) ?? renderedIcon;
   const content =
-    typeof children === "function" ? children(renderContext) : (children ?? renderedIcon);
+    typeof children === "function" ? children(renderContext) : (children ?? renderedIconSlots);
 
   return (
     <Button
@@ -255,10 +263,27 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   );
 }
 
-function getNextTheme(currentTheme: ThemeName, themes: readonly ThemeName[]): ThemeName {
+function getNextTheme(
+  currentTheme: ThemeName,
+  themes: readonly ThemeName[],
+  resolvedSystemTheme: "light" | "dark" = "light",
+): ThemeName {
   if (themes.length === 0) return currentTheme;
   const index = themes.indexOf(currentTheme);
+  if (index < 0 && currentTheme === "system") {
+    if (themes.includes("light") && themes.includes("dark")) {
+      return resolvedSystemTheme === "dark" ? "light" : "dark";
+    }
+  }
   return themes[index >= 0 && index < themes.length - 1 ? index + 1 : 0]!;
+}
+
+function getResolvedSystemTheme(): "light" | "dark" {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return "light";
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 function getThemeIcon(
@@ -279,6 +304,37 @@ export function resolveThemeToggleIcon(
   return getThemeIcon(theme, icons) ?? getThemeIcon(nextTheme, icons);
 }
 
+function renderThemeToggleIconSlots(
+  theme: ThemeName,
+  icons: Pick<ThemeToggleProps, "lightIcon" | "darkIcon" | "systemIcon">,
+): unknown {
+  if (getThemeIcon(theme, icons) === undefined) {
+    return undefined;
+  }
+
+  const slots = [
+    ["light", icons.lightIcon],
+    ["dark", icons.darkIcon],
+    ["system", icons.systemIcon],
+  ] as const;
+  const availableSlots = slots.filter(([, icon]) => icon !== undefined && icon !== null);
+
+  if (availableSlots.length <= 1) {
+    return undefined;
+  }
+
+  return availableSlots.map(([slotTheme, icon]) => (
+    <span
+      key={slotTheme}
+      data-slot="theme-toggle-icon"
+      data-theme-toggle-icon={slotTheme}
+      hidden={slotTheme === theme ? undefined : true}
+    >
+      {cloneThemeToggleIcon(icon, slotTheme)}
+    </span>
+  ));
+}
+
 function isJSXElement(value: unknown): value is JSXElement {
   return (
     typeof value === "object" &&
@@ -289,18 +345,36 @@ function isJSXElement(value: unknown): value is JSXElement {
   );
 }
 
-function cloneThemeToggleIcon(icon: unknown): unknown {
+function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
+  if (Array.isArray(icon)) {
+    const clonedChildren = icon.map((child) => cloneThemeToggleIcon(child));
+    if ((icon as Record<symbol, unknown>)[STATIC_CHILDREN] === true) {
+      Object.defineProperty(clonedChildren, STATIC_CHILDREN, {
+        value: true,
+        configurable: true,
+      });
+    }
+    return clonedChildren;
+  }
+
   if (!isJSXElement(icon)) return icon;
 
   const props = icon.props as Record<string, unknown> | undefined;
-  if (!props || Object.keys(props).length === 0) {
-    return icon;
+  const clonedProps = props ? { ...props } : {};
+
+  if ("children" in clonedProps) {
+    clonedProps.children = cloneThemeToggleIcon(clonedProps.children);
   }
 
-  return {
+  const iconKey = (icon.key ?? key ?? null) as string | number | null;
+  const clonedIcon = {
     ...icon,
-    props: { ...props },
+    key: iconKey,
+    props: clonedProps,
   };
+
+  delete (clonedIcon as Record<symbol, unknown>)[STATIC_CHILD_SLOTS_CACHE];
+  return clonedIcon;
 }
 
 function syncThemeRoot(
