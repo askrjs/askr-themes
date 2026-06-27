@@ -118,7 +118,7 @@ Use explicit prop names. The API intentionally avoids shorthand aliases such as
 Responsive behavior uses one pattern everywhere:
 
 ```tsx
-<Block direction={{ base: "column", lg: "row" }} gap="lg">
+<Block rowFrom="lg" gap="lg">
   <Block grow padding="lg" border radius="lg">
     Projects
   </Block>

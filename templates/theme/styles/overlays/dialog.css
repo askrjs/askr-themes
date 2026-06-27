@@ -42,6 +42,7 @@
   position: fixed;
   inset: 0;
   background: var(--ak-color-backdrop);
+  backdrop-filter: blur(2px);
   z-index: var(--ak-z-modal-backdrop);
   animation: ak-fade-in var(--ak-duration-fast) var(--ak-ease-standard);
 }
@@ -65,7 +66,7 @@
   overflow-y: auto;
   padding: calc(var(--ak-layout-panel-padding) + 0.25rem);
   border: 1px solid var(--_dialog-border);
-  border-radius: var(--ak-radius-lg);
+  border-radius: var(--ak-radius-xl);
   background: var(--_dialog-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-lg);

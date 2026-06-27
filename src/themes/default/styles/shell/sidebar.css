@@ -1,9 +1,11 @@
 :where([data-slot="sidebar"]) {
+  --ak-background-base: var(--ak-color-bg);
+
   display: flex;
   flex-direction: column;
   gap: var(--ak-space-sm);
   border-color: var(--ak-color-border);
-  background: var(--ak-color-bg);
+  background: var(--ak-background-base);
   color: var(--ak-color-text);
 }
 
@@ -105,6 +107,13 @@
 }
 
 :where([data-slot="sidebar-menu-button"]) {
+  --_sidebar-menu-button-hover-bg: color-mix(in oklch, var(--ak-color-text) 5%, transparent);
+  --_sidebar-menu-button-active-bg: color-mix(
+    in oklch,
+    var(--ak-color-text) 7%,
+    var(--ak-color-bg)
+  );
+
   display: flex;
   align-items: center;
   gap: var(--ak-space-sm);
@@ -124,6 +133,7 @@
   overflow-wrap: anywhere;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
     color var(--ak-duration-fast) var(--ak-ease-standard),
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
@@ -138,20 +148,24 @@
 }
 
 :where([data-slot="sidebar-menu-button"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--_sidebar-menu-button-hover-bg);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="sidebar-menu-button"][data-active="true"]) {
-  background: var(--ak-color-selected);
+  background: var(--_sidebar-menu-button-active-bg);
   color: var(--ak-color-text);
   font-weight: var(--ak-font-weight-medium);
+}
+
+:where([data-slot="sidebar-menu-button"][data-active="true"]:hover) {
+  background: color-mix(in oklch, var(--ak-color-text) 9%, var(--ak-color-bg));
 }
 
 :where([data-slot="sidebar-menu-button"][data-variant="outline"]) {
   border-color: var(--ak-color-border);
   background: var(--ak-color-bg);
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
 }
 
 :where([data-slot="sidebar-menu-button"][data-size="sm"]) {
@@ -223,4 +237,8 @@
 
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-button"]) {
   justify-content: center;
+}
+
+:where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-content"]) {
+  overflow: visible;
 }

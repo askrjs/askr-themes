@@ -15,7 +15,7 @@
   border-radius: var(--ak-radius-md);
   background: transparent;
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
   font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-regular);
   line-height: 1;
@@ -33,17 +33,13 @@
 :where(.select-trigger:focus-visible, [data-slot="select-trigger"]:focus-visible) {
   outline: none;
   border-color: var(--ak-color-ring);
-  box-shadow:
-    0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
-    var(--ak-shadow-xs);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.select-trigger[data-state="open"], [data-slot="select-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
   background: transparent;
-  box-shadow:
-    0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring),
-    var(--ak-shadow-xs);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.select-trigger[data-disabled], [data-slot="select-trigger"][data-disabled]) {

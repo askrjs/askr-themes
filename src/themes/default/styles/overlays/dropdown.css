@@ -10,13 +10,13 @@
   padding-block: 0;
   padding-inline: var(--_button-padding-x);
   border: 1px solid var(--_button-border);
-  border-radius: var(--ak-radius-md);
+  border-radius: var(--ak-radius-lg);
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
   cursor: pointer;
   font-size: var(--ak-font-size-sm);
-  font-weight: var(--ak-font-weight-semibold);
+  font-weight: var(--ak-font-weight-medium);
   line-height: 1;
   transition:
     background-color var(--ak-duration-fast) var(--ak-ease-standard),
@@ -105,7 +105,7 @@
   max-inline-size: calc(100vw - 1rem);
   max-block-size: min(20rem, calc(100vh - 4rem));
   overflow-y: auto;
-  padding: var(--ak-space-sm);
+  padding: var(--ak-space-xs);
   border: 1px solid var(--_dropdown-border);
   border-radius: var(--ak-radius-md);
   background: var(--_dropdown-surface);
@@ -138,6 +138,7 @@
   line-height: var(--ak-line-height-tight);
   overflow-wrap: anywhere;
   text-align: start;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),

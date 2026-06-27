@@ -100,7 +100,7 @@ describe("public family browser smoke", () => {
           </Field>
         </Section>
 
-        <Block direction={{ base: "column", lg: "row" }} gap="lg">
+        <Block rowFrom="lg" gap="lg">
           <Main>
             <Block gap="lg">
               <AspectRatio ratio={16 / 9}>

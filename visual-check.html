@@ -307,6 +307,11 @@
         min-inline-size: 0;
       }
 
+      .row > * {
+        min-inline-size: 0;
+        max-inline-size: 100%;
+      }
+
       .field {
         display: grid;
         gap: 0.45rem;
@@ -474,10 +479,8 @@
         <div data-slot="toast" data-variant="${variant}">
           <strong data-slot="toast-title">${title}</strong>
           <p data-slot="toast-description">${description}</p>
-          <div class="row">
-            <button data-slot="toast-action">${action}</button>
-            <button data-slot="toast-close" aria-label="Dismiss">x</button>
-          </div>
+          <button data-slot="toast-action">${action}</button>
+          <button data-slot="toast-close" aria-label="Dismiss">x</button>
         </div>`;
 
       const badgeVariantsMarkup = [

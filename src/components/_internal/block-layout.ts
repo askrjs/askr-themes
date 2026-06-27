@@ -17,6 +17,7 @@ export type BlockSize =
   | "lg"
   | "xl";
 export type BlockDirection = "row" | "column" | "row-reverse" | "column-reverse";
+export type BlockRowFrom = Exclude<LayoutBreakpoint, "base">;
 export type BlockAlign = "start" | "end" | "center" | "stretch" | "baseline";
 export type BlockJustify = "start" | "end" | "center" | "between";
 export type BlockBackground =
@@ -52,6 +53,7 @@ export type BlockLayoutProps = {
   height?: ResponsiveValue<BlockSize>;
   minHeight?: ResponsiveValue<BlockSize>;
   maxHeight?: ResponsiveValue<BlockSize>;
+  rowFrom?: BlockRowFrom;
   direction?: ResponsiveValue<BlockDirection>;
   align?: ResponsiveValue<BlockAlign>;
   justify?: ResponsiveValue<BlockJustify>;
@@ -148,6 +150,7 @@ const BLOCK_LAYOUT_KEYS = new Set<keyof BlockLayoutProps>([
   "height",
   "minHeight",
   "maxHeight",
+  "rowFrom",
   "direction",
   "align",
   "justify",
@@ -293,6 +296,9 @@ export function applyBlockLayoutStyles(
   setResponsiveVar(styles, "min-height", props.minHeight, resolveSizeValue);
   setResponsiveVar(styles, "max-height", props.maxHeight, resolveSizeValue);
 
+  if (props.rowFrom !== undefined) {
+    styles[`--ak-flex-direction-${props.rowFrom}`] = "row";
+  }
   setResponsiveVar(styles, "flex-direction", props.direction, (value) => value);
   setResponsiveVar(styles, "align-items", props.align, resolveAlignValue);
   setResponsiveVar(styles, "justify-content", props.justify, resolveJustifyValue);

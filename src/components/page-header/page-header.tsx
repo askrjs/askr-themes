@@ -6,7 +6,7 @@ export function PageHeader(props: PageHeaderProps): JSX.Element {
 
   return (
     <Block
-      direction={{ base: "column", md: "row" }}
+      rowFrom="md"
       align={{ base: "start", md: "center" }}
       justify="between"
       gap="lg"

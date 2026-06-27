@@ -30,8 +30,8 @@
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
   > :where(.btn, [data-slot="button"]) {
-  border-radius: var(--ak-radius-md);
-  box-shadow: var(--ak-shadow-sm);
+  border-radius: var(--ak-radius-lg);
+  box-shadow: none;
 }
 
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
@@ -41,14 +41,14 @@
 
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
   > :where(.btn, [data-slot="button"]):first-child {
-  border-start-start-radius: var(--ak-radius-md);
-  border-end-start-radius: var(--ak-radius-md);
+  border-start-start-radius: var(--ak-radius-lg);
+  border-end-start-radius: var(--ak-radius-lg);
 }
 
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
   > :where(.btn, [data-slot="button"]):last-child {
-  border-start-end-radius: var(--ak-radius-md);
-  border-end-end-radius: var(--ak-radius-md);
+  border-start-end-radius: var(--ak-radius-lg);
+  border-end-end-radius: var(--ak-radius-lg);
 }
 
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])

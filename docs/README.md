@@ -87,7 +87,7 @@ export function DashboardPage() {
           description="Overview of your workspace."
           actions={<button type="button">New project</button>}
         />
-        <Block direction={{ base: "column", lg: "row" }} gap="lg">
+        <Block rowFrom="lg" gap="lg">
           <Block grow padding="lg" border radius="lg" gap="sm">
             <h3>Projects</h3>
             <p>Active project work.</p>

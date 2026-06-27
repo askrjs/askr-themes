@@ -2,11 +2,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --ak-font-family-body:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji";
+    "Inter", "Geist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
   --ak-font-family-display: var(--ak-font-family-body);
   --ak-font-family-mono:
-    "IBM Plex Mono", "SFMono-Regular", "Menlo", "Consolas", ui-monospace, monospace,
+    "Geist Mono", "IBM Plex Mono", "SFMono-Regular", "Menlo", "Consolas", ui-monospace, monospace,
     "Apple Color Emoji", "Segoe UI Emoji";
   --ak-font-family-emphasis: var(--ak-font-family-body);
   --ak-font-family-quote: "Iowan Old Style", "Palatino Linotype", ui-serif, serif;
@@ -102,10 +102,10 @@
   --ak-background-base: transparent;
   --ak-background-sm: var(--ak-color-surface);
   --ak-background-md: var(--ak-color-surface-muted);
-  --ak-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --ak-shadow-sm: var(--ak-shadow-xs);
-  --ak-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --ak-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ak-shadow-xs: none;
+  --ak-shadow-sm: none;
+  --ak-shadow-md: 0 8px 18px -12px rgb(0 0 0 / 0.24);
+  --ak-shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --ak-box-shadow-base: none;
   --ak-box-shadow-sm: var(--ak-shadow-sm);
   --ak-box-shadow-md: var(--ak-shadow-md);
@@ -217,10 +217,10 @@
   --ak-dark-color-active: color-mix(in oklch, var(--ak-dark-color-hover) 82%, white);
   --ak-dark-color-backdrop: rgb(0 0 0 / 0.5);
 
-  --ak-dark-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.2);
-  --ak-dark-shadow-sm: var(--ak-dark-shadow-xs);
-  --ak-dark-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.28), 0 2px 4px -2px rgb(0 0 0 / 0.28);
-  --ak-dark-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.32), 0 4px 6px -4px rgb(0 0 0 / 0.32);
+  --ak-dark-shadow-xs: none;
+  --ak-dark-shadow-sm: none;
+  --ak-dark-shadow-md: 0 8px 18px -12px rgb(0 0 0 / 0.6);
+  --ak-dark-shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.7);
 }
 
 :root,
@@ -270,7 +270,7 @@
   --ak-color-selected-border: oklch(0.922 0 0);
   --ak-color-hover: oklch(0.97 0 0);
   --ak-color-active: color-mix(in oklch, var(--ak-color-hover) 82%, black);
-  --ak-color-backdrop: rgb(0 0 0 / 0.5);
+  --ak-color-backdrop: rgb(0 0 0 / 0.1);
 
   --ak-color-accent: var(--ak-color-hover);
   --ak-color-accent-ink: var(--ak-color-text);

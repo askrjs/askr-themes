@@ -7,7 +7,7 @@
   background: var(--ak-color-surface);
   color: var(--ak-color-text);
   overflow: hidden;
-  box-shadow: var(--ak-shadow-sm);
+  box-shadow: none;
 }
 
 :where(.card-raised, [data-slot="card"][data-variant="raised"]) {
