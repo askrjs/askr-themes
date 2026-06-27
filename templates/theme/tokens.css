@@ -24,6 +24,7 @@
 
   --ak-font-weight-light: 300;
   --ak-font-weight-regular: 400;
+  --ak-font-weight-normal: var(--ak-font-weight-regular);
   --ak-font-weight-medium: 500;
   --ak-font-weight-semibold: 600;
   --ak-font-weight-bold: 700;
@@ -86,10 +87,28 @@
 
   --ak-border-width-sm: 1px;
   --ak-border-width-md: 2px;
+  --ak-border-base: 0 solid transparent;
+  --ak-border-sm: var(--ak-border-width-sm) solid var(--ak-color-border);
+  --ak-border-md: var(--ak-border-width-md) solid var(--ak-color-border);
+  --ak-border-bottom-base: var(--ak-border-base);
+  --ak-border-bottom-sm: var(--ak-border-sm);
+  --ak-border-bottom-md: var(--ak-border-md);
+  --ak-border-right-base: var(--ak-border-base);
+  --ak-border-right-sm: var(--ak-border-sm);
+  --ak-border-right-md: var(--ak-border-md);
+  --ak-border-radius-base: 0;
+  --ak-border-radius-sm: var(--ak-radius-sm);
+  --ak-border-radius-md: var(--ak-radius-md);
+  --ak-background-base: transparent;
+  --ak-background-sm: var(--ak-color-surface);
+  --ak-background-md: var(--ak-color-surface-muted);
   --ak-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --ak-shadow-sm: var(--ak-shadow-xs);
   --ak-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --ak-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --ak-box-shadow-base: none;
+  --ak-box-shadow-sm: var(--ak-shadow-sm);
+  --ak-box-shadow-md: var(--ak-shadow-md);
   --ak-focus-ring-width: 3px;
   --ak-focus-ring-offset: 2px;
   --ak-duration-fast: 160ms;
@@ -140,6 +159,9 @@
   --ak-section-4: var(--ak-space-7);
 
   --ak-z-dropdown: 1000;
+  --ak-z-index-base: auto;
+  --ak-z-index-sm: 10;
+  --ak-z-index-md: 100;
   --ak-z-sticky: 1100;
   --ak-z-fixed: 1200;
   --ak-z-modal-backdrop: 1300;

@@ -45,26 +45,6 @@
       "types": "./dist/theme.d.ts",
       "import": "./dist/theme.js"
     },
-    "./core": {
-      "types": "./dist/core.d.ts",
-      "import": "./dist/core.js"
-    },
-    "./controls": {
-      "types": "./dist/controls.d.ts",
-      "import": "./dist/controls.js"
-    },
-    "./navs": {
-      "types": "./dist/navs.d.ts",
-      "import": "./dist/navs.js"
-    },
-    "./overlays": {
-      "types": "./dist/overlays.d.ts",
-      "import": "./dist/overlays.js"
-    },
-    "./surfaces": {
-      "types": "./dist/surfaces.d.ts",
-      "import": "./dist/surfaces.js"
-    },
     "./accordion": {
       "types": "./dist/components.d.ts",
       "import": "./dist/components.js"
