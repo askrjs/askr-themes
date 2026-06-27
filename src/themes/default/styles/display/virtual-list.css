@@ -1,0 +1,40 @@
+:where([data-slot="virtual-list"]) {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ak-color-border-strong) transparent;
+}
+
+:where([data-slot="virtual-list"][data-viewport="lg"]) {
+  block-size: 28rem;
+}
+
+:where([data-slot="virtual-list-row"]) {
+  display: flex;
+  align-items: stretch;
+  min-inline-size: 0;
+  border-block-end: 1px solid var(--ak-color-border-subtle);
+  background: transparent;
+  color: var(--ak-color-text);
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="virtual-list-row"]:hover) {
+  background: var(--ak-color-hover);
+}
+
+:where([data-slot="virtual-list-row"][data-visible="false"]) {
+  color: var(--ak-color-text-muted);
+}

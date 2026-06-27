@@ -1,0 +1,77 @@
+:where([data-slot="accordion"]) {
+  display: grid;
+  min-inline-size: 0;
+  border-block-start: 1px solid var(--ak-color-border-subtle);
+}
+
+:where([data-slot="accordion-item"]) {
+  min-inline-size: 0;
+  border-block-end: 1px solid var(--ak-color-border-subtle);
+}
+
+:where([data-slot="accordion-header"]) {
+  margin: 0;
+}
+
+:where([data-slot="accordion-trigger"]) {
+  display: flex;
+  inline-size: 100%;
+  min-block-size: var(--ak-density-control-height-lg);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ak-space-md);
+  padding: var(--ak-space-sm) 0;
+  border: 0;
+  border-radius: var(--ak-radius-md);
+  background: transparent;
+  color: var(--ak-color-text);
+  font: inherit;
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  line-height: var(--ak-line-height-normal);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="accordion-trigger"]::after) {
+  content: "";
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  flex: 0 0 auto;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  opacity: 0.72;
+  transform: rotate(45deg);
+  transition: transform var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="accordion-trigger"]:hover) {
+  color: var(--ak-color-text);
+  background: var(--ak-color-hover);
+}
+
+:where([data-slot="accordion-trigger"]:focus-visible) {
+  outline: none;
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where([data-slot="accordion-trigger"][data-state="open"]::after) {
+  transform: rotate(225deg);
+}
+
+:where([data-slot="accordion-trigger"][data-disabled="true"]) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:where([data-slot="accordion-content"]) {
+  min-inline-size: 0;
+  padding-block: 0 var(--ak-space-md);
+  color: var(--ak-color-text-muted);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+}

@@ -25,6 +25,22 @@
   color: var(--ak-color-text-inverse);
 }
 
+:where([data-slot="text"][data-tone="success"]) {
+  color: var(--ak-color-success);
+}
+
+:where([data-slot="text"][data-tone="warning"]) {
+  color: var(--ak-color-warning);
+}
+
+:where([data-slot="text"][data-tone="danger"]) {
+  color: var(--ak-color-danger);
+}
+
+:where([data-slot="text"][data-tone="info"]) {
+  color: var(--ak-color-info);
+}
+
 :where([data-slot="text"][data-weight="normal"]) {
   font-weight: var(--ak-font-weight-normal);
 }
@@ -39,4 +55,33 @@
 
 :where([data-slot="text"][data-weight="bold"]) {
   font-weight: var(--ak-font-weight-bold);
+}
+
+:where([data-slot="text"][data-font="mono"]) {
+  font-family: var(--ak-font-family-mono);
+}
+
+:where([data-slot="text"][data-numeric="tabular"]) {
+  font-variant-numeric: tabular-nums;
+}
+
+:where([data-slot="text"][data-wrap="normal"]) {
+  white-space: normal;
+}
+
+:where([data-slot="text"][data-wrap="nowrap"]) {
+  white-space: nowrap;
+}
+
+:where([data-slot="text"][data-wrap="anywhere"]) {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+:where([data-slot="text"][data-truncate="true"]) {
+  min-inline-size: 0;
+  overflow: hidden;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

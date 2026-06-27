@@ -1,0 +1,95 @@
+:where([data-slot="toggle-group"]) {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+  max-inline-size: 100%;
+  padding: 0.1875rem;
+  border: 1px solid transparent;
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface-muted);
+  color: var(--ak-color-text);
+}
+
+:where([data-slot="toggle-group"][data-orientation="vertical"]) {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+:where([data-slot="toggle"], [data-slot="toggle-group-item"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ak-space-xs);
+  min-block-size: var(--ak-density-control-height-sm);
+  min-inline-size: var(--ak-density-control-height-sm);
+  padding-block: 0;
+  padding-inline: var(--ak-density-control-padding-x-sm);
+  border: 1px solid transparent;
+  border-radius: var(--ak-radius-md);
+  background: transparent;
+  color: var(--ak-color-text-muted);
+  box-shadow: none;
+  font: inherit;
+  font-size: var(--ak-font-size-sm);
+  font-weight: var(--ak-font-weight-medium);
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where(
+  [data-slot="toggle"] > :where([data-slot="icon"], svg),
+  [data-slot="toggle-group-item"] > :where([data-slot="icon"], svg)
+) {
+  flex: none;
+  inline-size: var(--ak-icon-size-sm);
+  block-size: var(--ak-icon-size-sm);
+  color: currentColor;
+}
+
+:where([data-slot="toggle"]:hover, [data-slot="toggle-group-item"]:hover) {
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
+}
+
+:where([data-slot="toggle"]:focus-visible, [data-slot="toggle-group-item"]:focus-visible) {
+  outline: none;
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where([data-slot="toggle"][data-state="on"], [data-slot="toggle-group-item"][data-state="on"]) {
+  border-color: var(--ak-color-selected-border);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  box-shadow: var(--ak-shadow-xs);
+}
+
+:where(
+  [data-slot="toggle"][data-disabled],
+  [data-slot="toggle-group"][data-disabled],
+  [data-slot="toggle-group-item"][data-disabled]
+) {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+@media (max-width: 30rem) {
+  :where([data-slot="toggle-group"]) {
+    inline-size: 100%;
+  }
+
+  :where([data-slot="toggle-group-item"]) {
+    flex: 1 1 auto;
+    white-space: normal;
+  }
+}
