@@ -62,7 +62,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarTrigger,
   Sonner,
+  Skeleton,
+  Spinner,
   Stat,
   StatDescription,
   StatLabel,
@@ -119,6 +122,7 @@ describe("components entrypoint", () => {
       Select,
       Sheet,
       Sidebar,
+      Skeleton,
       Sonner,
       Stat,
       Tabs,
@@ -200,6 +204,29 @@ describe("components entrypoint", () => {
     expect(
       asElement(SidebarMenuButton({ children: "Dashboard", active: true })).props["data-active"],
     ).toBe("true");
+    expect(
+      asElement(
+        SidebarMenuButton({
+          children: "Docs",
+          tooltip: "Docs",
+          tooltipSide: "right",
+        }),
+      ).props["data-tooltip-side"],
+    ).toBe("right");
+    expect(
+      asElement(SidebarTrigger({ children: "Collapse", tooltip: "Collapse", tooltipSide: "left" }))
+        .props["data-tooltip"],
+    ).toBe("Collapse");
+    const skeleton = asElement(Skeleton({ height: 12, width: "8rem" }));
+
+    expect(skeleton.props["data-slot"]).toBe("skeleton");
+    expect(String(skeleton.props.class)).toContain("ak-style-");
+    const spinner = asElement(Spinner({ label: "Loading", size: "sm" }));
+
+    expect(spinner.props["data-spinner"]).toBe("true");
+    expect(spinner.props["data-size"]).toBe("sm");
+    expect(spinner.props.value).toBeNull();
+    expect(spinner.props.children).toBeTruthy();
     expect(asElement(Stat({ children: StatValue({ children: "12" }) })).props["data-slot"]).toBe(
       "stat",
     );

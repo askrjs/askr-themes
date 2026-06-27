@@ -10,6 +10,7 @@ import {
   Field,
   FieldError,
   FieldHint,
+  Input,
   InputGroup,
   InputGroupText,
 } from "../../src/controls";
@@ -197,5 +198,38 @@ describe("public family browser smoke", () => {
     expect(getComputedStyle(header!).position).toBe("sticky");
     expect(getComputedStyle(sidebar!).borderRightWidth).not.toBe("0px");
     expect(getComputedStyle(aspectRatioEl!).aspectRatio).not.toBe("auto");
+  });
+
+  it("should keep attached input groups on one row in constrained toolbar actions", async () => {
+    route("/families", () => (
+      <Page>
+        <Toolbar
+          title="Event rows"
+          actions={
+            <div style={{ inlineSize: "14.5rem" }}>
+              <InputGroup>
+                <InputGroupText>?</InputGroupText>
+                <Input aria-label="Filter log events" placeholder="Filter events" />
+              </InputGroup>
+            </div>
+          }
+        />
+      </Page>
+    ));
+
+    await createSPA({ root: container!, manifest: getManifest() });
+    await settle();
+
+    const group = container?.querySelector('[data-slot="input-group"]') as HTMLElement | null;
+    const prefix = container?.querySelector('[data-slot="input-group-text"]') as HTMLElement | null;
+    const input = container?.querySelector('[data-slot="input"]') as HTMLInputElement | null;
+
+    expect(group).not.toBeNull();
+    expect(prefix).not.toBeNull();
+    expect(input).not.toBeNull();
+    expect(getComputedStyle(group!).flexWrap).toBe("nowrap");
+    expect(
+      Math.abs(prefix!.getBoundingClientRect().top - input!.getBoundingClientRect().top),
+    ).toBeLessThan(1);
   });
 });

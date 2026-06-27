@@ -1,6 +1,7 @@
 import { askr } from "@askrjs/vite";
 import { playwright } from "vite-plus/test/browser-playwright";
 import { defineConfig } from "vite-plus";
+import { askrRuntimeAliases } from "./vitest.shared";
 
 function seedBrowserPort() {
   return {
@@ -39,6 +40,8 @@ export default defineConfig({
     jsxInject: "import { jsx, jsxs, Fragment } from '@askrjs/askr/jsx-runtime';",
   },
   resolve: {
+    alias: askrRuntimeAliases,
+    dedupe: ["@askrjs/askr"],
     preserveSymlinks: true,
   },
 });

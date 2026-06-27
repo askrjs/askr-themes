@@ -210,7 +210,7 @@ Use `class` for reusable app styling:
 Use `style` for one-off dynamic values:
 
 ```tsx
-<Skeleton style={{ width: `${loadingWidth}px` }} />
+<Block style={{ "--project-risk-color": riskColor }}>...</Block>
 ```
 
 If a customization appears repeatedly across apps, consider whether it is a

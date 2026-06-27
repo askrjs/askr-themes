@@ -160,6 +160,7 @@ Do:
 
 - Keep the sidebar app-specific.
 - Use `Sidebar`, `NavGroup`, and `NavLink` for structure.
+- Use sidebar `tooltip` with an explicit `tooltipSide` for collapsed icon rail labels.
 - Keep topbar actions compact.
 - Let `Main` grow.
 

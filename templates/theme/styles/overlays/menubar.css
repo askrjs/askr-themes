@@ -90,6 +90,8 @@
 
 :where([data-slot="menubar-content"]) {
   display: grid;
+  position: fixed;
+  inset: auto;
   gap: 0.25rem;
   box-sizing: border-box;
   min-inline-size: min(12rem, calc(100vw - 1rem));
