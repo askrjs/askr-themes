@@ -21,11 +21,7 @@ export function Card(props: CardProps): JSX.Element {
 
   const finalProps = mergeProps(rest, {
     ref,
-    class: classes(
-      "card",
-      normalizedVariant && `card-${normalizedVariant}`,
-      className,
-    ),
+    class: classes("card", normalizedVariant && `card-${normalizedVariant}`, className),
     "data-slot": "card",
     "data-variant": normalizedVariant,
   });

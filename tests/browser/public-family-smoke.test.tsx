@@ -26,15 +26,7 @@ import {
   Sidebar,
   Toolbar,
 } from "../../src/core";
-import {
-  Alert,
-  AspectRatio,
-  Badge,
-  Card,
-  Separator,
-  Skeleton,
-  Spinner,
-} from "../../src/surfaces";
+import { Alert, AspectRatio, Badge, Card, Separator, Skeleton, Spinner } from "../../src/surfaces";
 
 import "../../src/themes/default/index.css";
 

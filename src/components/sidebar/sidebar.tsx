@@ -4,7 +4,11 @@ import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import type { SidebarButtonProps, SidebarPartProps, SidebarProps } from "./sidebar.types";
 
-function sidebarPart(props: SidebarPartProps, slot: string, element: keyof JSX.IntrinsicElements = "div"): JSX.Element {
+function sidebarPart(
+  props: SidebarPartProps,
+  slot: string,
+  element: keyof JSX.IntrinsicElements = "div",
+): JSX.Element {
   const { as, asChild, children, class: className, ...rest } = props;
   const Element = (as ?? element) as "div";
   const finalProps = mergeProps(rest, {

@@ -104,11 +104,15 @@ export function buildCoreFixture(): JSX.Element {
         <figure>Media</figure>
       </AspectRatio>
       <Block gap="sm">
-        <Block border radius="md" padding="md">Block</Block>
+        <Block border radius="md" padding="md">
+          Block
+        </Block>
         <Container size="lg">
           <Block gap="sm">
             <Block gap="sm" direction="column">
-              <Block direction="row" gap="sm">Inline row</Block>
+              <Block direction="row" gap="sm">
+                Inline row
+              </Block>
               <Section>Section</Section>
             </Block>
             <Block gap="xs">

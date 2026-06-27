@@ -1,11 +1,6 @@
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
-import type {
-  StatDescriptionProps,
-  StatLabelProps,
-  StatProps,
-  StatValueProps,
-} from "./stat.types";
+import type { StatDescriptionProps, StatLabelProps, StatProps, StatValueProps } from "./stat.types";
 
 export function Stat(props: StatProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;

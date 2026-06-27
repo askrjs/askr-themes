@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import {
-  Alert,
-  Badge,
-  Card,
-} from "../../src/surfaces";
+import { Alert, Badge, Card } from "../../src/surfaces";
 import {
   ButtonGroup,
   Close,
@@ -27,9 +23,9 @@ function asElement(value: unknown): ElementLike {
 describe("theme alias classes", () => {
   it("should emits the familiar surface aliases by default", () => {
     expect(asElement(Card({ children: "body" })).props.class).toBe("card");
-    expect(
-      asElement(Card({ children: "body", variant: "raised" })).props.class,
-    ).toBe("card card-raised");
+    expect(asElement(Card({ children: "body", variant: "raised" })).props.class).toBe(
+      "card card-raised",
+    );
     expect(asElement(Badge({ children: "new", variant: "success" })).props.class).toBe(
       "badge badge-success",
     );

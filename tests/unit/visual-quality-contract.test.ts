@@ -126,7 +126,9 @@ describe("visual quality contract", () => {
   });
 
   it("should keep plain app shells polished without app-local CSS", () => {
-    expect(headerCss).toContain("background: color-mix(in srgb, var(--ak-color-bg) 92%, transparent);");
+    expect(headerCss).toContain(
+      "background: color-mix(in srgb, var(--ak-color-bg) 92%, transparent);",
+    );
     expect(headerCss).toContain("backdrop-filter: blur(12px);");
     expect(navbarCss).toContain("min-block-size: var(--ak-layout-navbar-height);");
     expect(navbarCss).toContain("grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);");

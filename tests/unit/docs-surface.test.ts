@@ -2,10 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
-import {
-  SHADCN_CHART_COMPONENT,
-  SHADCN_THEME_COMPONENT_SUBPATHS,
-} from "../../src/parity";
+import { SHADCN_CHART_COMPONENT, SHADCN_THEME_COMPONENT_SUBPATHS } from "../../src/parity";
 import { DOCS_DIR, PACKAGE_JSON, ROOT_DIR } from "./test-paths";
 
 const README = join(ROOT_DIR, "README.md");

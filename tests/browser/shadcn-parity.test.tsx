@@ -157,9 +157,15 @@ describe("shadcn New York visual parity", () => {
     const commandSelected = document.querySelector(
       '[data-slot="command-item"][data-selected="true"]',
     ) as HTMLElement;
-    const commandDisabled = document.querySelector("[data-slot='command-item'][data-disabled]") as HTMLElement;
-    const calendarDay = document.querySelector('[data-slot="calendar-day"][data-selected="true"]') as HTMLElement;
-    const disabledDay = document.querySelector("[data-slot='calendar-day'][data-disabled]") as HTMLElement;
+    const commandDisabled = document.querySelector(
+      "[data-slot='command-item'][data-disabled]",
+    ) as HTMLElement;
+    const calendarDay = document.querySelector(
+      '[data-slot="calendar-day"][data-selected="true"]',
+    ) as HTMLElement;
+    const disabledDay = document.querySelector(
+      "[data-slot='calendar-day'][data-disabled]",
+    ) as HTMLElement;
     const item = document.querySelector('[data-slot="item"]') as HTMLElement;
 
     expect(getComputedStyle(command).boxShadow).not.toBe("none");
@@ -167,7 +173,10 @@ describe("shadcn New York visual parity", () => {
     expect(px(getComputedStyle(commandSelected).minHeight)).toBe(
       SHADCN_NEW_YORK_V4_COMPUTED.commandRowHeight,
     );
-    expectNotTransparent(getComputedStyle(commandSelected).backgroundColor, "selected command item");
+    expectNotTransparent(
+      getComputedStyle(commandSelected).backgroundColor,
+      "selected command item",
+    );
     expect(getComputedStyle(commandDisabled).opacity).toBe(
       SHADCN_NEW_YORK_V4_COMPUTED.disabledOpacity,
     );

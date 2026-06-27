@@ -157,7 +157,8 @@
 }
 
 :where(.dropdown-item, [data-slot="dropdown-item"]):hover > :where([data-slot="icon"], svg),
-:where(.dropdown-item, [data-slot="dropdown-item"]):focus-visible > :where([data-slot="icon"], svg) {
+:where(.dropdown-item, [data-slot="dropdown-item"]):focus-visible
+  > :where([data-slot="icon"], svg) {
   color: currentColor;
 }
 
@@ -179,7 +180,8 @@
   color: var(--ak-color-danger);
 }
 
-:where(.dropdown-item, [data-slot="dropdown-item"])[data-variant="destructive"] > :where([data-slot="icon"], svg) {
+:where(.dropdown-item, [data-slot="dropdown-item"])[data-variant="destructive"]
+  > :where([data-slot="icon"], svg) {
   color: currentColor;
 }
 

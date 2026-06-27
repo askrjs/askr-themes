@@ -10,13 +10,7 @@ import {
   buildRouteTransitionPage,
 } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
-import {
-  Block,
-  Container,
-  Header,
-  Main,
-  Sidebar,
-} from "../../src/core";
+import { Block, Container, Header, Main, Sidebar } from "../../src/core";
 
 describe("tier3 stateful composition benches", () => {
   describe("theme controls", () => {

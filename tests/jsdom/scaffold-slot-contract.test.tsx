@@ -56,11 +56,9 @@ describe("empty state slot contract", () => {
     const tab = container?.querySelector('[data-slot="tab"]') as HTMLElement | null;
 
     expect(emptyState).not.toBeNull();
-    expect(
-      container
-        ?.querySelector('[data-slot="empty-state-description"]')
-        ?.textContent,
-    ).toBe("Try changing the current filters.");
+    expect(container?.querySelector('[data-slot="empty-state-description"]')?.textContent).toBe(
+      "Try changing the current filters.",
+    );
     expect(container?.querySelector('[data-slot="empty-state-icon"]')?.textContent).toBe("!");
     expect(container?.querySelector('[data-slot="empty-state-actions"]')?.textContent).toBe(
       "Reset",

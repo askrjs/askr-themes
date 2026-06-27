@@ -4,9 +4,7 @@ import type { TextElement, TextProps } from "./text.types";
 
 const DEFAULT_ELEMENT = "p";
 
-export function Text<TElement extends TextElement = "p">(
-  props: TextProps<TElement>,
-): JSX.Element {
+export function Text<TElement extends TextElement = "p">(props: TextProps<TElement>): JSX.Element {
   const {
     as,
     size = "md",

@@ -25,9 +25,9 @@ function isResponsiveValue<T>(
 ): value is Partial<Record<LayoutBreakpoint, T>> {
   return Boolean(
     value &&
-      typeof value === "object" &&
-      !Array.isArray(value) &&
-      BREAKPOINTS.some((breakpoint) => breakpoint in value),
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    BREAKPOINTS.some((breakpoint) => breakpoint in value),
   );
 }
 

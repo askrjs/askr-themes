@@ -2,15 +2,7 @@ import { Block } from "../block";
 import type { EmptyStateProps } from "./empty-state.types";
 
 export function EmptyState(props: EmptyStateProps): JSX.Element {
-  const {
-    icon,
-    title,
-    titleAs: TitleTag = "h2",
-    description,
-    action,
-    children,
-    ...rest
-  } = props;
+  const { icon, title, titleAs: TitleTag = "h2", description, action, children, ...rest } = props;
 
   return (
     <Block center minHeight="content" padding="xl" {...rest} data-slot="empty-state">

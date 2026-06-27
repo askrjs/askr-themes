@@ -74,7 +74,6 @@ describe("visual polish contracts", () => {
       expect(px(style.paddingInlineStart), row.outerHTML).toBeGreaterThanOrEqual(8);
       expect(style.alignItems, row.outerHTML).toBe("center");
     }
-
   });
 
   it("should reset select popup items so native button chrome does not leak through", () => {
@@ -531,7 +530,10 @@ describe("visual polish contracts", () => {
       </aside>
     `;
 
-    for (const selector of ['[data-slot="navbar"] [data-slot="nav-item"]', '[data-slot="sidebar"] [data-slot="nav-item"]']) {
+    for (const selector of [
+      '[data-slot="navbar"] [data-slot="nav-item"]',
+      '[data-slot="sidebar"] [data-slot="nav-item"]',
+    ]) {
       const item = document.querySelector(selector) as HTMLElement;
       const style = getComputedStyle(item);
       expect(item.scrollWidth, selector).toBeLessThanOrEqual(window.innerWidth);
@@ -540,7 +542,9 @@ describe("visual polish contracts", () => {
       expect(style.overflowWrap, selector).toBe("anywhere");
     }
 
-    const active = document.querySelector('[data-slot="nav-item"][data-active="true"]') as HTMLElement;
+    const active = document.querySelector(
+      '[data-slot="nav-item"][data-active="true"]',
+    ) as HTMLElement;
     expect(getComputedStyle(active).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
   });
 
@@ -570,9 +574,9 @@ describe("visual polish contracts", () => {
       expect(getComputedStyle(actions).flexWrap, selector).toBe("wrap");
     }
 
-    expect(getComputedStyle(document.querySelector('[data-slot="page-header-title"]')!).marginTop).toBe(
-      "0px",
-    );
+    expect(
+      getComputedStyle(document.querySelector('[data-slot="page-header-title"]')!).marginTop,
+    ).toBe("0px");
     expect(getComputedStyle(document.querySelector('[data-slot="toolbar-title"]')!).marginTop).toBe(
       "0px",
     );
