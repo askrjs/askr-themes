@@ -103,7 +103,7 @@ describe("block-first components", () => {
         paddingY: "xl",
         marginX: "auto",
         maxWidth: "page",
-        direction: { base: "column", lg: "row" },
+        rowFrom: "lg",
         center: true,
         sticky: true,
         top: "0",

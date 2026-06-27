@@ -14,7 +14,7 @@
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
   resize: vertical;
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
   transition:
     border-color var(--ak-duration-fast) var(--ak-ease-standard),
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
@@ -26,7 +26,7 @@
 
 :where(.textarea:hover, [data-slot="textarea"]:hover) {
   border-color: var(--ak-color-input);
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
 }
 
 :where(.textarea:focus-visible, [data-slot="textarea"]:focus-visible) {

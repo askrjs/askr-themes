@@ -521,7 +521,7 @@ export function ProjectDetailPage() {
   return (
     <Page>
       <PageHeader title="Payments API" description="Production project details." />
-      <Block direction={{ base: "column", lg: "row" }} gap="lg" align="start">
+      <Block rowFrom="lg" gap="lg" align="start">
         <Block grow gap="lg">
           <Card>
             <Block gap="sm">

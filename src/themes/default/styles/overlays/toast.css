@@ -7,8 +7,8 @@
   inset-block-end: max(1rem, env(safe-area-inset-bottom));
   inset-inline-end: max(1rem, env(safe-area-inset-right));
   display: grid;
-  gap: var(--ak-space-md);
-  width: min(27rem, calc(100vw - 2rem));
+  gap: var(--ak-space-sm);
+  width: min(22.5rem, calc(100vw - 2rem));
   z-index: var(--ak-z-toast);
 }
 
@@ -35,21 +35,29 @@
 }
 
 :where([data-slot="toast"]) {
-  --_toast-surface: var(--ak-color-bg);
+  --_toast-surface: var(--ak-color-popover);
   --_toast-border: var(--ak-color-border);
+  --_toast-accent: var(--ak-color-border-strong);
 
   display: grid;
-  gap: var(--ak-space-sm);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.125rem 0.75rem;
+  position: relative;
   box-sizing: border-box;
   min-inline-size: 0;
-  padding: calc(var(--ak-layout-panel-padding) - 0.15rem) var(--ak-layout-panel-padding);
+  padding: 0.875rem;
   border: 1px solid var(--_toast-border);
-  border-radius: var(--ak-radius-md);
+  border-radius: var(--ak-radius-xl);
   background: var(--_toast-surface);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-lg);
+  box-shadow: var(--ak-shadow-md);
   transform-origin: bottom right;
   animation: ak-toast-in var(--ak-duration-normal) var(--ak-ease-standard);
+}
+
+:where([data-slot="toast"]:has([data-slot="toast-icon"])) {
+  grid-template-columns: auto minmax(0, 1fr) auto;
 }
 
 :where([data-slot="toast"][data-state="closed"]) {
@@ -58,17 +66,44 @@
 }
 
 :where([data-slot="toast-title"]) {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: var(--ak-font-size-sm);
   font-weight: var(--ak-font-weight-semibold);
-  line-height: 1;
+  line-height: 1.3;
   letter-spacing: 0;
   overflow-wrap: anywhere;
 }
 
 :where([data-slot="toast-description"]) {
+  grid-column: 1;
+  grid-row: 2;
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
-  line-height: var(--ak-line-height-normal);
+  line-height: 1.4;
   overflow-wrap: anywhere;
+}
+
+:where([data-slot="toast"]:has([data-slot="toast-icon"]) [data-slot="toast-title"]),
+:where([data-slot="toast"]:has([data-slot="toast-icon"]) [data-slot="toast-description"]) {
+  grid-column: 2;
+}
+
+:where([data-slot="toast-icon"]) {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  border-radius: var(--ak-radius-round);
+  background: color-mix(in srgb, var(--_toast-accent) 12%, var(--_toast-surface));
+  color: var(--_toast-accent);
+}
+
+:where([data-slot="toast-icon"] > :where([data-slot="icon"], svg)) {
+  inline-size: var(--ak-icon-size-sm);
+  block-size: var(--ak-icon-size-sm);
 }
 
 :where([data-slot="toast-action"]),
@@ -112,6 +147,12 @@
 }
 
 :where([data-slot="toast-close"]) {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: start;
+  justify-self: end;
+  margin-block-start: -0.3125rem;
+  margin-inline-end: -0.3125rem;
   gap: 0;
   inline-size: var(--_button-height);
   padding-inline: 0;
@@ -119,6 +160,15 @@
   border-radius: var(--ak-radius-round);
   background: transparent;
   color: var(--ak-color-text-subtle);
+}
+
+:where([data-slot="toast"]:has([data-slot="toast-icon"]) [data-slot="toast-close"]) {
+  grid-column: 3;
+}
+
+:where([data-slot="toast-close"] > :where([data-slot="icon"], svg)) {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
 }
 
 :where([data-slot="toast-close"]:hover) {
@@ -136,23 +186,23 @@
 
 /* toast variants */
 :where([data-slot="toast"][data-variant="success"]) {
-  background: color-mix(in srgb, var(--ak-color-success-soft) 76%, var(--_toast-surface));
-  border-color: color-mix(in srgb, var(--ak-color-success) 62%, var(--_toast-border));
+  --_toast-accent: var(--ak-color-success);
+  border-color: color-mix(in srgb, var(--ak-color-success) 18%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="warning"]) {
-  background: color-mix(in srgb, var(--ak-color-warning-soft) 76%, var(--_toast-surface));
-  border-color: color-mix(in srgb, var(--ak-color-warning) 62%, var(--_toast-border));
+  --_toast-accent: var(--ak-color-warning);
+  border-color: color-mix(in srgb, var(--ak-color-warning) 28%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="danger"]) {
-  background: color-mix(in srgb, var(--ak-color-danger-soft) 76%, var(--_toast-surface));
-  border-color: color-mix(in srgb, var(--ak-color-danger) 62%, var(--_toast-border));
+  --_toast-accent: var(--ak-color-danger);
+  border-color: color-mix(in srgb, var(--ak-color-danger) 28%, var(--_toast-border));
 }
 
 :where([data-slot="toast"][data-variant="info"]) {
-  background: color-mix(in srgb, var(--ak-color-info-soft) 76%, var(--_toast-surface));
-  border-color: color-mix(in srgb, var(--ak-color-info) 62%, var(--_toast-border));
+  --_toast-accent: var(--ak-color-info);
+  border-color: color-mix(in srgb, var(--ak-color-info) 28%, var(--_toast-border));
 }
 
 @media (max-width: 40rem) {

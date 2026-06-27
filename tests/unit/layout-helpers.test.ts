@@ -27,7 +27,7 @@ describe("block layout helpers", () => {
     const { blockProps, rest } = splitBlockLayoutProps({
       paddingX: "page",
       maxWidth: "page",
-      direction: { base: "column", lg: "row" },
+      rowFrom: "lg",
       class: "chrome",
       title: "Layout chrome",
     });
@@ -35,7 +35,7 @@ describe("block layout helpers", () => {
     expect(blockProps).toEqual({
       paddingX: "page",
       maxWidth: "page",
-      direction: { base: "column", lg: "row" },
+      rowFrom: "lg",
     });
     expect(rest).toEqual({ class: "chrome", title: "Layout chrome" });
   });
@@ -47,6 +47,7 @@ describe("block layout helpers", () => {
       paddingX: "page",
       maxWidth: "page",
       grow: true,
+      rowFrom: "lg",
       hide: { base: true, lg: false },
       background: "surface",
     });
@@ -54,9 +55,21 @@ describe("block layout helpers", () => {
     expect(styles["--ak-px-base"]).toBe("var(--ak-layout-page-gutter)");
     expect(styles["--ak-max-width-base"]).toBe("var(--ak-layout-content-max-width)");
     expect(styles["--ak-flex-grow-base"]).toBe(1);
+    expect(styles["--ak-flex-direction-lg"]).toBe("row");
     expect(styles["--ak-display-base"]).toBe("none");
     expect(styles["--ak-display-lg"]).toBe("flex");
     expect(styles["--ak-background-base"]).toBe("var(--ak-color-surface)");
+  });
+
+  it("should lets explicit direction override rowFrom", () => {
+    const styles: Record<string, string | number> = {};
+
+    applyBlockLayoutStyles(styles, {
+      rowFrom: "lg",
+      direction: { lg: "column" },
+    });
+
+    expect(styles["--ak-flex-direction-lg"]).toBe("column");
   });
 });
 

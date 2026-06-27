@@ -1,7 +1,7 @@
 :where(.btn, .btn-close, [data-slot="button"]) {
   --_button-height: var(--ak-density-control-height-md);
   --_button-padding-x: var(--ak-density-control-padding-x-md);
-  --_button-radius: var(--ak-radius-md);
+  --_button-radius: var(--ak-radius-lg);
   --_button-border: transparent;
 
   display: inline-flex;
@@ -128,7 +128,7 @@
   background: var(--ak-color-bg);
   border-color: var(--ak-color-input);
   color: var(--ak-color-text);
-  box-shadow: var(--ak-shadow-xs);
+  box-shadow: none;
 }
 
 :where(.btn-outline:hover, [data-slot="button"][data-variant="outline"]:hover) {

@@ -1,0 +1,79 @@
+:where([data-slot="radio-group"]) {
+  display: grid;
+  gap: var(--ak-space-sm);
+}
+
+:where([data-slot="radio-group"][data-orientation="horizontal"]) {
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+:where([data-slot="radio-group-item"]) {
+  appearance: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ak-space-sm);
+  min-block-size: 2.75rem;
+  inline-size: 100%;
+  padding: var(--ak-space-md);
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  box-shadow: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: start;
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="radio-group-item"])::before {
+  content: "";
+  display: block;
+  flex: 0 0 auto;
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-block-start: 0.125rem;
+  border: 1px solid var(--ak-color-input);
+  border-radius: var(--ak-radius-round);
+  background: radial-gradient(circle, transparent 0 37%, transparent 38%), var(--ak-color-surface);
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="radio-group-item"]:hover) {
+  border-color: var(--ak-color-border-strong);
+  background: var(--ak-color-surface-raised);
+}
+
+:where([data-slot="radio-group-item"]:focus-visible) {
+  outline: none;
+  border-color: var(--ak-color-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where([data-slot="radio-group-item"][data-state="checked"]) {
+  border-color: var(--ak-color-primary);
+  background: color-mix(in srgb, var(--ak-color-primary) 4%, var(--ak-color-surface));
+}
+
+:where([data-slot="radio-group-item"][data-state="checked"])::before {
+  border-color: var(--ak-color-primary);
+  background:
+    radial-gradient(circle, var(--ak-color-primary) 0 37%, transparent 38%), var(--ak-color-surface);
+  box-shadow: inset 0 0 0 3px var(--ak-color-surface);
+}
+
+:where([data-slot="radio-group-item"][data-disabled]) {
+  background: var(--ak-color-disabled-bg);
+  border-color: var(--ak-color-input);
+  color: var(--ak-color-text-muted);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.55;
+  pointer-events: none;
+}

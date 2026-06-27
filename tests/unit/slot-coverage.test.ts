@@ -48,6 +48,7 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "tab",
   "tabs",
   "theme-provider",
+  "toast-icon",
 ]);
 
 const ALLOWED_UNCOVERED_UI_SLOTS = new Set([
