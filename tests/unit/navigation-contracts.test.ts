@@ -128,5 +128,4 @@ describe("navigation contracts", () => {
     expect(sidebar.props.as).toBe("aside");
     expect(sidebar.props["data-slot"]).toBe("sidebar");
   });
-
 });

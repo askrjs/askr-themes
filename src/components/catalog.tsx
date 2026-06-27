@@ -23,14 +23,7 @@ type CatalogDefaults = {
 };
 
 function catalogPart(props: CatalogComponentProps, defaults: CatalogDefaults): JSX.Element {
-  const {
-    as,
-    asChild,
-    children,
-    class: className,
-    ref,
-    ...rest
-  } = props;
+  const { as, asChild, children, class: className, ref, ...rest } = props;
   const Element = (as ?? defaults.element ?? "div") as "div";
   const finalProps = mergeProps(rest, {
     ref,
@@ -46,11 +39,7 @@ function catalogPart(props: CatalogComponentProps, defaults: CatalogDefaults): J
   return <Element {...finalProps}>{children}</Element>;
 }
 
-function buttonPart(
-  props: CatalogComponentProps,
-  slot: string,
-  className?: string,
-): JSX.Element {
+function buttonPart(props: CatalogComponentProps, slot: string, className?: string): JSX.Element {
   const { children, ref, class: classProp, type = "button", ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
@@ -77,18 +66,8 @@ function normalizeLegacySpace(value: unknown): unknown {
   return value;
 }
 
-function layoutAlias(
-  props: CatalogComponentProps,
-  defaults: Record<string, unknown>,
-): JSX.Element {
-  const {
-    gap,
-    p,
-    padding,
-    style,
-    wrap,
-    ...rest
-  } = props as CatalogComponentProps & {
+function layoutAlias(props: CatalogComponentProps, defaults: Record<string, unknown>): JSX.Element {
+  const { gap, p, padding, style, wrap, ...rest } = props as CatalogComponentProps & {
     gap?: unknown;
     p?: unknown;
     padding?: unknown;
@@ -169,26 +148,35 @@ export function BreadcrumbLink(props: CatalogComponentProps): JSX.Element {
 }
 
 export function BreadcrumbPage(props: CatalogComponentProps): JSX.Element {
-  return catalogPart({ "aria-current": "page", ...props }, {
-    slot: "breadcrumb-page",
-    element: "span",
-  });
+  return catalogPart(
+    { "aria-current": "page", ...props },
+    {
+      slot: "breadcrumb-page",
+      element: "span",
+    },
+  );
 }
 
 export function BreadcrumbSeparator(props: CatalogComponentProps): JSX.Element {
   const { children = "/", ...rest } = props;
-  return catalogPart({ "aria-hidden": "true", children, ...rest }, {
-    slot: "breadcrumb-separator",
-    element: "li",
-  });
+  return catalogPart(
+    { "aria-hidden": "true", children, ...rest },
+    {
+      slot: "breadcrumb-separator",
+      element: "li",
+    },
+  );
 }
 
 export function BreadcrumbEllipsis(props: CatalogComponentProps): JSX.Element {
   const { children = "...", ...rest } = props;
-  return catalogPart({ "aria-hidden": "true", children, ...rest }, {
-    slot: "breadcrumb-ellipsis",
-    element: "span",
-  });
+  return catalogPart(
+    { "aria-hidden": "true", children, ...rest },
+    {
+      slot: "breadcrumb-ellipsis",
+      element: "span",
+    },
+  );
 }
 
 export function Calendar(props: CatalogComponentProps): JSX.Element {
@@ -209,12 +197,20 @@ export function CalendarNav(props: CatalogComponentProps): JSX.Element {
 
 export function CalendarPreviousButton(props: CatalogComponentProps): JSX.Element {
   const { children = "Previous month", ...rest } = props;
-  return buttonPart({ "aria-label": "Previous month", children, ...rest }, "calendar-previous", "btn btn-icon btn-ghost");
+  return buttonPart(
+    { "aria-label": "Previous month", children, ...rest },
+    "calendar-previous",
+    "btn btn-icon btn-ghost",
+  );
 }
 
 export function CalendarNextButton(props: CatalogComponentProps): JSX.Element {
   const { children = "Next month", ...rest } = props;
-  return buttonPart({ "aria-label": "Next month", children, ...rest }, "calendar-next", "btn btn-icon btn-ghost");
+  return buttonPart(
+    { "aria-label": "Next month", children, ...rest },
+    "calendar-next",
+    "btn btn-icon btn-ghost",
+  );
 }
 
 export function CalendarGrid(props: CatalogComponentProps): JSX.Element {
@@ -248,16 +244,7 @@ export function CalendarDay(
     today?: boolean;
   },
 ): JSX.Element {
-  const {
-    disabled,
-    outside,
-    rangeEnd,
-    rangeMiddle,
-    rangeStart,
-    selected,
-    today,
-    ...rest
-  } = props;
+  const { disabled, outside, rangeEnd, rangeMiddle, rangeStart, selected, today, ...rest } = props;
   return buttonPart(
     {
       "aria-disabled": disabled ? "true" : undefined,
@@ -478,10 +465,13 @@ export function InputOTPSlot(props: CatalogComponentProps): JSX.Element {
 
 export function InputOTPSeparator(props: CatalogComponentProps): JSX.Element {
   const { children = "-", ...rest } = props;
-  return catalogPart({ "aria-hidden": "true", children, ...rest }, {
-    slot: "input-otp-separator",
-    element: "span",
-  });
+  return catalogPart(
+    { "aria-hidden": "true", children, ...rest },
+    {
+      slot: "input-otp-separator",
+      element: "span",
+    },
+  );
 }
 
 export function Item(
@@ -618,10 +608,13 @@ export function PaginationNext(props: CatalogComponentProps): JSX.Element {
 
 export function PaginationEllipsis(props: CatalogComponentProps): JSX.Element {
   const { children = "...", ...rest } = props;
-  return catalogPart({ "aria-hidden": "true", children, ...rest }, {
-    slot: "pagination-ellipsis",
-    element: "span",
-  });
+  return catalogPart(
+    { "aria-hidden": "true", children, ...rest },
+    {
+      slot: "pagination-ellipsis",
+      element: "span",
+    },
+  );
 }
 
 export function ResizablePanelGroup(props: CatalogComponentProps): JSX.Element {

@@ -10,12 +10,11 @@ type TextIntrinsicProps<TElement extends TextElement> = Omit<
   "children" | "ref"
 >;
 
-export type TextProps<TElement extends TextElement = "p"> =
-  TextIntrinsicProps<TElement> & {
-    as?: TElement;
-    size?: TextSize;
-    tone?: TextTone;
-    weight?: TextWeight;
-    children?: unknown;
-    ref?: Ref<HTMLElement>;
-  };
+export type TextProps<TElement extends TextElement = "p"> = TextIntrinsicProps<TElement> & {
+  as?: TElement;
+  size?: TextSize;
+  tone?: TextTone;
+  weight?: TextWeight;
+  children?: unknown;
+  ref?: Ref<HTMLElement>;
+};

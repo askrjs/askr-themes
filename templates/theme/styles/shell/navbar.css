@@ -144,7 +144,8 @@
   display: inline-flex;
 }
 
-:where([data-slot="navbar"][data-collapse-at]) :where([data-slot="navbar-collapse"][open] [data-slot="navbar-content"]) {
+:where([data-slot="navbar"][data-collapse-at])
+  :where([data-slot="navbar-collapse"][open] [data-slot="navbar-content"]) {
   display: flex;
 }
 
@@ -152,12 +153,14 @@
   min-inline-size: min(14rem, calc(100vw - 1rem));
 }
 
-:where([data-slot="navbar"][data-collapse-at]) :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
+:where([data-slot="navbar"][data-collapse-at])
+  :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
   inline-size: 100%;
   justify-content: flex-start;
 }
 
-:where([data-slot="navbar"][data-collapse-at]) :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
+:where([data-slot="navbar"][data-collapse-at])
+  :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
   flex-direction: column;
   align-items: stretch;
 }
@@ -175,7 +178,9 @@
     gap: 0;
   }
 
-  :where([data-slot="nav-brand"] [href]:has(> [aria-hidden="true"]) > :not(svg):not([aria-hidden="true"])) {
+  :where(
+    [data-slot="nav-brand"] [href]:has(> [aria-hidden="true"]) > :not(svg):not([aria-hidden="true"])
+  ) {
     display: none;
   }
 }
@@ -191,11 +196,13 @@
     width: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="sm"]) :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
+  :where([data-slot="navbar"][data-collapse-at="sm"])
+    :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
     inline-size: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="sm"]) :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
+  :where([data-slot="navbar"][data-collapse-at="sm"])
+    :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
     flex-direction: row;
     align-items: center;
   }
@@ -216,11 +223,13 @@
     width: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="md"]) :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
+  :where([data-slot="navbar"][data-collapse-at="md"])
+    :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
     inline-size: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="md"]) :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
+  :where([data-slot="navbar"][data-collapse-at="md"])
+    :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
     flex-direction: row;
     align-items: center;
   }
@@ -241,11 +250,13 @@
     width: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="lg"]) :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
+  :where([data-slot="navbar"][data-collapse-at="lg"])
+    :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
     inline-size: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="lg"]) :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
+  :where([data-slot="navbar"][data-collapse-at="lg"])
+    :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
     flex-direction: row;
     align-items: center;
   }
@@ -266,11 +277,13 @@
     width: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="xl"]) :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
+  :where([data-slot="navbar"][data-collapse-at="xl"])
+    :where([data-slot="navbar-content"] [data-slot="nav-item"]) {
     inline-size: auto;
   }
 
-  :where([data-slot="navbar"][data-collapse-at="xl"]) :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
+  :where([data-slot="navbar"][data-collapse-at="xl"])
+    :where([data-slot="navbar-content"] [data-slot="nav-group-body"]) {
     flex-direction: row;
     align-items: center;
   }

@@ -143,9 +143,7 @@ describe("block-first components", () => {
     const navbar = asElement(Navbar({ children: "navbar" }));
     const brand = asElement(NavBrand({ children: "brand" }));
     const docsItem = NavLink({ href: "/docs", children: "Docs" });
-    const responsiveNavbar = asElement(
-      Navbar({ collapseAt: "lg", children: [brand, docsItem] }),
-    );
+    const responsiveNavbar = asElement(Navbar({ collapseAt: "lg", children: [brand, docsItem] }));
     const responsiveNavbarChildren = responsiveNavbar.props.children as ElementLike[];
     const responsiveNavbarContent = findElementBySlot(responsiveNavbarChildren, "navbar-content");
 
@@ -196,7 +194,9 @@ describe("block-first components", () => {
 
   it("should exposes common composition components without recipe-only layouts", () => {
     expect(Page({ children: "page" })).toBeTruthy();
-    expect(PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" })).toBeTruthy();
+    expect(
+      PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" }),
+    ).toBeTruthy();
     expect(Toolbar({ title: "Projects", actions: "actions" })).toBeTruthy();
     expect(EmptyState({ title: "No projects", action: "Create project" })).toBeTruthy();
     expect(Text({ tone: "muted", size: "sm", children: "Copy" })).toBeTruthy();

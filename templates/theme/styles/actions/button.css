@@ -165,7 +165,10 @@
   background: color-mix(in oklch, var(--ak-color-danger) 90%, transparent);
 }
 
-:where(.btn-destructive:focus-visible, [data-slot="button"][data-variant="destructive"]:focus-visible) {
+:where(
+  .btn-destructive:focus-visible,
+  [data-slot="button"][data-variant="destructive"]:focus-visible
+) {
   border-color: var(--ak-color-danger);
   box-shadow: 0 0 0 var(--ak-focus-ring-width)
     color-mix(in oklch, var(--ak-color-danger) 20%, transparent);

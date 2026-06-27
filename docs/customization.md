@@ -63,7 +63,6 @@ markup changes.
 .settings-page :where([data-slot="card"]) {
   border-color: var(--ak-color-border-strong);
 }
-
 ```
 
 Compose card interiors with `Block`, headings, text, and actions. Keep selectors

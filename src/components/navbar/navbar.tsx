@@ -19,8 +19,7 @@ function flattenNavbarChildren(children: unknown): unknown[] {
 
 function isNavBrandChild(child: unknown): boolean {
   return (
-    isJsxElement(child) &&
-    (child.type === NavBrand || child.props?.["data-slot"] === "nav-brand")
+    isJsxElement(child) && (child.type === NavBrand || child.props?.["data-slot"] === "nav-brand")
   );
 }
 
@@ -65,13 +64,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
   const navChildren = navbarChildren.filter((child) => !isNavBrandChild(child));
   const hasNavContent = hasRenderableChildren(navChildren);
   const content = (
-    <Block
-      direction="row"
-      align="center"
-      gap="md"
-      width="full"
-      data-slot="navbar-content"
-    >
+    <Block direction="row" align="center" gap="md" width="full" data-slot="navbar-content">
       {navChildren}
     </Block>
   );
@@ -116,11 +109,7 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
 
   return (
     <Block align={align} gap="sm" {...rest} data-align={align} data-slot="nav-group">
-      {title !== undefined ? (
-        <div data-slot="nav-group-label">
-          {title}
-        </div>
-      ) : null}
+      {title !== undefined ? <div data-slot="nav-group-label">{title}</div> : null}
       <Block gap="xs" data-slot="nav-group-body">
         {children}
       </Block>
@@ -129,14 +118,7 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
 }
 
 export function NavDropdown(props: NavDropdownProps): JSX.Element {
-  const {
-    align = "end",
-    children,
-    label,
-    side = "bottom",
-    sideOffset = 6,
-    ...rest
-  } = props;
+  const { align = "end", children, label, side = "bottom", sideOffset = 6, ...rest } = props;
 
   return (
     <Block direction="row" align="center" data-slot="nav-dropdown">

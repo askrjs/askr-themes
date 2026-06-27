@@ -51,47 +51,49 @@ describe("theme toggle visibility", () => {
                 <strong>Askr</strong>
               </a>
               <Navbar aria-label="Theme visibility">
-              <NavGroup align="end">
-                <ThemeToggle
-                  lightIcon={
-                    <svg
-                      aria-hidden="true"
-                      data-icon="sun"
-                      data-slot="icon"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      width="24"
-                    >
-                      <circle cx="12" cy="12" r="5" />
-                      <path d="M12 2v2" />
-                      <path d="M12 20v2" />
-                      <path d="m4.93 4.93 1.41 1.41" />
-                      <path d="m17.66 17.66 1.41 1.41" />
-                      <path d="M2 12h2" />
-                      <path d="M20 12h2" />
-                      <path d="m6.34 17.66-1.41 1.41" />
-                      <path d="m19.07 4.93-1.41 1.41" />
-                    </svg>
-                  }
-                  darkIcon={
-                    <svg
-                      aria-hidden="true"
-                      data-icon="moon"
-                      data-slot="icon"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      width="24"
-                    >
-                      <path d="M15 4a7 7 0 1 0 5 12A7 7 0 0 1 15 4Z" />
-                    </svg>
-                  }
-                />
-                <ThemeToggle>{({ nextTheme }: ThemeToggleRenderContext) => nextTheme}</ThemeToggle>
-              </NavGroup>
+                <NavGroup align="end">
+                  <ThemeToggle
+                    lightIcon={
+                      <svg
+                        aria-hidden="true"
+                        data-icon="sun"
+                        data-slot="icon"
+                        fill="none"
+                        height="24"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <circle cx="12" cy="12" r="5" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="m4.93 4.93 1.41 1.41" />
+                        <path d="m17.66 17.66 1.41 1.41" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="m6.34 17.66-1.41 1.41" />
+                        <path d="m19.07 4.93-1.41 1.41" />
+                      </svg>
+                    }
+                    darkIcon={
+                      <svg
+                        aria-hidden="true"
+                        data-icon="moon"
+                        data-slot="icon"
+                        fill="none"
+                        height="24"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <path d="M15 4a7 7 0 1 0 5 12A7 7 0 0 1 15 4Z" />
+                      </svg>
+                    }
+                  />
+                  <ThemeToggle>
+                    {({ nextTheme }: ThemeToggleRenderContext) => nextTheme}
+                  </ThemeToggle>
+                </NavGroup>
               </Navbar>
             </Block>
           </Container>
@@ -126,9 +128,7 @@ describe("theme toggle visibility", () => {
     expect(iconToggle?.querySelectorAll("svg")).toHaveLength(2);
     expect(visibleIconSlot?.getAttribute("data-theme-toggle-icon")).toBe("light");
     expect(
-      iconToggle
-        ?.querySelector('[data-theme-toggle-icon="dark"]')
-        ?.hasAttribute("hidden"),
+      iconToggle?.querySelector('[data-theme-toggle-icon="dark"]')?.hasAttribute("hidden"),
     ).toBe(true);
     expect(icon?.getAttribute("data-icon")).toBe("sun");
     expect(icon?.children).toHaveLength(9);
@@ -159,9 +159,7 @@ describe("theme toggle visibility", () => {
     expect(iconToggleAfter?.querySelectorAll("svg")).toHaveLength(2);
     expect(visibleIconSlotAfter?.getAttribute("data-theme-toggle-icon")).toBe("dark");
     expect(
-      iconToggleAfter
-        ?.querySelector('[data-theme-toggle-icon="light"]')
-        ?.hasAttribute("hidden"),
+      iconToggleAfter?.querySelector('[data-theme-toggle-icon="light"]')?.hasAttribute("hidden"),
     ).toBe(true);
     expect(iconAfter).not.toBeNull();
     expect(iconAfter?.getAttribute("data-icon")).toBe("moon");
@@ -191,9 +189,7 @@ describe("theme toggle visibility", () => {
     expect(iconToggleAgain?.querySelectorAll("svg")).toHaveLength(2);
     expect(visibleIconSlotAgain?.getAttribute("data-theme-toggle-icon")).toBe("light");
     expect(
-      iconToggleAgain
-        ?.querySelector('[data-theme-toggle-icon="dark"]')
-        ?.hasAttribute("hidden"),
+      iconToggleAgain?.querySelector('[data-theme-toggle-icon="dark"]')?.hasAttribute("hidden"),
     ).toBe(true);
     expect(iconAgain).not.toBeNull();
     expect(iconAgain?.getAttribute("data-icon")).toBe("sun");

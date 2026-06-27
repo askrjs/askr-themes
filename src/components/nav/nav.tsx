@@ -111,7 +111,8 @@ function renderRoutedLink(
       ? String((rest as Record<string, unknown>)["data-slot"])
       : undefined;
   const resolvedSlot = (inheritedSlot ?? slot) as "nav-item" | "tab" | "pill";
-  const inheritedNavClass = slot === "nav-item" && resolvedSlot !== "nav-item" ? "nav-item" : undefined;
+  const inheritedNavClass =
+    slot === "nav-item" && resolvedSlot !== "nav-item" ? "nav-item" : undefined;
   const { "data-slot": _dataSlot, ...childRest } = rest as Record<string, unknown>;
   void _dataSlot;
   const currentPathname = getReactiveCurrentPathname();
@@ -159,9 +160,7 @@ function renderRoutedLink(
       {...activeProps}
     >
       {useRouterLink ? (
-        <Link {...childProps}>
-          {children}
-        </Link>
+        <Link {...childProps}>{children}</Link>
       ) : (
         <a {...childProps} onClick={handleClick}>
           {children}

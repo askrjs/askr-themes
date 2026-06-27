@@ -514,7 +514,10 @@
   color: var(--ak-color-text);
 }
 
-:where([data-slot="tabs-trigger"][data-state="active"], [data-slot="tabs-trigger"][data-active="true"]) {
+:where(
+  [data-slot="tabs-trigger"][data-state="active"],
+  [data-slot="tabs-trigger"][data-active="true"]
+) {
   background: var(--ak-color-bg);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-xs);
@@ -609,7 +612,10 @@
   color: var(--ak-color-text-inverse);
 }
 
-:where([data-slot="calendar-day"][data-range-start="true"], [data-slot="calendar-day"][data-range-end="true"]) {
+:where(
+  [data-slot="calendar-day"][data-range-start="true"],
+  [data-slot="calendar-day"][data-range-end="true"]
+) {
   background: var(--ak-color-primary);
   border-color: var(--ak-color-primary);
   color: var(--ak-color-text-inverse);
@@ -676,7 +682,10 @@
   user-select: none;
 }
 
-:where([data-slot="command-item"][data-selected="true"], [data-slot="command-item"][aria-selected="true"]) {
+:where(
+  [data-slot="command-item"][data-selected="true"],
+  [data-slot="command-item"][aria-selected="true"]
+) {
   background: var(--ak-color-accent);
   color: var(--ak-color-accent-ink);
 }

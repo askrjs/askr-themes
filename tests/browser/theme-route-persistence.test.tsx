@@ -206,9 +206,9 @@ describe("theme route persistence in the browser", () => {
                 <strong>Fitz</strong>
               </a>
               <Navbar aria-label="Navigation">
-              <NavGroup align="end">
-                <ThemeToggle />
-              </NavGroup>
+                <NavGroup align="end">
+                  <ThemeToggle />
+                </NavGroup>
               </Navbar>
             </Block>
           </Container>

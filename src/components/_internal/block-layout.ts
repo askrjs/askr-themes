@@ -5,7 +5,17 @@ export type ResponsiveValue<T> = T | Partial<Record<LayoutBreakpoint, T>>;
 
 export type BlockSpace = "0" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "page";
 export type BlockMargin = BlockSpace | "auto";
-export type BlockSize = "auto" | "full" | "screen" | "content" | "sidebar" | "page" | "sm" | "md" | "lg" | "xl";
+export type BlockSize =
+  | "auto"
+  | "full"
+  | "screen"
+  | "content"
+  | "sidebar"
+  | "page"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl";
 export type BlockDirection = "row" | "column" | "row-reverse" | "column-reverse";
 export type BlockAlign = "start" | "end" | "center" | "stretch" | "baseline";
 export type BlockJustify = "start" | "end" | "center" | "between";
@@ -162,9 +172,9 @@ function isResponsiveValue<T>(
 ): value is Partial<Record<LayoutBreakpoint, T>> {
   return Boolean(
     value &&
-      typeof value === "object" &&
-      !Array.isArray(value) &&
-      BREAKPOINTS.some((breakpoint) => breakpoint in value),
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    BREAKPOINTS.some((breakpoint) => breakpoint in value),
   );
 }
 
@@ -176,7 +186,10 @@ function normalizeResponsiveValue<T>(
   return { base: value };
 }
 
-function resolveTokenValue(value: string | number, tokens: Record<string, string>): string | number {
+function resolveTokenValue(
+  value: string | number,
+  tokens: Record<string, string>,
+): string | number {
   if (typeof value === "number") return value;
   const trimmed = value.trim();
   return tokens[trimmed] ?? trimmed;

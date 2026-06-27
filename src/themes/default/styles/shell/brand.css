@@ -38,7 +38,11 @@
 }
 
 @media (max-width: 40rem) {
-  :where([data-slot="nav-brand"] [data-slot="brand"]:has(> [data-slot="brand-mark"]) > [data-slot="brand-label"]) {
+  :where(
+    [data-slot="nav-brand"]
+      [data-slot="brand"]:has(> [data-slot="brand-mark"])
+      > [data-slot="brand-label"]
+  ) {
     display: none;
   }
 }

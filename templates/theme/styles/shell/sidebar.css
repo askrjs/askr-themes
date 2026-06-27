@@ -111,7 +111,10 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where([data-slot="sidebar-menu-button"] > [data-slot="icon"], [data-slot="sidebar-menu-button"] > svg) {
+:where(
+  [data-slot="sidebar-menu-button"] > [data-slot="icon"],
+  [data-slot="sidebar-menu-button"] > svg
+) {
   flex: none;
   inline-size: var(--ak-icon-size-sm);
   block-size: var(--ak-icon-size-sm);
@@ -143,7 +146,10 @@
   min-block-size: var(--ak-density-control-height-md);
 }
 
-:where([data-slot="sidebar-menu-button"]:focus-visible, [data-slot="sidebar-trigger"]:focus-visible) {
+:where(
+  [data-slot="sidebar-menu-button"]:focus-visible,
+  [data-slot="sidebar-trigger"]:focus-visible
+) {
   outline: none;
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
@@ -192,7 +198,8 @@
 }
 
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-group-label"]),
-:where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-button"] > :not(svg):not([data-slot="icon"])),
+:where([data-slot="sidebar"][data-collapsible="icon"])
+  :where([data-slot="sidebar-menu-button"] > :not(svg):not([data-slot="icon"])),
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-menu-badge"]) {
   display: none;
 }

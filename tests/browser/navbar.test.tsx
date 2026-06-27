@@ -152,9 +152,9 @@ describe("navbar browser smoke", () => {
     const endGroup = container?.querySelector(
       '[data-slot="navbar"] > [data-slot="nav-group"][data-align="end"]',
     ) as HTMLElement | null;
-    const activeItem = container?.querySelector('[data-slot="nav-item"][aria-current="page"]') as
-      | HTMLElement
-      | null;
+    const activeItem = container?.querySelector(
+      '[data-slot="nav-item"][aria-current="page"]',
+    ) as HTMLElement | null;
 
     const navbarRect = navbar!.getBoundingClientRect();
     const primaryRect = primaryGroup!.getBoundingClientRect();
@@ -265,7 +265,9 @@ describe("navbar browser smoke", () => {
     toggle?.click();
     await settle();
 
-    const menuLink = content?.querySelector('a[href="/docs/components"]') as HTMLAnchorElement | null;
+    const menuLink = content?.querySelector(
+      'a[href="/docs/components"]',
+    ) as HTMLAnchorElement | null;
 
     expect(collapse?.hasAttribute("open")).toBe(true);
     expect(getComputedStyle(content!).display).toBe("flex");

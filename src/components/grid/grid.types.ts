@@ -10,12 +10,11 @@ type GridIntrinsicProps<TElement extends GridElement> = Omit<
   "children" | "ref"
 >;
 
-export type GridProps<TElement extends GridElement = "div"> =
-  GridIntrinsicProps<TElement> & {
-    as?: TElement;
-    columns?: ResponsiveValue<GridColumns>;
-    gap?: ResponsiveValue<BlockSpace>;
-    align?: ResponsiveValue<GridAlign>;
-    children?: unknown;
-    ref?: Ref<HTMLElement>;
-  };
+export type GridProps<TElement extends GridElement = "div"> = GridIntrinsicProps<TElement> & {
+  as?: TElement;
+  columns?: ResponsiveValue<GridColumns>;
+  gap?: ResponsiveValue<BlockSpace>;
+  align?: ResponsiveValue<GridAlign>;
+  children?: unknown;
+  ref?: Ref<HTMLElement>;
+};

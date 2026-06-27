@@ -112,8 +112,8 @@ describe("responsive theme contract", () => {
       /@media \(min-width: 80rem\) \{\s*:where\(\[data-ak-layout="true"\]\) \{([\s\S]*?)\n  \}\n\}/,
     )?.[1];
 
-    expect(xlBlock).toContain("margin-block: var(--ak-my-xl");
-    expect(xlBlock).toContain("padding-block: var(--ak-py-xl");
+    expect(xlBlock).toMatch(/margin-block:\s*var\(\s*--ak-my-xl/);
+    expect(xlBlock).toMatch(/padding-block:\s*var\(\s*--ak-py-xl/);
   });
 
   it("should keeps the generated theme template aligned with the default Navbar contract", () => {
