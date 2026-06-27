@@ -22,5 +22,6 @@ export type {
   SidebarPartProps,
   SidebarProps,
   SidebarSide,
+  SidebarTooltipSide,
   SidebarVariant,
 } from "./sidebar.types";

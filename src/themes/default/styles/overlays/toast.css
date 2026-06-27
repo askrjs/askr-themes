@@ -133,6 +133,17 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+:where([data-slot="toast-action"]) {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: start;
+  margin-block-start: var(--ak-space-xs);
+}
+
+:where([data-slot="toast"]:has([data-slot="toast-icon"]) [data-slot="toast-action"]) {
+  grid-column: 2;
+}
+
 :where([data-slot="toast-action"]:hover),
 :where([data-slot="toast-close"]:hover) {
   background: var(--ak-color-primary-hover);

@@ -221,6 +221,7 @@ describe("visual polish contracts", () => {
           <button data-slot="toggle-group-item" data-state="off">Compact</button>
         </div>
         <button data-slot="toggle" data-state="on">Pinned</button>
+        <button data-tooltip="Open route details" data-tooltip-side="right">Icon</button>
         <button data-slot="hover-card-trigger" data-variant="plain">Destroyer SPA</button>
         <section data-slot="hover-card-content" data-state="open">Hover content</section>
         <div data-slot="menubar">
@@ -246,6 +247,7 @@ describe("visual polish contracts", () => {
       '[data-slot="toggle-group-item"][data-state="on"]',
     ) as HTMLElement;
     const standaloneToggle = wrapper.querySelector('[data-slot="toggle"]') as HTMLElement;
+    const tooltipTrigger = wrapper.querySelector("[data-tooltip]") as HTMLElement;
     const hoverTrigger = wrapper.querySelector('[data-slot="hover-card-trigger"]') as HTMLElement;
     const hoverContent = wrapper.querySelector('[data-slot="hover-card-content"]') as HTMLElement;
     const menubar = wrapper.querySelector('[data-slot="menubar"]') as HTMLElement;
@@ -267,6 +269,7 @@ describe("visual polish contracts", () => {
     expect(activeToggle.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
     expect(getComputedStyle(activeToggle).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(standaloneToggle).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(tooltipTrigger.scrollWidth).toBeLessThanOrEqual(tooltipTrigger.clientWidth);
 
     expect(getComputedStyle(hoverTrigger).textDecorationLine).toBe("none");
     expect(getComputedStyle(hoverContent).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
@@ -275,6 +278,7 @@ describe("visual polish contracts", () => {
 
     expect(menubar.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
     expect(px(getComputedStyle(menubarTrigger).minHeight)).toBe(32);
+    expect(getComputedStyle(menubarContent).position).toBe("fixed");
     expect(getComputedStyle(menubarContent).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(menubarContent).boxShadow).not.toBe("none");
     expect(px(getComputedStyle(menubarItem).minHeight)).toBe(32);

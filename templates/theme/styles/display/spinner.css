@@ -3,7 +3,44 @@
   Styling is intentionally shared through progress-circle slots.
 */
 
-:where([data-slot="progress-circle"][data-state="indeterminate"]) {
+:where(
+  [data-slot="progress-circle"][data-spinner="true"],
+  [data-slot="progress-circle"][data-state="indeterminate"]
+) {
   inline-size: 2.25rem;
   block-size: 2.25rem;
+}
+
+:where(
+  [data-slot="progress-circle"][data-spinner="true"] [data-slot="progress-circle-indicator"],
+  [data-slot="progress-circle"][data-state="indeterminate"] [data-slot="progress-circle-indicator"]
+) {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+:where([data-slot="progress-circle"][data-spinner="true"][data-size="sm"]) {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+:where(
+  [data-slot="progress-circle"][data-spinner="true"][data-size="sm"]
+    [data-slot="progress-circle-indicator"]
+) {
+  inline-size: 0.625rem;
+  block-size: 0.625rem;
+}
+
+:where([data-slot="progress-circle"][data-spinner="true"][data-size="lg"]) {
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+}
+
+:where(
+  [data-slot="progress-circle"][data-spinner="true"][data-size="lg"]
+    [data-slot="progress-circle-indicator"]
+) {
+  inline-size: 1.9rem;
+  block-size: 1.9rem;
 }

@@ -3,6 +3,8 @@ import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 export type SkeletonOwnProps = {
   children?: unknown;
+  height?: string | number;
+  width?: string | number;
 };
 
 export type SkeletonProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref"> &

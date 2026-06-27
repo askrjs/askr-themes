@@ -89,6 +89,7 @@
 :where([data-tooltip]:not([data-tooltip=""]))::after {
   content: attr(data-tooltip);
   position: absolute;
+  display: none;
   inset-inline-start: 50%;
   inset-block-end: calc(100% + var(--ak-space-xs));
   z-index: var(--ak-z-tooltip);
@@ -138,6 +139,7 @@
 
 :where([data-tooltip]:not([data-tooltip=""]):hover)::after,
 :where([data-tooltip]:not([data-tooltip=""]):focus-visible)::after {
+  display: block;
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, 0);

@@ -12,6 +12,8 @@
 }
 
 :where([data-slot="progress-circle-indicator"]) {
+  display: grid;
+  place-items: center;
   inline-size: 1.9rem;
   block-size: 1.9rem;
   border-radius: 999px;

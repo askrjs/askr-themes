@@ -46,7 +46,11 @@ describe("theme alias classes", () => {
     expect(asElement(InputGroup({ children: "input" })).props.class).toBe("input-group");
     expect(asElement(InputGroupText({ children: "USD" })).props.class).toBe("input-group-text");
     expect(asElement(ControlField({ children: "field" })).props.class).toBe("field");
+    expect(
+      asElement(ControlField({ children: "field", invalid: true })).props["data-invalid"],
+    ).toBe("true");
     expect(asElement(ControlFieldHint({ children: "hint" })).props.class).toBe("field-hint");
     expect(asElement(ControlFieldError({ children: "error" })).props.class).toBe("field-error");
+    expect(asElement(ControlFieldError({ children: "error" })).props.role).toBe("alert");
   });
 });

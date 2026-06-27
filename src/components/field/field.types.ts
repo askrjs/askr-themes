@@ -5,6 +5,7 @@ type ParagraphProps = Omit<JSX.IntrinsicElements["p"], "children" | "ref">;
 
 export type FieldProps = DivProps & {
   children?: unknown;
+  invalid?: boolean;
   ref?: Ref<HTMLDivElement>;
 };
 
