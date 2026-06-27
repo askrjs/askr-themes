@@ -1,0 +1,90 @@
+:where([data-slot="virtual-table"]) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  border: 1px solid var(--ak-color-border);
+  border-radius: var(--ak-radius-lg);
+  background: var(--ak-color-surface);
+  color: var(--ak-color-text);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ak-color-border-strong) transparent;
+}
+
+:where([data-slot="virtual-table"][data-viewport="lg"]) {
+  block-size: 28rem;
+}
+
+:where([data-slot="virtual-table-table"]) {
+  inline-size: 100%;
+  min-inline-size: var(--ak-virtual-table-min-inline-size, 44rem);
+  border-collapse: collapse;
+  border-spacing: 0;
+  background: transparent;
+  color: inherit;
+}
+
+:where([data-slot="virtual-table"][data-table-width="compact"])
+  :where([data-slot="virtual-table-table"]) {
+  min-inline-size: var(--ak-virtual-table-compact-min-inline-size, 40rem);
+}
+
+:where([data-slot="virtual-table-head"]) {
+  background: var(--ak-color-surface-muted);
+}
+
+:where([data-slot="virtual-table-header-row"]) {
+  background: inherit;
+}
+
+:where([data-slot="virtual-table-body"]) {
+  background: transparent;
+}
+
+:where([data-slot="virtual-table-header-cell"], [data-slot="virtual-table-cell"]) {
+  padding: var(--ak-space-sm);
+  border-block-end: 1px solid var(--ak-color-border);
+  color: var(--ak-color-text);
+  font-size: var(--ak-font-size-sm);
+  line-height: var(--ak-line-height-normal);
+  text-align: start;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where([data-slot="virtual-table-header-cell"]) {
+  color: var(--ak-color-text-muted);
+  font-weight: var(--ak-font-weight-semibold);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+:where([data-slot="virtual-table-row"]) {
+  background: transparent;
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="virtual-table-row"]:hover) {
+  background: var(--ak-color-hover);
+}
+
+:where([data-slot="virtual-table-row"][data-selected="true"]) {
+  background: var(--ak-color-selected);
+  color: var(--ak-color-text);
+}
+
+:where([data-slot="virtual-table-spacer-row"]) {
+  background: transparent;
+}
+
+@media (max-width: 30rem) {
+  :where([data-slot="virtual-table-header-cell"], [data-slot="virtual-table-cell"]) {
+    padding: var(--ak-space-sm) var(--ak-space-xs);
+    font-size: var(--ak-font-size-xs);
+    line-height: var(--ak-line-height-tight);
+  }
+}

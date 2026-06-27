@@ -1,0 +1,54 @@
+:where([data-slot="scroll-area-viewport"]) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ak-color-border-strong) transparent;
+}
+
+:where([data-slot="scroll-area-viewport"][data-size="content"]) {
+  max-block-size: min(22rem, 60vh);
+}
+
+:where([data-slot="scroll-area-viewport"][data-orientation="horizontal"]) {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+:where([data-slot="scroll-area-viewport"][data-orientation="vertical"]) {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+:where([data-slot="scroll-area-viewport"]:focus-visible) {
+  outline: none;
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+:where([data-slot="scroll-area-scrollbar"]) {
+  display: flex;
+  user-select: none;
+  touch-action: none;
+  background: transparent;
+}
+
+:where([data-slot="scroll-area-scrollbar"][data-orientation="vertical"]) {
+  inline-size: 0.625rem;
+  padding-inline: 0.125rem;
+}
+
+:where([data-slot="scroll-area-scrollbar"][data-orientation="horizontal"]) {
+  block-size: 0.625rem;
+  padding-block: 0.125rem;
+}
+
+:where([data-slot="scroll-area-thumb"]) {
+  flex: 1;
+  border-radius: var(--ak-radius-round);
+  background: var(--ak-color-border-strong);
+}
+
+:where([data-slot="scroll-area-corner"]) {
+  background: transparent;
+}

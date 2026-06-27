@@ -42,13 +42,68 @@
   animation: ak-slide-up var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+:where([data-slot="popover-content"][data-width="sm"]) {
+  inline-size: min(18rem, calc(100vw - 1rem));
+}
+
+:where([data-slot="popover-content"][data-width="md"]) {
+  inline-size: min(22rem, calc(100vw - 1rem));
+}
+
+:where([data-slot="popover-content"][data-width="lg"]) {
+  inline-size: min(28rem, calc(100vw - 1rem));
+}
+
 :where([data-slot="popover-content"][data-state="closed"]) {
   animation: ak-slide-up-out var(--ak-duration-fast) var(--ak-ease-standard);
   pointer-events: none;
 }
 
 :where([data-slot="popover-trigger"]) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ak-space-xs);
+  min-height: var(--ak-density-control-height-sm);
+  padding-inline: var(--ak-density-control-padding-x-sm);
+  border: 1px solid transparent;
+  border-radius: var(--ak-radius-md);
+  background: transparent;
+  color: var(--ak-color-text-muted);
+  font: inherit;
+  line-height: 1;
+  text-decoration: none;
   cursor: pointer;
+  transition:
+    background var(--ak-duration-fast) var(--ak-ease-standard),
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    color var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="popover-trigger"][data-variant="ghost"]:hover) {
+  background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
+}
+
+:where([data-slot="popover-trigger"][data-size="icon"]) {
+  inline-size: var(--ak-density-control-height-md);
+  min-inline-size: var(--ak-density-control-height-md);
+  min-height: var(--ak-density-control-height-md);
+  padding-inline: 0;
+}
+
+:where([data-slot="popover-trigger"][data-size="icon-sm"]) {
+  inline-size: var(--ak-density-control-height-sm);
+  min-inline-size: var(--ak-density-control-height-sm);
+  min-height: var(--ak-density-control-height-sm);
+  padding-inline: 0;
+}
+
+:where([data-slot="popover-trigger"][data-size="icon-xs"]) {
+  inline-size: var(--ak-density-control-height-xs);
+  min-inline-size: var(--ak-density-control-height-xs);
+  min-height: var(--ak-density-control-height-xs);
+  padding-inline: 0;
 }
 
 :where([data-slot="popover-trigger"]:focus-visible) {
@@ -59,6 +114,7 @@
 :where([data-slot="popover-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
   background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
 }
 
 :where([data-slot="popover-close"]) {

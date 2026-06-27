@@ -207,6 +207,22 @@ describe("components entrypoint", () => {
     expect(asElement(StatDescription({ children: "Details" })).props["data-slot"]).toBe(
       "stat-description",
     );
-    expect(asElement(Text({ tone: "muted", children: "Copy" })).props["data-slot"]).toBe("text");
+    const text = asElement(
+      Text({
+        tone: "info",
+        font: "mono",
+        numeric: "tabular",
+        wrap: "anywhere",
+        truncate: true,
+        children: "Copy",
+      }),
+    );
+
+    expect(text.props["data-slot"]).toBe("text");
+    expect(text.props["data-tone"]).toBe("info");
+    expect(text.props["data-font"]).toBe("mono");
+    expect(text.props["data-numeric"]).toBe("tabular");
+    expect(text.props["data-wrap"]).toBe("anywhere");
+    expect(text.props["data-truncate"]).toBe("true");
   });
 });

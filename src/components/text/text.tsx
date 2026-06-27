@@ -10,6 +10,10 @@ export function Text<TElement extends TextElement = "p">(props: TextProps<TEleme
     size = "md",
     tone = "default",
     weight,
+    font,
+    numeric,
+    wrap,
+    truncate,
     children,
     class: classProp,
     className,
@@ -24,6 +28,10 @@ export function Text<TElement extends TextElement = "p">(props: TextProps<TEleme
     "data-size": size,
     "data-tone": tone,
     "data-weight": weight,
+    "data-font": font && font !== "body" ? font : undefined,
+    "data-numeric": numeric && numeric !== "normal" ? numeric : undefined,
+    "data-wrap": wrap,
+    "data-truncate": truncate ? "true" : undefined,
   });
 
   const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;

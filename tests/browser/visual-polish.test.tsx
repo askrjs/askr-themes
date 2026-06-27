@@ -176,6 +176,196 @@ describe("visual polish contracts", () => {
     }
   });
 
+  it("should gives disclosure and scroll primitives usable default polish", () => {
+    document.body.innerHTML = `
+      <div data-slot="accordion">
+        <div data-slot="accordion-item" data-state="open">
+          <h3 data-slot="accordion-header">
+            <button data-slot="accordion-trigger" data-state="open">
+              Verification notes
+            </button>
+          </h3>
+          <div data-slot="accordion-content">
+            Long implementation copy should inherit compact readable spacing.
+          </div>
+        </div>
+      </div>
+      <div data-slot="scroll-area-viewport" data-size="content" tabindex="0">
+        <div style="height: 900px; width: 900px;">Dense audit data</div>
+      </div>
+    `;
+
+    const trigger = document.querySelector('[data-slot="accordion-trigger"]') as HTMLElement;
+    const content = document.querySelector('[data-slot="accordion-content"]') as HTMLElement;
+    const viewport = document.querySelector('[data-slot="scroll-area-viewport"]') as HTMLElement;
+
+    expect(getComputedStyle(trigger).display).toBe("flex");
+    expect(px(getComputedStyle(trigger).minHeight)).toBeGreaterThanOrEqual(36);
+    expect(getComputedStyle(content).color).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(viewport).overflowX).toBe("auto");
+    expect(getComputedStyle(viewport).overflowY).toBe("auto");
+    expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
+  });
+
+  it("should gives slider, toggles, hover cards, and menubars usable default polish", () => {
+    document.body.innerHTML = `
+      <div style="width: 320px; overflow: auto;">
+        <div data-slot="slider" data-orientation="horizontal" style="--ak-slider-percentage: 60%;">
+          <div data-slot="slider-track">
+            <div data-slot="slider-range"></div>
+            <div data-slot="slider-thumb"></div>
+          </div>
+        </div>
+        <div data-slot="toggle-group" data-orientation="horizontal">
+          <button data-slot="toggle-group-item" data-state="on">Comfortable</button>
+          <button data-slot="toggle-group-item" data-state="off">Compact</button>
+        </div>
+        <button data-slot="toggle" data-state="on">Pinned</button>
+        <button data-slot="hover-card-trigger" data-variant="plain">Destroyer SPA</button>
+        <section data-slot="hover-card-content" data-state="open">Hover content</section>
+        <div data-slot="menubar">
+          <button data-slot="menubar-trigger" data-state="open">View</button>
+          <button data-slot="menubar-trigger">Share</button>
+        </div>
+        <div data-slot="menubar-content" data-state="open">
+          <div data-slot="menubar-label">Article</div>
+          <button data-slot="menubar-item">Copy section link</button>
+          <button data-slot="menubar-sub-trigger">Export</button>
+          <div data-slot="menubar-separator"></div>
+        </div>
+      </div>
+    `;
+
+    const wrapper = document.body.firstElementChild as HTMLElement;
+    const slider = wrapper.querySelector('[data-slot="slider"]') as HTMLElement;
+    const track = wrapper.querySelector('[data-slot="slider-track"]') as HTMLElement;
+    const range = wrapper.querySelector('[data-slot="slider-range"]') as HTMLElement;
+    const thumb = wrapper.querySelector('[data-slot="slider-thumb"]') as HTMLElement;
+    const toggleGroup = wrapper.querySelector('[data-slot="toggle-group"]') as HTMLElement;
+    const activeToggle = wrapper.querySelector(
+      '[data-slot="toggle-group-item"][data-state="on"]',
+    ) as HTMLElement;
+    const standaloneToggle = wrapper.querySelector('[data-slot="toggle"]') as HTMLElement;
+    const hoverTrigger = wrapper.querySelector('[data-slot="hover-card-trigger"]') as HTMLElement;
+    const hoverContent = wrapper.querySelector('[data-slot="hover-card-content"]') as HTMLElement;
+    const menubar = wrapper.querySelector('[data-slot="menubar"]') as HTMLElement;
+    const menubarTrigger = wrapper.querySelector('[data-slot="menubar-trigger"]') as HTMLElement;
+    const menubarContent = wrapper.querySelector('[data-slot="menubar-content"]') as HTMLElement;
+    const menubarItem = wrapper.querySelector('[data-slot="menubar-item"]') as HTMLElement;
+    const menubarSubTrigger = wrapper.querySelector(
+      '[data-slot="menubar-sub-trigger"]',
+    ) as HTMLElement;
+
+    expect(slider.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
+    expect(px(getComputedStyle(slider).minHeight)).toBe(36);
+    expect(px(getComputedStyle(track).height)).toBe(8);
+    expect(px(getComputedStyle(range).width)).toBeGreaterThan(0);
+    expect(px(getComputedStyle(thumb).width)).toBeGreaterThanOrEqual(18);
+    expect(px(getComputedStyle(thumb).height)).toBeGreaterThanOrEqual(18);
+
+    expect(getComputedStyle(toggleGroup).display).toBe("inline-flex");
+    expect(activeToggle.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
+    expect(getComputedStyle(activeToggle).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(standaloneToggle).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+
+    expect(getComputedStyle(hoverTrigger).textDecorationLine).toBe("none");
+    expect(getComputedStyle(hoverContent).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(hoverContent).boxShadow).not.toBe("none");
+    expect(hoverContent.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
+
+    expect(menubar.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
+    expect(px(getComputedStyle(menubarTrigger).minHeight)).toBe(32);
+    expect(getComputedStyle(menubarContent).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(menubarContent).boxShadow).not.toBe("none");
+    expect(px(getComputedStyle(menubarItem).minHeight)).toBe(32);
+    expect(getComputedStyle(menubarItem).textDecorationLine).toBe("none");
+    expect(getComputedStyle(menubarSubTrigger).textDecorationLine).toBe("none");
+  });
+
+  it("should gives virtualized list and table surfaces stable default polish", () => {
+    document.body.innerHTML = `
+      <div style="width: 320px; overflow: auto;">
+        <div data-slot="virtual-list" data-viewport="lg">
+          <div data-slot="virtual-list-row" data-visible="true" style="height: 48px;">
+            <div>Route event accepted</div>
+          </div>
+          <div data-slot="virtual-list-row" data-visible="false" style="height: 48px;">
+            <div>Background sync completed</div>
+          </div>
+        </div>
+        <div data-slot="virtual-table" data-viewport="lg" data-table-width="compact">
+          <table data-slot="virtual-table-table">
+            <thead data-slot="virtual-table-head">
+              <tr data-slot="virtual-table-header-row">
+                <th data-slot="virtual-table-header-cell">Time</th>
+                <th data-slot="virtual-table-header-cell">Service</th>
+                <th data-slot="virtual-table-header-cell">Message</th>
+              </tr>
+            </thead>
+            <tbody data-slot="virtual-table-body">
+              <tr data-slot="virtual-table-row" data-selected="true">
+                <td data-slot="virtual-table-cell">09:17</td>
+                <td data-slot="virtual-table-cell">router</td>
+                <td data-slot="virtual-table-cell">Long route verification message</td>
+              </tr>
+              <tr data-slot="virtual-table-spacer-row">
+                <td style="height: 960px;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p
+          data-slot="text"
+          data-font="mono"
+          data-numeric="tabular"
+          data-truncate="true"
+        >
+          09:17:00 very long text that should truncate without growing the row
+        </p>
+        <p data-slot="text" data-wrap="anywhere">
+          SuperLongOperationalTokenWithoutNaturalBreaksShouldStillWrapInsideTheContainer
+        </p>
+      </div>
+    `;
+
+    const wrapper = document.body.firstElementChild as HTMLElement;
+    const list = wrapper.querySelector('[data-slot="virtual-list"]') as HTMLElement;
+    const listRow = wrapper.querySelector('[data-slot="virtual-list-row"]') as HTMLElement;
+    const table = wrapper.querySelector('[data-slot="virtual-table"]') as HTMLElement;
+    const tableInner = wrapper.querySelector('[data-slot="virtual-table-table"]') as HTMLElement;
+    const headerCell = wrapper.querySelector(
+      '[data-slot="virtual-table-header-cell"]',
+    ) as HTMLElement;
+    const selectedRow = wrapper.querySelector(
+      '[data-slot="virtual-table-row"][data-selected="true"]',
+    ) as HTMLElement;
+    const tableCell = wrapper.querySelector('[data-slot="virtual-table-cell"]') as HTMLElement;
+    const monoText = wrapper.querySelector('[data-slot="text"][data-font="mono"]') as HTMLElement;
+    const wrappedText = wrapper.querySelector(
+      '[data-slot="text"][data-wrap="anywhere"]',
+    ) as HTMLElement;
+
+    expect(list.scrollWidth).toBeLessThanOrEqual(wrapper.clientWidth);
+    expect(getComputedStyle(list).overflowY).toBe("auto");
+    expect(px(getComputedStyle(list).height)).toBe(448);
+    expect(getComputedStyle(list).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(listRow).display).toBe("flex");
+    expect(px(getComputedStyle(listRow).borderBottomWidth)).toBeGreaterThanOrEqual(1);
+
+    expect(table.scrollWidth).toBeGreaterThanOrEqual(wrapper.clientWidth);
+    expect(getComputedStyle(table).overflowX).toBe("auto");
+    expect(px(getComputedStyle(table).height)).toBe(448);
+    expect(getComputedStyle(table).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(tableInner).borderCollapse).toBe("collapse");
+    expect(px(getComputedStyle(tableInner).minWidth)).toBe(640);
+    expect(getComputedStyle(headerCell).fontWeight).not.toBe("400");
+    expect(getComputedStyle(selectedRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(tableCell).textOverflow).toBe("ellipsis");
+    expect(getComputedStyle(monoText).fontVariantNumeric).toContain("tabular-nums");
+    expect(getComputedStyle(monoText).textOverflow).toBe("ellipsis");
+    expect(getComputedStyle(wrappedText).overflowWrap).toBe("anywhere");
+  });
+
   it("should keeps supporting primitives compact, responsive, and aligned", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
@@ -423,7 +613,12 @@ describe("visual polish contracts", () => {
           <h2 data-slot="dialog-title">A very long mobile dialog title that wraps</h2>
           <p data-slot="dialog-description">Readable copy.</p>
         </section>
-        <section data-slot="popover-content">Popover content with a long wrapping sentence.</section>
+        <button data-slot="popover-trigger" data-variant="ghost" data-size="icon-xs">
+          i
+        </button>
+        <section data-slot="popover-content" data-width="md">
+          Popover content with a long wrapping sentence.
+        </section>
         <div data-slot="dropdown-content">
           <button data-slot="dropdown-item">Account settings with a very long label</button>
         </div>
@@ -446,6 +641,7 @@ describe("visual polish contracts", () => {
     const wrapper = document.body.firstElementChild as HTMLElement;
     const checked = [
       '[data-slot="dialog-content"]',
+      '[data-slot="popover-trigger"]',
       '[data-slot="popover-content"]',
       '[data-slot="dropdown-content"]',
       '[data-slot="select-content"]',
@@ -458,6 +654,12 @@ describe("visual polish contracts", () => {
       const element = wrapper.querySelector(selector) as HTMLElement;
       expect(element.scrollWidth, selector).toBeLessThanOrEqual(wrapper.clientWidth);
     }
+
+    const popoverTrigger = wrapper.querySelector('[data-slot="popover-trigger"]') as HTMLElement;
+    const popoverContent = wrapper.querySelector('[data-slot="popover-content"]') as HTMLElement;
+
+    expect(px(getComputedStyle(popoverTrigger).minHeight)).toBeGreaterThanOrEqual(24);
+    expect(px(getComputedStyle(popoverContent).width)).toBeGreaterThan(220);
   });
 
   it("should keeps overlay motion states stable and non-interactive while closing", () => {
