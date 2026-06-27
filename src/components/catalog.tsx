@@ -77,7 +77,7 @@ function layoutAlias(props: CatalogComponentProps, defaults: Record<string, unkn
   const BlockComponent = Block as (blockProps: Record<string, unknown>) => JSX.Element;
   const wrapStyle = wrap
     ? {
-        ...(style ?? {}),
+        ...style,
         flexWrap: "wrap",
       }
     : style;

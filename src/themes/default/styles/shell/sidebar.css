@@ -51,8 +51,7 @@
 
 :where([data-slot="sidebar-footer"] [data-slot="sidebar-menu"]),
 :where([data-slot="sidebar-footer"] [data-slot="sidebar-menu-item"]),
-:where([data-slot="sidebar-footer"] [data-slot="block"]),
-:where([data-slot="sidebar-footer"] [data-slot="block"] > div) {
+:where([data-slot="sidebar-footer"] [data-slot="block"]) {
   inline-size: 100%;
 }
 

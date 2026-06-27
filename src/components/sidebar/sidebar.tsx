@@ -42,6 +42,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
       minHeight="screen"
       padding="md"
       gap="lg"
+      borderRight={true}
       {...rest}
       data-collapsible={collapsible}
       data-side={side}
