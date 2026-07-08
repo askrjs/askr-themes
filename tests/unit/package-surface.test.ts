@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as ts from "typescript";
@@ -42,12 +43,47 @@ const REPORTED_CATALOG_WRAPPERS = [
   "ResizablePanel",
   "ResizableHandle",
 ] as const;
-const COMPONENT_DIST_ARTIFACTS = [
-  "dist/components.js",
-  "dist/components.d.ts",
-] as const;
+const COMPONENT_DIST_ARTIFACTS = ["dist/components.js", "dist/components.d.ts"] as const;
+const WILDCARD_MODULE_BINDING = "*" as const;
 
-function namedImportsFrom(
+function npmCommand(): string {
+  return process.platform === "win32" ? "npm.cmd" : "npm";
+}
+
+function ensureComponentDistArtifacts(): void {
+  const missingArtifacts = COMPONENT_DIST_ARTIFACTS.filter(
+    (artifact) => !existsSync(join(ROOT_DIR, artifact)),
+  );
+
+  if (missingArtifacts.length === 0) {
+    return;
+  }
+
+  execFileSync(npmCommand(), ["run", "build"], {
+    cwd: ROOT_DIR,
+    stdio: "ignore",
+  });
+}
+
+function addNamedBindings(
+  bindings: Set<string>,
+  namedBindings: ts.NamedImportBindings | ts.NamedExportBindings | undefined,
+): void {
+  if (!namedBindings) {
+    return;
+  }
+
+  if (ts.isNamespaceImport(namedBindings) || ts.isNamespaceExport(namedBindings)) {
+    bindings.add(WILDCARD_MODULE_BINDING);
+    return;
+  }
+
+  for (const element of namedBindings.elements) {
+    bindings.add(element.propertyName?.text ?? element.name.text);
+  }
+}
+
+function moduleBindingsFrom(
   source: string,
   fileName: string,
   moduleSpecifier: string,
@@ -59,31 +95,38 @@ function namedImportsFrom(
     true,
     fileName.endsWith(".js") ? ts.ScriptKind.JS : ts.ScriptKind.TS,
   );
-  const imports = new Set<string>();
+  const bindings = new Set<string>();
 
   sourceFile.forEachChild((node) => {
-    if (!ts.isImportDeclaration(node)) {
-      return;
-    }
-
     if (
-      !ts.isStringLiteral(node.moduleSpecifier) ||
-      node.moduleSpecifier.text !== moduleSpecifier
+      !(
+        (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+        node.moduleSpecifier &&
+        ts.isStringLiteral(node.moduleSpecifier) &&
+        node.moduleSpecifier.text === moduleSpecifier
+      )
     ) {
       return;
     }
 
-    const namedBindings = node.importClause?.namedBindings;
-    if (!namedBindings || !ts.isNamedImports(namedBindings)) {
+    if (ts.isImportDeclaration(node)) {
+      addNamedBindings(bindings, node.importClause?.namedBindings);
       return;
     }
 
-    for (const element of namedBindings.elements) {
-      imports.add(element.propertyName?.text ?? element.name.text);
+    if (!node.exportClause) {
+      bindings.add(WILDCARD_MODULE_BINDING);
+      return;
     }
+
+    addNamedBindings(bindings, node.exportClause);
   });
 
-  return imports;
+  return bindings;
+}
+
+function hasModuleBinding(bindings: ReadonlySet<string>, name: string): boolean {
+  return bindings.has(name) || bindings.has(WILDCARD_MODULE_BINDING);
 }
 
 describe("package surface", () => {
@@ -143,28 +186,22 @@ describe("package surface", () => {
   });
 
   it("should keeps reported catalog wrappers sourced from the built catalog artifacts", () => {
+    ensureComponentDistArtifacts();
+
     for (const artifact of COMPONENT_DIST_ARTIFACTS) {
       const artifactPath = join(ROOT_DIR, artifact);
       const source = readFileSync(artifactPath, "utf-8");
-      const catalogImports = namedImportsFrom(
-        source,
-        artifact,
-        "./components/catalog.js",
-      );
-      const uiImports = namedImportsFrom(
-        source,
-        artifact,
-        "@askrjs/ui",
-      );
+      const catalogBindings = moduleBindingsFrom(source, artifact, "./components/catalog.js");
+      const uiBindings = moduleBindingsFrom(source, artifact, "@askrjs/ui");
 
       for (const component of REPORTED_CATALOG_WRAPPERS) {
         expect(
-          catalogImports.has(component),
-          `${artifact} should import ${component} from ./components/catalog.js`,
+          hasModuleBinding(catalogBindings, component),
+          `${artifact} should source ${component} from ./components/catalog.js`,
         ).toBe(true);
         expect(
-          uiImports.has(component),
-          `${artifact} should not import ${component} from @askrjs/ui`,
+          hasModuleBinding(uiBindings, component),
+          `${artifact} should not source ${component} from @askrjs/ui`,
         ).toBe(false);
       }
     }
