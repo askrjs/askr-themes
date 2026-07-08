@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import * as ts from "typescript";
 import { describe, expect, it } from "vite-plus/test";
 
 import * as components from "../../src/components";
@@ -35,6 +36,55 @@ const REMOVED_FAMILY_EXPORTS = [
 const A11Y_EXPORT_PATTERN = new RegExp(
   `${["A11Y", "CONTRACT"].join("_")}|${["A11y", "Contract"].join("")}`,
 );
+const REPORTED_CATALOG_WRAPPERS = [
+  "DataTable",
+  "ResizablePanelGroup",
+  "ResizablePanel",
+  "ResizableHandle",
+] as const;
+const COMPONENT_DIST_ARTIFACTS = [
+  "dist/components.js",
+  "dist/components.d.ts",
+] as const;
+
+function namedImportsFrom(
+  source: string,
+  fileName: string,
+  moduleSpecifier: string,
+): Set<string> {
+  const sourceFile = ts.createSourceFile(
+    fileName,
+    source,
+    ts.ScriptTarget.Latest,
+    true,
+    fileName.endsWith(".js") ? ts.ScriptKind.JS : ts.ScriptKind.TS,
+  );
+  const imports = new Set<string>();
+
+  sourceFile.forEachChild((node) => {
+    if (!ts.isImportDeclaration(node)) {
+      return;
+    }
+
+    if (
+      !ts.isStringLiteral(node.moduleSpecifier) ||
+      node.moduleSpecifier.text !== moduleSpecifier
+    ) {
+      return;
+    }
+
+    const namedBindings = node.importClause?.namedBindings;
+    if (!namedBindings || !ts.isNamedImports(namedBindings)) {
+      return;
+    }
+
+    for (const element of namedBindings.elements) {
+      imports.add(element.propertyName?.text ?? element.name.text);
+    }
+  });
+
+  return imports;
+}
 
 describe("package surface", () => {
   it("should exposes the shadcn-style component catalog from the aggregate entrypoint", () => {
@@ -89,6 +139,34 @@ describe("package surface", () => {
       expect(source, `${barrel} should not re-export internal contract details`).not.toMatch(
         A11Y_EXPORT_PATTERN,
       );
+    }
+  });
+
+  it("should keeps reported catalog wrappers sourced from the built catalog artifacts", () => {
+    for (const artifact of COMPONENT_DIST_ARTIFACTS) {
+      const artifactPath = join(ROOT_DIR, artifact);
+      const source = readFileSync(artifactPath, "utf-8");
+      const catalogImports = namedImportsFrom(
+        source,
+        artifact,
+        "./components/catalog.js",
+      );
+      const uiImports = namedImportsFrom(
+        source,
+        artifact,
+        "@askrjs/ui",
+      );
+
+      for (const component of REPORTED_CATALOG_WRAPPERS) {
+        expect(
+          catalogImports.has(component),
+          `${artifact} should import ${component} from ./components/catalog.js`,
+        ).toBe(true);
+        expect(
+          uiImports.has(component),
+          `${artifact} should not import ${component} from @askrjs/ui`,
+        ).toBe(false);
+      }
     }
   });
 
