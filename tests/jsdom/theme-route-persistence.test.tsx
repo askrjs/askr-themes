@@ -146,6 +146,22 @@ describe("theme route persistence", () => {
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
+  it("should render one stable provider host around root synchronization and content", async () => {
+    const App = () => (
+      <ThemeProvider defaultTheme="light">
+        <main id="provider-content">Northstar</main>
+      </ThemeProvider>
+    );
+    route("/example", App);
+
+    await createSPA({ root: container!, manifest: getManifest() });
+
+    const provider = container!.querySelector('[data-slot="theme-provider"]');
+    expect(container!.children).toHaveLength(1);
+    expect(container!.firstElementChild).toBe(provider);
+    expect(provider?.querySelector("#provider-content")?.textContent).toBe("Northstar");
+  });
+
   it("should keep a single visible icon on repeated toggles", async () => {
     const AppLayout = () => (
       <ThemeProvider defaultTheme="light">

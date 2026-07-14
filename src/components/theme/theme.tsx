@@ -123,17 +123,16 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
     themes,
     storageKey,
   };
+  useThemeRootSync(providerId, currentTheme);
 
   return (
     <ThemeContext.Scope value={value}>
-      <ThemeRootSync providerId={providerId} theme={currentTheme} />
       <div data-slot="theme-provider">{children}</div>
     </ThemeContext.Scope>
   );
 }
 
-function ThemeRootSync(props: { providerId: symbol; theme: ThemeName }): JSX.Element | null {
-  const { providerId, theme } = props;
+function useThemeRootSync(providerId: symbol, theme: ThemeName): void {
   const expectedRootThemeRevision = rootThemeRevision;
 
   resource(
@@ -165,8 +164,6 @@ function ThemeRootSync(props: { providerId: symbol; theme: ThemeName }): JSX.Ele
     },
     [theme],
   );
-
-  return null;
 }
 
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
