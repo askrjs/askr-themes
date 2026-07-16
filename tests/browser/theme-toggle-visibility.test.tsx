@@ -4,7 +4,7 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
-import { ThemeProvider, ThemeToggle, type ThemeToggleRenderContext } from "../../src/theme";
+import { ThemeScope, ThemeToggle, type ThemeToggleRenderContext } from "../../src/theme";
 
 import "../../src/themes/default/index.css";
 
@@ -43,7 +43,7 @@ describe("theme toggle visibility", () => {
 
   it("should keep toggle content visible after switching to dark mode", async () => {
     route("/theme-visibility", () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-toggle-visibility">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-toggle-visibility">
         <Header>
           <Container>
             <Block direction="row" align="center" justify="between" paddingY="md">
@@ -101,7 +101,7 @@ describe("theme toggle visibility", () => {
         <Main>
           <p>Main content</p>
         </Main>
-      </ThemeProvider>
+      </ThemeScope>
     ));
 
     await createSPA({ root: container!, manifest: getManifest() });

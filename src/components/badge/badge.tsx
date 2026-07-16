@@ -1,6 +1,7 @@
 import { Slot } from "@askrjs/askr/foundations";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import type { BadgeAsChildProps, BadgeProps } from "./badge.types";
 
 function normalizeBadgeVariant(variant: BadgeProps["variant"] | undefined) {
@@ -23,5 +24,5 @@ export function Badge(props: BadgeProps | BadgeAsChildProps) {
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  return <span {...finalProps}>{children}</span>;
+  return intrinsicElement("span", finalProps, children);
 }

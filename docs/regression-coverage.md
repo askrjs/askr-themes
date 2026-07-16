@@ -11,7 +11,7 @@ exports, class/slot structure, CSS tokens, responsive layout, and composed
 | Package exports and aliases | Unit package-surface, alias, moved-component, and components-entrypoint tests.                                 |
 | Component families          | Unit coverage matrix maps every public family to direct tests and benches.                                     |
 | CSS and tokens              | Token, selector, contrast, no-important, visual-quality, and template-parity tests.                            |
-| jsdom composition           | Core structure, theme provider, nav, route persistence, and slot-contract tests.                               |
+| jsdom composition           | Core structure, theme scope, nav, route persistence, and slot-contract tests.                                  |
 | Browser visual behavior     | Navbar, sidebar, route persistence, overlay recipe, table theme, public family, and visual-polish smoke tests. |
 | Bench coverage              | Tier 2 public families, Tier 3 composition, and Tier 4 browser flows after correctness is protected.           |
 

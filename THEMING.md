@@ -115,8 +115,8 @@ for styled components such as Button, ButtonGroup, Close, InputGroup, Block,
 Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert, Badge,
 Tabs, Tab, Pills, Pill, Skeleton, Separator, and EmptyState.
 
-Theme state helpers also live there: `ThemeProvider`, `ThemePicker`,
-`ThemeToggle`, and `useTheme`. `ThemeToggle` intentionally has no built-in
+Theme state helpers also live there: `ThemeScope`, `ThemePicker`,
+`ThemeToggle`, and `theme`. `ThemeToggle` intentionally has no built-in
 icons; applications pass their own icon/content props. The rendered content is
 wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
 be styled consistently across themes. If you use icon children, the direct child

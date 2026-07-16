@@ -43,7 +43,7 @@ export function Alert(props: AlertProps): JSX.Element {
       data-dismissible={shouldRenderDismiss ? "true" : undefined}
       data-slot="alert"
       data-variant={hasVariant ? variant : undefined}
-      role={resolvedRole}
+      role={resolvedRole as string}
     >
       {icon !== undefined ? (
         <div aria-hidden="true" class="alert-icon" data-slot="alert-icon">

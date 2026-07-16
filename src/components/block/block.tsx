@@ -6,6 +6,7 @@ import {
   splitBlockLayoutProps,
 } from "../_internal/block-layout";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import { styleDeclarationsToClass } from "../_internal/style";
 import type { BlockAsChildProps, BlockNativeProps } from "./block.types";
 
@@ -50,6 +51,5 @@ export function Block(props: BlockNativeProps | BlockAsChildProps) {
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;
-  return <Element {...finalProps}>{children}</Element>;
+  return intrinsicElement(as ?? DEFAULT_ELEMENT, finalProps, children);
 }

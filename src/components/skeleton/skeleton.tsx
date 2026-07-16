@@ -2,6 +2,7 @@ import { Slot } from "@askrjs/askr/foundations";
 import { mergeLayoutStyles } from "../_internal/block-layout";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import { styleDeclarationsToClass } from "../_internal/style";
 import type { SkeletonAsChildProps, SkeletonProps } from "./skeleton.types";
 
@@ -28,15 +29,12 @@ export function Skeleton(props: SkeletonProps | SkeletonAsChildProps) {
     className?: unknown;
     style?: unknown;
   };
-  const layoutClass = styleDeclarationsToClass(
-    mergeLayoutStyles(
-      {
-        blockSize: resolveSkeletonDimension(height),
-        inlineSize: resolveSkeletonDimension(width),
-      },
-      style,
-    ),
-  );
+  const dimensions: Record<string, string | number> = {};
+  const blockSize = resolveSkeletonDimension(height);
+  const inlineSize = resolveSkeletonDimension(width);
+  if (blockSize !== undefined) dimensions.blockSize = blockSize;
+  if (inlineSize !== undefined) dimensions.inlineSize = inlineSize;
+  const layoutClass = styleDeclarationsToClass(mergeLayoutStyles(dimensions, style));
   const finalProps = mergeProps(rest, {
     ref,
     class: classes(classProp, className, layoutClass),
@@ -49,5 +47,5 @@ export function Skeleton(props: SkeletonProps | SkeletonAsChildProps) {
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  return <div {...finalProps}>{children}</div>;
+  return intrinsicElement("div", finalProps, children);
 }

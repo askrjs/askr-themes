@@ -1,6 +1,7 @@
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "@askrjs/askr/foundations/utilities";
 import { classes } from "../_internal/classes";
+import { intrinsicElement } from "../_internal/jsx";
 import type {
   InputGroupProps,
   InputGroupTextAsChildProps,
@@ -30,7 +31,7 @@ export function InputGroup(props: InputGroupProps): JSX.Element {
       data-attached={attached ? "true" : "false"}
       data-orientation={orientation}
       data-slot="input-group"
-      role={role ?? "group"}
+      role={(role ?? "group") as string}
     >
       {children}
     </div>
@@ -53,5 +54,5 @@ export function InputGroupText(
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  return <span {...finalProps}>{children}</span>;
+  return intrinsicElement("span", finalProps, children);
 }

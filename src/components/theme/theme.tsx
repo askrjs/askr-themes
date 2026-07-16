@@ -1,6 +1,5 @@
-import { defineContext, getSignal, readContext, state } from "@askrjs/askr";
+import { defineScope, getSignal, readScope, state } from "@askrjs/askr";
 import type { JSXElement } from "@askrjs/askr/foundations/structures";
-import { resource } from "@askrjs/askr/resources";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
@@ -14,14 +13,14 @@ export type ThemeOption = {
   label: string;
 };
 
-export type ThemeContextValue = {
+export type ThemeScopeValue = {
   theme: () => ThemeName;
   setTheme: (theme: ThemeName) => void;
   themes: readonly ThemeOption[];
   storageKey: string;
 };
 
-export type ThemeProviderProps = {
+export type ThemeScopeProps = {
   children?: unknown;
   defaultTheme?: ThemeName;
   themes?: readonly ThemeOption[];
@@ -67,23 +66,26 @@ export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
 const DEFAULT_STORAGE_KEY = "askr-theme";
 const STATIC_CHILDREN = Symbol.for("askr.static-children");
 const STATIC_CHILD_SLOTS_CACHE = Symbol.for("__askrStaticChildSlots");
-// Passive mount sync should not overwrite a newer user/provider-initiated change.
-let rootThemeRevision = 0;
-let explicitRootThemeOwner: symbol | undefined;
-const registeredProviderSignals = new WeakSet<AbortSignal>();
+type ThemeCoordinator = ReturnType<typeof createThemeCoordinator>;
+type InternalThemeScopeValue = ThemeScopeValue & {
+  readonly coordinator: ThemeCoordinator | null;
+  readonly depth: number;
+};
 
-const ThemeContext = defineContext<ThemeContextValue>({
+const ThemeScopeContext = defineScope<InternalThemeScopeValue>({
   theme: () => "system",
   setTheme: () => undefined,
   themes: DEFAULT_THEME_OPTIONS,
   storageKey: DEFAULT_STORAGE_KEY,
+  coordinator: null,
+  depth: -1,
 });
 
-export function useTheme(): ThemeContextValue {
-  return readContext(ThemeContext);
+export function theme(): ThemeScopeValue {
+  return readScope(ThemeScopeContext);
 }
 
-export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
+export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   const {
     children,
     defaultTheme = "system",
@@ -91,85 +93,117 @@ export function ThemeProvider(props: ThemeProviderProps): JSX.Element {
     storageKey = DEFAULT_STORAGE_KEY,
   } = props;
 
-  const providerId = state<symbol>(Symbol("ThemeProvider"))();
-  const providerSignal = getSignal();
+  const scopeId = state<symbol>(Symbol("ThemeScope"))();
+  const scopeSignal = getSignal();
   const themeState = state<ThemeName>(readStoredTheme(storageKey) ?? defaultTheme);
   const currentTheme = themeState();
-
-  if (!registeredProviderSignals.has(providerSignal)) {
-    registeredProviderSignals.add(providerSignal);
-    providerSignal.addEventListener(
-      "abort",
-      () => {
-        if (explicitRootThemeOwner === providerId) {
-          explicitRootThemeOwner = undefined;
-        }
-      },
-      { once: true },
-    );
-  }
+  const parentScope = readScope(ThemeScopeContext);
+  const ownedCoordinator = state<ThemeCoordinator>(createThemeCoordinator())();
+  const coordinator = parentScope.coordinator ?? ownedCoordinator;
+  const scopeDepth = parentScope.depth + 1;
+  coordinator.register(scopeId, scopeDepth, currentTheme, scopeSignal);
 
   const setTheme = (nextTheme: ThemeName) => {
     themeState.set(nextTheme);
     writeStoredTheme(storageKey, nextTheme);
-    explicitRootThemeOwner = providerId;
-    rootThemeRevision += 1;
-    syncThemeRoot(nextTheme);
+    coordinator.activate(scopeId, nextTheme);
   };
 
-  const value: ThemeContextValue = {
+  const value: InternalThemeScopeValue = {
     theme: themeState,
     setTheme,
     themes,
     storageKey,
+    coordinator,
+    depth: scopeDepth,
   };
-  useThemeRootSync(providerId, currentTheme);
 
   return (
-    <ThemeContext.Scope value={value}>
-      <div data-slot="theme-provider">{children}</div>
-    </ThemeContext.Scope>
+    <ThemeScopeContext value={value}>
+      <div
+        data-slot="theme-scope"
+        ref={parentScope.coordinator === null
+          ? (element: HTMLElement | null) => coordinator.attach(element)
+          : undefined}
+      >
+        {children}
+      </div>
+    </ThemeScopeContext>
   );
 }
 
-function useThemeRootSync(providerId: symbol, theme: ThemeName): void {
-  const expectedRootThemeRevision = rootThemeRevision;
+function createThemeCoordinator() {
+  const scopes = new Map<symbol, {
+    depth: number;
+    sequence: number;
+    theme: ThemeName;
+    signal: AbortSignal;
+  }>();
+  let nextSequence = 0;
+  let explicitOwner: symbol | undefined;
+  let root: Node | null = null;
+  let scheduled = false;
 
-  resource(
-    ({ signal }: { signal: AbortSignal }) => {
-      if (typeof window === "undefined") {
-        syncThemeRoot(theme);
-        return null;
+  const target = (): HTMLElement | null => {
+    if (root?.nodeType === 9) return (root as Document).documentElement;
+    if (root && "host" in root) return (root as ShadowRoot).host as HTMLElement;
+    return typeof document === "undefined" ? null : document.documentElement;
+  };
+  const syncActive = (): void => {
+    if (explicitOwner !== undefined) return;
+    let candidate: { depth: number; sequence: number; theme: ThemeName } | undefined;
+    for (const scope of scopes.values()) {
+      if (!candidate || scope.depth > candidate.depth ||
+        (scope.depth === candidate.depth && scope.sequence > candidate.sequence)) {
+        candidate = scope;
       }
+    }
+    if (candidate) syncThemeTarget(target(), candidate.theme);
+  };
+  const schedule = (): void => {
+    if (typeof document === "undefined" || scheduled) return;
+    scheduled = true;
+    setTimeout(() => {
+      scheduled = false;
+      syncActive();
+    }, 0);
+  };
 
-      const timeoutId = window.setTimeout(() => {
-        if (!signal.aborted) {
-          syncThemeRoot(theme, {
-            expectedRevision: expectedRootThemeRevision,
-            passive: true,
-            providerId,
-          });
-        }
-      }, 0);
-
-      signal.addEventListener(
-        "abort",
-        () => {
-          window.clearTimeout(timeoutId);
-        },
-        { once: true },
-      );
-
-      return null;
+  return Object.freeze({
+    attach(element: HTMLElement | null) {
+      if (element) root = element.getRootNode();
+      schedule();
     },
-    [theme],
-  );
+    register(id: symbol, depth: number, themeName: ThemeName, signal: AbortSignal) {
+      const existing = scopes.get(id);
+      scopes.set(id, {
+        depth,
+        sequence: existing?.sequence ?? nextSequence++,
+        theme: themeName,
+        signal,
+      });
+      if (!existing) {
+        signal.addEventListener("abort", () => {
+          scopes.delete(id);
+          if (explicitOwner === id) explicitOwner = undefined;
+          schedule();
+        }, { once: true });
+      }
+      schedule();
+    },
+    activate(id: symbol, themeName: ThemeName) {
+      const scope = scopes.get(id);
+      if (scope) scope.theme = themeName;
+      explicitOwner = id;
+      syncThemeTarget(target(), themeName);
+    },
+  });
 }
 
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
-  const theme = useTheme();
-  const { themes = theme.themes, label = "Theme", ...rest } = props;
-  const currentTheme = theme.theme();
+  const activeTheme = theme();
+  const { themes = activeTheme.themes, label = "Theme", ...rest } = props;
+  const currentTheme = activeTheme.theme();
 
   return (
     <select
@@ -180,7 +214,7 @@ export function ThemePicker(props: ThemePickerProps): JSX.Element {
       onChange={(event: Event) => {
         const target = getThemePickerTarget(event);
         if (target) {
-          theme.setTheme(target.value as ThemeName);
+          activeTheme.setTheme(target.value as ThemeName);
         }
       }}
     >
@@ -211,7 +245,7 @@ function getThemePickerTarget(event: Event): HTMLSelectElement | null {
 }
 
 export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
-  const theme = useTheme();
+  const activeTheme = theme();
   const {
     children,
     lightIcon,
@@ -222,7 +256,7 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
     ...rest
   } = props;
 
-  const currentTheme = theme.theme();
+  const currentTheme = activeTheme.theme();
   const nextTheme = getNextTheme(currentTheme, themes, getResolvedSystemTheme());
   const renderContext = { theme: currentTheme, nextTheme };
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"];
@@ -251,7 +285,7 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
       onPress={(event) => {
         onPress?.(event);
         if (!event.defaultPrevented && !Object.is(nextTheme, currentTheme)) {
-          theme.setTheme(nextTheme);
+          activeTheme.setTheme(nextTheme);
         }
       }}
     >
@@ -345,7 +379,7 @@ function isJSXElement(value: unknown): value is JSXElement {
 function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
   if (Array.isArray(icon)) {
     const clonedChildren = icon.map((child) => cloneThemeToggleIcon(child));
-    if ((icon as Record<symbol, unknown>)[STATIC_CHILDREN] === true) {
+    if ((icon as unknown as Record<symbol, unknown>)[STATIC_CHILDREN] === true) {
       Object.defineProperty(clonedChildren, STATIC_CHILDREN, {
         value: true,
         configurable: true,
@@ -374,31 +408,11 @@ function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
   return clonedIcon;
 }
 
-function syncThemeRoot(
+function syncThemeTarget(
+  html: HTMLElement | null,
   themeChoice: ThemeName | null | undefined,
-  options?: { expectedRevision?: number; passive?: boolean; providerId?: symbol },
 ): void {
-  if (typeof document === "undefined") {
-    return;
-  }
-
-  const html = document.documentElement;
-
-  if (
-    options?.passive &&
-    options.expectedRevision !== undefined &&
-    options.expectedRevision !== rootThemeRevision
-  ) {
-    return;
-  }
-
-  if (
-    options?.passive &&
-    explicitRootThemeOwner !== undefined &&
-    explicitRootThemeOwner !== options.providerId
-  ) {
-    return;
-  }
+  if (!html) return;
 
   if (themeChoice == null) {
     html.removeAttribute("data-theme");

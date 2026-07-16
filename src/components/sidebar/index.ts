@@ -12,7 +12,7 @@ export {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
+  SidebarScope,
   SidebarRail,
   SidebarTrigger,
 } from "./sidebar";

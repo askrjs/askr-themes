@@ -1,4 +1,18 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
+import { jsx } from "@askrjs/askr/jsx-runtime";
+
+const renderIntrinsicElement = jsx as (
+  type: string,
+  props: Record<string, unknown>,
+) => JSX.Element;
+
+export function intrinsicElement(
+  type: string,
+  props: Record<string, unknown>,
+  children: unknown,
+): JSX.Element {
+  return renderIntrinsicElement(type, { ...props, children });
+}
 
 export function isJsxElement(value: unknown): value is JSXElement {
   return typeof value === "object" && value !== null && "$$typeof" in value && "props" in value;

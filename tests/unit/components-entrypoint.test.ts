@@ -61,7 +61,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
+  SidebarScope,
   SidebarTrigger,
   Sonner,
   Skeleton,
@@ -74,7 +74,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  ThemeProvider,
+  ThemeScope,
   Tooltip,
   Typography,
   Text,
@@ -126,7 +126,7 @@ describe("components entrypoint", () => {
       Sonner,
       Stat,
       Tabs,
-      ThemeProvider,
+      ThemeScope,
       Tooltip,
       Typography,
       Text,
@@ -188,10 +188,10 @@ describe("components entrypoint", () => {
     );
     expect(asElement(SheetFooter({ children: "Done" })).props["data-slot"]).toBe("sheet-footer");
     expect(
-      asElement(SidebarProvider({ children: SidebarInset({ children: "Main" }) })).props[
+      asElement(SidebarScope({ children: SidebarInset({ children: "Main" }) })).props[
         "data-slot"
       ],
-    ).toBe("sidebar-provider");
+    ).toBe("sidebar-scope");
     expect(asElement(SidebarContent({ children: SidebarGroup({}) })).props["data-slot"]).toBe(
       "sidebar-content",
     );

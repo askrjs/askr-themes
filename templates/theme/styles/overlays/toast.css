@@ -1,4 +1,4 @@
-:where([data-slot="toast-provider"]) {
+:where([data-slot="toast-host"]) {
   display: contents;
 }
 

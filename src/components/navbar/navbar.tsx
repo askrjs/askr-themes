@@ -6,6 +6,7 @@ import { DropdownContent } from "../overlays/dropdown-content";
 import type { NavBrandProps, NavDropdownProps, NavGroupProps, NavbarProps } from "./navbar.types";
 
 const ASKR_FRAGMENT = Symbol.for("askr.fragment");
+const LayoutBlock = Block as (props: Record<string, unknown>) => JSX.Element;
 
 function flattenNavbarChildren(children: unknown): unknown[] {
   return toChildArray(children).flatMap((child) => {
@@ -45,7 +46,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
 
   if (!collapseAt) {
     return (
-      <Block
+      <LayoutBlock
         as="nav"
         direction="row"
         align="center"
@@ -55,7 +56,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
         data-slot="navbar"
       >
         {children}
-      </Block>
+      </LayoutBlock>
     );
   }
 
@@ -64,9 +65,9 @@ export function Navbar(props: NavbarProps): JSX.Element {
   const navChildren = navbarChildren.filter((child) => !isNavBrandChild(child));
   const hasNavContent = hasRenderableChildren(navChildren);
   const content = (
-    <Block direction="row" align="center" gap="md" width="full" data-slot="navbar-content">
+    <LayoutBlock direction="row" align="center" gap="md" width="full" data-slot="navbar-content">
       {navChildren}
-    </Block>
+    </LayoutBlock>
   );
   const collapse = hasNavContent ? (
     <details data-slot="navbar-collapse">
@@ -79,7 +80,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
   ) : null;
 
   return (
-    <Block
+    <LayoutBlock
       as="nav"
       direction="row"
       align="center"
@@ -90,7 +91,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
       data-slot="navbar"
     >
       {[...brandChildren, collapse]}
-    </Block>
+    </LayoutBlock>
   );
 }
 
@@ -98,9 +99,9 @@ export function NavBrand(props: NavBrandProps): JSX.Element {
   const { children, ...rest } = props;
 
   return (
-    <Block direction="row" align="center" gap="sm" shrink={false} {...rest} data-slot="nav-brand">
+    <LayoutBlock direction="row" align="center" gap="sm" shrink={false} {...rest} data-slot="nav-brand">
       {children}
-    </Block>
+    </LayoutBlock>
   );
 }
 
@@ -108,12 +109,12 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
   const { align, children, label, title = label, ...rest } = props;
 
   return (
-    <Block align={align} gap="sm" {...rest} data-align={align} data-slot="nav-group">
+    <LayoutBlock align={align} gap="sm" {...rest} data-align={align} data-slot="nav-group">
       {title !== undefined ? <div data-slot="nav-group-label">{title}</div> : null}
-      <Block gap="xs" data-slot="nav-group-body">
+      <LayoutBlock gap="xs" data-slot="nav-group-body">
         {children}
-      </Block>
-    </Block>
+      </LayoutBlock>
+    </LayoutBlock>
   );
 }
 
@@ -121,7 +122,7 @@ export function NavDropdown(props: NavDropdownProps): JSX.Element {
   const { align = "end", children, label, side = "bottom", sideOffset = 6, ...rest } = props;
 
   return (
-    <Block direction="row" align="center" data-slot="nav-dropdown">
+    <LayoutBlock direction="row" align="center" data-slot="nav-dropdown">
       <Dropdown {...rest}>
         <DropdownTrigger class={classes("nav-item")} data-slot="nav-dropdown-trigger">
           {label}
@@ -136,6 +137,6 @@ export function NavDropdown(props: NavDropdownProps): JSX.Element {
           {children}
         </DropdownContent>
       </Dropdown>
-    </Block>
+    </LayoutBlock>
   );
 }

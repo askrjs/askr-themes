@@ -1,5 +1,5 @@
 /* Minimal coverage selectors for public non-component slots/states. */
-:where([data-slot="theme-provider"]) {
+:where([data-slot="theme-scope"]) {
   min-block-size: 100vh;
   color: var(--ak-color-text);
   background: var(--ak-color-bg);

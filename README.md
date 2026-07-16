@@ -35,12 +35,12 @@ from `@askrjs/themes/theme`.
 Then use the theme helpers and component catalog:
 
 ```tsx
-import { ThemeProvider, ThemeToggle } from "@askrjs/themes/theme";
+import { ThemeScope, ThemeToggle } from "@askrjs/themes/theme";
 import { Button, ButtonGroup, Field, Input, InputGroup, Label } from "@askrjs/themes/components";
 
 export function AppShell() {
   return (
-    <ThemeProvider>
+    <ThemeScope>
       <ButtonGroup>
         <Button variant="primary">Save</Button>
         <ThemeToggle>{({ nextTheme }) => nextTheme}</ThemeToggle>
@@ -52,7 +52,7 @@ export function AppShell() {
           <Input id="workspace" name="workspace" />
         </InputGroup>
       </Field>
-    </ThemeProvider>
+    </ThemeScope>
   );
 }
 ```
@@ -63,8 +63,8 @@ export function AppShell() {
 - `@askrjs/themes/<component>` for package subpaths such as
   `@askrjs/themes/button`, `@askrjs/themes/card`, and
   `@askrjs/themes/dialog`.
-- `@askrjs/themes/theme` for `ThemeProvider`, `ThemePicker`, `ThemeToggle`,
-  and `useTheme`.
+- `@askrjs/themes/theme` for `ThemeScope`, `ThemePicker`, `ThemeToggle`,
+  and `theme`.
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 

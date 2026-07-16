@@ -65,7 +65,7 @@ import "@askrjs/themes/default";
 
 The optional cat preset layer adds five curated product palettes without
 duplicating component CSS. Import it after the default theme, then select a
-preset with `data-theme` or a custom `ThemeProvider` option:
+preset with `data-theme` or a custom `ThemeScope` option:
 
 ```css
 @import "@askrjs/themes/default";
@@ -81,15 +81,15 @@ import {
   CAT_THEME_NAMES,
   CAT_THEME_OPTIONS,
   ThemePicker,
-  ThemeProvider,
+  ThemeScope,
 } from "@askrjs/themes/theme";
 
 export function AppTheme({ children }: { children?: unknown }) {
   return (
-    <ThemeProvider defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
+    <ThemeScope defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
       <ThemePicker />
       {children}
-    </ThemeProvider>
+    </ThemeScope>
   );
 }
 ```

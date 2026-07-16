@@ -1,5 +1,6 @@
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import type { TextElement, TextProps } from "./text.types";
 
 const DEFAULT_ELEMENT = "p";
@@ -34,6 +35,5 @@ export function Text<TElement extends TextElement = "p">(props: TextProps<TEleme
     "data-truncate": truncate ? "true" : undefined,
   });
 
-  const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;
-  return <Element {...finalProps}>{children}</Element>;
+  return intrinsicElement(as ?? DEFAULT_ELEMENT, finalProps, children);
 }
