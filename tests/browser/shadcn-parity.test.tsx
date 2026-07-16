@@ -79,7 +79,7 @@ describe("shadcn New York visual parity", () => {
           <p data-slot="sheet-description">Workspace preferences.</p>
         </header>
       </section>
-      <div data-slot="sidebar-provider">
+      <div data-slot="sidebar-scope">
         <aside data-slot="sidebar" data-side="left" data-variant="sidebar" data-collapsible="offcanvas">
           <div data-slot="sidebar-header">Workspace</div>
           <div data-slot="sidebar-content">
@@ -99,14 +99,14 @@ describe("shadcn New York visual parity", () => {
     `;
 
     const sheet = document.querySelector('[data-slot="sheet-content"]') as HTMLElement;
-    const provider = document.querySelector('[data-slot="sidebar-provider"]') as HTMLElement;
+    const scope = document.querySelector('[data-slot="sidebar-scope"]') as HTMLElement;
     const sidebar = document.querySelector('[data-slot="sidebar"]') as HTMLElement;
     const button = document.querySelector('[data-slot="sidebar-menu-button"]') as HTMLElement;
     const label = document.querySelector('[data-slot="sidebar-group-label"]') as HTMLElement;
 
     expect(getComputedStyle(sheet).position).toBe("fixed");
     expect(px(getComputedStyle(sheet).width)).toBe(SHADCN_NEW_YORK_V4_COMPUTED.sheetWidth);
-    expect(getComputedStyle(provider).display).toBe("flex");
+    expect(getComputedStyle(scope).display).toBe("flex");
     expect(getComputedStyle(sidebar).display).toBe("flex");
     expect(px(getComputedStyle(button).minHeight)).toBe(
       SHADCN_NEW_YORK_V4_COMPUTED.sidebarMenuButtonHeight,

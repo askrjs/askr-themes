@@ -106,6 +106,7 @@ describe("navbar and sidebar overlay recipes", () => {
 
     expect(window.location.pathname).toBe("/docs/components");
 
+    cleanupApp(container!);
     window.history.replaceState({}, "", "/docs");
     clearRoutes();
     route("/docs", () => (
@@ -120,7 +121,6 @@ describe("navbar and sidebar overlay recipes", () => {
         </NavGroup>
       </Sidebar>
     ));
-    cleanupApp(container!);
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
 

@@ -24,7 +24,7 @@ export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
       data-attached={attached ? "true" : "false"}
       data-orientation={orientation}
       data-slot="button-group"
-      role={role ?? "group"}
+      role={(role ?? "group") as string}
     >
       {children}
     </div>

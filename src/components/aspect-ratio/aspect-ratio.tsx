@@ -2,6 +2,7 @@ import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import { mergeLayoutStyles } from "../_internal/block-layout";
 import { styleDeclarationsToClass } from "../_internal/style";
+import { intrinsicElement } from "../_internal/jsx";
 import type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio.types";
 
 export function AspectRatio(props: AspectRatioProps): JSX.Element;
@@ -30,5 +31,5 @@ export function AspectRatio(props: AspectRatioProps | AspectRatioAsChildProps) {
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  return <div {...finalProps}>{children}</div>;
+  return intrinsicElement("div", finalProps, children);
 }

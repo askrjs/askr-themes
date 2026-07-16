@@ -43,11 +43,11 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "sidebar-menu",
   "sidebar-menu-badge",
   "sidebar-menu-item",
-  "sidebar-provider",
+  "sidebar-scope",
   "sidebar-rail",
   "tab",
   "tabs",
-  "theme-provider",
+  "theme-scope",
   "toast-icon",
 ]);
 

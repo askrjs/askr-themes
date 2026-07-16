@@ -5,7 +5,7 @@ import { createQuery } from "@askrjs/askr/data";
 import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
 
 import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
-import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemeProvider, ThemeToggle } from "../../src/theme";
+import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemeScope, ThemeToggle } from "../../src/theme";
 
 async function settle(): Promise<void> {
   await Promise.resolve();
@@ -38,12 +38,12 @@ describe("theme route persistence in the browser", () => {
 
   it("should preserves theme state across navigation and repeated toggles", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <header>
           <ThemeToggle />
         </header>
         <main>{children}</main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -53,7 +53,7 @@ describe("theme route persistence in the browser", () => {
 
     await createSPA({ root: container!, manifest: getManifest() });
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
 
@@ -64,7 +64,7 @@ describe("theme route persistence in the browser", () => {
     ) as HTMLButtonElement | null;
     const html = document.documentElement;
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
     expect(html.getAttribute("data-theme")).toBe("light");
     expect(html.getAttribute("data-theme-choice")).toBe("light");
@@ -111,12 +111,12 @@ describe("theme route persistence in the browser", () => {
 
   it("should preserves cat preset theme state across navigation and repeated toggles", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
+      <ThemeScope defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
         <header>
           <ThemeToggle themes={CAT_THEME_NAMES}>{({ nextTheme }) => nextTheme}</ThemeToggle>
         </header>
         <main>{children}</main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -198,7 +198,7 @@ describe("theme route persistence in the browser", () => {
     }
 
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <Header>
           <Container>
             <Block direction="row" align="center" justify="between" paddingY="md">
@@ -214,7 +214,7 @@ describe("theme route persistence in the browser", () => {
           </Container>
         </Header>
         <Main>{children}</Main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -246,6 +246,6 @@ describe("theme route persistence in the browser", () => {
     await settle();
 
     expect(page()).toBe("Messaging topology");
-    expect(container?.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container?.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
   });
 });

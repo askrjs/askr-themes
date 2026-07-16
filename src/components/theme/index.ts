@@ -3,17 +3,17 @@ export {
   CAT_THEME_OPTIONS,
   DEFAULT_THEME_OPTIONS,
   ThemePicker,
-  ThemeProvider,
+  ThemeScope,
   ThemeToggle,
-  useTheme,
+  theme,
 } from "./theme";
 export type {
   CatThemeName,
-  ThemeContextValue,
+  ThemeScopeValue,
   ThemeName,
   ThemeOption,
   ThemePickerProps,
-  ThemeProviderProps,
+  ThemeScopeProps,
   ThemeToggleProps,
   ThemeToggleRenderContext,
 } from "./theme";

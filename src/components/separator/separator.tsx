@@ -1,5 +1,6 @@
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import type { SeparatorAsChildProps, SeparatorNativeProps } from "./separator.types";
 
 export function Separator(props: SeparatorNativeProps): JSX.Element;
@@ -19,5 +20,5 @@ export function Separator(props: SeparatorNativeProps | SeparatorAsChildProps) {
     return <Slot asChild {...finalProps} children={children} />;
   }
 
-  return <div {...finalProps}>{children}</div>;
+  return intrinsicElement("div", finalProps, children);
 }

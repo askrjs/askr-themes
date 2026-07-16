@@ -9,9 +9,9 @@ import {
   DEFAULT_THEME_OPTIONS,
   type ThemeName,
   ThemePicker,
-  ThemeProvider,
+  ThemeScope,
   ThemeToggle,
-  useTheme,
+  theme,
 } from "../../src/theme";
 
 const THEME_STORAGE_KEYS = [
@@ -93,28 +93,28 @@ function ThemeIconToggle(props: { label: string }): JSX.Element {
 }
 
 function ThemeSetButton(props: { label: string; theme: ThemeName }): JSX.Element {
-  const theme = useTheme();
+  const activeTheme = theme();
 
   return (
     <button
       aria-label={props.label}
       onClick={() => {
-        theme.setTheme(props.theme);
+        activeTheme.setTheme(props.theme);
       }}
     />
   );
 }
 
 function ThemeProbe(props: { id?: string } = {}): JSX.Element {
-  const theme = useTheme();
+  const activeTheme = theme();
 
   return (
     <div
       data-slot="theme-probe"
       data-probe-id={props.id}
-      data-storage-key={theme.storageKey}
-      data-theme={theme.theme()}
-      data-themes={theme.themes.map((option) => option.value).join(",")}
+      data-storage-key={activeTheme.storageKey}
+      data-theme={activeTheme.theme()}
+      data-themes={activeTheme.themes.map((option) => option.value).join(",")}
     />
   );
 }
@@ -163,7 +163,7 @@ describe("theme contracts", () => {
     document.documentElement.removeAttribute("data-theme-choice");
   });
 
-  it("should exposes the default theme options and provider hook state", async () => {
+  it("should expose the default theme options and scoped state", async () => {
     expect(DEFAULT_THEME_OPTIONS).toEqual([
       { value: "system", label: "System" },
       { value: "light", label: "Light" },
@@ -171,14 +171,14 @@ describe("theme contracts", () => {
     ]);
 
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <header>
           <ThemePicker />
           <ThemeToggle />
           <ThemeProbe />
         </header>
         <main>{children}</main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -228,7 +228,7 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
   });
 
-  it("should exposes cat preset options for provider and picker composition", async () => {
+  it("should expose cat preset options for scope and picker composition", async () => {
     expect(CAT_THEME_NAMES).toEqual(["tabby", "ginger", "tuxedo", "calico", "torty"]);
     expect(CAT_THEME_OPTIONS).toEqual([
       { value: "tabby", label: "Tabby" },
@@ -239,7 +239,7 @@ describe("theme contracts", () => {
     ]);
 
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider
+      <ThemeScope
         defaultTheme="tabby"
         storageKey="askr-theme"
         themes={[...DEFAULT_THEME_OPTIONS, ...CAT_THEME_OPTIONS]}
@@ -248,7 +248,7 @@ describe("theme contracts", () => {
         <ThemeToggle themes={CAT_THEME_NAMES} />
         <ThemeProbe />
         {children}
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -295,11 +295,11 @@ describe("theme contracts", () => {
     window.localStorage.setItem("askr-theme", "dark");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemePicker />
         <ThemeToggle />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -358,10 +358,10 @@ describe("theme contracts", () => {
     window.localStorage.setItem("askr-theme", "dark");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-custom">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-custom">
         <ThemeToggle />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -390,7 +390,7 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
   });
 
-  it("should keep provider state usable when storage reads and writes fail", async () => {
+  it("should keep scoped state usable when storage reads and writes fail", async () => {
     const originalLocalStorage = window.localStorage;
     replaceLocalStorage({
       getItem() {
@@ -406,10 +406,10 @@ describe("theme contracts", () => {
     restoreLocalStorage = () => replaceLocalStorage(originalLocalStorage);
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-blocked">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-blocked">
         <ThemeToggle />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -437,13 +437,13 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
   });
 
-  it("should isolate nested provider context while root theme follows the latest change", async () => {
+  it("should isolate nested scope context while root theme follows the latest change", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemePicker label="Outer theme" />
         <ThemeToggle aria-label="Outer toggle" />
         <ThemeProbe id="outer" />
-        <ThemeProvider
+        <ThemeScope
           defaultTheme="tabby"
           storageKey="askr-theme-nested"
           themes={CAT_THEME_OPTIONS}
@@ -451,8 +451,8 @@ describe("theme contracts", () => {
           <ThemePicker label="Inner theme" />
           <ThemeToggle aria-label="Inner toggle" themes={CAT_THEME_NAMES} />
           <ThemeProbe id="inner" />
-        </ThemeProvider>
-      </ThemeProvider>
+        </ThemeScope>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -502,11 +502,11 @@ describe("theme contracts", () => {
     window.localStorage.setItem("askr-theme", "dark");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemePicker />
         <ThemeIconToggle label="Icon toggle" />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -548,15 +548,15 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
   });
 
-  it("should keep toggle icons synchronized with direct provider state updates", async () => {
+  it("should keep toggle icons synchronized with direct scoped state updates", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemeIconToggle label="Icon toggle" />
         <ThemeSetButton label="Set dark" theme="dark" />
         <ThemeSetButton label="Set system" theme="system" />
         <ThemeSetButton label="Set light" theme="light" />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -596,15 +596,15 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
   });
 
-  it("should isolate nested provider toggle icons when an inner picker changes", async () => {
+  it("should isolate nested scope toggle icons when an inner picker changes", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemeIconToggle label="Outer icon toggle" />
-        <ThemeProvider defaultTheme="light" storageKey="askr-theme-nested">
+        <ThemeScope defaultTheme="light" storageKey="askr-theme-nested">
           <ThemePicker label="Inner theme" />
           <ThemeIconToggle label="Inner icon toggle" />
-        </ThemeProvider>
-      </ThemeProvider>
+        </ThemeScope>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -642,9 +642,9 @@ describe("theme contracts", () => {
 
   it("should let a fresh app mount replace a previous explicit root theme", async () => {
     const FirstApp = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-remount-first">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-remount-first">
         <ThemeToggle />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: FirstApp }, () => {
@@ -668,9 +668,9 @@ describe("theme contracts", () => {
     window.history.replaceState({}, "", "/theme");
 
     const SecondApp = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-remount-second">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-remount-second">
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: SecondApp }, () => {
@@ -692,10 +692,10 @@ describe("theme contracts", () => {
     window.localStorage.setItem("askr-theme", "system");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="">
+      <ThemeScope defaultTheme="light" storageKey="">
         <ThemeIconToggle label="Icon toggle" />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -727,11 +727,11 @@ describe("theme contracts", () => {
     window.localStorage.setItem("askr-theme-empty", "");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme-empty">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-empty">
         <ThemePicker />
         <ThemeIconToggle label="Icon toggle" />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -767,11 +767,11 @@ describe("theme contracts", () => {
 
   it("should support narrow picker options and bubbled option change events", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
         <ThemePicker label="Narrow theme" themes={[{ value: "dark", label: "Dark" }]} />
         <ThemeIconToggle label="Icon toggle" />
         <ThemeProbe />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {

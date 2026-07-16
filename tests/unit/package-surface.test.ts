@@ -10,7 +10,7 @@ import {
   SHADCN_THEME_COMPONENT_SUBPATHS,
   SHADCN_THEME_COMPONENTS,
 } from "../../src/parity";
-import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
+import { ThemePicker, ThemeScope, ThemeToggle } from "../../src/theme";
 import {
   DEFAULT_THEME_INDEX_FILE,
   PACKAGE_JSON,
@@ -138,7 +138,7 @@ describe("package surface", () => {
     }
 
     expect(namespace[SHADCN_CHART_COMPONENT]).toBeUndefined();
-    expect(typeof ThemeProvider).toBe("function");
+    expect(typeof ThemeScope).toBe("function");
     expect(typeof ThemePicker).toBe("function");
     expect(typeof ThemeToggle).toBe("function");
   });

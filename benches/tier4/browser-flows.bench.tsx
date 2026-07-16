@@ -22,7 +22,7 @@ import {
   buildRouteTransitionPage,
   buildTablePage,
 } from "../_shared/fixtures";
-import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
+import { ThemePicker, ThemeScope, ThemeToggle } from "../../src/theme";
 
 const LIVE_LOG_LIMIT = 32;
 
@@ -88,7 +88,7 @@ function LiveTableLog(): JSX.Element {
 function NestedThemeRoute(): JSX.Element {
   return (
     <section data-bench="nested-theme-route">
-      <ThemeProvider defaultTheme="dark" storageKey="askr-theme-nested">
+      <ThemeScope defaultTheme="dark" storageKey="askr-theme-nested">
         <header data-bench="nested-theme-header">
           <ThemePicker label="Nested theme" />
           <ThemeToggle />
@@ -96,7 +96,7 @@ function NestedThemeRoute(): JSX.Element {
         <div data-bench="nested-theme-body">
           {buildRouteTransitionPage({ title: "Nested theme", rows: 6 })}
         </div>
-      </ThemeProvider>
+      </ThemeScope>
     </section>
   );
 }
@@ -241,7 +241,7 @@ describe("tier4 browser benches", () => {
         });
       });
 
-      expect(scenario.container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+      expect(scenario.container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     });
 
     afterEach(() => {

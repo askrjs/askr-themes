@@ -5,7 +5,7 @@ import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/r
 
 import {
   ThemePicker,
-  ThemeProvider,
+  ThemeScope,
   ThemeToggle,
   type ThemeToggleRenderContext,
 } from "../../src/theme";
@@ -86,12 +86,12 @@ describe("theme route persistence", () => {
 
   it("should preserves the active theme across route navigation", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <header>
           <ThemeToggle />
         </header>
         <main>{children}</main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -101,7 +101,7 @@ describe("theme route persistence", () => {
 
     await createSPA({ root: container!, manifest: getManifest() });
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
 
@@ -112,7 +112,7 @@ describe("theme route persistence", () => {
     ) as HTMLButtonElement | null;
     const html = document.documentElement;
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(toggle?.getAttribute("data-theme-choice")).toBe("light");
     expect(html.getAttribute("data-theme")).toBe("light");
     expect(html.getAttribute("data-theme-choice")).toBe("light");
@@ -146,31 +146,31 @@ describe("theme route persistence", () => {
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
-  it("should render one stable provider host around root synchronization and content", async () => {
+  it("should render one stable scope host around root synchronization and content", async () => {
     const App = () => (
-      <ThemeProvider defaultTheme="light">
-        <main id="provider-content">Northstar</main>
-      </ThemeProvider>
+      <ThemeScope defaultTheme="light">
+        <main id="scope-content">Northstar</main>
+      </ThemeScope>
     );
     route("/example", App);
 
     await createSPA({ root: container!, manifest: getManifest() });
 
-    const provider = container!.querySelector('[data-slot="theme-provider"]');
+    const scope = container!.querySelector('[data-slot="theme-scope"]');
     expect(container!.children).toHaveLength(1);
-    expect(container!.firstElementChild).toBe(provider);
-    expect(provider?.querySelector("#provider-content")?.textContent).toBe("Northstar");
+    expect(container!.firstElementChild).toBe(scope);
+    expect(scope?.querySelector("#scope-content")?.textContent).toBe("Northstar");
   });
 
   it("should keep a single visible icon on repeated toggles", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <ThemeToggle
           themes={["light", "dark"]}
           lightIcon={<svg aria-hidden="true" data-icon="sun" viewBox="0 0 16 16" />}
           darkIcon={<svg aria-hidden="true" data-icon="moon" viewBox="0 0 16 16" />}
         />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -219,7 +219,7 @@ describe("theme route persistence", () => {
 
   it("should mounts theme controls without render-time state errors", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <header>
           <ThemePicker />
           <ThemeToggle />
@@ -227,7 +227,7 @@ describe("theme route persistence", () => {
         <main>
           <div id="page">Example</div>
         </main>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -237,7 +237,7 @@ describe("theme route persistence", () => {
     await expect(createSPA({ root: container!, manifest: getManifest() })).resolves.toBeUndefined();
     await settle();
 
-    expect(container.querySelector('[data-slot="theme-provider"]')).not.toBeNull();
+    expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(container.querySelector('[data-slot="theme-picker"]')).not.toBeNull();
     expect(container.querySelector('[data-theme-control="toggle"]')).not.toBeNull();
   });
@@ -250,10 +250,10 @@ describe("theme route persistence", () => {
     };
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <ThemeToggle aria-label="Icon toggle" />
         <ThemeToggle aria-label="Text toggle">{renderLabel}</ThemeToggle>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -304,7 +304,7 @@ describe("theme route persistence", () => {
     const events: string[] = [];
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <ThemeToggle
           onPress={(event) => {
             events.push(
@@ -316,7 +316,7 @@ describe("theme route persistence", () => {
             events.push(`after:${String(event.defaultPrevented ?? false)}`);
           }}
         />
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -352,11 +352,11 @@ describe("theme route persistence", () => {
     let pressCount = 0;
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <ThemeToggle themes={[]} onPress={() => (pressCount += 1)}>
           {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
         </ThemeToggle>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -389,11 +389,11 @@ describe("theme route persistence", () => {
 
   it("should recover custom cycles when the current theme is outside the cycle", async () => {
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="system">
+      <ThemeScope defaultTheme="system">
         <ThemeToggle themes={["tabby", "ginger"]}>
           {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
         </ThemeToggle>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {
@@ -427,11 +427,11 @@ describe("theme route persistence", () => {
     window.localStorage.setItem("askr-theme", "neon");
 
     const AppLayout = () => (
-      <ThemeProvider defaultTheme="light">
+      <ThemeScope defaultTheme="light">
         <ThemeToggle themes={["tabby", "ginger"]}>
           {({ theme, nextTheme }: ThemeToggleRenderContext) => `${theme}->${nextTheme}`}
         </ThemeToggle>
-      </ThemeProvider>
+      </ThemeScope>
     );
 
     group({ layout: AppLayout }, () => {

@@ -3,6 +3,7 @@ import { currentRoute, Link, navigate } from "@askrjs/askr/router";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import { resolvePathname } from "../_internal/pathname";
 import type {
   NavItemAsChildProps,
@@ -15,6 +16,8 @@ import type {
   TabsAsChildProps,
   TabsProps,
 } from "./nav.types";
+
+const LayoutBlock = Block as (props: Record<string, unknown>) => JSX.Element;
 
 function normalizePathname(pathname: string): string {
   return pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
@@ -87,7 +90,7 @@ function renderNavSet(
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  return <nav {...finalProps}>{children}</nav>;
+  return intrinsicElement("nav", finalProps, children);
 }
 
 function renderRoutedLink(
@@ -98,7 +101,8 @@ function renderRoutedLink(
   const {
     active,
     children,
-    href,
+    href: suppliedHref,
+    to,
     onClick,
     ref,
     class: className,
@@ -106,6 +110,10 @@ function renderRoutedLink(
     target,
     ...rest
   } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
+  const href = to?.href ?? suppliedHref;
+  if (!href) {
+    throw new Error("Nav link requires href or to.");
+  }
   const inheritedSlot =
     options.inheritSlot && typeof (rest as Record<string, unknown>)["data-slot"] === "string"
       ? String((rest as Record<string, unknown>)["data-slot"])
@@ -130,12 +138,10 @@ function renderRoutedLink(
     : {
         "data-active": undefined,
       };
-  const useRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
-  const childProps = {
-    ...childRest,
-    href,
-    target,
-  };
+  const rendersRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
+  const childProps: NavLinkProps = to
+    ? ({ ...childRest, to, target } as NavLinkProps)
+    : ({ ...childRest, href, target } as NavLinkProps);
   const handleClick = (event: MouseEvent) => {
     onClick?.(event);
 
@@ -148,25 +154,25 @@ function renderRoutedLink(
   };
 
   return (
-    <Block
+    <LayoutBlock
       asChild
       paddingX="sm"
       paddingY="xs"
       radius={resolvedSlot === "pill" ? "round" : "md"}
       background={isActive && options.activeBackground ? "selected" : undefined}
       ref={ref}
-      class={classes(options.className, inheritedNavClass, className)}
+      className={classes(options.className, inheritedNavClass, className)}
       data-slot={resolvedSlot}
       {...activeProps}
     >
-      {useRouterLink ? (
+      {rendersRouterLink ? (
         <Link {...childProps}>{children}</Link>
       ) : (
-        <a {...childProps} onClick={handleClick}>
+        <a {...childRest} href={href} target={target} onClick={handleClick}>
           {children}
         </a>
       )}
-    </Block>
+    </LayoutBlock>
   );
 }
 
@@ -206,7 +212,7 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
 
   if (asChild) {
     return (
-      <Block
+      <LayoutBlock
         asChild
         paddingX="sm"
         paddingY="xs"
@@ -214,17 +220,17 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
         background={active ? "selected" : undefined}
         {...rest}
         ref={ref}
-        class={className}
+        className={className}
         data-active={active ? "true" : undefined}
         data-slot="nav-item"
       >
         {children}
-      </Block>
+      </LayoutBlock>
     );
   }
 
   return (
-    <Block
+    <LayoutBlock
       as="a"
       paddingX="sm"
       paddingY="xs"
@@ -232,12 +238,12 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
       background={active ? "selected" : undefined}
       {...rest}
       ref={ref}
-      class={className}
+      className={className}
       data-active={active ? "true" : undefined}
       data-slot="nav-item"
     >
       {children}
-    </Block>
+    </LayoutBlock>
   );
 }
 

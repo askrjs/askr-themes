@@ -54,7 +54,7 @@ describe("tier3 stateful composition benches", () => {
           });
         });
 
-        if (!mounted.container.querySelector('[data-slot="theme-provider"]')) {
+        if (!mounted.container.querySelector('[data-slot="theme-scope"]')) {
           failThemeControlBench("theme controls bench failed to mount the expected provider");
           mounted.cleanup();
           resetThemeState();

@@ -1,6 +1,7 @@
 import { Slot } from "@askrjs/askr/foundations";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import type {
   BrandAsChildProps,
   BrandLabelProps,
@@ -15,7 +16,6 @@ export function Brand<TElement extends "div" | "a" | "span" = "div">(
   props: BrandProps<TElement>,
 ): JSX.Element {
   const {
-    as,
     asChild,
     children,
     class: classProp,
@@ -23,6 +23,7 @@ export function Brand<TElement extends "div" | "a" | "span" = "div">(
     ref,
     ...rest
   } = props as BrandNativeProps | BrandAsChildProps;
+  const as = "as" in props ? props.as : undefined;
 
   const finalProps = mergeProps(rest, {
     ref,
@@ -34,8 +35,7 @@ export function Brand<TElement extends "div" | "a" | "span" = "div">(
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;
-  return <Element {...finalProps}>{children}</Element>;
+  return intrinsicElement(as ?? DEFAULT_ELEMENT, finalProps, children);
 }
 
 export function BrandMark(props: BrandMarkProps): JSX.Element {

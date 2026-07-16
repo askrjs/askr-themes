@@ -141,7 +141,7 @@ export {
   ToastAction,
   ToastClose,
   ToastDescription,
-  ToastProvider,
+  ToastHost,
   ToastTitle,
   ToastViewport,
   Toggle,
@@ -240,7 +240,7 @@ export {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarProvider,
+  SidebarScope,
   SidebarRail,
   SidebarTrigger,
 } from "./components/sidebar";
@@ -254,9 +254,9 @@ export {
   CAT_THEME_OPTIONS,
   DEFAULT_THEME_OPTIONS,
   ThemePicker,
-  ThemeProvider,
+  ThemeScope,
   ThemeToggle,
-  useTheme,
+  theme,
 } from "./components/theme";
 export * from "./components/catalog";
 

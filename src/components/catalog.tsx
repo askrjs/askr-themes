@@ -5,6 +5,10 @@ import { Block } from "./block";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
+const CatalogDialogContent = DialogContent as (
+  props: Record<string, unknown>,
+) => JSX.Element;
+
 type CatalogElement = keyof JSX.IntrinsicElements;
 
 export type CatalogComponentProps = Record<string, unknown> & {
@@ -647,7 +651,7 @@ export function SheetContent(
   },
 ): JSX.Element {
   const { side = "right", ...rest } = props;
-  return <DialogContent {...rest} data-side={side} data-slot="sheet-content" />;
+  return <CatalogDialogContent {...rest} data-side={side} data-slot="sheet-content" />;
 }
 
 export function SheetHeader(props: CatalogComponentProps): JSX.Element {

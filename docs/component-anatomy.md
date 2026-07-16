@@ -194,7 +194,7 @@ Overlay behavior comes from `@askrjs/ui`; themed imports apply the default CSS.
 | `Dropdown`    | `dropdown-trigger`, `dropdown-content`, `dropdown-item`, `dropdown-group`, `dropdown-label`, `dropdown-separator` | `dropdown-trigger`, `dropdown-content`, `dropdown-item`, `dropdown-label`, `dropdown-separator` | Style content and item slots.                                           | Do not target generated positioning wrappers. |
 | `Popover`     | `popover-trigger`, `popover-content`, `popover-close`                                                             | None                                                                                            | Use for lightweight rich floating content.                              | Do not use for menus; use `Dropdown`.         |
 | `Tooltip`     | `tooltip-trigger`, `tooltip-content`                                                                              | None                                                                                            | Keep content short.                                                     | Do not put interactive controls in tooltips.  |
-| `Toast`       | `toast-provider`, `toast-viewport`, `toast`, `toast-title`, `toast-description`, `toast-action`, `toast-close`    | None                                                                                            | Style variants and viewport placement.                                  | Do not use toast for required decisions.      |
+| `Toast`       | `toast-host`, `toast-viewport`, `toast`, `toast-title`, `toast-description`, `toast-action`, `toast-close`    | None                                                                                            | Style variants and viewport placement.                                  | Do not use toast for required decisions.      |
 
 Safe override:
 
@@ -212,7 +212,7 @@ Safe override:
 
 | Component       | Shape                                                 | Stable slots                     | Style here                                      | Avoid                                                                              |
 | --------------- | ----------------------------------------------------- | -------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `ThemeProvider` | Context provider plus DOM wrapper.                    | `theme-provider`                 | Rarely needed; prefer root token scopes.        | Do not target provider descendants by child order.                                 |
+| `ThemeScope` | Lexical theme scope plus DOM wrapper.                  | `theme-scope`                 | Rarely needed; prefer root token scopes.        | Do not target scope descendants by child order.                                    |
 | `ThemePicker`   | Native select for available themes.                   | `theme-picker`                   | Style as a compact control.                     | Do not create custom theme menus unless product UI requires it.                    |
 | `ThemeToggle`   | Styled `Button` that changes theme and wraps content. | `button`, `theme-toggle-content` | Use button variants/sizes and the content slot. | Do not hide it inside responsive nav collapse when it is a required global action. |
 

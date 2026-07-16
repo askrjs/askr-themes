@@ -35,7 +35,7 @@ import {
   TableHeaderCell,
   TableRow,
 } from "../../src/surfaces";
-import { ThemePicker, ThemeProvider, ThemeToggle } from "../../src/theme";
+import { ThemePicker, ThemeScope, ThemeToggle } from "../../src/theme";
 
 function BenchIcon(props: { label: string; state?: string }): JSX.Element {
   const { label, state } = props;
@@ -211,7 +211,7 @@ export function ThemeBenchLayout(props: { children?: unknown }): JSX.Element {
   const { children } = props;
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="askr-theme">
+    <ThemeScope defaultTheme="light" storageKey="askr-theme">
       <header data-bench="theme-header">
         <ThemePicker
           label="Theme"
@@ -228,7 +228,7 @@ export function ThemeBenchLayout(props: { children?: unknown }): JSX.Element {
         />
       </header>
       <main data-bench="theme-main">{children}</main>
-    </ThemeProvider>
+    </ThemeScope>
   );
 }
 

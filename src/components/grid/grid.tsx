@@ -1,6 +1,7 @@
 import { classes } from "../_internal/classes";
 import { mergeLayoutStyles } from "../_internal/block-layout";
 import { mergeProps } from "../_internal/merge-props";
+import { intrinsicElement } from "../_internal/jsx";
 import { styleDeclarationsToClass } from "../_internal/style";
 import type { BlockSpace, LayoutBreakpoint, ResponsiveValue } from "../_internal/block-layout";
 import type { GridAlign, GridColumns, GridElement, GridProps } from "./grid.types";
@@ -108,6 +109,5 @@ export function Grid<TElement extends GridElement = "div">(
     "data-slot": "grid",
   });
 
-  const Element = (as ?? DEFAULT_ELEMENT) as keyof JSX.IntrinsicElements;
-  return <Element {...finalProps}>{children}</Element>;
+  return intrinsicElement(as ?? DEFAULT_ELEMENT, finalProps, children);
 }

@@ -27,7 +27,7 @@
   border-inline-end: 0;
 }
 
-:where([data-slot="sidebar-provider"]) {
+:where([data-slot="sidebar-scope"]) {
   display: flex;
   min-block-size: 100svh;
   inline-size: 100%;

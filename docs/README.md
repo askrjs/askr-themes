@@ -275,15 +275,15 @@ export function AccountPage() {
 Theme state helpers are available from the theme entrypoint:
 
 ```tsx
-import { ThemePicker, ThemeProvider, ThemeToggle } from "@askrjs/themes/theme";
+import { ThemePicker, ThemeScope, ThemeToggle } from "@askrjs/themes/theme";
 
 export function App({ children }: { children?: unknown }) {
   return (
-    <ThemeProvider>
+    <ThemeScope>
       <ThemePicker />
       <ThemeToggle lightIcon={<SunIcon />} darkIcon={<MoonIcon />} />
       {children}
-    </ThemeProvider>
+    </ThemeScope>
   );
 }
 ```
