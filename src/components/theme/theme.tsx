@@ -95,7 +95,11 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
 
   const scopeId = state<symbol>(Symbol("ThemeScope"))();
   const scopeSignal = getSignal();
-  const themeState = state<ThemeName>(readStoredTheme(storageKey) ?? defaultTheme);
+  // The first render must be identical on the server and in the browser.
+  // Browser persistence is adopted from the committed root ref, after Askr's
+  // hydration verifier has accepted the server markup.
+  const themeState = state<ThemeName>(defaultTheme);
+  const persistenceAdoption = state({ complete: false })();
   const currentTheme = themeState();
   const parentScope = readScope(ThemeScopeContext);
   const ownedCoordinator = state<ThemeCoordinator>(createThemeCoordinator())();
@@ -122,9 +126,20 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
     <ThemeScopeContext value={value}>
       <div
         data-slot="theme-scope"
-        ref={parentScope.coordinator === null
-          ? (element: HTMLElement | null) => coordinator.attach(element)
-          : undefined}
+        ref={
+          parentScope.coordinator === null
+            ? (element: HTMLElement | null) => {
+                coordinator.attach(element);
+                if (!element || persistenceAdoption.complete) return;
+                persistenceAdoption.complete = true;
+                const storedTheme = readStoredTheme(storageKey);
+                if (storedTheme && storedTheme !== themeState()) {
+                  themeState.set(storedTheme);
+                  coordinator.activate(scopeId, storedTheme);
+                }
+              }
+            : undefined
+        }
       >
         {children}
       </div>
@@ -133,12 +148,15 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
 }
 
 function createThemeCoordinator() {
-  const scopes = new Map<symbol, {
-    depth: number;
-    sequence: number;
-    theme: ThemeName;
-    signal: AbortSignal;
-  }>();
+  const scopes = new Map<
+    symbol,
+    {
+      depth: number;
+      sequence: number;
+      theme: ThemeName;
+      signal: AbortSignal;
+    }
+  >();
   let nextSequence = 0;
   let explicitOwner: symbol | undefined;
   let root: Node | null = null;
@@ -153,8 +171,11 @@ function createThemeCoordinator() {
     if (explicitOwner !== undefined) return;
     let candidate: { depth: number; sequence: number; theme: ThemeName } | undefined;
     for (const scope of scopes.values()) {
-      if (!candidate || scope.depth > candidate.depth ||
-        (scope.depth === candidate.depth && scope.sequence > candidate.sequence)) {
+      if (
+        !candidate ||
+        scope.depth > candidate.depth ||
+        (scope.depth === candidate.depth && scope.sequence > candidate.sequence)
+      ) {
         candidate = scope;
       }
     }
@@ -183,11 +204,15 @@ function createThemeCoordinator() {
         signal,
       });
       if (!existing) {
-        signal.addEventListener("abort", () => {
-          scopes.delete(id);
-          if (explicitOwner === id) explicitOwner = undefined;
-          schedule();
-        }, { once: true });
+        signal.addEventListener(
+          "abort",
+          () => {
+            scopes.delete(id);
+            if (explicitOwner === id) explicitOwner = undefined;
+            schedule();
+          },
+          { once: true },
+        );
       }
       schedule();
     },

@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
-import { cleanupApp, createSPA } from "@askrjs/askr/boot";
+import { cleanupApp, createSPA, hydrateSPA } from "@askrjs/askr/boot";
 import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
+import { renderToStringSync } from "@askrjs/askr/ssr";
 
 import {
   CAT_THEME_NAMES,
@@ -161,6 +162,31 @@ describe("theme contracts", () => {
     clearStoredThemes();
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-theme-choice");
+  });
+
+  it("should hydrate deterministic markup given a persisted theme when adopting SSR", async () => {
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
+        <ThemeIconToggle label="Theme" />
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    container!.innerHTML = renderToStringSync(() => <App />);
+    window.localStorage.setItem("askr-theme", "dark");
+
+    await expect(
+      hydrateSPA({
+        root: container!,
+        routes: [{ path: "/theme", handler: App }],
+        hydrate: { verifyMarkup: true },
+      }),
+    ).resolves.toBeUndefined();
+    await settle();
+
+    expect(container?.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+      "dark",
+    );
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
   it("should expose the default theme options and scoped state", async () => {
@@ -443,11 +469,7 @@ describe("theme contracts", () => {
         <ThemePicker label="Outer theme" />
         <ThemeToggle aria-label="Outer toggle" />
         <ThemeProbe id="outer" />
-        <ThemeScope
-          defaultTheme="tabby"
-          storageKey="askr-theme-nested"
-          themes={CAT_THEME_OPTIONS}
-        >
+        <ThemeScope defaultTheme="tabby" storageKey="askr-theme-nested" themes={CAT_THEME_OPTIONS}>
           <ThemePicker label="Inner theme" />
           <ThemeToggle aria-label="Inner toggle" themes={CAT_THEME_NAMES} />
           <ThemeProbe id="inner" />
