@@ -16,7 +16,4 @@ export default defineConfig({
     environment: "node",
     include,
   },
-  resolve: {
-    preserveSymlinks: true,
-  },
 });
