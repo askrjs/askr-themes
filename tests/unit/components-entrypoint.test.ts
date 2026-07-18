@@ -188,9 +188,7 @@ describe("components entrypoint", () => {
     );
     expect(asElement(SheetFooter({ children: "Done" })).props["data-slot"]).toBe("sheet-footer");
     expect(
-      asElement(SidebarScope({ children: SidebarInset({ children: "Main" }) })).props[
-        "data-slot"
-      ],
+      asElement(SidebarScope({ children: SidebarInset({ children: "Main" }) })).props["data-slot"],
     ).toBe("sidebar-scope");
     expect(asElement(SidebarContent({ children: SidebarGroup({}) })).props["data-slot"]).toBe(
       "sidebar-content",

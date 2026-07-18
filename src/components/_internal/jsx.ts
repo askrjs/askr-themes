@@ -1,10 +1,7 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
 import { jsx } from "@askrjs/askr/jsx-runtime";
 
-const renderIntrinsicElement = jsx as (
-  type: string,
-  props: Record<string, unknown>,
-) => JSX.Element;
+const renderIntrinsicElement = jsx as (type: string, props: Record<string, unknown>) => JSX.Element;
 
 export function intrinsicElement(
   type: string,
