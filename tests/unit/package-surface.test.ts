@@ -24,6 +24,7 @@ const COMPONENT_EXPORT_TARGET = {
   types: "./dist/components.d.ts",
   import: "./dist/components.js",
 };
+const CSS_TYPE_TARGET = "./src/css.d.ts";
 const REMOVED_FAMILY_EXPORTS = [
   "./controls",
   "./core",
@@ -150,8 +151,26 @@ describe("package surface", () => {
 
     expect(pkg.exports?.["./components"]).toEqual(COMPONENT_EXPORT_TARGET);
     expect(pkg.exports?.["./theme"]).toBeTruthy();
-    expect(pkg.exports?.["./default"]).toBe("./src/themes/default/index.css");
-    expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
+    expect(pkg.exports?.["."]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/index.css",
+    });
+    expect(pkg.exports?.["./default"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/default/index.css",
+    });
+    expect(pkg.exports?.["./presets"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/presets/index.css",
+    });
+    expect(pkg.exports?.["./default/tokens.css"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/default/tokens.css",
+    });
+    expect(pkg.exports?.["./templates/*"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./templates/*",
+    });
     expect(pkg.exports?.["./chart"]).toBeUndefined();
     expect(pkg.exports?.["./charts"]).toBeUndefined();
 
@@ -213,11 +232,16 @@ describe("package surface", () => {
     };
 
     for (const [entrypoint, target] of Object.entries(pkg.exports ?? {})) {
-      if (!entrypoint.startsWith("./default/") || typeof target !== "string") {
+      if (!entrypoint.startsWith("./default/") || typeof target !== "object" || !target) {
         continue;
       }
 
-      expect(existsSync(join(ROOT_DIR, target)), `${entrypoint} points at ${target}`).toBe(true);
+      const cssTarget = (target as { default?: string }).default;
+      expect(typeof cssTarget).toBe("string");
+      expect(
+        existsSync(join(ROOT_DIR, cssTarget as string)),
+        `${entrypoint} points at ${cssTarget}`,
+      ).toBe(true);
     }
   });
 
@@ -228,10 +252,12 @@ describe("package surface", () => {
 
     const target = pkg.exports?.["./presets"];
 
-    expect(typeof target).toBe("string");
-    expect(existsSync(join(ROOT_DIR, target as string)), `./presets points at ${target}`).toBe(
-      true,
-    );
+    expect(typeof target).toBe("object");
+    const cssTarget = (target as { default?: string }).default;
+    expect(
+      existsSync(join(ROOT_DIR, cssTarget as string)),
+      `./presets points at ${cssTarget}`,
+    ).toBe(true);
   });
 
   it("should keeps recipe layout imports out of the shipped theme CSS", () => {
