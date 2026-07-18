@@ -1,5 +1,4 @@
 import { defineConfig } from "vite-plus";
-import { askrRuntimeAliases } from "./vitest.shared";
 
 export default defineConfig({
   oxc: {
@@ -10,10 +9,5 @@ export default defineConfig({
   },
   test: {
     include: ["tests/unit/**/*.test.ts"],
-  },
-  resolve: {
-    alias: askrRuntimeAliases,
-    dedupe: ["@askrjs/askr"],
-    preserveSymlinks: true,
   },
 });

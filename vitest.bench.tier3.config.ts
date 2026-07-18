@@ -17,7 +17,4 @@ export default defineConfig({
     include,
     setupFiles: ["tests/jsdom/setup.ts"],
   },
-  resolve: {
-    preserveSymlinks: true,
-  },
 });
