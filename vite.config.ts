@@ -22,7 +22,7 @@ export default defineConfig({
     platform: "neutral",
     tsconfig: "tsconfig.pack.json",
     dts: true,
-    sourcemap: true,
+    sourcemap: "hidden",
     unbundle: true,
     deps: {
       neverBundle: [/^@askrjs\/(?:askr|ui)(?:\/.*)?$/],

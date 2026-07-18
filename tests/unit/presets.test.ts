@@ -62,7 +62,10 @@ describe("cat theme presets", () => {
       exports?: Record<string, unknown>;
     };
 
-    expect(pkg.exports?.["./presets"]).toBe("./src/themes/presets/index.css");
+    expect(pkg.exports?.["./presets"]).toEqual({
+      types: "./src/css.d.ts",
+      default: "./src/themes/presets/index.css",
+    });
     expect(existsSync(PRESETS_INDEX_FILE)).toBe(true);
   });
 
