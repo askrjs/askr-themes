@@ -5,7 +5,8 @@ import * as components from "../../src/components";
 import * as themeApi from "../../src/theme";
 
 const FORBIDDEN_NAME = /^(?:use[A-Z].*|.*Provider|defineContext|readContext)$/;
-const FORBIDDEN_TEXT = /\b(?:use[A-Z][A-Za-z0-9_]*|[A-Za-z][A-Za-z0-9_]*Provider|defineContext|readContext)\b/;
+const FORBIDDEN_TEXT =
+  /\b(?:use[A-Z][A-Za-z0-9_]*|[A-Za-z][A-Za-z0-9_]*Provider|defineContext|readContext)\b/;
 
 function publicFiles(path: string): string[] {
   if (statSync(path).isFile()) return [path];

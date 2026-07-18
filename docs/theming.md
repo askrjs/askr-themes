@@ -77,12 +77,7 @@ preset with `data-theme` or a custom `ThemeScope` option:
 ```
 
 ```tsx
-import {
-  CAT_THEME_NAMES,
-  CAT_THEME_OPTIONS,
-  ThemePicker,
-  ThemeScope,
-} from "@askrjs/themes/theme";
+import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemePicker, ThemeScope } from "@askrjs/themes/theme";
 
 export function AppTheme({ children }: { children?: unknown }) {
   return (

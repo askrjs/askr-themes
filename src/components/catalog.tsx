@@ -5,9 +5,7 @@ import { Block } from "./block";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
-const CatalogDialogContent = DialogContent as (
-  props: Record<string, unknown>,
-) => JSX.Element;
+const CatalogDialogContent = DialogContent as (props: Record<string, unknown>) => JSX.Element;
 
 type CatalogElement = keyof JSX.IntrinsicElements;
 

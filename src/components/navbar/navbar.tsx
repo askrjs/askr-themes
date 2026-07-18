@@ -99,7 +99,14 @@ export function NavBrand(props: NavBrandProps): JSX.Element {
   const { children, ...rest } = props;
 
   return (
-    <LayoutBlock direction="row" align="center" gap="sm" shrink={false} {...rest} data-slot="nav-brand">
+    <LayoutBlock
+      direction="row"
+      align="center"
+      gap="sm"
+      shrink={false}
+      {...rest}
+      data-slot="nav-brand"
+    >
       {children}
     </LayoutBlock>
   );
