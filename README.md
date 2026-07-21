@@ -1,5 +1,8 @@
 # @askrjs/themes
 
+[![CI](https://github.com/askrjs/askr-themes/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/askrjs/askr-themes/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/%40askrjs%2Fthemes.svg)](https://www.npmjs.com/package/@askrjs/themes)
+
 CSS tokens and a shadcn-style styled component catalog for Askr apps.
 
 `@askrjs/themes` is the visual companion to `@askrjs/ui` and
