@@ -12,6 +12,7 @@ async function settle(): Promise<void> {
   await Promise.resolve();
   await Promise.resolve();
   await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
 function waitForScheduler(): Promise<void> {
@@ -56,6 +57,6 @@ describe("themed Toast and default Portal", () => {
     await waitForScheduler();
 
     expect(document.body.textContent).toContain("Sidebar content");
-    expect(container?.querySelector('[data-toast="true"]')).toBeNull();
+    expect(document.body.querySelector('[data-slot="toast"]')).toBeNull();
   });
 });
