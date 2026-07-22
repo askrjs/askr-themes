@@ -14,6 +14,10 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+function waitForScheduler(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 20));
+}
+
 describe("themed Toast and default Portal", () => {
   let container: HTMLDivElement | undefined;
 
@@ -49,8 +53,9 @@ describe("themed Toast and default Portal", () => {
 
     await createSPA({ root: container!, manifest: getManifest() });
     await settle();
+    await waitForScheduler();
 
     expect(document.body.textContent).toContain("Sidebar content");
-    expect(container?.querySelector('[data-toast-root="true"]')).toBeNull();
+    expect(container?.querySelector('[data-toast="true"]')).toBeNull();
   });
 });
