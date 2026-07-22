@@ -37,6 +37,15 @@ Style override:
 }
 ```
 
+Card titles default to `h3`. Choose `titleAs` from the surrounding document
+hierarchy; use `h1` when the card title is the page title, or the next logical
+level beneath an existing heading:
+
+```tsx
+<CardTitle titleAs="h1">Sign in</CardTitle>
+<CardTitle titleAs="h2">Live sessions</CardTitle>
+```
+
 Icon override:
 
 ```css

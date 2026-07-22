@@ -1,6 +1,7 @@
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 export type CardVariant = "default" | "raised";
+export type CardTitleHeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 type DivProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref">;
 type HeadingProps = Omit<JSX.IntrinsicElements["h3"], "children" | "ref">;
@@ -19,6 +20,8 @@ export type CardHeaderProps = DivProps & {
 
 export type CardTitleProps = HeadingProps & {
   children?: unknown;
+  /** Choose the level that follows the surrounding document hierarchy. */
+  titleAs?: CardTitleHeadingTag;
   ref?: Ref<HTMLHeadingElement>;
 };
 

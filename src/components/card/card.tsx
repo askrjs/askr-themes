@@ -41,14 +41,14 @@ export function CardHeader(props: CardHeaderProps): JSX.Element {
 }
 
 export function CardTitle(props: CardTitleProps): JSX.Element {
-  const { children, class: className, ref, ...rest } = props;
+  const { children, class: className, ref, titleAs: TitleTag = "h3", ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
     class: classes("card-title", className),
     "data-slot": "card-title",
   });
 
-  return <h3 {...finalProps}>{children}</h3>;
+  return <TitleTag {...finalProps}>{children}</TitleTag>;
 }
 
 export function CardDescription(props: CardDescriptionProps): JSX.Element {
