@@ -16,5 +16,6 @@ export type {
   CardHeaderProps,
   CardProps,
   CardTitleProps,
+  CardTitleHeadingTag,
   CardVariant,
 } from "./card.types";
