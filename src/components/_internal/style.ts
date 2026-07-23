@@ -63,7 +63,7 @@ const STYLE_CLASS_PREFIX = "ak-style-";
 const styleClassCache = new Map<string, string>();
 type StyleRegistry = {
   element: HTMLStyleElement;
-  rules: Map<string, string>;
+  rules: Map<string, { className: string; rule: string }>;
 };
 const registries = new WeakMap<Document, Map<string, StyleRegistry>>();
 const MAX_STYLE_RULES = 512;
@@ -85,7 +85,7 @@ function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
   styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
   if (nonce !== undefined) styleElement.nonce = nonce;
   (document.head ?? document.documentElement).append(styleElement);
-  const registry = { element: styleElement, rules: new Map<string, string>() };
+  const registry: StyleRegistry = { element: styleElement, rules: new Map() };
   documentRegistries.set(key, registry);
   return registry;
 }
@@ -100,6 +100,11 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   const normalized = normalizeDeclarations(declarations);
   if (!normalized) return undefined;
 
+  const nonce = cspNonce();
+  const registry = ensureStyleRegistry(nonce);
+  const registered = registry?.rules.get(normalized);
+  if (registered) return registered.className;
+
   let className = styleClassCache.get(normalized);
   if (className === undefined) {
     className = `${STYLE_CLASS_PREFIX}${++nextStyleClassId}`;
@@ -110,18 +115,16 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
     styleClassCache.set(normalized, className);
   }
 
-  const nonce = cspNonce();
-  const registry = ensureStyleRegistry(nonce);
-  if (registry && !registry.rules.has(normalized)) {
+  if (registry) {
     const styleElement = registry.element;
     if (styleElement) {
+      if (registry.rules.size >= MAX_STYLE_RULES)
+        throw new RangeError("Theme style registry capacity exceeded.");
       const rule = `.${className}{${normalized}}`;
-      if (registry.rules.size >= MAX_STYLE_RULES) {
-        const oldest = registry.rules.keys().next().value as string | undefined;
-        if (oldest !== undefined) registry.rules.delete(oldest);
-      }
-      registry.rules.set(normalized, rule);
-      styleElement.textContent = Array.from(registry.rules.values()).join("\n");
+      registry.rules.set(normalized, { className, rule });
+      styleElement.textContent = Array.from(registry.rules.values(), (entry) => entry.rule).join(
+        "\n",
+      );
     }
   }
 
