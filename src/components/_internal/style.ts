@@ -108,10 +108,6 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   let className = styleClassCache.get(normalized);
   if (className === undefined) {
     className = `${STYLE_CLASS_PREFIX}${++nextStyleClassId}`;
-    if (styleClassCache.size >= MAX_STYLE_RULES) {
-      const oldest = styleClassCache.keys().next().value as string | undefined;
-      if (oldest !== undefined) styleClassCache.delete(oldest);
-    }
     styleClassCache.set(normalized, className);
   }
 
@@ -122,9 +118,7 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
         throw new RangeError("Theme style registry capacity exceeded.");
       const rule = `.${className}{${normalized}}`;
       registry.rules.set(normalized, { className, rule });
-      styleElement.textContent = Array.from(registry.rules.values(), (entry) => entry.rule).join(
-        "\n",
-      );
+      styleElement.append(rule, "\n");
     }
   }
 
