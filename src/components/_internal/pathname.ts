@@ -6,6 +6,17 @@ function getWindowLocation(): Location | null {
   return typeof window === "undefined" ? null : window.location;
 }
 
+export function assertSafeNavigationHref(href: string): void {
+  const trimmed = href.trim();
+  if (!trimmed || trimmed !== href)
+    throw new TypeError("Navigation href must be a non-empty canonical URL.");
+  const scheme = /^([a-z][a-z\d+.-]*):/iu.exec(trimmed)?.[1]?.toLowerCase();
+  if (scheme && !["http", "https", "mailto", "tel"].includes(scheme))
+    throw new TypeError(`Navigation URL scheme is not allowed: ${scheme}`);
+  if ([...trimmed].some((character) => character.charCodeAt(0) <= 31))
+    throw new TypeError("Navigation href must not contain control characters.");
+}
+
 export function resolvePathname(href: string): string | null {
   if (href.startsWith("#")) {
     return null;

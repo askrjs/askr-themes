@@ -128,4 +128,13 @@ describe("navigation contracts", () => {
     expect(sidebar.props.as).toBe("aside");
     expect(sidebar.props["data-slot"]).toBe("sidebar");
   });
+
+  it.each(["javascript:alert(1)", "data:text/html,pwned", "vbscript:msgbox(1)"])(
+    "should reject executable NavLink URL scheme %s",
+    (href) => {
+      expect(() => NavLink({ href, children: "Unsafe" })).toThrow(
+        "Navigation URL scheme is not allowed",
+      );
+    },
+  );
 });

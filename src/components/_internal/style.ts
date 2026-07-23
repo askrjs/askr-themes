@@ -1,3 +1,5 @@
+import { cspNonce } from "@askrjs/askr";
+
 const cssPropertyNameCache = new Map<string, string>();
 
 function cssPropertyName(name: string): string {
@@ -59,23 +61,33 @@ const STYLE_REGISTRY_ATTR = "data-askr-style-registry";
 const STYLE_CLASS_PREFIX = "ak-style-";
 
 const styleClassCache = new Map<string, string>();
-const registeredDeclarations = new Set<string>();
+type StyleRegistry = {
+  element: HTMLStyleElement;
+  rules: Map<string, string>;
+};
+const registries = new WeakMap<Document, Map<string, StyleRegistry>>();
+const MAX_STYLE_RULES = 512;
 
 let nextStyleClassId = 0;
 
-function ensureStyleElement(): HTMLStyleElement | null {
+function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
   if (typeof document === "undefined") return null;
-
-  const existing = document.querySelector(`style[${STYLE_REGISTRY_ATTR}]`);
-  if (existing instanceof HTMLStyleElement) {
-    return existing;
+  const key = nonce ?? "";
+  let documentRegistries = registries.get(document);
+  if (!documentRegistries) {
+    documentRegistries = new Map();
+    registries.set(document, documentRegistries);
   }
+  const current = documentRegistries.get(key);
+  if (current?.element.isConnected) return current;
 
   const styleElement = document.createElement("style");
   styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
+  if (nonce !== undefined) styleElement.nonce = nonce;
   (document.head ?? document.documentElement).append(styleElement);
-
-  return styleElement;
+  const registry = { element: styleElement, rules: new Map<string, string>() };
+  documentRegistries.set(key, registry);
+  return registry;
 }
 
 function normalizeDeclarations(declarations: string): string {
@@ -91,15 +103,25 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   let className = styleClassCache.get(normalized);
   if (className === undefined) {
     className = `${STYLE_CLASS_PREFIX}${++nextStyleClassId}`;
+    if (styleClassCache.size >= MAX_STYLE_RULES) {
+      const oldest = styleClassCache.keys().next().value as string | undefined;
+      if (oldest !== undefined) styleClassCache.delete(oldest);
+    }
     styleClassCache.set(normalized, className);
   }
 
-  if (!registeredDeclarations.has(normalized)) {
-    const styleElement = ensureStyleElement();
+  const nonce = cspNonce();
+  const registry = ensureStyleRegistry(nonce);
+  if (registry && !registry.rules.has(normalized)) {
+    const styleElement = registry.element;
     if (styleElement) {
       const rule = `.${className}{${normalized}}`;
-      styleElement.textContent = `${styleElement.textContent ?? ""}\n${rule}`;
-      registeredDeclarations.add(normalized);
+      if (registry.rules.size >= MAX_STYLE_RULES) {
+        const oldest = registry.rules.keys().next().value as string | undefined;
+        if (oldest !== undefined) registry.rules.delete(oldest);
+      }
+      registry.rules.set(normalized, rule);
+      styleElement.textContent = Array.from(registry.rules.values()).join("\n");
     }
   }
 
