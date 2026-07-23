@@ -4,7 +4,7 @@ import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import { intrinsicElement } from "../_internal/jsx";
-import { resolvePathname } from "../_internal/pathname";
+import { assertSafeNavigationHref, resolvePathname } from "../_internal/pathname";
 import type {
   NavItemAsChildProps,
   NavItemProps,
@@ -114,6 +114,7 @@ function renderRoutedLink(
   if (!href) {
     throw new Error("Nav link requires href or to.");
   }
+  assertSafeNavigationHref(href);
   const inheritedSlot =
     options.inheritSlot && typeof (rest as Record<string, unknown>)["data-slot"] === "string"
       ? String((rest as Record<string, unknown>)["data-slot"])

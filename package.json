@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/themes",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Default theme tokens, styles, and component presets for Askr apps.",
   "keywords": [
     "askr",
@@ -328,7 +328,7 @@
     "test:checks": "vp test run -c vitest.test.checks.config.ts"
   },
   "devDependencies": {
-    "@askrjs/askr": ">=0.0.52 <0.1.0",
+    "@askrjs/askr": ">=0.0.64 <0.1.0",
     "@askrjs/ui": ">=0.0.12 <0.1.0",
     "@askrjs/vite": ">=0.0.5 <0.1.0",
     "@tsdown/css": "0.22.8",
@@ -342,7 +342,7 @@
     "vite-plus": "^0.2.4"
   },
   "peerDependencies": {
-    "@askrjs/askr": ">=0.0.52 <0.1.0",
+    "@askrjs/askr": ">=0.0.64 <0.1.0",
     "@askrjs/ui": ">=0.0.12 <0.1.0"
   },
   "engines": {
