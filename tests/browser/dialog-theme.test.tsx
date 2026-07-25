@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -109,7 +109,7 @@ describe("dialog theme overflow regression", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    clearRoutes();
+    resetTestRoutes();
     innerWidthSpy = vi.spyOn(window, "innerWidth", "get");
     innerHeightSpy = vi.spyOn(window, "innerHeight", "get");
     innerWidthSpy.mockReturnValue(1200);
@@ -125,7 +125,7 @@ describe("dialog theme overflow regression", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
     innerWidthSpy = undefined;
     innerHeightSpy = undefined;
   });
@@ -133,7 +133,7 @@ describe("dialog theme overflow regression", () => {
   it("should keep themed Dialog content inside viewport padding at 390 x 844", async () => {
     window.history.replaceState({}, "", "/dialog-theme");
 
-    route("/dialog-theme", () => (
+    testRoute("/dialog-theme", () => (
       <Dialog>
         <DialogTrigger>Open dialog</DialogTrigger>
         <DialogPortal>
@@ -149,7 +149,7 @@ describe("dialog theme overflow regression", () => {
     ));
 
     setViewport(390, 844);
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const trigger = container?.querySelector(
@@ -169,7 +169,7 @@ describe("dialog theme overflow regression", () => {
   it("should keep themed AlertDialog content inside viewport padding at 390 x 844", async () => {
     window.history.replaceState({}, "", "/alert-dialog-theme");
 
-    route("/alert-dialog-theme", () => (
+    testRoute("/alert-dialog-theme", () => (
       <AlertDialog>
         <AlertDialogTrigger>Open alert</AlertDialogTrigger>
         <AlertDialogPortal>
@@ -185,7 +185,7 @@ describe("dialog theme overflow regression", () => {
     ));
 
     setViewport(390, 844);
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const trigger = container?.querySelector(

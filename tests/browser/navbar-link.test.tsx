@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
 
 import { NavLink, Navbar } from "../../src/core";
 
@@ -17,7 +17,7 @@ describe("navbar link browser smoke", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -27,7 +27,7 @@ describe("navbar link browser smoke", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should updates active NavLink state across client-side navigation inside a persistent layout", async () => {
@@ -45,14 +45,14 @@ describe("navbar link browser smoke", () => {
       );
     }
 
-    group({ layout: DocsLayout }, () => {
-      route("/docs", () => "Docs home");
-      route("/docs/about", () => "Docs about");
+    testGroup({ layout: DocsLayout }, () => {
+      testRoute("/docs", () => "Docs home");
+      testRoute("/docs/about", () => "Docs about");
     });
 
     window.history.replaceState({}, "", "/docs");
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     let overviewLink = container?.querySelector('a[href="/docs"]') as HTMLAnchorElement | null;
