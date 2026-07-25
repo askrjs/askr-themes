@@ -1,5 +1,5 @@
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest } from "@askrjs/askr/router";
+import { createRouteRegistry } from "@askrjs/askr/router";
 import { vi } from "vite-plus/test";
 
 export type MountedScenario = {
@@ -45,12 +45,11 @@ export async function mountScenario(
   pathname: string,
   registerRoutes: () => void,
 ): Promise<MountedScenario> {
-  clearRoutes();
   window.history.replaceState({}, "", pathname);
-  registerRoutes();
+  const registry = createRouteRegistry(registerRoutes);
 
   const container = createBenchRoot();
-  await createSPA({ root: container, manifest: getManifest() });
+  await createSPA({ root: container, registry });
   await settle();
 
   return {

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, bench, describe, expect, vi } from "vite-plus/test";
 
 import { state } from "@askrjs/askr";
-import { group, navigate, route, clearRoutes } from "@askrjs/askr/router";
+import { group, navigate, route } from "@askrjs/askr/router";
 import {
   Table,
   TableBody,
@@ -190,7 +190,6 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
       window.localStorage.removeItem("askr-theme");
       window.localStorage.removeItem("askr-theme-nested");
       document.documentElement.removeAttribute("data-theme");
@@ -247,7 +246,6 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
       window.localStorage.removeItem("askr-theme");
       document.documentElement.removeAttribute("data-theme");
       document.documentElement.removeAttribute("data-theme-choice");
@@ -299,7 +297,6 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
     });
 
     bench("large route transition cycle", async () => {
@@ -337,7 +334,6 @@ describe("tier4 browser benches", () => {
       viewport = undefined;
       warnSpy?.mockRestore();
       warnSpy = undefined;
-      clearRoutes();
     });
 
     bench("navbar responsive cycle", async () => {
@@ -400,7 +396,6 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
     });
 
     bench("sidebar navigation cycle", async () => {
@@ -440,7 +435,6 @@ describe("tier4 browser benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
     });
 
     bench("live table log append-evict cycle", async () => {
@@ -498,7 +492,6 @@ describe("tier4 browser benches", () => {
             }
           } finally {
             scenario.cleanup();
-            clearRoutes();
             window.localStorage.removeItem("askr-theme-memory-soak");
             document.documentElement.removeAttribute("data-theme");
             document.documentElement.removeAttribute("data-theme-choice");
