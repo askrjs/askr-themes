@@ -2,7 +2,6 @@ import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../ro
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import {} from "@askrjs/askr/router";
 
 import { NavLink, Navbar } from "../../src/core";
 

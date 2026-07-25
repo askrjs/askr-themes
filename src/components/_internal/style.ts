@@ -66,7 +66,6 @@ type StyleRegistry = {
   rules: Map<string, { className: string; rule: string }>;
 };
 const registries = new WeakMap<Document, Map<string, StyleRegistry>>();
-const MAX_STYLE_RULES = 512;
 
 let nextStyleClassId = 0;
 

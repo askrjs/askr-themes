@@ -39,7 +39,7 @@ export function testRoute(path: string, handler: RouteHandler, options?: RouteOp
 }
 
 export function createTestRegistry(): RouteRegistry {
-  const currentDefinitions = definitions;
+  const currentDefinitions = [...definitions];
   return createRouteRegistry(() => {
     for (const definition of currentDefinitions) {
       const define = (groupIndex: number): void => {
