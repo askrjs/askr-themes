@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { NavBrand, NavDropdown, NavGroup, NavLink, Navbar, Sidebar } from "../../src/core";
 import { DropdownItem } from "../../src/overlays";
@@ -18,7 +18,7 @@ describe("navbar and sidebar chrome contracts", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    clearRoutes();
+    resetTestRoutes();
     window.history.replaceState({}, "", "/docs");
   });
 
@@ -29,11 +29,11 @@ describe("navbar and sidebar chrome contracts", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should renders the navbar and sidebar chrome with stable slots", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <>
         <Navbar aria-label="Docs navigation" id="docs-navbar">
           <a href="/">Askr</a>
@@ -56,7 +56,7 @@ describe("navbar and sidebar chrome contracts", () => {
       </>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement | null;
@@ -85,7 +85,7 @@ describe("navbar and sidebar chrome contracts", () => {
   });
 
   it("should renders responsive navbar and nav dropdown slots", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Navbar aria-label="Responsive docs navigation" collapseAt="md" id="responsive-navbar">
         <NavBrand as="a" href="/">
           Askr
@@ -101,7 +101,7 @@ describe("navbar and sidebar chrome contracts", () => {
       </Navbar>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const navbar = container?.querySelector("#responsive-navbar") as HTMLElement | null;

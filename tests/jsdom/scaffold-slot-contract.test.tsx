@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { EmptyState } from "../../src/core";
 import { Tab, Tabs } from "../../src/navs";
@@ -18,7 +18,7 @@ describe("empty state slot contract", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/example");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -28,11 +28,11 @@ describe("empty state slot contract", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should emits canonical data-slot hooks for common composition", async () => {
-    route("/example", () => (
+    testRoute("/example", () => (
       <div class="dashboard-page">
         <EmptyState
           icon={<span>!</span>}
@@ -48,7 +48,7 @@ describe("empty state slot contract", () => {
       </div>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const emptyState = container?.querySelector('[data-slot="empty-state"]') as HTMLElement | null;

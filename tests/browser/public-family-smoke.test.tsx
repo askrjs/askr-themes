@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import {
   Button,
@@ -47,7 +47,7 @@ describe("public family browser smoke", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    clearRoutes();
+    resetTestRoutes();
     window.history.replaceState({}, "", "/families");
   });
 
@@ -58,11 +58,11 @@ describe("public family browser smoke", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should renders the remaining public families in a browser mount", async () => {
-    route("/families", () => (
+    testRoute("/families", () => (
       <Page>
         <Header sticky>
           <Container>
@@ -148,7 +148,7 @@ describe("public family browser smoke", () => {
       </Page>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     for (const slot of [
@@ -201,7 +201,7 @@ describe("public family browser smoke", () => {
   });
 
   it("should keep attached input groups on one row in constrained toolbar actions", async () => {
-    route("/families", () => (
+    testRoute("/families", () => (
       <Page>
         <Toolbar
           title="Event rows"
@@ -217,7 +217,7 @@ describe("public family browser smoke", () => {
       </Page>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const group = container?.querySelector('[data-slot="input-group"]') as HTMLElement | null;

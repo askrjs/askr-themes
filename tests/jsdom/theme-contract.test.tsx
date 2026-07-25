@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA, hydrateSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, group, route } from "@askrjs/askr/router";
 import { renderToStringSync } from "@askrjs/askr/ssr";
 
 import {
@@ -146,7 +146,7 @@ describe("theme contracts", () => {
     clearStoredThemes();
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-theme-choice");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -156,7 +156,7 @@ describe("theme contracts", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
     restoreLocalStorage?.();
     restoreLocalStorage = undefined;
     clearStoredThemes();
@@ -173,11 +173,12 @@ describe("theme contracts", () => {
     );
     container!.innerHTML = renderToStringSync(() => <App />);
     window.localStorage.setItem("askr-theme", "dark");
+    testRoute("/theme", App);
 
     await expect(
       hydrateSPA({
         root: container!,
-        routes: [{ path: "/theme", handler: App }],
+        registry: createTestRegistry(),
         hydrate: { verifyMarkup: true },
       }),
     ).resolves.toBeUndefined();
@@ -207,11 +208,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Theme</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Theme</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
@@ -277,11 +278,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Cat themes</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Cat themes</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
@@ -328,11 +329,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Stored theme</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Stored theme</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
@@ -390,11 +391,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Custom storage</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Custom storage</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
@@ -438,11 +439,13 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Blocked storage</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Blocked storage</div>);
     });
 
-    await expect(createSPA({ root: container!, manifest: getManifest() })).resolves.toBeUndefined();
+    await expect(
+      createSPA({ root: container!, registry: createTestRegistry() }),
+    ).resolves.toBeUndefined();
     await settle();
 
     const getProbe = () =>
@@ -477,11 +480,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Nested themes</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Nested themes</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getOuterProbe = () =>
@@ -531,11 +534,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Icon theme</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Icon theme</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const picker = container?.querySelector(
@@ -581,11 +584,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Direct theme</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Direct theme</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const click = (label: string) => {
@@ -629,11 +632,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Nested icons</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Nested icons</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const innerPicker = container?.querySelector(
@@ -669,11 +672,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: FirstApp }, () => {
-      route("/theme", () => <div id="page">First app</div>);
+    testGroup({ layout: FirstApp }, () => {
+      testRoute("/theme", () => <div id="page">First app</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const firstToggle = container?.querySelector(
@@ -686,7 +689,7 @@ describe("theme contracts", () => {
 
     cleanupApp(container!);
     container!.replaceChildren();
-    clearRoutes();
+    resetTestRoutes();
     window.history.replaceState({}, "", "/theme");
 
     const SecondApp = () => (
@@ -695,11 +698,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: SecondApp }, () => {
-      route("/theme", () => <div id="page">Second app</div>);
+    testGroup({ layout: SecondApp }, () => {
+      testRoute("/theme", () => <div id="page">Second app</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const probe = container?.querySelector('[data-slot="theme-probe"]') as HTMLElement | null;
@@ -720,11 +723,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Empty storage key</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Empty storage key</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const toggle = container?.querySelector(
@@ -756,11 +759,13 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Empty stored theme</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Empty stored theme</div>);
     });
 
-    await expect(createSPA({ root: container!, manifest: getManifest() })).resolves.toBeUndefined();
+    await expect(
+      createSPA({ root: container!, registry: createTestRegistry() }),
+    ).resolves.toBeUndefined();
     await settle();
 
     const toggle = container?.querySelector(
@@ -796,11 +801,11 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme", () => <div id="page">Narrow picker</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme", () => <div id="page">Narrow picker</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const picker = container?.querySelector(

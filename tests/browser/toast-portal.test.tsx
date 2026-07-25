@@ -1,8 +1,8 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { Portal } from "@askrjs/askr/foundations";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Toast, ToastHost, ToastTitle, ToastViewport } from "../../src/components";
 
@@ -25,7 +25,7 @@ describe("themed Toast and default Portal", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    clearRoutes();
+    resetTestRoutes();
     window.history.replaceState({}, "", "/toast-portal");
   });
 
@@ -36,11 +36,11 @@ describe("themed Toast and default Portal", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should mount a closed Toast beside portaled content without an update loop", async () => {
-    route("/toast-portal", () => (
+    testRoute("/toast-portal", () => (
       <ToastHost>
         <Portal>
           <div>Sidebar content</div>
@@ -52,7 +52,7 @@ describe("themed Toast and default Portal", () => {
       </ToastHost>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
     await waitForScheduler();
 

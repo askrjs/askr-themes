@@ -1,7 +1,8 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
+import { navigate } from "@askrjs/askr/router";
 
 import {
   ThemePicker,
@@ -67,7 +68,7 @@ describe("theme route persistence", () => {
     document.body.appendChild(container);
     clearStoredTheme();
     window.history.replaceState({}, "", "/example");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -76,7 +77,7 @@ describe("theme route persistence", () => {
       container.remove();
       container = undefined;
     }
-    clearRoutes();
+    resetTestRoutes();
     clearStoredTheme();
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-theme-choice");
@@ -94,12 +95,12 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
-      route("/about", () => <div id="page">About</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
+      testRoute("/about", () => <div id="page">About</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
 
     expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
@@ -152,9 +153,9 @@ describe("theme route persistence", () => {
         <main id="scope-content">Northstar</main>
       </ThemeScope>
     );
-    route("/example", App);
+    testRoute("/example", App);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
 
     const scope = container!.querySelector('[data-slot="theme-scope"]');
     expect(container!.children).toHaveLength(1);
@@ -173,11 +174,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggle = () =>
@@ -230,11 +231,13 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await expect(createSPA({ root: container!, manifest: getManifest() })).resolves.toBeUndefined();
+    await expect(
+      createSPA({ root: container!, registry: createTestRegistry() }),
+    ).resolves.toBeUndefined();
     await settle();
 
     expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
@@ -256,11 +259,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggles = () =>
@@ -319,11 +322,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const toggle = container?.querySelector(
@@ -359,11 +362,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggle = () =>
@@ -396,11 +399,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggle = () =>
@@ -434,11 +437,11 @@ describe("theme route persistence", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggle = () =>

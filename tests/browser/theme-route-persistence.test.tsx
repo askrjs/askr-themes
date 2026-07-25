@@ -1,8 +1,9 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { createQuery } from "@askrjs/askr/data";
-import { clearRoutes, getManifest, group, navigate, route } from "@askrjs/askr/router";
+import { navigate } from "@askrjs/askr/router";
 
 import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
 import { CAT_THEME_NAMES, CAT_THEME_OPTIONS, ThemeScope, ThemeToggle } from "../../src/theme";
@@ -21,7 +22,7 @@ describe("theme route persistence in the browser", () => {
     document.body.appendChild(container);
     window.localStorage.removeItem("askr-theme");
     window.history.replaceState({}, "", "/example");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -30,7 +31,7 @@ describe("theme route persistence in the browser", () => {
       container.remove();
       container = undefined;
     }
-    clearRoutes();
+    resetTestRoutes();
     window.localStorage.removeItem("askr-theme");
     document.documentElement.removeAttribute("data-theme");
     document.documentElement.removeAttribute("data-theme-choice");
@@ -46,12 +47,12 @@ describe("theme route persistence in the browser", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
-      route("/about", () => <div id="page">About</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
+      testRoute("/about", () => <div id="page">About</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
 
     expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
@@ -119,12 +120,12 @@ describe("theme route persistence in the browser", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/example", () => <div id="page">Example</div>);
-      route("/about", () => <div id="page">About</div>);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/example", () => <div id="page">Example</div>);
+      testRoute("/about", () => <div id="page">About</div>);
     });
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
 
     expect(document.documentElement.getAttribute("data-theme")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
@@ -217,12 +218,12 @@ describe("theme route persistence in the browser", () => {
       </ThemeScope>
     );
 
-    group({ layout: AppLayout }, () => {
-      route("/theme-stall", () => <TopologyPage />);
+    testGroup({ layout: AppLayout }, () => {
+      testRoute("/theme-stall", () => <TopologyPage />);
     });
 
     window.history.replaceState({}, "", "/theme-stall");
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const getToggle = () =>

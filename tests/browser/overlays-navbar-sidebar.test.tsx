@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Block, Main, NavGroup, NavLink, Navbar, Sidebar } from "../../src/core";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
@@ -28,7 +28,7 @@ describe("navbar and sidebar overlay recipes", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/docs");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -38,11 +38,11 @@ describe("navbar and sidebar overlay recipes", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should compose real Dropdown primitives inside navbar and sidebar recipes", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Block minHeight="screen" direction="row">
         <Sidebar aria-label="Sidebar navigation">
           <NavGroup title="Workspace">
@@ -74,10 +74,10 @@ describe("navbar and sidebar overlay recipes", () => {
         </Main>
       </Block>
     ));
-    route("/docs/audit", () => <div id="page">Audit log</div>);
-    route("/docs/components", () => <div id="page">Components</div>);
+    testRoute("/docs/audit", () => <div id="page">Audit log</div>);
+    testRoute("/docs/components", () => <div id="page">Components</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const productTrigger = container?.querySelector(
@@ -108,8 +108,8 @@ describe("navbar and sidebar overlay recipes", () => {
 
     cleanupApp(container!);
     window.history.replaceState({}, "", "/docs");
-    clearRoutes();
-    route("/docs", () => (
+    resetTestRoutes();
+    testRoute("/docs", () => (
       <Sidebar aria-label="Sidebar navigation">
         <NavGroup title="Workspace">
           <Dropdown id="sidebar-workspace-dropdown">
@@ -121,7 +121,7 @@ describe("navbar and sidebar overlay recipes", () => {
         </NavGroup>
       </Sidebar>
     ));
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const sidebarTrigger = container?.querySelector(

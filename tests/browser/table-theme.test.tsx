@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ describe("table theme smoke test", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/table");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -35,11 +35,11 @@ describe("table theme smoke test", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should styles the semantic table primitives through the default theme bundle", async () => {
-    route("/table", () => (
+    testRoute("/table", () => (
       <Table aria-label="Users">
         <TableHead>
           <TableRow>
@@ -56,7 +56,7 @@ describe("table theme smoke test", () => {
       </Table>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const table = container?.querySelector('[data-slot="table"]') as HTMLTableElement | null;

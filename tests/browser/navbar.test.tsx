@@ -1,7 +1,8 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, Link, route } from "@askrjs/askr/router";
+import { Link } from "@askrjs/askr/router";
 
 import {
   Block,
@@ -48,7 +49,7 @@ describe("navbar browser smoke", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/docs");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -58,11 +59,11 @@ describe("navbar browser smoke", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should renders semantic navbar structure with Block layout styles", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Header sticky>
         <Container>
           <Block direction="row" align="center" justify="between" paddingY="md">
@@ -79,9 +80,9 @@ describe("navbar browser smoke", () => {
         </Container>
       </Header>
     ));
-    route("/docs/components", () => <div id="page">Components</div>);
+    testRoute("/docs/components", () => <div id="page">Components</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const header = container?.querySelector('[data-slot="header"]') as HTMLElement | null;
@@ -120,7 +121,7 @@ describe("navbar browser smoke", () => {
   });
 
   it("should centers primary routes between brand and end actions", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Header sticky>
         <Container>
           <Navbar aria-label="App navigation">
@@ -142,7 +143,7 @@ describe("navbar browser smoke", () => {
       </Header>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement | null;
@@ -173,7 +174,7 @@ describe("navbar browser smoke", () => {
   it("should prevent brand content from overlapping centered routes", async () => {
     setViewport(390);
 
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <div style={{ width: "390px" }}>
         <Navbar aria-label="App navigation">
           <NavBrand asChild>
@@ -196,7 +197,7 @@ describe("navbar browser smoke", () => {
       </div>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLElement | null;
@@ -223,19 +224,19 @@ describe("navbar browser smoke", () => {
       </Navbar>
     );
 
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <>
         <ResponsiveNav />
         <div id="page">Docs</div>
       </>
     ));
-    route("/docs/components", () => (
+    testRoute("/docs/components", () => (
       <>
         <ResponsiveNav />
         <div id="page">Components</div>
       </>
     ));
-    route("/", () => (
+    testRoute("/", () => (
       <>
         <ResponsiveNav />
         <div id="page">Home</div>
@@ -243,7 +244,7 @@ describe("navbar browser smoke", () => {
     ));
 
     setViewport(375);
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement | null;
@@ -292,7 +293,7 @@ describe("navbar browser smoke", () => {
   });
 
   it("should opens NavDropdown with route-aware NavLink children", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Navbar aria-label="Dropdown docs navigation">
         <NavBrand as="a" href="/">
           Askr
@@ -304,9 +305,9 @@ describe("navbar browser smoke", () => {
         </NavDropdown>
       </Navbar>
     ));
-    route("/docs/components", () => <div id="page">Components</div>);
+    testRoute("/docs/components", () => <div id="page">Components</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const trigger = container?.querySelector(

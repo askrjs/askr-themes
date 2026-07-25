@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Spinner } from "../../src/surfaces";
 
@@ -17,7 +17,7 @@ describe("spinner browser smoke", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/status");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -27,17 +27,17 @@ describe("spinner browser smoke", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should renders spinner sizing", async () => {
-    route("/status", () => (
+    testRoute("/status", () => (
       <div>
         <Spinner label="Syncing" />
       </div>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const spinner = container?.querySelector('[data-slot="progress-circle"]') as HTMLElement | null;

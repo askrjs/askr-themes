@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Block, Container, Main, NavGroup, NavLink, PageHeader, Sidebar } from "../../src/core";
 
@@ -25,7 +25,7 @@ describe("sidebar browser smoke", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/docs");
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -35,11 +35,11 @@ describe("sidebar browser smoke", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should renders sidebar as a semantic Block preset beside main content", async () => {
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <Block minHeight="screen" direction="row">
         <Sidebar aria-label="Workspace navigation">
           <strong>Askr</strong>
@@ -65,9 +65,9 @@ describe("sidebar browser smoke", () => {
         </Main>
       </Block>
     ));
-    route("/docs/components", () => <div id="page">Components</div>);
+    testRoute("/docs/components", () => <div id="page">Components</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement | null;
