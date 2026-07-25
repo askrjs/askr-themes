@@ -1,7 +1,7 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, route } from "@askrjs/askr/router";
 
 import { Block, Container, Header, Main, NavGroup, Navbar } from "../../src/core";
 import { ThemeScope, ThemeToggle, type ThemeToggleRenderContext } from "../../src/theme";
@@ -21,7 +21,7 @@ describe("theme toggle visibility", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/theme-visibility");
-    clearRoutes();
+    resetTestRoutes();
     window.localStorage.removeItem("askr-theme");
     window.localStorage.removeItem("askr-theme-toggle-visibility");
   });
@@ -33,7 +33,7 @@ describe("theme toggle visibility", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
     window.localStorage.removeItem("askr-theme");
     window.localStorage.removeItem("askr-theme-toggle-visibility");
     document.documentElement.removeAttribute("data-theme");
@@ -42,7 +42,7 @@ describe("theme toggle visibility", () => {
   });
 
   it("should keep toggle content visible after switching to dark mode", async () => {
-    route("/theme-visibility", () => (
+    testRoute("/theme-visibility", () => (
       <ThemeScope defaultTheme="light" storageKey="askr-theme-toggle-visibility">
         <Header>
           <Container>
@@ -104,7 +104,7 @@ describe("theme toggle visibility", () => {
       </ThemeScope>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const toggles = [...(container?.querySelectorAll('[data-theme-control="toggle"]') ?? [])] as [

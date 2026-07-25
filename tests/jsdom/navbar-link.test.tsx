@@ -1,7 +1,8 @@
+import { createTestRegistry, resetTestRoutes, testRoute, testGroup } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { clearRoutes, getManifest, Link, route } from "@askrjs/askr/router";
+import { Link } from "@askrjs/askr/router";
 
 import { Block, NavBrand, NavItem, NavLink, Navbar } from "../../src/core";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
@@ -32,10 +33,10 @@ function layout(page: string) {
 }
 
 function registerNavRoutes(): void {
-  route("/", () => layout("Home page"));
-  route("/docs", () => layout("Docs home"));
-  route("/docs/getting-started", () => layout("Getting started"));
-  route("/docs/components", () => layout("Components"));
+  testRoute("/", () => layout("Home page"));
+  testRoute("/docs", () => layout("Docs home"));
+  testRoute("/docs/getting-started", () => layout("Getting started"));
+  testRoute("/docs/components", () => layout("Components"));
 }
 
 describe("navbar link jsdom regression", () => {
@@ -44,7 +45,7 @@ describe("navbar link jsdom regression", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    clearRoutes();
+    resetTestRoutes();
   });
 
   afterEach(() => {
@@ -54,14 +55,14 @@ describe("navbar link jsdom regression", () => {
       container = undefined;
     }
 
-    clearRoutes();
+    resetTestRoutes();
   });
 
   it("should marks the exact current route active", async () => {
     window.history.replaceState({}, "", "/docs");
     registerNavRoutes();
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const homeLink = container?.querySelector('a[href="/"]') as HTMLAnchorElement | null;
@@ -81,8 +82,8 @@ describe("navbar link jsdom regression", () => {
 
   it("should supports router Link as a NavBrand child", async () => {
     window.history.replaceState({}, "", "/docs");
-    route("/", () => <div id="page">Home page</div>);
-    route("/docs", () => (
+    testRoute("/", () => <div id="page">Home page</div>);
+    testRoute("/docs", () => (
       <>
         <Navbar aria-label="Primary">
           <NavBrand asChild>
@@ -96,7 +97,7 @@ describe("navbar link jsdom regression", () => {
       </>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLAnchorElement | null;
@@ -123,7 +124,7 @@ describe("navbar link jsdom regression", () => {
     window.history.replaceState({}, "", "/docs/getting-started");
     registerNavRoutes();
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const homeLink = container?.querySelector('a[href="/"]') as HTMLAnchorElement | null;
@@ -145,7 +146,7 @@ describe("navbar link jsdom regression", () => {
     window.history.replaceState({}, "", "/docs/components");
     registerNavRoutes();
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const docsLink = container?.querySelector('a[href="/docs"]') as HTMLAnchorElement | null;
@@ -164,7 +165,7 @@ describe("navbar link jsdom regression", () => {
     let clicks = 0;
 
     window.history.replaceState({}, "", "/");
-    route("/", () => (
+    testRoute("/", () => (
       <>
         <nav aria-label="Primary">
           <NavLink
@@ -179,9 +180,9 @@ describe("navbar link jsdom regression", () => {
         <div id="page">Home page</div>
       </>
     ));
-    route("/docs", () => <div id="page">Docs page</div>);
+    testRoute("/docs", () => <div id="page">Docs page</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const docsLink = container?.querySelector('a[href="/docs"]') as HTMLAnchorElement | null;
@@ -203,7 +204,7 @@ describe("navbar link jsdom regression", () => {
 
   it("should does not intercept modified clicks or explicit targets", async () => {
     window.history.replaceState({}, "", "/");
-    route("/", () => (
+    testRoute("/", () => (
       <nav aria-label="Primary">
         <NavLink href="/docs">Docs</NavLink>
         <NavLink href="/settings" target="_blank">
@@ -211,10 +212,10 @@ describe("navbar link jsdom regression", () => {
         </NavLink>
       </nav>
     ));
-    route("/docs", () => <div id="page">Docs page</div>);
-    route("/settings", () => <div id="page">Settings page</div>);
+    testRoute("/docs", () => <div id="page">Docs page</div>);
+    testRoute("/settings", () => <div id="page">Settings page</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const docsLink = container?.querySelector('a[href="/docs"]') as HTMLAnchorElement | null;
@@ -249,13 +250,13 @@ describe("navbar link jsdom regression", () => {
     let wasDefaultPreventedByNavLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/");
-    route("/", () => (
+    testRoute("/", () => (
       <nav aria-label="Primary">
         <NavLink href="https://example.com/docs">External docs</NavLink>
       </nav>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const externalLink = container?.querySelector(
@@ -286,13 +287,13 @@ describe("navbar link jsdom regression", () => {
     let wasDefaultPreventedByNavLink: boolean | undefined;
 
     window.history.replaceState({}, "", "/docs");
-    route("/docs", () => (
+    testRoute("/docs", () => (
       <nav aria-label="Primary">
         <NavLink href="#api">API</NavLink>
       </nav>
     ));
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const hashLink = container?.querySelector('a[href="#api"]') as HTMLAnchorElement | null;
@@ -319,7 +320,7 @@ describe("navbar link jsdom regression", () => {
 
   it("should preserves route behavior through DropdownItem asChild with NavLink", async () => {
     window.history.replaceState({}, "", "/");
-    route("/", () => (
+    testRoute("/", () => (
       <nav aria-label="Primary">
         <Dropdown id="route-dropdown" defaultOpen>
           <DropdownTrigger>Workspace</DropdownTrigger>
@@ -334,9 +335,9 @@ describe("navbar link jsdom regression", () => {
         </Dropdown>
       </nav>
     ));
-    route("/docs", () => <div id="page">Docs page</div>);
+    testRoute("/docs", () => <div id="page">Docs page</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const docsLink = document.body.querySelector(
@@ -371,7 +372,7 @@ describe("navbar link jsdom regression", () => {
     let modifiedWasNotCancelled: boolean | undefined;
 
     window.history.replaceState({}, "", "/");
-    route("/", () => (
+    testRoute("/", () => (
       <nav aria-label="Primary">
         <Dropdown id="native-dropdown" defaultOpen>
           <DropdownTrigger>Workspace</DropdownTrigger>
@@ -386,9 +387,9 @@ describe("navbar link jsdom regression", () => {
         </Dropdown>
       </nav>
     ));
-    route("/docs", () => <div id="page">Docs page</div>);
+    testRoute("/docs", () => <div id="page">Docs page</div>);
 
-    await createSPA({ root: container!, manifest: getManifest() });
+    await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 
     const docsLink = document.body.querySelector(
