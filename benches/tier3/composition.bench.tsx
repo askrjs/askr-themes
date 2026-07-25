@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
 
-import { group, route, navigate, clearRoutes } from "@askrjs/askr/router";
+import { group, route, navigate } from "@askrjs/askr/router";
 
 import { mountScenario, settle, stubViewport, type MountedScenario } from "../_shared/dom";
 import {
@@ -41,7 +41,6 @@ describe("tier3 stateful composition benches", () => {
       window.localStorage.removeItem("askr-theme");
       document.documentElement.removeAttribute("data-theme");
       document.documentElement.removeAttribute("data-theme-choice");
-      clearRoutes();
     }
 
     async function mountThemeControlScenario(): Promise<MountedScenario | undefined> {
@@ -272,7 +271,6 @@ describe("tier3 stateful composition benches", () => {
       scenario = undefined;
       viewport?.restore();
       viewport = undefined;
-      clearRoutes();
     });
 
     bench("sidebar link cycle", async () => {
@@ -304,7 +302,6 @@ describe("tier3 stateful composition benches", () => {
     afterEach(() => {
       scenario?.cleanup();
       scenario = undefined;
-      clearRoutes();
     });
 
     bench("route transition cycle", async () => {
@@ -346,7 +343,6 @@ describe("tier3 stateful composition benches", () => {
         expect(scenario.container.querySelector('[data-slot="main"]')).not.toBeNull();
       } finally {
         scenario.cleanup();
-        clearRoutes();
         await settle();
       }
     });
