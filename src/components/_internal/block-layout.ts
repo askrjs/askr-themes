@@ -66,6 +66,7 @@ export type BlockLayoutProps = {
   zIndex?: ResponsiveValue<BlockZIndex>;
   background?: ResponsiveValue<BlockBackground>;
   border?: ResponsiveValue<boolean>;
+  borderTop?: ResponsiveValue<boolean>;
   borderBottom?: ResponsiveValue<boolean>;
   borderRight?: ResponsiveValue<boolean>;
   radius?: ResponsiveValue<BlockRadius>;
@@ -163,6 +164,7 @@ const BLOCK_LAYOUT_KEYS = new Set<keyof BlockLayoutProps>([
   "zIndex",
   "background",
   "border",
+  "borderTop",
   "borderBottom",
   "borderRight",
   "radius",
@@ -202,7 +204,8 @@ function resolveSpaceValue(value: string | number): string | number {
   return resolveTokenValue(value, SPACE_TOKEN_MAP);
 }
 
-function resolveSizeValue(value: string): string {
+function resolveSizeValue(value: string, axis: "inline" | "block"): string {
+  if (value === "screen") return axis === "inline" ? "100dvw" : "100dvh";
   return String(resolveTokenValue(value, SIZE_TOKEN_MAP));
 }
 
@@ -289,15 +292,31 @@ export function applyBlockLayoutStyles(
   setResponsiveVar(styles, "mx", props.marginX, resolveSpaceValue);
   setResponsiveVar(styles, "my", props.marginY, resolveSpaceValue);
 
-  setResponsiveVar(styles, "width", props.width, resolveSizeValue);
-  setResponsiveVar(styles, "min-width", props.minWidth, resolveSizeValue);
-  setResponsiveVar(styles, "max-width", props.maxWidth, resolveSizeValue);
-  setResponsiveVar(styles, "height", props.height, resolveSizeValue);
-  setResponsiveVar(styles, "min-height", props.minHeight, resolveSizeValue);
-  setResponsiveVar(styles, "max-height", props.maxHeight, resolveSizeValue);
+  setResponsiveVar(styles, "width", props.width, (value) => resolveSizeValue(value, "inline"));
+  setResponsiveVar(styles, "min-width", props.minWidth, (value) =>
+    resolveSizeValue(value, "inline"),
+  );
+  setResponsiveVar(styles, "max-width", props.maxWidth, (value) =>
+    resolveSizeValue(value, "inline"),
+  );
+  setResponsiveVar(styles, "height", props.height, (value) => resolveSizeValue(value, "block"));
+  setResponsiveVar(styles, "min-height", props.minHeight, (value) =>
+    resolveSizeValue(value, "block"),
+  );
+  setResponsiveVar(styles, "max-height", props.maxHeight, (value) =>
+    resolveSizeValue(value, "block"),
+  );
 
   if (props.rowFrom !== undefined) {
     styles[`--ak-flex-direction-${props.rowFrom}`] = "row";
+  }
+  if (props.center !== undefined) {
+    setResponsiveVar(styles, "align-items", props.center, (value) =>
+      value ? "center" : "stretch",
+    );
+    setResponsiveVar(styles, "justify-content", props.center, (value) =>
+      value ? "center" : "flex-start",
+    );
   }
   setResponsiveVar(styles, "flex-direction", props.direction, (value) => value);
   setResponsiveVar(styles, "align-items", props.align, resolveAlignValue);
@@ -305,15 +324,6 @@ export function applyBlockLayoutStyles(
   setResponsiveVar(styles, "gap", props.gap, resolveSpaceValue);
   setResponsiveVar(styles, "flex-grow", props.grow, resolveFlexFlag);
   setResponsiveVar(styles, "flex-shrink", props.shrink, resolveFlexFlag);
-
-  if (props.center !== undefined) {
-    setResponsiveVar(styles, "align-items", props.center, (value) =>
-      value ? "center" : undefined,
-    );
-    setResponsiveVar(styles, "justify-content", props.center, (value) =>
-      value ? "center" : undefined,
-    );
-  }
 
   if (props.sticky) {
     styles["--ak-position-base"] = "sticky";
@@ -327,6 +337,7 @@ export function applyBlockLayoutStyles(
     String(resolveTokenValue(value, BACKGROUND_TOKEN_MAP)),
   );
   setResponsiveVar(styles, "border", props.border, resolveBorderValue);
+  setResponsiveVar(styles, "border-top", props.borderTop, resolveBorderValue);
   setResponsiveVar(styles, "border-bottom", props.borderBottom, resolveBorderValue);
   setResponsiveVar(styles, "border-right", props.borderRight, resolveBorderValue);
   setResponsiveVar(styles, "border-radius", props.radius, resolveRadiusValue);

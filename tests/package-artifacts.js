@@ -6,6 +6,7 @@ const npm = process.platform === "win32" ? "npm.cmd" : "npm";
 const result = JSON.parse(
   execFileSync(npm, ["pack", "--ignore-scripts", "--dry-run", "--json"], {
     encoding: "utf8",
+    shell: process.platform === "win32",
   }),
 );
 

@@ -188,7 +188,7 @@ describe("block-first components", () => {
     expect(responsiveNavbarChildren[0]).toBe(brand);
     expect(findElementBySlot(responsiveNavbarChildren, "navbar-collapse")).toBeTruthy();
     expect(responsiveNavbarContent?.props["data-slot"]).toBe("navbar-content");
-    expect(responsiveNavbarContent?.props.children).toEqual([docsItem]);
+    expect(asElement(responsiveNavbarContent?.props.children).props.children).toEqual([docsItem]);
     expect(brand.props["data-slot"]).toBe("nav-brand");
   });
 

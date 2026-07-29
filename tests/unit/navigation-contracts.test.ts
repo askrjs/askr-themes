@@ -108,7 +108,7 @@ describe("navigation contracts", () => {
     expect(findElementBySlot(responsiveNavbarChildren, "navbar-collapse")).toBeTruthy();
     expect(responsiveNavbarToggle?.props["aria-label"]).toBe("Menu");
     expect(responsiveNavbarContent?.props["data-slot"]).toBe("navbar-content");
-    expect(responsiveNavbarContent?.props.children).toEqual([docsItem]);
+    expect(asElement(responsiveNavbarContent?.props.children).props.children).toEqual([docsItem]);
     expect(group.type).toBe(Block);
     expect(group.props["data-slot"]).toBe("nav-group");
     expect(endGroup.props.align).toBe("end");

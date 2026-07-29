@@ -1,11 +1,16 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
-import { DialogContent } from "@askrjs/ui";
+import { DialogContent, DialogDescription, DialogTitle } from "@askrjs/ui";
 import { Block } from "./block";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
 const CatalogDialogContent = DialogContent as (props: Record<string, unknown>) => JSX.Element;
+const CatalogDialogTitle = DialogTitle as (props: Record<string, unknown>) => JSX.Element;
+const CatalogDialogDescription = DialogDescription as (
+  props: Record<string, unknown>,
+) => JSX.Element;
 
 type CatalogElement = keyof JSX.IntrinsicElements;
 
@@ -42,12 +47,17 @@ function catalogPart(props: CatalogComponentProps, defaults: CatalogDefaults): J
 }
 
 function buttonPart(props: CatalogComponentProps, slot: string, className?: string): JSX.Element {
-  const { children, ref, class: classProp, type = "button", ...rest } = props;
+  const { as, asChild, children, ref, class: classProp, type = "button", ...rest } = props;
+  void as;
   const finalProps = mergeProps(rest, {
     ref,
     class: classes(className, classProp),
     "data-slot": slot,
   });
+
+  if (asChild) {
+    return <Slot asChild {...finalProps} children={children as JSX.Element} />;
+  }
 
   return (
     <button type={type as "button" | "submit" | "reset"} {...finalProps}>
@@ -249,6 +259,7 @@ export function CalendarDay(
   const { disabled, outside, rangeEnd, rangeMiddle, rangeStart, selected, today, ...rest } = props;
   return buttonPart(
     {
+      disabled,
       "aria-disabled": disabled ? "true" : undefined,
       "aria-selected": selected ? "true" : undefined,
       "data-disabled": disabled ? "" : undefined,
@@ -661,11 +672,11 @@ export function SheetFooter(props: CatalogComponentProps): JSX.Element {
 }
 
 export function SheetTitle(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "sheet-title", element: "h2" });
+  return <CatalogDialogTitle {...props} data-slot="sheet-title" />;
 }
 
 export function SheetDescription(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "sheet-description", element: "p" });
+  return <CatalogDialogDescription {...props} data-slot="sheet-description" />;
 }
 
 export function Toaster(props: CatalogComponentProps): JSX.Element {

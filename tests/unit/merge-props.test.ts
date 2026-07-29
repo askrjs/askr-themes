@@ -63,4 +63,18 @@ describe("mergeProps", () => {
 
     expect(merged.class).toBe("badge badge-success my-badge");
   });
+
+  it("should retain reactive class accessors while composing fixed classes", () => {
+    let active = false;
+    const merged = mergeProps(
+      { class: () => (active ? "active" : "inactive") },
+      { class: "button" },
+    );
+
+    expect(typeof merged.class).toBe("function");
+    const readClass = merged.class as () => string | undefined;
+    expect(readClass()).toBe("button inactive");
+    active = true;
+    expect(readClass()).toBe("button active");
+  });
 });

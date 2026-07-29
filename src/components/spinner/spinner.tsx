@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { ProgressCircle, ProgressCircleIndicator } from "@askrjs/ui";
 import type { SpinnerProps } from "./spinner.types";
 

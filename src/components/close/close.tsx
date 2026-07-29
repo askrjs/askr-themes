@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Button, type ButtonNativeProps } from "@askrjs/ui";
 import { classes } from "../_internal/classes";
 import type { CloseNativeProps } from "./close.types";
