@@ -60,15 +60,67 @@ export function mergeCssVar(style: unknown, name: string, value: string): string
 const STYLE_REGISTRY_ATTR = "data-askr-style-registry";
 const STYLE_CLASS_PREFIX = "ak-style-";
 
-const styleClassCache = new Map<string, string>();
+type StyleRule = {
+  className: string;
+  declarations: string;
+  rule: string;
+};
+
+const styleRulesByClass = new Map<string, StyleRule>();
 type StyleRegistry = {
   element: HTMLStyleElement;
-  rules: Map<string, { className: string; rule: string }>;
+  ruleCount: number;
+  rules: Map<string, StyleRule>;
 };
 const registries = new WeakMap<Document, Map<string, StyleRegistry>>();
 const MAX_STYLE_RULES = 512;
 
-let nextStyleClassId = 0;
+function countRegisteredRules(value: string | null): number {
+  return value?.match(/\.ak-style-[a-z0-9]+\{/g)?.length ?? 0;
+}
+
+function styleClassName(declarations: string): string {
+  let first = 0xdeadbeef ^ declarations.length;
+  let second = 0x41c6ce57 ^ declarations.length;
+
+  for (let index = 0; index < declarations.length; index += 1) {
+    const code = declarations.charCodeAt(index);
+    first = Math.imul(first ^ code, 2_654_435_761);
+    second = Math.imul(second ^ code, 1_597_334_677);
+  }
+
+  first =
+    Math.imul(first ^ (first >>> 16), 2_246_822_507) ^
+    Math.imul(second ^ (second >>> 13), 3_266_489_909);
+  second =
+    Math.imul(second ^ (second >>> 16), 2_246_822_507) ^
+    Math.imul(first ^ (first >>> 13), 3_266_489_909);
+
+  return `${STYLE_CLASS_PREFIX}${(second >>> 0).toString(36)}${(first >>> 0).toString(36)}`;
+}
+
+function escapeStyleRawText(value: string): string {
+  return value.replace(/<\//g, "<\\/");
+}
+
+function styleRuleFor(declarations: string): StyleRule {
+  const className = styleClassName(declarations);
+  const existing = styleRulesByClass.get(className);
+  if (existing) {
+    if (existing.declarations !== declarations) {
+      throw new RangeError("Theme style class collision detected.");
+    }
+    return existing;
+  }
+
+  const entry = {
+    className,
+    declarations,
+    rule: `.${className}{${escapeStyleRawText(declarations)}}`,
+  };
+  styleRulesByClass.set(className, entry);
+  return entry;
+}
 
 function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
   if (typeof document === "undefined") return null;
@@ -81,11 +133,20 @@ function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
   const current = documentRegistries.get(key);
   if (current?.element.isConnected) return current;
 
-  const styleElement = document.createElement("style");
-  styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
-  if (nonce !== undefined) styleElement.nonce = nonce;
-  (document.head ?? document.documentElement).append(styleElement);
-  const registry: StyleRegistry = { element: styleElement, rules: new Map() };
+  const styleElement =
+    Array.from(document.querySelectorAll<HTMLStyleElement>(`style[${STYLE_REGISTRY_ATTR}]`)).find(
+      (element) => (element.nonce || undefined) === nonce,
+    ) ?? document.createElement("style");
+  if (!styleElement.isConnected) {
+    styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
+    if (nonce !== undefined) styleElement.nonce = nonce;
+    (document.head ?? document.documentElement).append(styleElement);
+  }
+  const registry: StyleRegistry = {
+    element: styleElement,
+    ruleCount: countRegisteredRules(styleElement.textContent),
+    rules: new Map(),
+  };
   documentRegistries.set(key, registry);
   return registry;
 }
@@ -100,27 +161,40 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   const normalized = normalizeDeclarations(declarations);
   if (!normalized) return undefined;
 
+  const entry = styleRuleFor(normalized);
   const nonce = cspNonce();
   const registry = ensureStyleRegistry(nonce);
   const registered = registry?.rules.get(normalized);
   if (registered) return registered.className;
 
-  let className = styleClassCache.get(normalized);
-  if (className === undefined) {
-    className = `${STYLE_CLASS_PREFIX}${++nextStyleClassId}`;
-    styleClassCache.set(normalized, className);
-  }
-
   if (registry) {
-    const styleElement = registry.element;
-    if (styleElement) {
-      if (registry.rules.size >= MAX_STYLE_RULES)
+    registry.rules.set(normalized, entry);
+    if (!registry.element.textContent?.includes(entry.rule)) {
+      if (registry.ruleCount >= MAX_STYLE_RULES)
         throw new RangeError("Theme style registry capacity exceeded.");
-      const rule = `.${className}{${normalized}}`;
-      registry.rules.set(normalized, { className, rule });
-      styleElement.append(rule, "\n");
+      registry.element.append(entry.rule, "\n");
+      registry.ruleCount += 1;
     }
   }
 
-  return className;
+  return entry.className;
+}
+
+export function styleRulesForHtml(html: string): string[] {
+  const rules = new Map<string, string>();
+  const classAttributePattern = /\sclass=(?:"([^"]*)"|'([^']*)')/g;
+
+  for (const attribute of html.matchAll(classAttributePattern)) {
+    const value = attribute[1] ?? attribute[2] ?? "";
+    for (const className of value.split(/\s+/)) {
+      const entry = styleRulesByClass.get(className);
+      if (entry) rules.set(className, entry.rule);
+    }
+  }
+
+  if (rules.size > MAX_STYLE_RULES) {
+    throw new RangeError("Theme style registry capacity exceeded.");
+  }
+
+  return Array.from(rules.values());
 }

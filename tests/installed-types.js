@@ -33,6 +33,8 @@ try {
       'import "@askrjs/themes/presets";',
       'import "@askrjs/themes/default/tokens.css";',
       'import "@askrjs/themes/templates/theme/index.css";',
+      'import { withThemeStyles } from "@askrjs/themes/ssr";',
+      "void withThemeStyles;",
     ].join("\n"),
   );
   writeFileSync(

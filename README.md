@@ -60,6 +60,30 @@ export function AppShell() {
 }
 ```
 
+### SSR and SSG
+
+Layout props on `Block`, `Container`, `Grid`, `AspectRatio`, and `Skeleton`
+produce CSP-compatible generated rules. Wrap the Askr document renderer so
+those rules are serialized into the initial document and adopted during
+hydration:
+
+```ts
+import type { DocumentRenderArgs } from "@askrjs/askr/ssg";
+import { withThemeStyles } from "@askrjs/themes/ssr";
+
+function renderDocument({ appHtml }: DocumentRenderArgs) {
+  return `<!doctype html><html><head></head><body><div id="app">${appHtml}</div></body></html>`;
+}
+
+export const staticConfig = {
+  // ...
+  document: withThemeStyles(renderDocument),
+};
+```
+
+The wrapper also applies `context.cspNonce` to the emitted style registry.
+Use the same wrapper for an SSR `document` callback.
+
 ## What To Import
 
 - `@askrjs/themes/components` for the styled component catalog.
@@ -68,6 +92,7 @@ export function AppShell() {
   `@askrjs/themes/dialog`.
 - `@askrjs/themes/theme` for `ThemeScope`, `ThemePicker`, `ThemeToggle`,
   and `theme`.
+- `@askrjs/themes/ssr` for the SSR/SSG generated-style document wrapper.
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
