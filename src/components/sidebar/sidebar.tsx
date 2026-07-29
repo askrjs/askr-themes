@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
@@ -143,16 +144,23 @@ export function SidebarMenuButton(props: SidebarButtonProps): JSX.Element {
 }
 
 export function SidebarMenuAction(props: SidebarButtonProps): JSX.Element {
-  const { children, class: className, tooltip, tooltipSide, type = "button", ...rest } = props;
+  const {
+    asChild,
+    children,
+    class: className,
+    tooltip,
+    tooltipSide,
+    type = "button",
+    ...rest
+  } = props;
+  const finalProps = mergeProps(rest, {
+    class: classes(className),
+    "data-slot": "sidebar-menu-action",
+    ...sidebarTooltipProps(tooltip, tooltipSide),
+  });
+  if (asChild) return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   return (
-    <button
-      type={type as "button" | "submit" | "reset" | undefined}
-      {...mergeProps(rest, {
-        class: classes(className),
-        "data-slot": "sidebar-menu-action",
-        ...sidebarTooltipProps(tooltip, tooltipSide),
-      })}
-    >
+    <button type={type as "button" | "submit" | "reset" | undefined} {...finalProps}>
       {children}
     </button>
   );
@@ -162,21 +170,38 @@ export function SidebarMenuBadge(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-menu-badge", "span");
 }
 
-export function SidebarRail(props: SidebarPartProps): JSX.Element {
-  return sidebarPart(props, "sidebar-rail", "button");
+export function SidebarRail(props: SidebarButtonProps): JSX.Element {
+  const { asChild, children, class: className, type = "button", ...rest } = props;
+  const finalProps = mergeProps(rest, {
+    class: classes(className),
+    "data-slot": "sidebar-rail",
+  });
+  if (asChild) return <Slot asChild {...finalProps} children={children as JSX.Element} />;
+  return (
+    <button type={type as "button" | "submit" | "reset" | undefined} {...finalProps}>
+      {children}
+    </button>
+  );
 }
 
 export function SidebarTrigger(props: SidebarButtonProps): JSX.Element {
-  const { children, class: className, tooltip, tooltipSide, type = "button", ...rest } = props;
+  const {
+    asChild,
+    children,
+    class: className,
+    tooltip,
+    tooltipSide,
+    type = "button",
+    ...rest
+  } = props;
+  const finalProps = mergeProps(rest, {
+    class: classes("btn btn-ghost btn-icon", className),
+    "data-slot": "sidebar-trigger",
+    ...sidebarTooltipProps(tooltip, tooltipSide),
+  });
+  if (asChild) return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   return (
-    <button
-      type={type as "button" | "submit" | "reset" | undefined}
-      {...mergeProps(rest, {
-        class: classes("btn btn-ghost btn-icon", className),
-        "data-slot": "sidebar-trigger",
-        ...sidebarTooltipProps(tooltip, tooltipSide),
-      })}
-    >
+    <button type={type as "button" | "submit" | "reset" | undefined} {...finalProps}>
       {children}
     </button>
   );

@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { defineScope, getSignal, readScope, state } from "@askrjs/askr";
 import type { JSXElement } from "@askrjs/askr/foundations/structures";
 import { Button } from "@askrjs/ui";
@@ -15,6 +16,7 @@ export type ThemeOption = {
 
 export type ThemeScopeValue = {
   theme: () => ThemeName;
+  resolvedSystemTheme: () => "light" | "dark";
   setTheme: (theme: ThemeName) => void;
   themes: readonly ThemeOption[];
   storageKey: string;
@@ -66,6 +68,7 @@ export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
 const DEFAULT_STORAGE_KEY = "askr-theme";
 const STATIC_CHILDREN = Symbol.for("askr.static-children");
 const STATIC_CHILD_SLOTS_CACHE = Symbol.for("__askrStaticChildSlots");
+const documentThemeCoordinators = new WeakMap<Document, ThemeCoordinator>();
 type ThemeCoordinator = ReturnType<typeof createThemeCoordinator>;
 type InternalThemeScopeValue = ThemeScopeValue & {
   readonly coordinator: ThemeCoordinator | null;
@@ -74,6 +77,7 @@ type InternalThemeScopeValue = ThemeScopeValue & {
 
 const ThemeScopeContext = defineScope<InternalThemeScopeValue>({
   theme: () => "system",
+  resolvedSystemTheme: () => "light",
   setTheme: () => undefined,
   themes: DEFAULT_THEME_OPTIONS,
   storageKey: DEFAULT_STORAGE_KEY,
@@ -99,10 +103,11 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   // Browser persistence is adopted from the committed root ref, after Askr's
   // hydration verifier has accepted the server markup.
   const themeState = state<ThemeName>(defaultTheme);
+  const localResolvedSystemTheme = state<"light" | "dark">("light");
   const persistenceAdoption = state({ complete: false })();
   const currentTheme = themeState();
   const parentScope = readScope(ThemeScopeContext);
-  const ownedCoordinator = state<ThemeCoordinator>(createThemeCoordinator())();
+  const ownedCoordinator = state<ThemeCoordinator>(getDefaultThemeCoordinator())();
   const coordinator = parentScope.coordinator ?? ownedCoordinator;
   const scopeDepth = parentScope.depth + 1;
   coordinator.register(scopeId, scopeDepth, currentTheme, scopeSignal);
@@ -113,8 +118,12 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
     coordinator.activate(scopeId, nextTheme);
   };
 
+  const resolvedSystemTheme = parentScope.coordinator
+    ? parentScope.resolvedSystemTheme
+    : localResolvedSystemTheme;
   const value: InternalThemeScopeValue = {
     theme: themeState,
+    resolvedSystemTheme,
     setTheme,
     themes,
     storageKey,
@@ -129,7 +138,11 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
         ref={
           parentScope.coordinator === null
             ? (element: HTMLElement | null) => {
-                coordinator.attach(element);
+                coordinator.attach(
+                  element,
+                  (nextTheme) => localResolvedSystemTheme.set(nextTheme),
+                  scopeSignal,
+                );
                 if (!element || persistenceAdoption.complete) return;
                 persistenceAdoption.complete = true;
                 const storedTheme = readStoredTheme(storageKey);
@@ -145,6 +158,19 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
       </div>
     </ThemeScopeContext>
   );
+}
+
+function getDefaultThemeCoordinator(): ThemeCoordinator {
+  if (typeof document === "undefined") {
+    return createThemeCoordinator();
+  }
+
+  const existing = documentThemeCoordinators.get(document);
+  if (existing) return existing;
+
+  const coordinator = createThemeCoordinator();
+  documentThemeCoordinators.set(document, coordinator);
+  return coordinator;
 }
 
 function createThemeCoordinator() {
@@ -191,8 +217,21 @@ function createThemeCoordinator() {
   };
 
   return Object.freeze({
-    attach(element: HTMLElement | null) {
+    attach(
+      element: HTMLElement | null,
+      onResolvedSystemTheme: (themeName: "light" | "dark") => void,
+      signal: AbortSignal,
+    ) {
       if (element) root = element.getRootNode();
+      if (element && typeof window !== "undefined" && typeof window.matchMedia === "function") {
+        const media = window.matchMedia("(prefers-color-scheme: dark)");
+        const update = () => onResolvedSystemTheme(media.matches ? "dark" : "light");
+        update();
+        media.addEventListener?.("change", update);
+        signal.addEventListener("abort", () => media.removeEventListener?.("change", update), {
+          once: true,
+        });
+      }
       schedule();
     },
     register(id: symbol, depth: number, themeName: ThemeName, signal: AbortSignal) {
@@ -282,7 +321,7 @@ export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   } = props;
 
   const currentTheme = activeTheme.theme();
-  const nextTheme = getNextTheme(currentTheme, themes, getResolvedSystemTheme());
+  const nextTheme = getNextTheme(currentTheme, themes, activeTheme.resolvedSystemTheme());
   const renderContext = { theme: currentTheme, nextTheme };
   const ariaLabel = (rest as Record<string, unknown>)["aria-label"];
   const themedIcon = resolveThemeToggleIcon(currentTheme, nextTheme, {
@@ -332,14 +371,6 @@ function getNextTheme(
     }
   }
   return themes[index >= 0 && index < themes.length - 1 ? index + 1 : 0]!;
-}
-
-function getResolvedSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-    return "light";
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
 function getThemeIcon(

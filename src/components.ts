@@ -1,4 +1,11 @@
 import "./themes/default/index.css";
+import "./components/jsx-types";
+
+// Keep the UI type surface explicit. A wildcard type re-export makes the
+// generated declaration bundle claim ownership of UI-only catalog values
+// (for example DataTable), which are intentionally sourced from our catalog
+// wrappers instead.
+export type { DialogProps } from "@askrjs/ui";
 
 export {
   Accordion,
@@ -271,6 +278,7 @@ export type * from "./components/container";
 export type * from "./components/empty-state";
 export type * from "./components/field";
 export type * from "./components/footer";
+export type * from "./components/grid";
 export type * from "./components/header";
 export type * from "./components/input-group";
 export type * from "./components/main";
@@ -286,4 +294,5 @@ export type * from "./components/skeleton";
 export type * from "./components/spinner";
 export type * from "./components/toolbar";
 export type * from "./components/theme";
+export type * from "./components/text";
 export type * from "./components/catalog";

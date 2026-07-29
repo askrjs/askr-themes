@@ -1,5 +1,5 @@
 import type { JSXElement } from "@askrjs/askr/foundations";
-import { jsx } from "@askrjs/askr/jsx-runtime";
+import { jsx, type JSX } from "@askrjs/askr/jsx-runtime";
 
 const renderIntrinsicElement = jsx as (type: string, props: Record<string, unknown>) => JSX.Element;
 

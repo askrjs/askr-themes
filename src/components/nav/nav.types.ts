@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import type { JSXElement } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 import type { LinkProps } from "@askrjs/askr/router";
@@ -58,6 +59,7 @@ export type NavItemAsChildProps = Omit<JSX.IntrinsicElements["a"], "children" | 
 
 export type NavLinkOwnProps = NavItemOwnProps & {
   match?: NavLinkMatch;
+  onPress?: (event: Event) => void;
 };
 
 export type NavLinkProps = LinkProps & NavLinkOwnProps;

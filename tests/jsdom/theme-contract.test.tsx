@@ -190,6 +190,101 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
+  it("should resolve system theme after hydration and follow media changes", async () => {
+    const originalMatchMedia = window.matchMedia;
+    let matches = true;
+    const listeners = new Set<(event: MediaQueryListEvent) => void>();
+    const media = {
+      get matches() {
+        return matches;
+      },
+      media: "(prefers-color-scheme: dark)",
+      onchange: null,
+      addEventListener(_type: string, listener: EventListenerOrEventListenerObject) {
+        listeners.add(listener as (event: MediaQueryListEvent) => void);
+      },
+      removeEventListener(_type: string, listener: EventListenerOrEventListenerObject) {
+        listeners.delete(listener as (event: MediaQueryListEvent) => void);
+      },
+      dispatchEvent() {
+        return true;
+      },
+    } as unknown as MediaQueryList;
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => media,
+    });
+
+    try {
+      const App = () => (
+        <ThemeScope defaultTheme="system" storageKey="askr-theme">
+          <ThemeToggle themes={["light", "dark"]} />
+        </ThemeScope>
+      );
+      container!.innerHTML = renderToStringSync(() => <App />);
+      const serverToggle = container!.querySelector('[data-theme-control="toggle"]');
+      expect(serverToggle?.getAttribute("data-next-theme")).toBe("dark");
+      testRoute("/theme", App);
+
+      await hydrateSPA({
+        root: container!,
+        registry: createTestRegistry(),
+        hydrate: { verifyMarkup: true },
+      });
+      await settle();
+
+      const hydratedToggle = container!.querySelector('[data-theme-control="toggle"]');
+      expect(hydratedToggle?.getAttribute("data-next-theme")).toBe("light");
+
+      matches = false;
+      for (const listener of listeners) listener({ matches } as MediaQueryListEvent);
+      await settle();
+
+      expect(
+        container!.querySelector('[data-theme-control="toggle"]')?.getAttribute("data-next-theme"),
+      ).toBe("dark");
+    } finally {
+      Object.defineProperty(window, "matchMedia", {
+        configurable: true,
+        value: originalMatchMedia,
+      });
+    }
+  });
+
+  it("should arbitrate document theme ownership across independent roots", async () => {
+    const first = document.createElement("div");
+    const second = document.createElement("div");
+    document.body.append(first, second);
+    let defaultTheme: ThemeName = "light";
+    const App = () => (
+      <ThemeScope defaultTheme={defaultTheme}>
+        {theme().theme() === "dark" ? "dark" : "light"}
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    try {
+      await createSPA({ root: first, registry: createTestRegistry() });
+      await settle();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+
+      defaultTheme = "dark";
+      await createSPA({ root: second, registry: createTestRegistry() });
+      await settle();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+
+      cleanupApp(second);
+      second.remove();
+      await settle();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    } finally {
+      cleanupApp(first);
+      first.remove();
+      cleanupApp(second);
+      second.remove();
+    }
+  });
+
   it("should expose the default theme options and scoped state", async () => {
     expect(DEFAULT_THEME_OPTIONS).toEqual([
       { value: "system", label: "System" },

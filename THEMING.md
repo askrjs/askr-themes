@@ -118,11 +118,12 @@ Package boundaries:
 - `@askrjs/themes` owns visual-only components, Block-first structural
   presets, and default styling.
 
-Use the curated theme entrypoints such as `@askrjs/themes/controls`,
-`@askrjs/themes/core`, `@askrjs/themes/surfaces`, and `@askrjs/themes/navs`
-for styled components such as Button, ButtonGroup, Close, InputGroup, Block,
-Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert, Badge,
-Tabs, Tab, Pills, Pill, Skeleton, Separator, and EmptyState.
+Use `@askrjs/themes/components` for the aggregate styled catalog, or the
+component subpaths such as `@askrjs/themes/button`,
+`@askrjs/themes/card`, and `@askrjs/themes/dialog`. The aggregate catalog
+contains styled components such as Button, ButtonGroup, Close, InputGroup,
+Block, Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert,
+Badge, Tabs, Tab, Pills, Pill, Skeleton, Separator, and EmptyState.
 
 Theme state helpers also live there: `ThemeScope`, `ThemePicker`,
 `ThemeToggle`, and `theme`. `ThemeToggle` intentionally has no built-in
