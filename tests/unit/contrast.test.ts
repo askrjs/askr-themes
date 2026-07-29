@@ -76,7 +76,7 @@ function parseColor(value: string): [number, number, number, number] | null {
   return null;
 }
 
-it("parses OKLCH lightness percentages independently from chroma", () => {
+it("should parse OKLCH lightness percentages independently from chroma", () => {
   const mixedUnits = parseColor("oklch(62% 0.12 30)");
   const decimalUnits = parseColor("oklch(0.62 0.12 30)");
 
