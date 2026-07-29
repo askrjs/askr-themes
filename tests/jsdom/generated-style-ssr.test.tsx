@@ -97,7 +97,9 @@ describe("generated theme style hydration", () => {
     expect(adopted[0]).toBe(serverRegistry);
     expect(adopted[0].textContent?.split(initialRule!).length - 1).toBe(1);
 
-    expect(styleDeclarationsToClass("--ak-p-base:var(--ak-space-lg)")).toMatch(/^ak-style-/);
+    expect(styleDeclarationsToClass("--ak-p-base:var(--ak-space-lg)")).toMatch(
+      /^ak-style-/,
+    );
 
     expect(document.querySelectorAll("style[data-askr-style-registry]")).toHaveLength(1);
     expect(adopted[0].textContent).toContain("--ak-p-base:var(--ak-space-lg)");
