@@ -24,6 +24,10 @@ const COMPONENT_EXPORT_TARGET = {
   types: "./dist/components.d.ts",
   import: "./dist/components.js",
 };
+const SSR_EXPORT_TARGET = {
+  types: "./dist/ssr.d.ts",
+  import: "./dist/ssr.js",
+};
 const CSS_TYPE_TARGET = "./src/css.d.ts";
 const REMOVED_FAMILY_EXPORTS = [
   "./controls",
@@ -150,6 +154,7 @@ describe("package surface", () => {
     };
 
     expect(pkg.exports?.["./components"]).toEqual(COMPONENT_EXPORT_TARGET);
+    expect(pkg.exports?.["./ssr"]).toEqual(SSR_EXPORT_TARGET);
     expect(pkg.exports?.["./theme"]).toBeTruthy();
     expect(pkg.exports?.["."]).toEqual({
       types: CSS_TYPE_TARGET,
