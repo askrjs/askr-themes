@@ -48,13 +48,12 @@ function parseColor(value: string): [number, number, number, number] | null {
   }
 
   const oklchMatch = trimmed.match(
-    /^oklch\(\s*([\d.]+)%?\s+([\d.]+)%?\s+([\d.]+)(?:deg)?(?:\s*\/\s*([\d.]+))?\s*\)$/i,
+    /^oklch\(\s*([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(?:deg)?(?:\s*\/\s*([+-]?(?:\d*\.?\d+))(%)?)?\s*\)$/i,
   );
   if (oklchMatch) {
-    const usesPercent = trimmed.includes("%");
-    const lightness = Number(oklchMatch[1]) / (usesPercent ? 100 : 1);
-    const chroma = Number(oklchMatch[2]) / (usesPercent ? 100 : 1);
-    const hue = (Number(oklchMatch[3]) * Math.PI) / 180;
+    const lightness = Number(oklchMatch[1]) / (oklchMatch[2] ? 100 : 1);
+    const chroma = Number(oklchMatch[3]) / (oklchMatch[4] ? 100 : 1);
+    const hue = (Number(oklchMatch[5]) * Math.PI) / 180;
     const a = chroma * Math.cos(hue);
     const b = chroma * Math.sin(hue);
     const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
@@ -69,11 +68,26 @@ function parseColor(value: string): [number, number, number, number] | null {
       (channel) =>
         255 * (channel <= 0.0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - 0.055),
     );
-    return [rgb[0]!, rgb[1]!, rgb[2]!, oklchMatch[4] ? Number(oklchMatch[4]) : 1];
+    const alpha =
+      oklchMatch[6] === undefined ? 1 : Number(oklchMatch[6]) / (oklchMatch[7] ? 100 : 1);
+    return [rgb[0]!, rgb[1]!, rgb[2]!, alpha];
   }
 
   return null;
 }
+
+it("parses OKLCH lightness percentages independently from chroma", () => {
+  const mixedUnits = parseColor("oklch(62% 0.12 30)");
+  const decimalUnits = parseColor("oklch(0.62 0.12 30)");
+
+  expect(mixedUnits).not.toBeNull();
+  expect(decimalUnits).not.toBeNull();
+  for (const [mixed, decimal] of mixedUnits!
+    .slice(0, 3)
+    .map((channel, index) => [channel, decimalUnits![index]])) {
+    expect(mixed).toBeCloseTo(decimal as number, 8);
+  }
+});
 
 /**
  * Composite a semi-transparent foreground color over an opaque background.

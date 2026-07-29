@@ -27,12 +27,12 @@ function parseComputedColor(value: string): RGBA {
   if (rgb) return [Number(rgb[1]), Number(rgb[2]), Number(rgb[3]), Number(rgb[4] ?? 1)];
 
   const oklch = value.match(
-    /oklch\(\s*([\d.]+)%?\s+([\d.]+)%?\s+([\d.]+)(?:deg)?(?:\s*[/]\s*([\d.]+))?/i,
+    /oklch\(\s*([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(?:deg)?(?:\s*[/]\s*([+-]?(?:\d*\.?\d+))(%)?)?/i,
   );
   if (!oklch) throw new Error(`Browser did not resolve color to a supported format: ${value}`);
-  const lightness = Number(oklch[1]) / (value.includes("%") ? 100 : 1);
-  const chroma = Number(oklch[2]) / (value.includes("%") ? 100 : 1);
-  const hue = (Number(oklch[3]) * Math.PI) / 180;
+  const lightness = Number(oklch[1]) / (oklch[2] ? 100 : 1);
+  const chroma = Number(oklch[3]) / (oklch[4] ? 100 : 1);
+  const hue = (Number(oklch[5]) * Math.PI) / 180;
   const a = chroma * Math.cos(hue);
   const b = chroma * Math.sin(hue);
   const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
@@ -47,7 +47,8 @@ function parseComputedColor(value: string): RGBA {
     (channel) =>
       255 * (channel <= 0.0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - 0.055),
   );
-  return [srgb[0]!, srgb[1]!, srgb[2]!, Number(oklch[4] ?? 1)];
+  const alpha = oklch[6] === undefined ? 1 : Number(oklch[6]) / (oklch[7] ? 100 : 1);
+  return [srgb[0]!, srgb[1]!, srgb[2]!, alpha];
 }
 
 function luminance([r, g, b]: RGB): number {
