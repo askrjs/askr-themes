@@ -13,6 +13,7 @@ try {
     execFileSync(npm, ["pack", "--ignore-scripts", "--json", "--pack-destination", consumerRoot], {
       cwd: repositoryRoot,
       encoding: "utf8",
+      shell: process.platform === "win32",
     }),
   );
   const tarball = join(consumerRoot, packResult[0].filename);
@@ -32,6 +33,7 @@ try {
   execFileSync(npm, ["install", "--ignore-scripts", "--no-package-lock", tarball], {
     cwd: consumerRoot,
     stdio: "pipe",
+    shell: process.platform === "win32",
   });
   writeFileSync(
     join(consumerRoot, "index.tsx"),
