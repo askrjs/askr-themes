@@ -54,6 +54,10 @@
       "types": "./dist/theme.d.ts",
       "import": "./dist/theme.js"
     },
+    "./ssr": {
+      "types": "./dist/ssr.d.ts",
+      "import": "./dist/ssr.js"
+    },
     "./accordion": {
       "types": "./dist/components.d.ts",
       "import": "./dist/components.js"
