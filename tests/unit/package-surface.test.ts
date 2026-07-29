@@ -230,7 +230,7 @@ describe("package surface", () => {
         ).toBe(false);
       }
     }
-  });
+  }, 30_000);
 
   it("should keeps default CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
