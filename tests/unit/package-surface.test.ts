@@ -66,6 +66,7 @@ function ensureComponentDistArtifacts(): void {
 
   execFileSync(npmCommand(), ["run", "build"], {
     cwd: ROOT_DIR,
+    shell: process.platform === "win32",
     stdio: "ignore",
   });
 }
