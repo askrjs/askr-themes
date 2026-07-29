@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import type { StatDescriptionProps, StatLabelProps, StatProps, StatValueProps } from "./stat.types";

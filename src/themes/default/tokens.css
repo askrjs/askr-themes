@@ -174,7 +174,7 @@
   --ak-dark-color-primary-hover: color-mix(in oklch, var(--ak-dark-color-primary) 90%, transparent);
   --ak-dark-color-primary-active: color-mix(in oklch, var(--ak-dark-color-primary) 84%, black);
   --ak-dark-color-primary-soft: oklch(0.269 0 0);
-  --ak-dark-color-primary-ink: oklch(0.205 0 0);
+  --ak-dark-color-primary-ink: oklch(0.985 0 0);
 
   --ak-dark-color-text: oklch(0.985 0 0);
   --ak-dark-color-text-muted: oklch(0.708 0 0);

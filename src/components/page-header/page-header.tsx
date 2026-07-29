@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { PageHeaderProps } from "./page-header.types";
 

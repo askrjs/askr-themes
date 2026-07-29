@@ -318,6 +318,46 @@ describe("navbar link jsdom regression", () => {
     expect(window.location.pathname).toBe("/docs");
   });
 
+  it("should leaves same-origin downloads to native browser navigation", async () => {
+    let wasDefaultPreventedByNavLink: boolean | undefined;
+
+    window.history.replaceState({}, "", "/");
+    testRoute("/", () => (
+      <nav aria-label="Primary">
+        <NavLink href="/exports/report.csv" download="report.csv">
+          Download report
+        </NavLink>
+      </nav>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const downloadLink = container?.querySelector(
+      'a[href="/exports/report.csv"]',
+    ) as HTMLAnchorElement | null;
+    expect(downloadLink?.download).toBe("report.csv");
+    downloadLink?.addEventListener(
+      "click",
+      (event) => {
+        wasDefaultPreventedByNavLink = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true },
+    );
+
+    downloadLink?.dispatchEvent(
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        button: 0,
+      }),
+    );
+
+    expect(wasDefaultPreventedByNavLink).toBe(false);
+    expect(window.location.pathname).toBe("/");
+  });
+
   it("should preserves route behavior through DropdownItem asChild with NavLink", async () => {
     window.history.replaceState({}, "", "/");
     testRoute("/", () => (

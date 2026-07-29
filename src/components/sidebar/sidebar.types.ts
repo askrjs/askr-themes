@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import type { BlockElementProps } from "../block";
 
 export type SidebarCollapsible = "offcanvas" | "icon" | "none";
@@ -26,3 +27,5 @@ export type SidebarButtonProps = JSX.IntrinsicElements["button"] & {
   tooltipSide?: SidebarTooltipSide;
   variant?: "default" | "outline";
 };
+
+export type SidebarRailProps = SidebarButtonProps;

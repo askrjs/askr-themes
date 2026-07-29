@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import type { BlockElementProps } from "../block";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 

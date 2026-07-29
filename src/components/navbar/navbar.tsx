@@ -1,4 +1,11 @@
-import { Dropdown, DropdownTrigger } from "@askrjs/ui";
+import type { JSX } from "@askrjs/askr/jsx-runtime";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Dropdown,
+  DropdownTrigger,
+} from "@askrjs/ui";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { isJsxElement, toChildArray } from "../_internal/jsx";
@@ -70,13 +77,17 @@ export function Navbar(props: NavbarProps): JSX.Element {
     </LayoutBlock>
   );
   const collapse = hasNavContent ? (
-    <details data-slot="navbar-collapse">
-      <summary aria-label={collapseLabel} data-slot="navbar-toggle">
-        {collapseIcon}
-        <span data-slot="navbar-toggle-label">{collapseLabel}</span>
-      </summary>
-      {content}
-    </details>
+    <div data-slot="navbar-collapse">
+      <Collapsible>
+        <CollapsibleTrigger aria-label={collapseLabel} data-slot="navbar-toggle">
+          {collapseIcon}
+          <span data-slot="navbar-toggle-label">{collapseLabel}</span>
+        </CollapsibleTrigger>
+        <CollapsibleContent forceMount asChild data-slot="navbar-content">
+          {content}
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
   ) : null;
 
   return (

@@ -47,8 +47,47 @@ function parseColor(value: string): [number, number, number, number] | null {
     ];
   }
 
+  const oklchMatch = trimmed.match(
+    /^oklch\(\s*([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(%)?\s+([+-]?(?:\d*\.?\d+))(?:deg)?(?:\s*\/\s*([+-]?(?:\d*\.?\d+))(%)?)?\s*\)$/i,
+  );
+  if (oklchMatch) {
+    const lightness = Number(oklchMatch[1]) / (oklchMatch[2] ? 100 : 1);
+    const chroma = Number(oklchMatch[3]) / (oklchMatch[4] ? 100 : 1);
+    const hue = (Number(oklchMatch[5]) * Math.PI) / 180;
+    const a = chroma * Math.cos(hue);
+    const b = chroma * Math.sin(hue);
+    const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+    const m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+    const s = (lightness - 0.0894841775 * a - 1.291485548 * b) ** 3;
+    const linear = [
+      4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+      -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+      -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s,
+    ];
+    const rgb = linear.map(
+      (channel) =>
+        255 * (channel <= 0.0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - 0.055),
+    );
+    const alpha =
+      oklchMatch[6] === undefined ? 1 : Number(oklchMatch[6]) / (oklchMatch[7] ? 100 : 1);
+    return [rgb[0]!, rgb[1]!, rgb[2]!, alpha];
+  }
+
   return null;
 }
+
+it("should parse OKLCH lightness percentages independently from chroma", () => {
+  const mixedUnits = parseColor("oklch(62% 0.12 30)");
+  const decimalUnits = parseColor("oklch(0.62 0.12 30)");
+
+  expect(mixedUnits).not.toBeNull();
+  expect(decimalUnits).not.toBeNull();
+  for (const [mixed, decimal] of mixedUnits!
+    .slice(0, 3)
+    .map((channel, index) => [channel, decimalUnits![index]])) {
+    expect(mixed).toBeCloseTo(decimal as number, 8);
+  }
+});
 
 /**
  * Composite a semi-transparent foreground color over an opaque background.
@@ -211,11 +250,12 @@ describe("WCAG AA contrast", () => {
 
           const tokens = extractColorTokens(css, selectorTest);
           const allTokenValues = extractAllTokenValues(css);
+          const tokenValues = new Map([...allTokenValues, ...tokens]);
 
           // Get the page bg for compositing semi-transparent colors
           const pageBgValue = tokens.get("--ak-color-bg");
           const pageBg = pageBgValue
-            ? parseColor(resolveTokenValue(pageBgValue, allTokenValues))
+            ? parseColor(resolveTokenValue(pageBgValue, tokenValues))
             : null;
 
           for (const [fgToken, bgToken, minRatio, label] of CONTRAST_PAIRS) {
@@ -224,16 +264,16 @@ describe("WCAG AA contrast", () => {
               const bgValue = tokens.get(bgToken);
 
               if (!fgValue || !bgValue) {
-                // Token not defined — skip (token completeness tests cover this)
-                return;
+                throw new Error(`Missing contrast token: ${fgToken} or ${bgToken}`);
               }
 
-              const fgParsed = parseColor(resolveTokenValue(fgValue, allTokenValues));
-              const bgParsed = parseColor(resolveTokenValue(bgValue, allTokenValues));
+              const fgParsed = parseColor(resolveTokenValue(fgValue, tokenValues));
+              const bgParsed = parseColor(resolveTokenValue(bgValue, tokenValues));
 
               if (!fgParsed || !bgParsed) {
-                // Can't parse (may use unsupported functions) — skip
-                return;
+                throw new Error(
+                  `Unsupported contrast color syntax: ${fgValue} or ${bgValue}; use the browser contrast matrix for verification.`,
+                );
               }
 
               // Composite semi-transparent bg over page background

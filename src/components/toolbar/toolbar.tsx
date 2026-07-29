@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { ToolbarProps } from "./toolbar.types";
 

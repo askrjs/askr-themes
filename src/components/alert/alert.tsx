@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { classes } from "../_internal/classes";
 import { Close } from "../close";
 import type { AlertProps } from "./alert.types";

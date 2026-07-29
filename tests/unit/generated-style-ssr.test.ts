@@ -35,6 +35,37 @@ function renderContainer(size: "sm" | "xl" = "xl", cspNonce = NONCE): string {
 }
 
 describe("generated theme styles during SSR", () => {
+  it("should use request-local style registrations when the renderer provides them", () => {
+    const html = withThemeStyles(
+      ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,
+    )({
+      appHtml: '<div class="ak-style-request">content</div>',
+      context: {
+        cspNonce: NONCE,
+        styles: [{ id: "ak-style-request", cssText: ".ak-style-request{color:red}" }],
+      },
+    });
+
+    expect(html).toContain(".ak-style-request{color:red}");
+    expect(html).toContain(`nonce="${NONCE}"`);
+  });
+
+  it("should keep request-local style text inside the registry element", () => {
+    const html = withThemeStyles(
+      ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,
+    )({
+      appHtml: '<div class="ak-style-request">content</div>',
+      context: {
+        styles: [
+          { id: "ak-style-request", cssText: '.ak-style-request{content:"</style><script>"}' },
+        ],
+      },
+    });
+
+    expect(html).not.toContain("</style><script>");
+    expect(html).toContain("<\\/style");
+  });
+
   it("should serialize Container layout rules into the initial document head", () => {
     const html = renderContainer();
     const className = html.match(/\b(ak-style-[a-z0-9]+)\b/)?.[1];
@@ -94,7 +125,7 @@ describe("generated theme styles during SSR", () => {
     });
 
     expect(html).not.toContain("</style><script data-pwned>");
-    expect(html).toContain("<\\/style><script data-pwned>");
+    expect(html).not.toContain("background-image");
   });
 
   it("should write generated rules into SSG output", async () => {
@@ -128,5 +159,22 @@ describe("generated theme styles during SSR", () => {
     } finally {
       rmSync(outputDir, { recursive: true, force: true });
     }
+  });
+
+  it("should ignore closing-head text inside raw-text elements", () => {
+    const registry = createRouteRegistry(() => route("/", () => Container({ size: "sm" })));
+    const html = renderToString({
+      url: "/",
+      registry,
+      document: withThemeStyles(
+        ({ appHtml }) =>
+          `<html><head><script>const marker = "</head>";</script><style>const marker = "</head>";</style></head><body>${appHtml}</body></html>`,
+      ),
+    });
+    const registryIndex = html.indexOf('<style data-askr-style-registry="true"');
+    const actualHeadEnd = html.lastIndexOf("</head>");
+
+    expect(registryIndex).toBeGreaterThan(html.indexOf("</head>"));
+    expect(registryIndex).toBeLessThan(actualHeadEnd);
   });
 });

@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
@@ -16,14 +17,17 @@ export function Brand<TElement extends "div" | "a" | "span" = "div">(
   props: BrandProps<TElement>,
 ): JSX.Element {
   const {
+    as: asProp,
     asChild,
     children,
     class: classProp,
     className,
     ref,
     ...rest
-  } = props as BrandNativeProps | BrandAsChildProps;
-  const as = "as" in props ? props.as : undefined;
+  } = props as (BrandNativeProps | BrandAsChildProps) & {
+    as?: "div" | "a" | "span";
+  };
+  const as = asProp;
 
   const finalProps = mergeProps(rest, {
     ref,

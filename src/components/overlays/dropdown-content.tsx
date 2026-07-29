@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { DropdownContent as UiDropdownContent } from "@askrjs/ui";
 import type { DropdownContentAsChildProps, DropdownContentProps } from "@askrjs/ui";
 

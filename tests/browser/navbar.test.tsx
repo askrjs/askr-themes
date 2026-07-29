@@ -251,7 +251,7 @@ describe("navbar browser smoke", () => {
     const brand = container?.querySelector('[data-slot="nav-brand"]') as HTMLElement | null;
     const collapse = container?.querySelector(
       '[data-slot="navbar-collapse"]',
-    ) as HTMLDetailsElement | null;
+    ) as HTMLElement | null;
     const content = container?.querySelector('[data-slot="navbar-content"]') as HTMLElement | null;
     const toggle = container?.querySelector('[data-slot="navbar-toggle"]') as HTMLElement | null;
 
@@ -270,7 +270,8 @@ describe("navbar browser smoke", () => {
       'a[href="/docs/components"]',
     ) as HTMLAnchorElement | null;
 
-    expect(collapse?.hasAttribute("open")).toBe(true);
+    expect(toggle?.getAttribute("aria-expanded")).toBe("true");
+    expect(content?.getAttribute("data-state")).toBe("open");
     expect(getComputedStyle(content!).display).toBe("flex");
     expect(content?.textContent).toContain("Components");
     menuLink?.dispatchEvent(
@@ -283,9 +284,9 @@ describe("navbar browser smoke", () => {
     await settle();
 
     expect(window.location.pathname).toBe("/docs/components");
-    expect(container?.querySelector('[data-slot="navbar-collapse"]')?.hasAttribute("open")).toBe(
-      false,
-    );
+    expect(
+      container?.querySelector('[data-slot="navbar-toggle"]')?.getAttribute("aria-expanded"),
+    ).toBe("false");
 
     expect(container?.querySelector('[data-slot="navbar"]')?.getAttribute("data-collapse-at")).toBe(
       "md",

@@ -145,7 +145,10 @@
 }
 
 :where([data-slot="navbar"][data-collapse-at])
-  :where([data-slot="navbar-collapse"][open] [data-slot="navbar-content"]) {
+  :where(
+    [data-slot="navbar-collapse"] [data-slot="navbar-content"][data-state="open"],
+    [data-slot="navbar-collapse"][open] [data-slot="navbar-content"]
+  ) {
   display: flex;
 }
 

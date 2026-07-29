@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import { mergeLayoutStyles } from "../_internal/block-layout";

@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { Block, Container } from "../../src/core";
 import { withThemeStyles } from "../../src/ssr";
+import { styleDeclarationsToClass } from "../../src/components/_internal/style";
 
 const NONCE = "MDEyMzQ1Njc4OWFiY2RlZg";
 const roots: HTMLElement[] = [];
@@ -52,6 +53,21 @@ afterEach(() => {
 });
 
 describe("generated theme style hydration", () => {
+  it("should reject a new rule before exceeding the registry capacity", () => {
+    removeStyleRegistries();
+
+    for (let index = 0; index < 512; index += 1) {
+      expect(styleDeclarationsToClass(`--ak-capacity-${index}:${index}`)).toMatch(/^ak-style-/);
+    }
+
+    expect(() => styleDeclarationsToClass("--ak-capacity-overflow:513")).toThrow(
+      "Theme style registry capacity exceeded.",
+    );
+    expect(document.querySelector("style[data-askr-style-registry]")?.textContent).not.toContain(
+      "--ak-capacity-overflow:513",
+    );
+  });
+
   it("should adopt the server registry and append client-only rules without duplication", async () => {
     removeStyleRegistries();
     window.history.replaceState({}, "", "/");

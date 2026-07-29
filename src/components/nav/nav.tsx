@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { currentRoute, Link, navigate } from "@askrjs/askr/router";
 import { Block } from "../block";
@@ -103,13 +104,17 @@ function renderRoutedLink(
     children,
     href: suppliedHref,
     to,
+    onPress,
     onClick,
     ref,
     class: className,
     match = "prefix",
     target,
     ...rest
-  } = props as NavLinkProps & { onClick?: (event: MouseEvent) => void };
+  } = props as NavLinkProps & {
+    onPress?: (event: Event) => void;
+    onClick?: (event: MouseEvent) => void;
+  };
   const href = to?.href ?? suppliedHref;
   if (!href) {
     throw new Error("Nav link requires href or to.");
@@ -124,6 +129,7 @@ function renderRoutedLink(
     slot === "nav-item" && resolvedSlot !== "nav-item" ? "nav-item" : undefined;
   const { "data-slot": _dataSlot, ...childRest } = rest as Record<string, unknown>;
   void _dataSlot;
+  const hasDownload = (rest as Record<string, unknown>).download !== undefined;
   const currentPathname = getReactiveCurrentPathname();
   const targetPathname = resolvePathname(href);
   const routeActive =
@@ -139,12 +145,20 @@ function renderRoutedLink(
     : {
         "data-active": undefined,
       };
-  const rendersRouterLink = targetPathname !== null && !target && typeof onClick !== "function";
+  const rendersRouterLink =
+    targetPathname !== null &&
+    !target &&
+    !hasDownload &&
+    typeof onClick !== "function" &&
+    typeof onPress !== "function";
   const childProps: NavLinkProps = to
     ? ({ ...childRest, to, target } as NavLinkProps)
     : ({ ...childRest, href, target } as NavLinkProps);
   const handleClick = (event: MouseEvent) => {
+    onPress?.(event);
+    if (event.defaultPrevented) return;
     onClick?.(event);
+    if (hasDownload) return;
 
     if (!shouldHandleClientNavigation(event, target, targetPathname)) {
       return;

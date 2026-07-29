@@ -21,6 +21,7 @@ export type {
   SidebarCollapsible,
   SidebarPartProps,
   SidebarProps,
+  SidebarRailProps,
   SidebarSide,
   SidebarTooltipSide,
   SidebarVariant,

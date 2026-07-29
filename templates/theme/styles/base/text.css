@@ -26,19 +26,19 @@
 }
 
 :where([data-slot="text"][data-tone="success"]) {
-  color: var(--ak-color-success);
+  color: var(--ak-color-success-ink);
 }
 
 :where([data-slot="text"][data-tone="warning"]) {
-  color: var(--ak-color-warning);
+  color: var(--ak-color-warning-ink);
 }
 
 :where([data-slot="text"][data-tone="danger"]) {
-  color: var(--ak-color-danger);
+  color: var(--ak-color-danger-ink);
 }
 
 :where([data-slot="text"][data-tone="info"]) {
-  color: var(--ak-color-info);
+  color: var(--ak-color-info-ink);
 }
 
 :where([data-slot="text"][data-weight="normal"]) {

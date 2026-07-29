@@ -5,7 +5,11 @@ import {
   mergeLayoutStyles,
   splitBlockLayoutProps,
 } from "../../src/components/_internal/block-layout";
-import { mergeCssVar } from "../../src/components/_internal/style";
+import {
+  mergeCssVar,
+  serializeCssDeclarations,
+  styleDeclarationsToClass,
+} from "../../src/components/_internal/style";
 
 describe("block layout helpers", () => {
   it("should serializes layout declarations with user overrides", () => {
@@ -61,6 +65,26 @@ describe("block layout helpers", () => {
     expect(styles["--ak-background-base"]).toBe("var(--ak-color-surface)");
   });
 
+  it("should emit explicit responsive resets and axis-aware screen sizes", () => {
+    const styles: Record<string, string | number> = {};
+
+    applyBlockLayoutStyles(styles, {
+      width: { base: "screen", xl: "full" },
+      height: { base: "screen" },
+      center: { base: true, lg: false },
+      borderTop: { base: true, xl: false },
+    });
+
+    expect(styles["--ak-width-base"]).toBe("100dvw");
+    expect(styles["--ak-height-base"]).toBe("100dvh");
+    expect(styles["--ak-align-items-base"]).toBe("center");
+    expect(styles["--ak-justify-content-base"]).toBe("center");
+    expect(styles["--ak-align-items-lg"]).toBe("stretch");
+    expect(styles["--ak-justify-content-lg"]).toBe("flex-start");
+    expect(styles["--ak-border-top-base"]).toContain("var(--ak-color-border-subtle)");
+    expect(styles["--ak-border-top-xl"]).toBe("0");
+  });
+
   it("should lets explicit direction override rowFrom", () => {
     const styles: Record<string, string | number> = {};
 
@@ -79,5 +103,32 @@ describe("style helpers", () => {
     expect(mergeCssVar({ backgroundColor: "red", opacity: 0.5 }, "--ak-test", "1rem")).toBe(
       "background-color:red;opacity:0.5;--ak-test:1rem",
     );
+  });
+
+  it("should omit declarations that can escape a generated stylesheet rule", () => {
+    expect(
+      serializeCssDeclarations({
+        color: "red",
+        background: "red}.pwned{display:block",
+        content: '"</style><script>"',
+        "--safe-token": "var(--ak-color-text)",
+      }),
+    ).toBe("color:red;--safe-token:var(--ak-color-text)");
+  });
+
+  it("should reject unsafe property names and malformed string declarations", () => {
+    expect(serializeCssDeclarations({ "color;body{display:block}": "red", color: "blue" })).toBe(
+      "color:blue",
+    );
+    expect(styleDeclarationsToClass("color:red}.pwned{display:block")).toBeUndefined();
+    expect(styleDeclarationsToClass("color:red; background:var(--ak-color-surface)")).toMatch(
+      /^ak-style-/,
+    );
+  });
+
+  it("should preserve safe declarations adjacent to unsafe string declarations", () => {
+    expect(
+      serializeCssDeclarations({ color: "red", background: 'url("javascript:alert(1)")' }),
+    ).toBe("color:red");
   });
 });

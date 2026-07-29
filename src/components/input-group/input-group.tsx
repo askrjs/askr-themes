@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "@askrjs/askr/foundations/utilities";
 import { classes } from "../_internal/classes";

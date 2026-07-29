@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 type DivProps = Omit<JSX.IntrinsicElements["div"], "children" | "ref">;

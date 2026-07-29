@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { classes } from "../_internal/classes";
 import {
@@ -15,8 +16,8 @@ const DEFAULT_ELEMENT = "div";
 export function Block(props: BlockNativeProps): JSX.Element;
 export function Block(props: BlockAsChildProps): JSX.Element;
 export function Block(props: BlockNativeProps | BlockAsChildProps) {
-  const as = "as" in props ? props.as : DEFAULT_ELEMENT;
   const {
+    as: asProp,
     asChild,
     children,
     ref,
@@ -25,10 +26,12 @@ export function Block(props: BlockNativeProps | BlockAsChildProps) {
     style: userStyle,
     ...rest
   } = props as (BlockNativeProps | BlockAsChildProps) & {
+    as?: BlockNativeProps["as"];
     class?: unknown;
     className?: unknown;
     style?: unknown;
   };
+  const as = asProp ?? DEFAULT_ELEMENT;
 
   const { blockProps, rest: passthroughProps } = splitBlockLayoutProps(rest);
   const layoutStyle: Record<string, string | number> = {};
