@@ -1,6 +1,9 @@
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
+  resolve: {
+    dedupe: ["@askrjs/askr"],
+  },
   oxc: {
     jsx: {
       runtime: "automatic",

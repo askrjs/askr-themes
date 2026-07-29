@@ -265,10 +265,15 @@ function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
   const current = documentRegistries.get(key);
   if (current?.element.isConnected) return current;
 
+  const existingStyleElements = Array.from(
+    document.querySelectorAll<HTMLStyleElement>(`style[${STYLE_REGISTRY_ATTR}]`),
+  );
   const styleElement =
-    Array.from(document.querySelectorAll<HTMLStyleElement>(`style[${STYLE_REGISTRY_ATTR}]`)).find(
-      (element) => (element.nonce || undefined) === nonce,
-    ) ?? document.createElement("style");
+    existingStyleElements.find((element) => (element.nonce || undefined) === nonce) ??
+    (nonce === undefined && existingStyleElements.length === 1
+      ? existingStyleElements[0]
+      : undefined) ??
+    document.createElement("style");
   if (!styleElement.isConnected) {
     styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
     if (nonce !== undefined) styleElement.nonce = nonce;

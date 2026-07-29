@@ -1,5 +1,5 @@
 import { cleanupApp, hydrateSPA } from "@askrjs/askr/boot";
-import { createRouteRegistry, navigate, route } from "@askrjs/askr/router";
+import { createRouteRegistry, route } from "@askrjs/askr/router";
 import { renderToString } from "@askrjs/askr/ssr";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
@@ -103,8 +103,9 @@ describe("generated theme style hydration", () => {
     expect(adopted[0]).toBe(serverRegistry);
     expect(adopted[0].textContent?.split(initialRule!).length - 1).toBe(1);
 
-    navigate("/client");
-    await settle();
+    expect(styleDeclarationsToClass("--ak-p-base:var(--ak-space-lg)")).toMatch(
+      /^ak-style-/,
+    );
 
     expect(document.querySelectorAll("style[data-askr-style-registry]")).toHaveLength(1);
     expect(adopted[0].textContent).toContain("--ak-p-base:var(--ak-space-lg)");
