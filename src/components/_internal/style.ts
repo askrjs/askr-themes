@@ -12,6 +12,8 @@ const CSS_ALLOWED_FUNCTIONS = new Set([
   "min",
   "max",
   "clamp",
+  "minmax",
+  "repeat",
   "rgb",
   "rgba",
   "hsl",

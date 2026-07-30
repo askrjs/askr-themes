@@ -10,12 +10,6 @@ import { styleDeclarationsToClass } from "../../src/components/_internal/style";
 const NONCE = "MDEyMzQ1Njc4OWFiY2RlZg";
 const roots: HTMLElement[] = [];
 
-async function settle(): Promise<void> {
-  await Promise.resolve();
-  await Promise.resolve();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-}
-
 function removeStyleRegistries(): void {
   for (const registry of document.querySelectorAll("style[data-askr-style-registry]")) {
     registry.remove();
