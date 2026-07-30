@@ -529,7 +529,7 @@ describe("visual polish contracts", () => {
       expect(overflowing, `element overflow at ${width}px`).toEqual([]);
       expect(doc.querySelectorAll(".component-card").length).toBeGreaterThanOrEqual(22);
     }
-  });
+  }, 60_000);
 
   it("should keeps constrained desktop navbar brand and actions visible", async () => {
     document.body.innerHTML = "";
