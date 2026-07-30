@@ -126,6 +126,14 @@ describe("style helpers", () => {
     );
   });
 
+  it("should preserve grid repeat and minmax functions in generated styles", () => {
+    expect(
+      serializeCssDeclarations({
+        "--ak-grid-columns-md": "repeat(2, minmax(0, 1fr))",
+      }),
+    ).toBe("--ak-grid-columns-md:repeat(2, minmax(0, 1fr))");
+  });
+
   it("should preserve safe declarations adjacent to unsafe string declarations", () => {
     expect(
       serializeCssDeclarations({ color: "red", background: 'url("javascript:alert(1)")' }),

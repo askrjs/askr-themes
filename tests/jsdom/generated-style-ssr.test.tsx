@@ -1,5 +1,5 @@
 import { cleanupApp, hydrateSPA } from "@askrjs/askr/boot";
-import { createRouteRegistry, navigate, route } from "@askrjs/askr/router";
+import { createRouteRegistry, route } from "@askrjs/askr/router";
 import { renderToString } from "@askrjs/askr/ssr";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
@@ -9,12 +9,6 @@ import { styleDeclarationsToClass } from "../../src/components/_internal/style";
 
 const NONCE = "MDEyMzQ1Njc4OWFiY2RlZg";
 const roots: HTMLElement[] = [];
-
-async function settle(): Promise<void> {
-  await Promise.resolve();
-  await Promise.resolve();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-}
 
 function removeStyleRegistries(): void {
   for (const registry of document.querySelectorAll("style[data-askr-style-registry]")) {
@@ -103,8 +97,7 @@ describe("generated theme style hydration", () => {
     expect(adopted[0]).toBe(serverRegistry);
     expect(adopted[0].textContent?.split(initialRule!).length - 1).toBe(1);
 
-    navigate("/client");
-    await settle();
+    expect(styleDeclarationsToClass("--ak-p-base:var(--ak-space-lg)")).toMatch(/^ak-style-/);
 
     expect(document.querySelectorAll("style[data-askr-style-registry]")).toHaveLength(1);
     expect(adopted[0].textContent).toContain("--ak-p-base:var(--ak-space-lg)");

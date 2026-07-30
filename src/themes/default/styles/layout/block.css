@@ -24,17 +24,21 @@
 }
 
 :where([data-slot="nav-group-label"]) {
+  max-inline-size: 100%;
   margin: 0;
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-xs);
   font-weight: var(--ak-font-weight-medium);
   line-height: var(--ak-line-height-tight);
+  overflow-wrap: anywhere;
 }
 
 :where([data-slot="nav-item"]) {
+  max-inline-size: 100%;
   min-block-size: 2rem;
   color: var(--ak-color-text-muted);
   text-decoration: none;
+  white-space: normal;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
     color var(--ak-duration-fast) var(--ak-ease-standard);
