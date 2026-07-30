@@ -285,6 +285,64 @@ describe("theme contracts", () => {
     }
   });
 
+  it("should synchronize theme state across independent roots given one shared document", async () => {
+    const first = document.createElement("div");
+    const second = document.createElement("div");
+    document.body.append(first, second);
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-cross-root">
+        <ThemeToggle aria-label="Toggle theme" />
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    try {
+      await createSPA({ root: first, registry: createTestRegistry() });
+      await createSPA({ root: second, registry: createTestRegistry() });
+      await settle();
+
+      (first.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
+      await settle();
+
+      expect(first.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+        "dark",
+      );
+      expect(second.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+        "dark",
+      );
+    } finally {
+      cleanupApp(first);
+      cleanupApp(second);
+      first.remove();
+      second.remove();
+    }
+  });
+
+  it("should apply cross-tab storage updates to the active theme scope", async () => {
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-storage-event">
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "askr-theme-storage-event",
+        newValue: "dark",
+      }),
+    );
+    await settle();
+
+    expect(container?.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+      "dark",
+    );
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
   it("should expose the default theme options and scoped state", async () => {
     expect(DEFAULT_THEME_OPTIONS).toEqual([
       { value: "system", label: "System" },
