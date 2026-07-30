@@ -3,7 +3,10 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { CardTitle } from "../../src/components/card/card";
-import { serializeCssDeclarations, styleDeclarationsToClass } from "../../src/components/_internal/style";
+import {
+  serializeCssDeclarations,
+  styleDeclarationsToClass,
+} from "../../src/components/_internal/style";
 import {
   DEFAULT_THEME_INDEX_FILE,
   DEFAULT_THEME_STYLES_DIR,
@@ -42,8 +45,11 @@ describe("responsive, template, and CSS safety contracts", () => {
   it("should preserve template parity given every official preset when component CSS and token CSS are generated", () => {
     const files = (root: string) =>
       readdirSync(root, { withFileTypes: true }).flatMap((entry) =>
-        entry.isDirectory() ? files(join(root, entry.name)).map((file) => join(entry.name, file)) :
-          entry.name.endsWith(".css") ? [entry.name] : [],
+        entry.isDirectory()
+          ? files(join(root, entry.name)).map((file) => join(entry.name, file))
+          : entry.name.endsWith(".css")
+            ? [entry.name]
+            : [],
       );
     expect(files(DEFAULT_THEME_STYLES_DIR).sort()).toEqual(files(TEMPLATE_THEME_STYLES_DIR).sort());
   });
