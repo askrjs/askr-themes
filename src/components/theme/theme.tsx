@@ -110,7 +110,9 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   const ownedCoordinator = state<ThemeCoordinator>(getDefaultThemeCoordinator())();
   const coordinator = parentScope.coordinator ?? ownedCoordinator;
   const scopeDepth = parentScope.depth + 1;
-  coordinator.register(scopeId, scopeDepth, currentTheme, scopeSignal);
+  coordinator.register(scopeId, scopeDepth, currentTheme, scopeSignal, (nextTheme) => {
+    if (themeState() !== nextTheme) themeState.set(nextTheme);
+  });
 
   const setTheme = (nextTheme: ThemeName) => {
     themeState.set(nextTheme);
@@ -143,6 +145,29 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
                   (nextTheme) => localResolvedSystemTheme.set(nextTheme),
                   scopeSignal,
                 );
+                if (element && typeof window !== "undefined") {
+                  const onStorage = (event: StorageEvent) => {
+                    let storageMatches = event.storageArea == null;
+                    try {
+                      storageMatches ||= event.storageArea === window.localStorage;
+                    } catch {
+                      // Locked-down/private contexts may deny access to localStorage.
+                    }
+                    if (!storageMatches || event.key !== storageKey) {
+                      return;
+                    }
+                    const nextTheme = event.newValue as ThemeName | null;
+                    if (!nextTheme) return;
+                    themeState.set(nextTheme);
+                    coordinator.activate(scopeId, nextTheme);
+                  };
+                  window.addEventListener("storage", onStorage);
+                  scopeSignal.addEventListener(
+                    "abort",
+                    () => window.removeEventListener("storage", onStorage),
+                    { once: true },
+                  );
+                }
                 if (!element || persistenceAdoption.complete) return;
                 persistenceAdoption.complete = true;
                 const storedTheme = readStoredTheme(storageKey);
@@ -181,6 +206,7 @@ function createThemeCoordinator() {
       sequence: number;
       theme: ThemeName;
       signal: AbortSignal;
+      onThemeChange: (themeName: ThemeName) => void;
     }
   >();
   let nextSequence = 0;
@@ -234,13 +260,20 @@ function createThemeCoordinator() {
       }
       schedule();
     },
-    register(id: symbol, depth: number, themeName: ThemeName, signal: AbortSignal) {
+    register(
+      id: symbol,
+      depth: number,
+      themeName: ThemeName,
+      signal: AbortSignal,
+      onThemeChange: (themeName: ThemeName) => void,
+    ) {
       const existing = scopes.get(id);
       scopes.set(id, {
         depth,
         sequence: existing?.sequence ?? nextSequence++,
         theme: themeName,
         signal,
+        onThemeChange,
       });
       if (!existing) {
         signal.addEventListener(
@@ -259,6 +292,13 @@ function createThemeCoordinator() {
       const scope = scopes.get(id);
       if (scope) scope.theme = themeName;
       explicitOwner = id;
+      const ownerDepth = scope?.depth;
+      for (const [scopeId, registered] of scopes) {
+        if (scopeId !== id && registered.depth === ownerDepth) {
+          registered.theme = themeName;
+          registered.onThemeChange(themeName);
+        }
+      }
       syncThemeTarget(target(), themeName);
     },
   });
