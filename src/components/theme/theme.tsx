@@ -292,8 +292,9 @@ function createThemeCoordinator() {
       const scope = scopes.get(id);
       if (scope) scope.theme = themeName;
       explicitOwner = id;
+      const ownerDepth = scope?.depth;
       for (const [scopeId, registered] of scopes) {
-        if (scopeId !== id) {
+        if (scopeId !== id && registered.depth === ownerDepth) {
           registered.theme = themeName;
           registered.onThemeChange(themeName);
         }

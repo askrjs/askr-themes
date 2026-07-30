@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { CardTitle } from "../../src/components/card/card";
-import { styleDeclarationsToClass } from "../../src/components/_internal/style";
+import { serializeCssDeclarations, styleDeclarationsToClass } from "../../src/components/_internal/style";
 import {
   DEFAULT_THEME_INDEX_FILE,
   DEFAULT_THEME_STYLES_DIR,
@@ -50,7 +50,9 @@ describe("responsive, template, and CSS safety contracts", () => {
 
   it("should reject unsafe or unscoped custom-property injection given consumer style overrides when generated theme rules are serialized", () => {
     expect(styleDeclarationsToClass("--safe-token:var(--ak-color-text)")).toMatch(/^ak-style-/);
-    expect(styleDeclarationsToClass("--unsafe: red; } .pwned { color: red")).toBeUndefined();
+    const generated = serializeCssDeclarations({ "--unsafe": "red; } .pwned { color: red" });
+    expect(generated).not.toContain("}");
+    expect(styleDeclarationsToClass(generated)).toBeUndefined();
   });
 
   it("should preserve canonical token aliases given default and template entrypoints when the same component stylesheet is imported", () => {
@@ -61,7 +63,7 @@ describe("responsive, template, and CSS safety contracts", () => {
 
   it("should keep generated CSS scoped to approved selectors given component and theme sources when the package is built", () => {
     const css = readFileSync(join(DEFAULT_THEME_STYLES_DIR, "display/card.css"), "utf8");
-    expect(css).toContain(':where([data-slot="card"])');
+    expect(css).toContain(':where(.card, [data-slot="card"])');
     expect(css).not.toMatch(/(^|\n)\s*body\b/);
   });
 });
