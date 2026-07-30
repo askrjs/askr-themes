@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
@@ -36,9 +36,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Chromium
-        if: ${{ hashFiles('vitest.test.browser.config.ts', 'playwright.config.*') != '' }}
-        run: npx playwright install chromium
+      - name: Install browser engines with Linux dependencies
+        if: ${{ hashFiles('vitest.test.browser.config.ts', 'playwright.config.*') != '' && runner.os == 'Linux' }}
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Install browser engines
+        if: ${{ hashFiles('vitest.test.browser.config.ts', 'playwright.config.*') != '' && runner.os != 'Linux' }}
+        run: npx playwright install chromium firefox webkit
 
       - name: Format check
         run: npm run fmt --if-present -- --check
