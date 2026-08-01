@@ -198,6 +198,20 @@ function getDefaultThemeCoordinator(): ThemeCoordinator {
   return coordinator;
 }
 
+function removeEmptyGeneratedStyleRegistries(root: Node | null): void {
+  const ownerDocument =
+    root?.nodeType === 9
+      ? (root as Document)
+      : (root?.ownerDocument ?? (typeof document === "undefined" ? null : document));
+  if (!ownerDocument) return;
+
+  for (const registry of ownerDocument.querySelectorAll<HTMLStyleElement>(
+    "style[data-askr-style-registry]",
+  )) {
+    if (!registry.textContent?.trim()) registry.remove();
+  }
+}
+
 function createThemeCoordinator() {
   const scopes = new Map<
     symbol,
@@ -239,6 +253,7 @@ function createThemeCoordinator() {
     setTimeout(() => {
       scheduled = false;
       syncActive();
+      if (scopes.size === 0) removeEmptyGeneratedStyleRegistries(root);
     }, 0);
   };
 
