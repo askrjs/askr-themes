@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createRouteRegistry, route } from "@askrjs/askr/router";
 import { createStaticGen } from "@askrjs/askr/ssg";
-import { renderToString } from "@askrjs/askr/ssr";
+import { renderRouteRequestToString, renderToString } from "@askrjs/askr/ssr";
 import { describe, expect, it } from "vite-plus/test";
 
 import { Block, Container } from "../../src/core";
@@ -85,6 +85,42 @@ describe("generated theme styles during SSR", () => {
   it("should serialize only rules used by the current server render", () => {
     const small = renderContainer("sm", NONCE);
     const large = renderContainer("xl", SECOND_NONCE);
+
+    expect(small).toContain("--ak-max-width-base:var(--ak-container-1)");
+    expect(small).not.toContain("--ak-max-width-base:var(--ak-container-4)");
+    expect(small).toContain(`nonce="${NONCE}"`);
+    expect(small).not.toContain(SECOND_NONCE);
+    expect(large).toContain("--ak-max-width-base:var(--ak-container-4)");
+    expect(large).not.toContain("--ak-max-width-base:var(--ak-container-1)");
+    expect(large).toContain(`nonce="${SECOND_NONCE}"`);
+    expect(large).not.toContain(NONCE);
+  });
+
+  it("should isolate generated style registries across concurrent SSR requests", async () => {
+    const registry = createRouteRegistry(() => {
+      route("/small", () => Container({ size: "sm", children: "small" }));
+      route("/large", () => Container({ size: "xl", children: "large" }));
+    });
+    const [smallResult, largeResult] = await Promise.all([
+      renderRouteRequestToString({ url: "/small", registry, cspNonce: NONCE }),
+      renderRouteRequestToString({ url: "/large", registry, cspNonce: SECOND_NONCE }),
+    ]);
+
+    expect(smallResult.kind).toBe("render");
+    expect(largeResult.kind).toBe("render");
+    if (smallResult.kind !== "render" || largeResult.kind !== "render") return;
+
+    const renderDocument = withThemeStyles(
+      ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,
+    );
+    const small = renderDocument({
+      appHtml: smallResult.html,
+      context: { cspNonce: NONCE, styles: smallResult.styles },
+    });
+    const large = renderDocument({
+      appHtml: largeResult.html,
+      context: { cspNonce: SECOND_NONCE, styles: largeResult.styles },
+    });
 
     expect(small).toContain("--ak-max-width-base:var(--ak-container-1)");
     expect(small).not.toContain("--ak-max-width-base:var(--ak-container-4)");

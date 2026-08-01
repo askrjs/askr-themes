@@ -6,13 +6,25 @@ import { CardTitle } from "../../src/components/card/card";
 import {
   serializeCssDeclarations,
   styleDeclarationsToClass,
+  styleRulesForHtml,
 } from "../../src/components/_internal/style";
+import { CAT_THEME_NAMES } from "../../src/components/theme/theme";
 import {
   DEFAULT_THEME_INDEX_FILE,
   DEFAULT_THEME_STYLES_DIR,
+  DEFAULT_THEME_TOKENS_FILE,
+  SRC_DIR,
   TEMPLATE_THEME_INDEX_FILE,
   TEMPLATE_THEME_STYLES_DIR,
+  TEMPLATE_THEME_TOKENS_FILE,
 } from "./test-paths";
+
+function tokenNames(css: string): string[] {
+  return [...css.matchAll(/(--ak-[a-z0-9-]+)\s*:/g)]
+    .map((match) => match[1]!)
+    .filter((token, index, tokens) => tokens.indexOf(token) === index)
+    .sort();
+}
 
 describe("catalog and composition contracts", () => {
   it("should render correct heading levels given card title options when semantic levels vary", () => {
@@ -52,13 +64,35 @@ describe("responsive, template, and CSS safety contracts", () => {
             : [],
       );
     expect(files(DEFAULT_THEME_STYLES_DIR).sort()).toEqual(files(TEMPLATE_THEME_STYLES_DIR).sort());
+    expect(tokenNames(readFileSync(TEMPLATE_THEME_TOKENS_FILE, "utf8"))).toEqual(
+      tokenNames(readFileSync(DEFAULT_THEME_TOKENS_FILE, "utf8")),
+    );
+
+    const presetDirectory = join(SRC_DIR, "themes", "presets");
+    const canonicalPresetTokens = tokenNames(
+      readFileSync(join(presetDirectory, `${CAT_THEME_NAMES[0]}.css`), "utf8"),
+    );
+    for (const preset of CAT_THEME_NAMES) {
+      const css = readFileSync(join(presetDirectory, `${preset}.css`), "utf8");
+      const defined = new Set(tokenNames(css));
+      expect(css, preset).toContain(`[data-theme="${preset}"]`);
+      expect(
+        canonicalPresetTokens.filter((token) => !defined.has(token)),
+        `${preset} must preserve the canonical preset token surface`,
+      ).toEqual([]);
+    }
   });
 
   it("should reject unsafe or unscoped custom-property injection given consumer style overrides when generated theme rules are serialized", () => {
     expect(styleDeclarationsToClass("--safe-token:var(--ak-color-text)")).toMatch(/^ak-style-/);
-    const generated = serializeCssDeclarations({ "--unsafe": "red; } .pwned { color: red" });
-    expect(generated).not.toContain("}");
-    expect(styleDeclarationsToClass(generated)).toBeUndefined();
+    expect(
+      serializeCssDeclarations({
+        "--safe-token": "var(--ak-color-text)",
+        "--unsafe}body": "red",
+        "--unsafe-value": "red; } .pwned { color: red",
+        background: 'url("javascript:alert(1)")',
+      }),
+    ).toBe("--safe-token:var(--ak-color-text)");
   });
 
   it("should preserve canonical token aliases given default and template entrypoints when the same component stylesheet is imported", () => {
@@ -71,5 +105,16 @@ describe("responsive, template, and CSS safety contracts", () => {
     const css = readFileSync(join(DEFAULT_THEME_STYLES_DIR, "display/card.css"), "utf8");
     expect(css).toContain(':where(.card, [data-slot="card"])');
     expect(css).not.toMatch(/(^|\n)\s*body\b/);
+
+    const className = styleDeclarationsToClass(
+      "--consumer-surface:var(--ak-color-surface);color:var(--ak-color-text)",
+    )!;
+    expect(styleRulesForHtml(`<article class="${className}"></article>`)).toEqual([
+      expect.stringMatching(
+        new RegExp(
+          `^\\.${className}\\{--consumer-surface:var\\(--ak-color-surface\\);color:var\\(--ak-color-text\\)\\}$`,
+        ),
+      ),
+    ]);
   });
 });

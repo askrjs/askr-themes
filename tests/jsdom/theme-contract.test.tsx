@@ -192,6 +192,19 @@ describe("theme contracts", () => {
 
   it("should resolve system theme after hydration and follow media changes", async () => {
     const originalMatchMedia = window.matchMedia;
+    const originalLocalStorage = window.localStorage;
+    replaceLocalStorage({
+      getItem() {
+        throw new Error("blocked read");
+      },
+      setItem() {
+        throw new Error("blocked write");
+      },
+      removeItem() {
+        throw new Error("blocked remove");
+      },
+    });
+    restoreLocalStorage = () => replaceLocalStorage(originalLocalStorage);
     let matches = true;
     const listeners = new Set<(event: MediaQueryListEvent) => void>();
     const media = {
@@ -316,6 +329,46 @@ describe("theme contracts", () => {
       cleanupApp(second);
       first.remove();
       second.remove();
+    }
+  });
+
+  it("should remove empty generated-style registries after the last themed root unmounts", async () => {
+    const first = document.createElement("div");
+    const second = document.createElement("div");
+    const styleRegistry = document.createElement("style");
+    styleRegistry.setAttribute("data-askr-style-registry", "true");
+    const populatedRegistry = document.createElement("style");
+    populatedRegistry.setAttribute("data-askr-style-registry", "true");
+    populatedRegistry.textContent = ".ak-style-retained{color:green}";
+    document.head.append(styleRegistry, populatedRegistry);
+    document.body.append(first, second);
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-registry-cleanup">
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    try {
+      await createSPA({ root: first, registry: createTestRegistry() });
+      await createSPA({ root: second, registry: createTestRegistry() });
+      await settle();
+
+      cleanupApp(first);
+      await settle();
+      expect(styleRegistry.isConnected).toBe(true);
+
+      cleanupApp(second);
+      await settle();
+      expect(styleRegistry.isConnected).toBe(false);
+      expect(populatedRegistry.isConnected).toBe(true);
+    } finally {
+      cleanupApp(first);
+      cleanupApp(second);
+      first.remove();
+      second.remove();
+      styleRegistry.remove();
+      populatedRegistry.remove();
     }
   });
 

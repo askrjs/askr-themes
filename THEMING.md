@@ -755,7 +755,7 @@ These are recommended implementation defaults for component authors:
   --ak-layout-content-max-width: 75rem;
 
   /* stacking */
-  --ak-z-dropdown: 1000;
+  --ak-z-dropdown: 1500;
   --ak-z-sticky: 1100;
   --ak-z-fixed: 1200;
   --ak-z-modal-backdrop: 1300;
