@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
@@ -9,6 +9,15 @@ const README = join(ROOT_DIR, "README.md");
 const THEMES_DOC = join(DOCS_DIR, "askr-themes.md");
 const THEMING_DOC = join(DOCS_DIR, "theming.md");
 const ARCHITECTURE_DOC = join(DOCS_DIR, "architecture.md");
+const ACKNOWLEDGEMENTS = join(DOCS_DIR, "acknowledgements.md");
+
+function sourceFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return sourceFiles(path);
+    return /\.(?:css|ts|tsx)$/u.test(entry.name) ? [path] : [];
+  });
+}
 
 describe("docs surface", () => {
   it("should documents the component catalog package surface", () => {
@@ -54,5 +63,23 @@ describe("docs surface", () => {
     expect(THEME_COMPONENT_SUBPATHS).not.toContain("chart");
     expect(THEME_COMPONENT_SUBPATHS).not.toContain("charts");
     expect(EXCLUDED_CHART_COMPONENT).toBe("Chart");
+  });
+
+  it("should keeps external project attribution in acknowledgements, not source or tests", () => {
+    const acknowledgements = readFileSync(ACKNOWLEDGEMENTS, "utf-8");
+    const externalProjectNames = [...acknowledgements.matchAll(/^- \[([^\]]+)\]/gmu)].map(
+      ([, name]) => name,
+    );
+
+    expect(externalProjectNames.length).toBeGreaterThan(0);
+    for (const file of [
+      ...sourceFiles(join(ROOT_DIR, "src")),
+      ...sourceFiles(join(ROOT_DIR, "tests")),
+    ]) {
+      const source = readFileSync(file, "utf-8").toLowerCase();
+      for (const projectName of externalProjectNames) {
+        expect(source, file).not.toContain(projectName.toLowerCase());
+      }
+    }
   });
 });

@@ -46,6 +46,9 @@ The foundations entry contains tokens and base/reset styles. Component CSS
 entries contain only that component's styles. `@askrjs/themes/default` remains
 the batteries-included theme.
 
+See [Acknowledgements](./docs/acknowledgements.md) for the open-source projects
+that inspired parts of the design philosophy.
+
 Then set `data-theme` to `tabby`, `ginger`, `tuxedo`, `calico`, or `torty`.
 For picker/toggle composition, import `CAT_THEME_OPTIONS` and `CAT_THEME_NAMES`
 from `@askrjs/themes/theme`.

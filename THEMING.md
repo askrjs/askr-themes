@@ -190,7 +190,7 @@ This contract is intentionally semantic, not component-specific.
 The token system must:
 
 - support both light and dark themes
-- theme headless UI primitives consistently
+- theme behavior-first UI primitives consistently
 - optimize for admin and internal tools by default
 - avoid hardcoded component styling
 - provide enough semantic coverage for real apps
