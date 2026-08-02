@@ -83,7 +83,7 @@ export function withThemeStyles<TArgs extends DocumentRenderArgsLike>(
   return (args) => {
     const documentHtml = documentRenderer(args);
     const registeredStyles = args.context.styles;
-    const generatedClasses = generatedStyleClasses(args.appHtml);
+    const generatedClasses = generatedStyleClasses(documentHtml);
     if (registeredStyles === undefined) {
       if (generatedClasses.size > 0) {
         throw new Error(
