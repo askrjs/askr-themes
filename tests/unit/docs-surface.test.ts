@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
-import { SHADCN_CHART_COMPONENT, SHADCN_THEME_COMPONENT_SUBPATHS } from "../../src/parity";
+import { EXCLUDED_CHART_COMPONENT, THEME_COMPONENT_SUBPATHS } from "../../src/parity";
 import { DOCS_DIR, PACKAGE_JSON, ROOT_DIR } from "./test-paths";
 
 const README = join(ROOT_DIR, "README.md");
@@ -45,14 +45,14 @@ describe("docs surface", () => {
     expect(docs).not.toContain("@askrjs/themes/overlays");
   });
 
-  it("should documents non-chart shadcn parity without moving charts into themes", () => {
+  it("should documents catalog coverage without moving charts into themes", () => {
     const readme = readFileSync(README, "utf-8");
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
 
-    expect(readme).toContain("shadcn-style");
+    expect(readme).toContain("styled component catalog");
     expect(themingDoc).toMatch(/Chart components stay\s+in `@askrjs\/charts`/);
-    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("chart");
-    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("charts");
-    expect(SHADCN_CHART_COMPONENT).toBe("Chart");
+    expect(THEME_COMPONENT_SUBPATHS).not.toContain("chart");
+    expect(THEME_COMPONENT_SUBPATHS).not.toContain("charts");
+    expect(EXCLUDED_CHART_COMPONENT).toBe("Chart");
   });
 });

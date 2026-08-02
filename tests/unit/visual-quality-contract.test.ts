@@ -104,7 +104,7 @@ describe("visual quality contract", () => {
     expect(rootTheming).toContain("templates/theme/styles");
   });
 
-  it("should keep shared primitives visually aligned with shadcn generated defaults", () => {
+  it("should keep shared primitives visually aligned with the default theme baseline", () => {
     expect(buttonCss).toContain("--_button-height: var(--ak-density-control-height-md);");
     expect(buttonCss).toContain("background: var(--ak-color-primary);");
     expect(buttonCss).toContain("font-weight: var(--ak-font-weight-medium);");

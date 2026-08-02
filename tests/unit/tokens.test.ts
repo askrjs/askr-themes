@@ -567,9 +567,9 @@ describe("token completeness", () => {
     expect(aliasReferences).toEqual([]);
   });
 
-  it("should keep shadcn-compatible semantic tokens behind the ak namespace", () => {
+  it("should keep theme semantic tokens behind the ak namespace", () => {
     const tokensCss = readFileSync(TOKENS_FILE, "utf-8");
-    const forbiddenShadcnAliases = [
+    const forbiddenUnnamespacedAliases = [
       "--background",
       "--foreground",
       "--card",
@@ -590,7 +590,7 @@ describe("token completeness", () => {
       "--ring",
     ];
 
-    for (const token of forbiddenShadcnAliases) {
+    for (const token of forbiddenUnnamespacedAliases) {
       expect(tokensCss).not.toContain(`${token}:`);
     }
 
