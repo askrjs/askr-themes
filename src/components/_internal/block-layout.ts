@@ -200,7 +200,7 @@ function resolveTokenValue(
   return tokens[trimmed] ?? trimmed;
 }
 
-function resolveSpaceValue(value: string | number): string | number {
+export function resolveSpaceValue(value: string | number): string | number {
   return resolveTokenValue(value, SPACE_TOKEN_MAP);
 }
 
@@ -243,7 +243,7 @@ function resolveShadowValue(value: BlockShadow): string | undefined {
   return String(resolveTokenValue(value, SHADOW_TOKEN_MAP));
 }
 
-function setResponsiveVar<T>(
+export function setResponsiveVar<T>(
   styles: Record<string, string | number>,
   property: string,
   value: ResponsiveValue<T> | undefined,

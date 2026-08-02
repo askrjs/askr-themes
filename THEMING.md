@@ -29,6 +29,10 @@ Token override:
 }
 ```
 
+The shipped light and dark token sets are contrast-tested. Consumer token
+overrides are ordinary CSS and cannot be validated by the runtime, so recheck
+WCAG contrast for every overridden foreground/background pair.
+
 Style override:
 
 ```css
@@ -132,6 +136,9 @@ wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
 be styled consistently across themes. If you use icon children, the direct child
 icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
+`ThemeName` accepts application-defined strings intentionally. Register custom
+names in the scope's theme options and provide a matching `[data-theme="..."]`
+token block; misspelled names otherwise remain valid custom identifiers.
 The common wrapper components also emit familiar alias classes such as
 `alert`, `btn-group`, `btn-close`, `input-group`, `tabs`, and `pills` so
 app-level CSS can stay close to familiar HTML authoring without

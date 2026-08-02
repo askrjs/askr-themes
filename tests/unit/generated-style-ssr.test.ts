@@ -35,6 +35,25 @@ function renderContainer(size: "sm" | "xl" = "xl", cspNonce = NONCE): string {
 }
 
 describe("generated theme styles during SSR", () => {
+  it("should reject generated classes without request-local style registrations", () => {
+    const renderDocument = withThemeStyles(
+      ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,
+    );
+
+    expect(() =>
+      renderDocument({
+        appHtml: '<div class="ak-style-missing">content</div>',
+        context: {},
+      }),
+    ).toThrow(/request-local.*style registrations/i);
+    expect(() =>
+      renderDocument({
+        appHtml: '<div class="ak-style-missing">content</div>',
+        context: { styles: [] },
+      }),
+    ).toThrow(/missing request-local.*ak-style-missing/i);
+  });
+
   it("should use request-local style registrations when the renderer provides them", () => {
     const html = withThemeStyles(
       ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,

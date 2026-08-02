@@ -6,7 +6,6 @@ import { CardTitle } from "../../src/components/card/card";
 import {
   serializeCssDeclarations,
   styleDeclarationsToClass,
-  styleRulesForHtml,
 } from "../../src/components/_internal/style";
 import { CAT_THEME_NAMES } from "../../src/components/theme/theme";
 import {
@@ -106,15 +105,10 @@ describe("responsive, template, and CSS safety contracts", () => {
     expect(css).toContain(':where(.card, [data-slot="card"])');
     expect(css).not.toMatch(/(^|\n)\s*body\b/);
 
-    const className = styleDeclarationsToClass(
-      "--consumer-surface:var(--ak-color-surface);color:var(--ak-color-text)",
-    )!;
-    expect(styleRulesForHtml(`<article class="${className}"></article>`)).toEqual([
-      expect.stringMatching(
-        new RegExp(
-          `^\\.${className}\\{--consumer-surface:var\\(--ak-color-surface\\);color:var\\(--ak-color-text\\)\\}$`,
-        ),
+    expect(
+      styleDeclarationsToClass(
+        "--consumer-surface:var(--ak-color-surface);color:var(--ak-color-text)",
       ),
-    ]);
+    ).toMatch(/^ak-style-/);
   });
 });

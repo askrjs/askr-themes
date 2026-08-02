@@ -7,6 +7,16 @@ import { fileURLToPath } from "node:url";
 const repositoryRoot = resolve(fileURLToPath(new URL(".", import.meta.url)), "..");
 const consumerRoot = mkdtempSync(join(tmpdir(), "askr-themes-consumer-"));
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
+const sourcePackage = JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8"));
+const sourceLock = JSON.parse(readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"));
+
+function lockedVersion(packageName) {
+  const version = sourceLock.packages?.[`node_modules/${packageName}`]?.version;
+  if (typeof version !== "string") {
+    throw new Error(`Missing installed version for ${packageName} in package-lock.json.`);
+  }
+  return version;
+}
 
 try {
   const packResult = JSON.parse(
@@ -25,8 +35,8 @@ try {
       private: true,
       type: "module",
       dependencies: {
-        "@askrjs/askr": "0.0.64",
-        "@askrjs/ui": "0.0.13",
+        "@askrjs/askr": lockedVersion("@askrjs/askr"),
+        "@askrjs/ui": lockedVersion("@askrjs/ui"),
       },
     }),
   );
@@ -94,7 +104,6 @@ try {
   const installedPackage = JSON.parse(
     readFileSync(join(consumerRoot, "node_modules/@askrjs/themes/package.json"), "utf8"),
   );
-  const sourcePackage = JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8"));
   if (installedPackage.version !== sourcePackage.version) {
     throw new Error(`Installed unexpected themes version ${installedPackage.version}.`);
   }

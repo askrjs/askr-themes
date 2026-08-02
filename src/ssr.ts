@@ -1,6 +1,7 @@
-import { styleRulesForHtml } from "./components/_internal/style";
-
 const STYLE_REGISTRY_ATTR = "data-askr-style-registry";
+const STYLE_CLASS_PREFIX = "ak-style-";
+const CLASS_ATTRIBUTE_PATTERN = /\sclass=(?:"([^"]*)"|'([^']*)')/g;
+const MAX_STYLE_RULES = 512;
 
 type DocumentRenderArgsLike = {
   appHtml: string;
@@ -20,6 +21,16 @@ function escapeHtmlAttribute(value: string): string {
 
 function escapeStyleRawText(value: string): string {
   return value.replace(/<\/style/gi, "<\\/style");
+}
+
+function generatedStyleClasses(html: string): Set<string> {
+  const classes = new Set<string>();
+  for (const attribute of html.matchAll(CLASS_ATTRIBUTE_PATTERN)) {
+    for (const className of (attribute[1] ?? attribute[2] ?? "").split(/\s+/)) {
+      if (className.startsWith(STYLE_CLASS_PREFIX)) classes.add(className);
+    }
+  }
+  return classes;
 }
 
 function findHeadEnd(html: string): number {
@@ -72,24 +83,38 @@ export function withThemeStyles<TArgs extends DocumentRenderArgsLike>(
   return (args) => {
     const documentHtml = documentRenderer(args);
     const registeredStyles = args.context.styles;
-    const rules = registeredStyles
-      ? (() => {
-          const styles = new Map<string, string>();
-          for (const style of registeredStyles) {
-            if (!style.id || !style.cssText) {
-              throw new TypeError("Invalid SSR theme style registration.");
-            }
-            const existing = styles.get(style.id);
-            if (existing !== undefined && existing !== style.cssText) {
-              throw new RangeError(
-                `SSR style registration collision for ${JSON.stringify(style.id)}.`,
-              );
-            }
-            styles.set(style.id, style.cssText);
-          }
-          return Array.from(styles.values());
-        })()
-      : styleRulesForHtml(args.appHtml);
+    const generatedClasses = generatedStyleClasses(args.appHtml);
+    if (registeredStyles === undefined) {
+      if (generatedClasses.size > 0) {
+        throw new Error(
+          "Generated theme classes require request-local SSR style registrations from @askrjs/askr.",
+        );
+      }
+      return documentHtml;
+    }
+
+    const styles = new Map<string, string>();
+    for (const style of registeredStyles) {
+      if (!style.id || !style.cssText) {
+        throw new TypeError("Invalid SSR theme style registration.");
+      }
+      const existing = styles.get(style.id);
+      if (existing !== undefined && existing !== style.cssText) {
+        throw new RangeError(`SSR style registration collision for ${JSON.stringify(style.id)}.`);
+      }
+      styles.set(style.id, style.cssText);
+      if (styles.size > MAX_STYLE_RULES) {
+        throw new RangeError("Theme style registry capacity exceeded.");
+      }
+    }
+    for (const className of generatedClasses) {
+      if (!styles.has(className)) {
+        throw new Error(
+          `Missing request-local SSR style registration for ${JSON.stringify(className)}.`,
+        );
+      }
+    }
+    const rules = Array.from(styles.values());
     if (rules.length === 0) return documentHtml;
 
     const nonce =
