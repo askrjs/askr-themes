@@ -123,7 +123,7 @@ Package boundaries:
   presets, and default styling.
 
 Use `@askrjs/themes/components` for the aggregate styled catalog, or the
-component subpaths such as `@askrjs/themes/button`,
+tree-shakeable component subpaths such as `@askrjs/themes/button`,
 `@askrjs/themes/card`, and `@askrjs/themes/dialog`. The aggregate catalog
 contains styled components such as Button, ButtonGroup, Close, InputGroup,
 Block, Container, Header, Main, Sidebar, Navbar, NavBrand, NavDropdown, Alert,

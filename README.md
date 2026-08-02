@@ -31,6 +31,21 @@ curated preset family:
 @import "@askrjs/themes/presets";
 ```
 
+For a small page that only uses individual controls, import their JavaScript
+and CSS independently instead of the full default theme:
+
+```tsx
+import { Input } from "@askrjs/themes/input";
+import { Label } from "@askrjs/themes/label";
+import "@askrjs/themes/default/foundations.css";
+import "@askrjs/themes/default/input.css";
+import "@askrjs/themes/default/label.css";
+```
+
+The foundations entry contains tokens and base/reset styles. Component CSS
+entries contain only that component's styles. `@askrjs/themes/default` remains
+the batteries-included theme.
+
 Then set `data-theme` to `tabby`, `ginger`, `tuxedo`, `calico`, or `torty`.
 For picker/toggle composition, import `CAT_THEME_OPTIONS` and `CAT_THEME_NAMES`
 from `@askrjs/themes/theme`.

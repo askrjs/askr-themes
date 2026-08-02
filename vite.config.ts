@@ -1,6 +1,12 @@
+import { readdirSync } from "node:fs";
 import { defineConfig } from "vite-plus";
 
 const externalPackagePattern = /^@askrjs\/(?:askr|ui)(?:\/.*)?$/;
+const componentEntries = Object.fromEntries(
+  readdirSync(new URL("./src/entries", import.meta.url), { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".ts"))
+    .map((entry) => [`entries/${entry.name.slice(0, -3)}`, `src/entries/${entry.name}`]),
+);
 
 export default defineConfig({
   esbuild: {
@@ -12,6 +18,7 @@ export default defineConfig({
       components: "src/components.ts",
       core: "src/core.ts",
       controls: "src/controls.ts",
+      ...componentEntries,
       navs: "src/navs.ts",
       overlays: "src/overlays.ts",
       ssr: "src/ssr.ts",
@@ -37,6 +44,7 @@ export default defineConfig({
         components: "src/components.ts",
         core: "src/core.ts",
         controls: "src/controls.ts",
+        ...componentEntries,
         navs: "src/navs.ts",
         overlays: "src/overlays.ts",
         ssr: "src/ssr.ts",
