@@ -6,9 +6,9 @@ import { describe, expect, it } from "vite-plus/test";
 
 import * as components from "../../src/components";
 import {
-  SHADCN_CHART_COMPONENT,
-  SHADCN_THEME_COMPONENT_SUBPATHS,
-  SHADCN_THEME_COMPONENTS,
+  EXCLUDED_CHART_COMPONENT,
+  THEME_COMPONENT_SUBPATHS,
+  THEME_COMPONENTS,
 } from "../../src/parity";
 import { ThemePicker, ThemeScope, ThemeToggle } from "../../src/theme";
 import {
@@ -136,14 +136,14 @@ function hasModuleBinding(bindings: ReadonlySet<string>, name: string): boolean 
 }
 
 describe("package surface", () => {
-  it("should exposes the shadcn-style component catalog from the aggregate entrypoint", () => {
+  it("should exposes the styled component catalog from the aggregate entrypoint", () => {
     const namespace = components as Record<string, unknown>;
 
-    for (const component of SHADCN_THEME_COMPONENTS) {
+    for (const component of THEME_COMPONENTS) {
       expect(typeof namespace[component], component).toBe("function");
     }
 
-    expect(namespace[SHADCN_CHART_COMPONENT]).toBeUndefined();
+    expect(namespace[EXCLUDED_CHART_COMPONENT]).toBeUndefined();
     expect(typeof ThemeScope).toBe("function");
     expect(typeof ThemePicker).toBe("function");
     expect(typeof ThemeToggle).toBe("function");
@@ -196,7 +196,7 @@ describe("package surface", () => {
     expect(pkg.exports?.["./chart"]).toBeUndefined();
     expect(pkg.exports?.["./charts"]).toBeUndefined();
 
-    for (const subpath of SHADCN_THEME_COMPONENT_SUBPATHS) {
+    for (const subpath of THEME_COMPONENT_SUBPATHS) {
       expect(pkg.exports?.[`./${subpath}`], subpath).toBeUndefined();
     }
 
@@ -205,7 +205,7 @@ describe("package surface", () => {
         .filter((entry) => entry.endsWith(".ts"))
         .map((entry) => entry.slice(0, -3))
         .sort(),
-    ).toEqual([...SHADCN_THEME_COMPONENT_SUBPATHS].sort());
+    ).toEqual([...THEME_COMPONENT_SUBPATHS].sort());
 
     for (const entrypoint of REMOVED_FAMILY_EXPORTS) {
       expect(pkg.exports?.[entrypoint], entrypoint).toBeUndefined();

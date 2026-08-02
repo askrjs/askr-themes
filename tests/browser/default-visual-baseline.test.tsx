@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
-import { SHADCN_NEW_YORK_V4_COMPUTED } from "../fixtures/shadcn-new-york-v4";
+import { DEFAULT_VISUAL_BASELINE } from "../fixtures/default-visual-baseline";
 import "../../src/themes/default/index.css";
 
 function px(value: string): number {
@@ -11,13 +11,13 @@ function expectNotTransparent(value: string, label: string): void {
   expect(value, label).not.toBe("rgba(0, 0, 0, 0)");
 }
 
-describe("shadcn New York visual parity", () => {
+describe("default theme visual baseline", () => {
   afterEach(() => {
     document.documentElement.removeAttribute("data-theme");
     document.body.innerHTML = "";
   });
 
-  it("should keep shared primitive computed styles aligned with shadcn defaults", () => {
+  it("should keep shared primitive computed styles aligned with the default baseline", () => {
     document.body.innerHTML = `
       <button data-slot="button">Save</button>
       <input data-slot="input" value="workspace" />
@@ -51,27 +51,23 @@ describe("shadcn New York visual parity", () => {
     const tabsTrigger = document.querySelector('[data-slot="tabs-trigger"]') as HTMLElement;
     const tooltip = document.querySelector('[data-slot="tooltip-content"]') as HTMLElement;
 
-    expect(px(getComputedStyle(button).minHeight)).toBe(SHADCN_NEW_YORK_V4_COMPUTED.buttonHeight);
-    expect(getComputedStyle(button).fontSize).toBe(SHADCN_NEW_YORK_V4_COMPUTED.controlFontSize);
-    expect(px(getComputedStyle(input).minHeight)).toBe(SHADCN_NEW_YORK_V4_COMPUTED.inputHeight);
+    expect(px(getComputedStyle(button).minHeight)).toBe(DEFAULT_VISUAL_BASELINE.buttonHeight);
+    expect(getComputedStyle(button).fontSize).toBe(DEFAULT_VISUAL_BASELINE.controlFontSize);
+    expect(px(getComputedStyle(input).minHeight)).toBe(DEFAULT_VISUAL_BASELINE.inputHeight);
     expect(getComputedStyle(input).backgroundColor).toBe("rgba(0, 0, 0, 0)");
-    expect(px(getComputedStyle(card).borderTopLeftRadius)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.cardRadius,
-    );
+    expect(px(getComputedStyle(card).borderTopLeftRadius)).toBe(DEFAULT_VISUAL_BASELINE.cardRadius);
     expect(getComputedStyle(dialog).boxShadow).not.toBe("none");
     expect(px(getComputedStyle(dropdownItem).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.menuRowHeight,
+      DEFAULT_VISUAL_BASELINE.menuRowHeight,
     );
-    expect(px(getComputedStyle(selectItem).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.menuRowHeight,
-    );
+    expect(px(getComputedStyle(selectItem).minHeight)).toBe(DEFAULT_VISUAL_BASELINE.menuRowHeight);
     expect(px(getComputedStyle(tabsTrigger).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.tabsTriggerHeight,
+      DEFAULT_VISUAL_BASELINE.tabsTriggerHeight,
     );
     expect(getComputedStyle(tooltip).fontSize).toBe("12px");
   });
 
-  it("should deepen sheet and sidebar anatomy with shadcn-like computed styles", () => {
+  it("should deepen sheet and sidebar anatomy with default theme computed styles", () => {
     document.body.innerHTML = `
       <section data-slot="sheet-content" data-side="right">
         <header data-slot="sheet-header">
@@ -105,17 +101,17 @@ describe("shadcn New York visual parity", () => {
     const label = document.querySelector('[data-slot="sidebar-group-label"]') as HTMLElement;
 
     expect(getComputedStyle(sheet).position).toBe("fixed");
-    expect(px(getComputedStyle(sheet).width)).toBe(SHADCN_NEW_YORK_V4_COMPUTED.sheetWidth);
+    expect(px(getComputedStyle(sheet).width)).toBe(DEFAULT_VISUAL_BASELINE.sheetWidth);
     expect(getComputedStyle(scope).display).toBe("flex");
     expect(getComputedStyle(sidebar).display).toBe("flex");
     expect(px(getComputedStyle(button).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.sidebarMenuButtonHeight,
+      DEFAULT_VISUAL_BASELINE.sidebarMenuButtonHeight,
     );
     expectNotTransparent(getComputedStyle(button).backgroundColor, "active sidebar menu button");
     expect(getComputedStyle(label).fontSize).toBe("12px");
   });
 
-  it("should deepen command, calendar, and item states to shadcn-like surfaces", () => {
+  it("should deepen command, calendar, and item states to default theme surfaces", () => {
     document.body.innerHTML = `
       <div data-slot="command-dialog">
         <div data-slot="command-header">
@@ -171,22 +167,20 @@ describe("shadcn New York visual parity", () => {
     expect(getComputedStyle(command).boxShadow).not.toBe("none");
     expect(getComputedStyle(commandHeading).fontSize).toBe("12px");
     expect(px(getComputedStyle(commandSelected).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.commandRowHeight,
+      DEFAULT_VISUAL_BASELINE.commandRowHeight,
     );
     expectNotTransparent(
       getComputedStyle(commandSelected).backgroundColor,
       "selected command item",
     );
-    expect(getComputedStyle(commandDisabled).opacity).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.disabledOpacity,
-    );
+    expect(getComputedStyle(commandDisabled).opacity).toBe(DEFAULT_VISUAL_BASELINE.disabledOpacity);
     expect(px(getComputedStyle(calendarDay).minHeight)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.calendarDaySize,
+      DEFAULT_VISUAL_BASELINE.calendarDaySize,
     );
     expectNotTransparent(getComputedStyle(calendarDay).backgroundColor, "selected calendar day");
-    expect(getComputedStyle(disabledDay).opacity).toBe(SHADCN_NEW_YORK_V4_COMPUTED.disabledOpacity);
+    expect(getComputedStyle(disabledDay).opacity).toBe(DEFAULT_VISUAL_BASELINE.disabledOpacity);
     expect(px(getComputedStyle(item).paddingBlockStart)).toBe(
-      SHADCN_NEW_YORK_V4_COMPUTED.itemXsPaddingBlock,
+      DEFAULT_VISUAL_BASELINE.itemXsPaddingBlock,
     );
     expectNotTransparent(getComputedStyle(item).backgroundColor, "active item");
   });

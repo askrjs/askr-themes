@@ -149,7 +149,7 @@ by the page. All individual styles are available below
 `@askrjs/themes/default/styles/*`. `@askrjs/ui`
 owns advanced behavior details; `@askrjs/themes` owns the visual shell around
 those primitives. `Dialog` is the canonical modal surface name; `Drawer` and
-`Sheet` are dialog-backed catalog names for shadcn parity. Chart components stay
+`Sheet` are dialog-backed catalog aliases. Chart components stay
 in `@askrjs/charts`.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay

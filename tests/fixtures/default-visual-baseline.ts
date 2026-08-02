@@ -1,4 +1,4 @@
-export const SHADCN_NEW_YORK_V4_COMPUTED = {
+export const DEFAULT_VISUAL_BASELINE = {
   buttonHeight: 36,
   calendarDaySize: 32,
   cardRadius: 12,
