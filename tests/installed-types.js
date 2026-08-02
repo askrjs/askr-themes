@@ -52,6 +52,11 @@ try {
       'import "@askrjs/themes/default";',
       'import "@askrjs/themes/presets";',
       'import "@askrjs/themes/default/tokens.css";',
+      'import "@askrjs/themes/default/foundations.css";',
+      'import "@askrjs/themes/default/input.css";',
+      'import "@askrjs/themes/default/label.css";',
+      'import { Input, type InputProps } from "@askrjs/themes/input";',
+      'import { Label, type LabelProps } from "@askrjs/themes/label";',
       'import "@askrjs/themes/templates/theme/index.css";',
       'import { Block, type BlockProps, type DialogProps, type GridProps, type SidebarRailProps, type TextProps } from "@askrjs/themes/components";',
       'import { withThemeStyles } from "@askrjs/themes/ssr";',
@@ -60,7 +65,7 @@ try {
       "const grid: GridProps = { columns: 2 };",
       'const text: TextProps = { tone: "success" };',
       'const rail: SidebarRailProps = { type: "button" };',
-      "void fixture; void block; void grid; void text; void rail; void (null as DialogProps | null); void withThemeStyles;",
+      "void fixture; void block; void grid; void text; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
     ].join("\n"),
   );
   writeFileSync(

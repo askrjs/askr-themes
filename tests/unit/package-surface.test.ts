@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as ts from "typescript";
 import { describe, expect, it } from "vite-plus/test";
@@ -173,16 +173,39 @@ describe("package surface", () => {
       types: CSS_TYPE_TARGET,
       default: "./src/themes/default/tokens.css",
     });
+    expect(pkg.exports?.["./default/foundations.css"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/default/foundations.css",
+    });
+    expect(pkg.exports?.["./default/input.css"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/default/styles/forms/input.css",
+    });
+    expect(pkg.exports?.["./default/label.css"]).toEqual({
+      types: CSS_TYPE_TARGET,
+      default: "./src/themes/default/styles/forms/label.css",
+    });
     expect(pkg.exports?.["./templates/*"]).toEqual({
       types: CSS_TYPE_TARGET,
       default: "./templates/*",
+    });
+    expect(pkg.exports?.["./*"]).toEqual({
+      types: "./dist/entries/*.d.ts",
+      import: "./dist/entries/*.js",
     });
     expect(pkg.exports?.["./chart"]).toBeUndefined();
     expect(pkg.exports?.["./charts"]).toBeUndefined();
 
     for (const subpath of SHADCN_THEME_COMPONENT_SUBPATHS) {
-      expect(pkg.exports?.[`./${subpath}`], subpath).toEqual(COMPONENT_EXPORT_TARGET);
+      expect(pkg.exports?.[`./${subpath}`], subpath).toBeUndefined();
     }
+
+    expect(
+      readdirSync(join(ROOT_DIR, "src/entries"))
+        .filter((entry) => entry.endsWith(".ts"))
+        .map((entry) => entry.slice(0, -3))
+        .sort(),
+    ).toEqual([...SHADCN_THEME_COMPONENT_SUBPATHS].sort());
 
     for (const entrypoint of REMOVED_FAMILY_EXPORTS) {
       expect(pkg.exports?.[entrypoint], entrypoint).toBeUndefined();
@@ -244,6 +267,10 @@ describe("package surface", () => {
 
       const cssTarget = (target as { default?: string }).default;
       expect(typeof cssTarget).toBe("string");
+      if (entrypoint.includes("*") && cssTarget?.includes("*")) {
+        expect(existsSync(join(ROOT_DIR, cssTarget.slice(0, cssTarget.indexOf("*"))))).toBe(true);
+        continue;
+      }
       expect(
         existsSync(join(ROOT_DIR, cssTarget as string)),
         `${entrypoint} points at ${cssTarget}`,

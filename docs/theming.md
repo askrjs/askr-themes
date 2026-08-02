@@ -140,9 +140,13 @@ default theme also provides a small set of class aliases for raw HTML.
 See [Architecture](./architecture.md) for the package boundary between
 `@askrjs/askr`, `@askrjs/ui`, and `@askrjs/themes`.
 The public package surface is organized as a component catalog:
-`@askrjs/themes/components` exports the aggregate catalog, and component
-subpaths such as `@askrjs/themes/button`, `@askrjs/themes/card`, and
-`@askrjs/themes/dialog` point at the same styled catalog build. `@askrjs/ui`
+`@askrjs/themes/components` exports the batteries-included aggregate catalog,
+while component subpaths such as `@askrjs/themes/button`,
+`@askrjs/themes/card`, and `@askrjs/themes/dialog` resolve to independent,
+tree-shakeable JavaScript entries without importing theme CSS. Pair those with
+`@askrjs/themes/default/foundations.css` and only the component styles needed
+by the page. All individual styles are available below
+`@askrjs/themes/default/styles/*`. `@askrjs/ui`
 owns advanced behavior details; `@askrjs/themes` owns the visual shell around
 those primitives. `Dialog` is the canonical modal surface name; `Drawer` and
 `Sheet` are dialog-backed catalog names for shadcn parity. Chart components stay
