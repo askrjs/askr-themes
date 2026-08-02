@@ -11,6 +11,7 @@ Default theme tokens, styles, and visual components for Askr applications.
 - [Tokens](./tokens.md) - design token reference and overrides
 - [Theming](./theming.md) - CSS architecture, selector contracts, and visual QA
 - [Regression coverage](./regression-coverage.md) - permanent coverage matrix
+- [Acknowledgements](./acknowledgements.md) - gratitude for open-source inspiration
 
 ## Quick Start
 

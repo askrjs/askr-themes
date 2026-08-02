@@ -190,7 +190,7 @@ This contract is intentionally semantic, not component-specific.
 The token system must:
 
 - support both light and dark themes
-- theme headless UI primitives consistently
+- theme behavior-first UI primitives consistently
 - optimize for admin and internal tools by default
 - avoid hardcoded component styling
 - provide enough semantic coverage for real apps
@@ -220,7 +220,7 @@ This spec does not:
 5. Theme blocks should only override theme-dependent values.
 6. Layout, spacing, typography scale, icon scale, and breakpoints belong in the global root unless intentionally themed.
 7. Default visual choices should reduce end-user design decisions: one accent, subtle borders, compact density, restrained radius, and minimal decorative styling.
-8. The default theme should stay crisp and low-noise, closer to a shadcn-style baseline than a glossy decorative system.
+8. The default theme should stay crisp and low-noise, favoring a restrained product baseline over a glossy decorative system.
 
 ---
 

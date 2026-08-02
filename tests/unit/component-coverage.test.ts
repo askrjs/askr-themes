@@ -5,9 +5,9 @@ import { describe, expect, it } from "vite-plus/test";
 
 import * as components from "../../src/components";
 import {
-  SHADCN_CHART_COMPONENT,
-  SHADCN_THEME_COMPONENT_SUBPATHS,
-  SHADCN_THEME_COMPONENTS,
+  EXCLUDED_CHART_COMPONENT,
+  THEME_COMPONENT_SUBPATHS,
+  THEME_COMPONENTS,
 } from "../../src/parity";
 import { ROOT_DIR } from "./test-paths";
 
@@ -29,21 +29,21 @@ function assertFileExists(relativePath: string, message: string): void {
 }
 
 describe("component coverage matrix", () => {
-  it("should keeps every non-chart shadcn component represented in the themes catalog", () => {
+  it("should keeps every public non-chart component represented in the themes catalog", () => {
     const namespace = components as Record<string, unknown>;
 
-    for (const component of SHADCN_THEME_COMPONENTS) {
+    for (const component of THEME_COMPONENTS) {
       expect(typeof namespace[component], component).toBe("function");
     }
 
-    expect(namespace[SHADCN_CHART_COMPONENT]).toBeUndefined();
+    expect(namespace[EXCLUDED_CHART_COMPONENT]).toBeUndefined();
   });
 
-  it("should keeps every non-chart shadcn component represented by a package subpath", () => {
-    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("chart");
-    expect(SHADCN_THEME_COMPONENT_SUBPATHS).not.toContain("charts");
+  it("should keeps every public non-chart component represented by a package subpath", () => {
+    expect(THEME_COMPONENT_SUBPATHS).not.toContain("chart");
+    expect(THEME_COMPONENT_SUBPATHS).not.toContain("charts");
 
-    for (const subpath of SHADCN_THEME_COMPONENT_SUBPATHS) {
+    for (const subpath of THEME_COMPONENT_SUBPATHS) {
       expect(typeof subpath).toBe("string");
       expect(subpath.length).toBeGreaterThan(0);
     }

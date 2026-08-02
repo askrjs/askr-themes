@@ -1,4 +1,4 @@
-export const SHADCN_THEME_COMPONENTS = [
+export const THEME_COMPONENTS = [
   "Accordion",
   "Alert",
   "AlertDialog",
@@ -60,9 +60,9 @@ export const SHADCN_THEME_COMPONENTS = [
   "Typography",
 ] as const;
 
-export const SHADCN_CHART_COMPONENT = "Chart" as const;
+export const EXCLUDED_CHART_COMPONENT = "Chart" as const;
 
-export const SHADCN_THEME_COMPONENT_SUBPATHS = [
+export const THEME_COMPONENT_SUBPATHS = [
   "accordion",
   "alert",
   "alert-dialog",

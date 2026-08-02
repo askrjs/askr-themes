@@ -6,7 +6,7 @@ work together like this:
 - `@askrjs/askr` owns creation, rendering, routing, and runtime primitives.
 - `@askrjs/ui` owns behavior, focus management, keyboard interaction, and ARIA.
 - `@askrjs/themes` owns tokens, visual styling, layout composition, and the
-  shadcn-style styled component catalog.
+  styled component catalog.
 - `@askrjs/charts` owns chart components and chart-specific chrome.
 
 That boundary is intentional. It keeps behavior local to `@askrjs/ui` and keeps
