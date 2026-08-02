@@ -176,7 +176,7 @@ export function mergeCssVar(style: unknown, name: string, value: string): string
 const STYLE_REGISTRY_ATTR = "data-askr-style-registry";
 const STYLE_CLASS_PREFIX = "ak-style-";
 const MAX_STYLE_RULES = 512;
-const MAX_SSR_STYLE_CACHE = 4096;
+const MAX_COLLISION_CACHE = 4096;
 
 type StyleRule = {
   className: string;
@@ -184,7 +184,7 @@ type StyleRule = {
   rule: string;
 };
 
-const styleRulesByClass = new Map<string, StyleRule>();
+const styleCollisionCache = new Map<string, StyleRule>();
 type StyleRegistry = {
   element: HTMLStyleElement;
   ruleCount: number;
@@ -221,7 +221,7 @@ function escapeStyleRawText(value: string): string {
 
 function styleRuleFor(declarations: string): StyleRule {
   const className = styleClassName(declarations);
-  const existing = styleRulesByClass.get(className);
+  const existing = styleCollisionCache.get(className);
   if (existing) {
     if (existing.declarations !== declarations) {
       throw new RangeError("Theme style class collision detected.");
@@ -238,12 +238,12 @@ function styleRuleFor(declarations: string): StyleRule {
 }
 
 function rememberStyleRule(entry: StyleRule): void {
-  styleRulesByClass.delete(entry.className);
-  styleRulesByClass.set(entry.className, entry);
-  while (styleRulesByClass.size > MAX_SSR_STYLE_CACHE) {
-    const oldest = styleRulesByClass.keys().next().value;
+  styleCollisionCache.delete(entry.className);
+  styleCollisionCache.set(entry.className, entry);
+  while (styleCollisionCache.size > MAX_COLLISION_CACHE) {
+    const oldest = styleCollisionCache.keys().next().value;
     if (oldest === undefined) break;
-    styleRulesByClass.delete(oldest);
+    styleCollisionCache.delete(oldest);
   }
 }
 
@@ -326,22 +326,4 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   registerSSRStyle(entry);
 
   return entry.className;
-}
-
-export function styleRulesForHtml(html: string): string[] {
-  const rules = new Map<string, string>();
-  const classAttributePattern = /\sclass=(?:"([^"]*)"|'([^']*)')/g;
-
-  for (const attribute of html.matchAll(classAttributePattern)) {
-    const value = attribute[1] ?? attribute[2] ?? "";
-    for (const className of value.split(/\s+/)) {
-      const entry = styleRulesByClass.get(className);
-      if (entry) rules.set(className, entry.rule);
-      if (rules.size > MAX_STYLE_RULES) {
-        throw new RangeError("Theme style registry capacity exceeded.");
-      }
-    }
-  }
-
-  return Array.from(rules.values());
 }

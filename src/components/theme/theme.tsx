@@ -1,6 +1,6 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { defineScope, getSignal, readScope, state } from "@askrjs/askr";
-import type { JSXElement } from "@askrjs/askr/foundations/structures";
+import { cloneElement, isElement, type JSXElement } from "@askrjs/askr/foundations/structures";
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
@@ -67,7 +67,6 @@ export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
 
 const DEFAULT_STORAGE_KEY = "askr-theme";
 const STATIC_CHILDREN = Symbol.for("askr.static-children");
-const STATIC_CHILD_SLOTS_CACHE = Symbol.for("__askrStaticChildSlots");
 const documentThemeCoordinators = new WeakMap<Document, ThemeCoordinator>();
 type ThemeCoordinator = ReturnType<typeof createThemeCoordinator>;
 type InternalThemeScopeValue = ThemeScopeValue & {
@@ -477,16 +476,6 @@ function renderThemeToggleIconSlots(
   ));
 }
 
-function isJSXElement(value: unknown): value is JSXElement {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    "$$typeof" in value &&
-    "type" in value &&
-    "props" in value
-  );
-}
-
 function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
   if (Array.isArray(icon)) {
     const clonedChildren = icon.map((child) => cloneThemeToggleIcon(child));
@@ -499,7 +488,7 @@ function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
     return clonedChildren;
   }
 
-  if (!isJSXElement(icon)) return icon;
+  if (!isElement(icon)) return icon;
 
   const props = icon.props as Record<string, unknown> | undefined;
   const clonedProps = props ? { ...props } : {};
@@ -508,15 +497,11 @@ function cloneThemeToggleIcon(icon: unknown, key?: string): unknown {
     clonedProps.children = cloneThemeToggleIcon(clonedProps.children);
   }
 
-  const iconKey = (icon.key ?? key ?? null) as string | number | null;
-  const clonedIcon = {
-    ...icon,
-    key: iconKey,
-    props: clonedProps,
-  };
-
-  delete (clonedIcon as Record<symbol, unknown>)[STATIC_CHILD_SLOTS_CACHE];
-  return clonedIcon;
+  const clonedIcon = cloneElement(icon, clonedProps);
+  return {
+    ...clonedIcon,
+    key: icon.key ?? key ?? null,
+  } satisfies JSXElement;
 }
 
 function syncThemeTarget(

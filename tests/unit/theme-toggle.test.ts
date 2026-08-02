@@ -1,8 +1,18 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vite-plus/test";
 
 import { resolveThemeToggleIcon } from "../../src/components/theme/theme";
 
 describe("ThemeToggle", () => {
+  it("should not couple icon cloning to private renderer cache fields", () => {
+    const source = readFileSync(
+      new URL("../../src/components/theme/theme.tsx", import.meta.url),
+      "utf8",
+    );
+
+    expect(source).not.toContain("__askrStaticChildSlots");
+  });
+
   it("should falls back to the next theme icon when the current choice is system", () => {
     expect(
       resolveThemeToggleIcon("system", "light", {

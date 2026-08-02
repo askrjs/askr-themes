@@ -717,6 +717,7 @@ describe("theme contracts", () => {
     expect(window.localStorage.getItem("askr-theme-nested")).toBeNull();
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
+    expect(innerPicker?.isConnected).toBe(true);
 
     changePicker(innerPicker, "calico");
     await settle();
