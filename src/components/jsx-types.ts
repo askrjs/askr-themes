@@ -5,11 +5,6 @@ declare global {
     interface Element extends JSXElement {
       readonly __askrThemesJsxElementBrand?: never;
     }
-
-    interface IntrinsicElements {
-      // @ts-ignore The Askr source types already provide a compatible fallback index.
-      [element: string]: Record<string, unknown>;
-    }
   }
 }
 
