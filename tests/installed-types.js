@@ -7,18 +7,18 @@ import { fileURLToPath } from "node:url";
 const repositoryRoot = resolve(fileURLToPath(new URL(".", import.meta.url)), "..");
 const consumerRoot = mkdtempSync(join(tmpdir(), "askr-themes-consumer-"));
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
-const sourcePackage = JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8"));
-const sourceLock = JSON.parse(readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"));
-
-function lockedVersion(packageName) {
-  const version = sourceLock.packages?.[`node_modules/${packageName}`]?.version;
-  if (typeof version !== "string") {
-    throw new Error(`Missing installed version for ${packageName} in package-lock.json.`);
-  }
-  return version;
-}
 
 try {
+  const sourcePackage = JSON.parse(readFileSync(join(repositoryRoot, "package.json"), "utf8"));
+  const sourceLock = JSON.parse(readFileSync(join(repositoryRoot, "package-lock.json"), "utf8"));
+  const lockedVersion = (packageName) => {
+    const version = sourceLock.packages?.[`node_modules/${packageName}`]?.version;
+    if (typeof version !== "string") {
+      throw new Error(`Missing installed version for ${packageName} in package-lock.json.`);
+    }
+    return version;
+  };
+
   const packResult = JSON.parse(
     execFileSync(npm, ["pack", "--ignore-scripts", "--json", "--pack-destination", consumerRoot], {
       cwd: repositoryRoot,
