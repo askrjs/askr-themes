@@ -6,8 +6,15 @@
       "intent": "default design tokens and CSS theme",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/default",
-      "exports": ["tokens.css", "foundations.css", "styles/*"],
-      "constraints": ["theme tokens are CSS custom properties", "CSS imports are side-effectful"],
+      "exports": [
+        "tokens.css",
+        "foundations.css",
+        "styles/*"
+      ],
+      "constraints": [
+        "theme tokens are CSS custom properties",
+        "CSS imports are side-effectful"
+      ],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
       "docsPath": "THEMING.md"
@@ -16,8 +23,16 @@
       "intent": "component presets and layout helpers",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/components",
-      "exports": ["EmptyState", "Spinner", "Badge", "Stack", "Button"],
-      "constraints": ["presets compose headless @askrjs/ui primitives"],
+      "exports": [
+        "EmptyState",
+        "Spinner",
+        "Badge",
+        "Stack",
+        "Button"
+      ],
+      "constraints": [
+        "presets compose headless @askrjs/ui primitives"
+      ],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
       "docsPath": "THEMING.md"
@@ -26,8 +41,13 @@
       "intent": "theme runtime and SSR helpers",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/theme",
-      "exports": ["createTheme", "resolveTheme"],
-      "constraints": ["theme selection must be deterministic during SSR"],
+      "exports": [
+        "createTheme",
+        "resolveTheme"
+      ],
+      "constraints": [
+        "theme selection must be deterministic during SSR"
+      ],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
       "docsPath": "THEMING.md"
