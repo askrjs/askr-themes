@@ -22,6 +22,7 @@
     "url": "git+https://github.com/askrjs/askr-themes.git"
   },
   "files": [
+    "capabilities.json",
     "dist",
     "src",
     "templates",
@@ -86,7 +87,8 @@
       "types": "./src/css.d.ts",
       "default": "./templates/*"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./capabilities.json": "./capabilities.json"
   },
   "publishConfig": {
     "access": "public"
