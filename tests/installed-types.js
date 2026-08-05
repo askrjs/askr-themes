@@ -19,14 +19,15 @@ try {
     return version;
   };
 
-  const packResult = JSON.parse(
+  const packOutput = JSON.parse(
     execFileSync(npm, ["pack", "--ignore-scripts", "--json", "--pack-destination", consumerRoot], {
       cwd: repositoryRoot,
       encoding: "utf8",
       shell: process.platform === "win32",
     }),
   );
-  const tarball = join(consumerRoot, packResult[0].filename);
+  const packResult = Array.isArray(packOutput) ? packOutput[0] : Object.values(packOutput)[0];
+  const tarball = join(consumerRoot, packResult.filename);
 
   writeFileSync(
     join(consumerRoot, "package.json"),
