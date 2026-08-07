@@ -14,6 +14,7 @@ import {
   NavLink,
   Navbar,
 } from "../../src/core";
+import { SidebarMenuButton } from "../../src/components/sidebar";
 import { DropdownItem } from "../../src/overlays";
 
 import "../../src/themes/default/index.css";
@@ -60,6 +61,21 @@ describe("navbar browser smoke", () => {
     }
 
     resetTestRoutes();
+  });
+
+  it("should preserve explicit false ARIA state through theme controls", async () => {
+    testRoute("/docs", () => (
+      <div>
+        <SidebarMenuButton aria-expanded={false}>Database</SidebarMenuButton>
+      </div>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const controls = container?.querySelectorAll("[aria-expanded]");
+    expect(controls).toHaveLength(1);
+    expect(controls?.[0]?.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("should renders semantic navbar structure with Block layout styles", async () => {

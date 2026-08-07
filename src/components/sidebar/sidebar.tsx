@@ -3,7 +3,7 @@ import { Slot } from "@askrjs/askr/foundations";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
-import { intrinsicElement } from "../_internal/jsx";
+import { intrinsicElement, normalizeAriaProps } from "../_internal/jsx";
 import type {
   SidebarButtonProps,
   SidebarPartProps,
@@ -27,7 +27,7 @@ function sidebarPart(
   element: keyof JSX.IntrinsicElements = "div",
 ): JSX.Element {
   const { as, asChild, children, class: className, ...rest } = props;
-  const finalProps = mergeProps(rest, {
+  const finalProps = mergeProps(normalizeAriaProps(rest), {
     class: className,
     "data-slot": slot,
   });
@@ -123,7 +123,7 @@ export function SidebarMenuButton(props: SidebarButtonProps): JSX.Element {
     variant,
     ...rest
   } = props;
-  const finalProps = mergeProps(rest, {
+  const finalProps = mergeProps(normalizeAriaProps(rest), {
     class: classes(className),
     "data-active": active ? "true" : undefined,
     "data-size": size && size !== "default" ? size : undefined,
@@ -153,7 +153,7 @@ export function SidebarMenuAction(props: SidebarButtonProps): JSX.Element {
     type = "button",
     ...rest
   } = props;
-  const finalProps = mergeProps(rest, {
+  const finalProps = mergeProps(normalizeAriaProps(rest), {
     class: classes(className),
     "data-slot": "sidebar-menu-action",
     ...sidebarTooltipProps(tooltip, tooltipSide),
@@ -172,7 +172,7 @@ export function SidebarMenuBadge(props: SidebarPartProps): JSX.Element {
 
 export function SidebarRail(props: SidebarButtonProps): JSX.Element {
   const { asChild, children, class: className, type = "button", ...rest } = props;
-  const finalProps = mergeProps(rest, {
+  const finalProps = mergeProps(normalizeAriaProps(rest), {
     class: classes(className),
     "data-slot": "sidebar-rail",
   });
@@ -194,7 +194,7 @@ export function SidebarTrigger(props: SidebarButtonProps): JSX.Element {
     type = "button",
     ...rest
   } = props;
-  const finalProps = mergeProps(rest, {
+  const finalProps = mergeProps(normalizeAriaProps(rest), {
     class: classes("btn btn-ghost btn-icon", className),
     "data-slot": "sidebar-trigger",
     ...sidebarTooltipProps(tooltip, tooltipSide),

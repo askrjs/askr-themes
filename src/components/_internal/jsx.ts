@@ -3,12 +3,22 @@ import { jsx, type JSX } from "@askrjs/askr/jsx-runtime";
 
 const renderIntrinsicElement = jsx as (type: string, props: Record<string, unknown>) => JSX.Element;
 
+export function normalizeAriaProps(props: Record<string, unknown>): Record<string, unknown> {
+  const normalized = { ...props };
+  for (const key of Object.keys(normalized)) {
+    if (key.startsWith("aria-") && typeof normalized[key] === "boolean") {
+      normalized[key] = String(normalized[key]);
+    }
+  }
+  return normalized;
+}
+
 export function intrinsicElement(
   type: string,
   props: Record<string, unknown>,
   children: unknown,
 ): JSX.Element {
-  return renderIntrinsicElement(type, { ...props, children });
+  return renderIntrinsicElement(type, { ...normalizeAriaProps(props), children });
 }
 
 export function isJsxElement(value: unknown): value is JSXElement {
