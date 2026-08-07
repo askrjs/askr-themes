@@ -49,6 +49,10 @@ the batteries-included theme.
 See [Acknowledgements](./docs/acknowledgements.md) for the open-source projects
 that inspired parts of the design philosophy.
 
+For documentation search and command launchers, use the accessible
+`CommandPalette` composition from `@askrjs/themes/command`; it owns themed
+presentation while `@askrjs/ui` supplies dialog focus and dismissal behavior.
+
 Then set `data-theme` to `tabby`, `ginger`, `tuxedo`, `calico`, or `torty`.
 For picker/toggle composition, import `CAT_THEME_OPTIONS` and `CAT_THEME_NAMES`
 from `@askrjs/themes/theme`.

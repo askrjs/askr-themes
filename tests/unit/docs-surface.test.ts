@@ -46,6 +46,7 @@ describe("docs surface", () => {
     expect(docs).toContain("@askrjs/themes/button");
     expect(docs).toContain("@askrjs/themes/card");
     expect(docs).toContain("@askrjs/themes/dialog");
+    expect(docs).toContain("CommandPalette");
     expect(docs).toContain("@askrjs/charts");
     expect(docs).not.toContain("@askrjs/themes/core");
     expect(docs).not.toContain("@askrjs/themes/controls");
