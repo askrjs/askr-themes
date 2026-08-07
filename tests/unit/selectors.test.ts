@@ -469,7 +469,7 @@ describe("legacy layout utility cleanup", () => {
 });
 
 describe("tokens.css selector contract", () => {
-  it("should uses only :root and [data-theme] selectors", () => {
+  it("should use only :root and [data-theme] selectors", () => {
     const css = readFileSync(TOKENS_FILE, "utf-8");
     const selectors = extractSelectors(css);
 

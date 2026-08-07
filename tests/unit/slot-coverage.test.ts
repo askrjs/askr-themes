@@ -204,12 +204,12 @@ describe("slot coverage", () => {
   const themeSlots = extractThemeSlots();
   const themeComponentSlots = extractSourceSlots(THEME_SOURCE_COMPONENTS_DIR);
 
-  it("should finds slots in askr-ui and the default theme", () => {
+  it("should find slots in askr-ui and the default theme", () => {
     expect(uiSlots.size).toBeGreaterThan(0);
     expect(themeSlots.size).toBeGreaterThan(0);
   });
 
-  it("should covers every askr-ui slot in the default theme CSS", () => {
+  it("should cover every askr-ui slot in the default theme CSS", () => {
     const uncovered = [...uiSlots]
       .filter((slot) => !themeSlots.has(slot) && !ALLOWED_UNCOVERED_UI_SLOTS.has(slot))
       .sort();
@@ -220,7 +220,7 @@ describe("slot coverage", () => {
     ).toEqual([]);
   });
 
-  it("should does not leave stale theme-only slots", () => {
+  it("should not leave stale theme-only slots", () => {
     const themeOnly = [...themeSlots]
       .filter(
         (slot) =>

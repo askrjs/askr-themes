@@ -136,7 +136,7 @@ function hasModuleBinding(bindings: ReadonlySet<string>, name: string): boolean 
 }
 
 describe("package surface", () => {
-  it("should exposes the styled component catalog from the aggregate entrypoint", () => {
+  it("should expose the styled component catalog from the aggregate entrypoint", () => {
     const namespace = components as Record<string, unknown>;
 
     for (const component of THEME_COMPONENTS) {
@@ -149,7 +149,7 @@ describe("package surface", () => {
     expect(typeof ThemeToggle).toBe("function");
   });
 
-  it("should publishes component subpaths and keeps charts out of themes", () => {
+  it("should publish component subpaths and keep charts out of themes", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -212,7 +212,7 @@ describe("package surface", () => {
     }
   });
 
-  it("should keeps accessibility contracts out of app-facing barrels", () => {
+  it("should keep accessibility contracts out of app-facing barrels", () => {
     const barrels = [
       "src/components.ts",
       "src/theme.ts",
@@ -233,7 +233,7 @@ describe("package surface", () => {
     }
   });
 
-  it("should keeps reported catalog wrappers sourced from the built catalog artifacts", () => {
+  it("should keep reported catalog wrappers sourced from the built catalog artifacts", () => {
     ensureComponentDistArtifacts();
 
     for (const artifact of COMPONENT_DIST_ARTIFACTS) {
@@ -255,7 +255,7 @@ describe("package surface", () => {
     }
   }, 30_000);
 
-  it("should keeps default CSS package exports pointed at real files", () => {
+  it("should keep default CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -278,7 +278,7 @@ describe("package surface", () => {
     }
   });
 
-  it("should keeps preset CSS package exports pointed at real files", () => {
+  it("should keep preset CSS package exports pointed at real files", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -293,7 +293,7 @@ describe("package surface", () => {
     ).toBe(true);
   });
 
-  it("should keeps recipe layout imports out of the shipped theme CSS", () => {
+  it("should keep recipe layout imports out of the shipped theme CSS", () => {
     const defaultIndex = readFileSync(DEFAULT_INDEX, "utf-8");
     const templateIndex = readFileSync(TEMPLATE_INDEX, "utf-8");
 

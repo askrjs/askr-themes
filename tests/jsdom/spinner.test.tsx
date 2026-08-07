@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { Spinner } from "../../src/surfaces";
 
 describe("spinner wrapper", () => {
-  it("should renders deterministic spinner element trees", () => {
+  it("should render deterministic spinner element trees", () => {
     const spinnerOne = Spinner({ label: "Syncing" }) as {
       type: unknown;
       props: Record<string, unknown>;

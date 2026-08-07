@@ -30,7 +30,7 @@ describe("visual polish contracts", () => {
     document.body.innerHTML = "";
   });
 
-  it("should keeps core interactive controls on one shared density rhythm", () => {
+  it("should keep core interactive controls on one shared density rhythm", () => {
     document.body.innerHTML = `
       <button class="btn" data-slot="button">Save</button>
       <input class="input" data-slot="input" value="hello" />
@@ -53,7 +53,7 @@ describe("visual polish contracts", () => {
     }
   });
 
-  it("should keeps dropdown and select rows aligned and compact", () => {
+  it("should keep dropdown and select rows aligned and compact", () => {
     document.body.innerHTML = `
       <div data-slot="dropdown-content">
         <button data-slot="dropdown-item">Profile</button>
@@ -96,7 +96,7 @@ describe("visual polish contracts", () => {
     expect(style.textAlign).toBe("start");
   });
 
-  it("should keeps dark overlay surfaces dark, elevated, and readable", () => {
+  it("should keep dark overlay surfaces dark, elevated, and readable", () => {
     document.documentElement.setAttribute("data-theme", "dark");
     document.body.innerHTML = `
       <section data-slot="dialog-content">
@@ -128,7 +128,7 @@ describe("visual polish contracts", () => {
     }
   });
 
-  it("should protects dense surfaces from collapsed spacing and long-label overflow", () => {
+  it("should protect dense surfaces from collapsed spacing and long-label overflow", () => {
     document.body.innerHTML = `
       <article class="card" data-slot="card">
         <h3>A long card title that needs polish</h3>
@@ -176,7 +176,7 @@ describe("visual polish contracts", () => {
     }
   });
 
-  it("should gives disclosure and scroll primitives usable default polish", () => {
+  it("should give disclosure and scroll primitives usable default polish", () => {
     document.body.innerHTML = `
       <div data-slot="accordion">
         <div data-slot="accordion-item" data-state="open">
@@ -207,7 +207,7 @@ describe("visual polish contracts", () => {
     expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight);
   });
 
-  it("should gives slider, toggles, hover cards, and menubars usable default polish", () => {
+  it("should give slider, toggles, hover cards, and menubars usable default polish", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <div data-slot="slider" data-orientation="horizontal" style="--ak-slider-percentage: 60%;">
@@ -286,7 +286,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(menubarSubTrigger).textDecorationLine).toBe("none");
   });
 
-  it("should gives virtualized list and table surfaces stable default polish", () => {
+  it("should give virtualized list and table surfaces stable default polish", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <div data-slot="virtual-list" data-viewport="lg">
@@ -370,7 +370,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(wrappedText).overflowWrap).toBe("anywhere");
   });
 
-  it("should keeps supporting primitives compact, responsive, and aligned", () => {
+  it("should keep supporting primitives compact, responsive, and aligned", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <span class="avatar" data-slot="avatar">
@@ -433,7 +433,7 @@ describe("visual polish contracts", () => {
     expect(themePicker.getBoundingClientRect().height).toBeGreaterThanOrEqual(36);
   });
 
-  it("should keeps status, loading, and media primitives resilient under long content", () => {
+  it("should keep status, loading, and media primitives resilient under long content", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <span class="badge" data-slot="badge" data-variant="info">
@@ -507,7 +507,7 @@ describe("visual polish contracts", () => {
     expect(px(getComputedStyle(spinner).width)).toBe(36);
   });
 
-  it("should keeps the manual audit page overflow-free from mobile through desktop widths", async () => {
+  it("should keep the manual audit page overflow-free from mobile through desktop widths", async () => {
     for (const width of [320, 390, 768, 1024, 1440]) {
       document.body.innerHTML = "";
       const iframe = await loadAuditFrame(width);
@@ -531,7 +531,7 @@ describe("visual polish contracts", () => {
     }
   }, 60_000);
 
-  it("should keeps constrained desktop navbar brand and actions visible", async () => {
+  it("should keep constrained desktop navbar brand and actions visible", async () => {
     document.body.innerHTML = "";
     const iframe = await loadAuditFrame(1024);
     const doc = iframe.contentDocument!;
@@ -554,7 +554,7 @@ describe("visual polish contracts", () => {
     expect(action.getBoundingClientRect().width).toBeGreaterThanOrEqual(36);
   });
 
-  it("should keeps manual audit navbar collapsed and readable on mobile", async () => {
+  it("should keep manual audit navbar collapsed and readable on mobile", async () => {
     document.body.innerHTML = "";
     const iframe = await loadAuditFrame(320);
     const doc = iframe.contentDocument!;
@@ -575,7 +575,7 @@ describe("visual polish contracts", () => {
     expect(content.scrollWidth).toBeLessThanOrEqual(navbar.clientWidth);
   });
 
-  it("should keeps table density readable inside the mobile audit width", async () => {
+  it("should keep table density readable inside the mobile audit width", async () => {
     document.body.innerHTML = "";
     const iframe = await loadAuditFrame(320);
     const doc = iframe.contentDocument!;
@@ -593,7 +593,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(headerCell).letterSpacing).toBe("normal");
   });
 
-  it("should keeps oversized block presets inside narrow containers", () => {
+  it("should keep oversized block presets inside narrow containers", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <div data-slot="block">
@@ -610,7 +610,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(block).gridTemplateColumns).not.toContain("480px");
   });
 
-  it("should keeps mobile overlays and horizontal groups within a 320px surface", () => {
+  it("should keep mobile overlays and horizontal groups within a 320px surface", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <section data-slot="dialog-content">
@@ -666,7 +666,7 @@ describe("visual polish contracts", () => {
     expect(px(getComputedStyle(popoverContent).width)).toBeGreaterThan(220);
   });
 
-  it("should keeps overlay motion states stable and non-interactive while closing", () => {
+  it("should keep overlay motion states stable and non-interactive while closing", () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <div data-slot="dialog-overlay" data-state="closed"></div>
@@ -719,7 +719,7 @@ describe("visual polish contracts", () => {
     ).toBe("anywhere");
   });
 
-  it("should keeps semantic navigation slots compact and contained", () => {
+  it("should keep semantic navigation slots compact and contained", () => {
     document.body.innerHTML = `
       <nav data-slot="navbar">
         <div data-slot="nav-group">
@@ -754,7 +754,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(active).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
   });
 
-  it("should keeps page header and toolbar action rows wrap-safe", () => {
+  it("should keep page header and toolbar action rows wrap-safe", () => {
     document.body.innerHTML = `
       <header data-slot="page-header">
         <div data-slot="page-header-copy">

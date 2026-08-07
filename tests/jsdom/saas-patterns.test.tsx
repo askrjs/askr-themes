@@ -5,7 +5,7 @@ import { Block, EmptyState } from "../../src/core";
 import { Card } from "../../src/surfaces";
 
 describe("product SaaS composition patterns", () => {
-  it("should builds dashboard content while leaving app layout in userland", () => {
+  it("should build dashboard content while leaving app layout in userland", () => {
     const page = (
       <div class="ops-app-layout">
         <aside class="ops-app-layout-nav">
@@ -46,7 +46,7 @@ describe("product SaaS composition patterns", () => {
     expect(page).toBeTruthy();
   });
 
-  it("should builds settings and empty states from reusable pattern primitives", () => {
+  it("should build settings and empty states from reusable pattern primitives", () => {
     const settings = Block({
       gap: "xl",
       children: [

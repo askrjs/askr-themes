@@ -37,7 +37,7 @@ describe("theme route persistence in the browser", () => {
     document.documentElement.removeAttribute("data-theme-choice");
   });
 
-  it("should preserves theme state across navigation and repeated toggles", async () => {
+  it("should preserve theme state across navigation and repeated toggles", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
       <ThemeScope defaultTheme="light">
         <header>
@@ -110,7 +110,7 @@ describe("theme route persistence in the browser", () => {
     expect(window.localStorage.getItem("askr-theme")).toBe("light");
   });
 
-  it("should preserves cat preset theme state across navigation and repeated toggles", async () => {
+  it("should preserve cat preset theme state across navigation and repeated toggles", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
       <ThemeScope defaultTheme="tabby" themes={CAT_THEME_OPTIONS}>
         <header>

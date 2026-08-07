@@ -38,7 +38,7 @@ describe("sidebar browser smoke", () => {
     resetTestRoutes();
   });
 
-  it("should renders sidebar as a semantic Block preset beside main content", async () => {
+  it("should render sidebar as a semantic Block preset beside main content", async () => {
     testRoute("/docs", () => (
       <Block minHeight="screen" direction="row">
         <Sidebar aria-label="Workspace navigation">

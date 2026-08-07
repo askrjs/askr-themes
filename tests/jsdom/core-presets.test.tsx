@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("semantic core presets", () => {
-  it("should renders Header as a thin sticky Block preset", () => {
+  it("should render Header as a thin sticky Block preset", () => {
     const header = asElement(Header({ sticky: true, class: "header-custom", children: "nav" }));
 
     expect(header.type).toBe(Block);
@@ -25,7 +25,7 @@ describe("semantic core presets", () => {
     expect(header.props.class).toBe("header-custom");
   });
 
-  it("should renders Main and Sidebar with stable semantic slots", () => {
+  it("should render Main and Sidebar with stable semantic slots", () => {
     const sidebar = asElement(Sidebar({ children: "nav", class: "sidebar-custom" }));
     const main = asElement(Main({ children: "main", class: "main-custom" }));
 

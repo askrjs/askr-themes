@@ -75,7 +75,7 @@ describe("responsive theme contract", () => {
   const normalizedDefaultLayout = defaultLayout.replace(/'/g, '"');
   const normalizedDefaultNavbar = defaultNavbar.replace(/'/g, '"');
 
-  it("should keeps the default theme Block layout contract in place", () => {
+  it("should keep the default theme Block layout contract in place", () => {
     for (const forbiddenImport of FORBIDDEN_LEGACY_IMPORTS) {
       expect(defaultIndex).not.toContain(forbiddenImport);
     }
@@ -89,7 +89,7 @@ describe("responsive theme contract", () => {
     }
   });
 
-  it("should keeps the generated theme template aligned with the default layout contract", () => {
+  it("should keep the generated theme template aligned with the default layout contract", () => {
     for (const forbiddenImport of FORBIDDEN_LEGACY_IMPORTS) {
       expect(templateIndex).not.toContain(forbiddenImport);
     }
@@ -101,7 +101,7 @@ describe("responsive theme contract", () => {
     expect(templateLayout).toBe(defaultLayout);
   });
 
-  it("should keeps the Navbar responsive contract in the default theme", () => {
+  it("should keep the Navbar responsive contract in the default theme", () => {
     for (const snippet of REQUIRED_NAVBAR_SNIPPETS) {
       expect(normalizedDefaultNavbar).toContain(snippet);
     }
@@ -116,11 +116,11 @@ describe("responsive theme contract", () => {
     expect(xlBlock).toMatch(/padding-block:\s*var\(\s*--ak-py-xl/);
   });
 
-  it("should keeps the generated theme template aligned with the default Navbar contract", () => {
+  it("should keep the generated theme template aligned with the default Navbar contract", () => {
     expect(templateNavbar).toBe(defaultNavbar);
   });
 
-  it("should applies static utilities after the Block layout engine", () => {
+  it("should apply static utilities after the Block layout engine", () => {
     expect(defaultIndex.indexOf("./styles/layout/layout.css")).toBeLessThan(
       defaultIndex.indexOf("./styles/base/utilities.css"),
     );
@@ -129,7 +129,7 @@ describe("responsive theme contract", () => {
     );
   });
 
-  it("should documents responsive theming guidance", () => {
+  it("should document responsive theming guidance", () => {
     const requiredDocs = [
       "Build mobile first.",
       "`base`, `sm`, `md`, `lg`, and `xl`",

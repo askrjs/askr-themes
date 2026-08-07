@@ -38,7 +38,7 @@ describe("table theme smoke test", () => {
     resetTestRoutes();
   });
 
-  it("should styles the semantic table primitives through the default theme bundle", async () => {
+  it("should style the semantic table primitives through the default theme bundle", async () => {
     testRoute("/table", () => (
       <Table aria-label="Users">
         <TableHead>

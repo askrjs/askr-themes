@@ -91,7 +91,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("components entrypoint", () => {
-  it("should exposes styled components and behavior primitives from one catalog", () => {
+  it("should expose styled components and behavior primitives from one catalog", () => {
     for (const component of [
       Alert,
       Brand,
@@ -137,7 +137,7 @@ describe("components entrypoint", () => {
     }
   });
 
-  it("should renders new catalog-only anatomy with stable slots", () => {
+  it("should render new catalog-only anatomy with stable slots", () => {
     expect(asElement(AlertTitle({ children: "Heads up" })).props["data-slot"]).toBe("alert-title");
     expect(asElement(AlertDescription({ children: "Details" })).props["data-slot"]).toBe(
       "alert-description",

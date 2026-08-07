@@ -29,7 +29,7 @@ function assertFileExists(relativePath: string, message: string): void {
 }
 
 describe("component coverage matrix", () => {
-  it("should keeps every public non-chart component represented in the themes catalog", () => {
+  it("should keep every public non-chart component represented in the themes catalog", () => {
     const namespace = components as Record<string, unknown>;
 
     for (const component of THEME_COMPONENTS) {
@@ -39,7 +39,7 @@ describe("component coverage matrix", () => {
     expect(namespace[EXCLUDED_CHART_COMPONENT]).toBeUndefined();
   });
 
-  it("should keeps every public non-chart component represented by a package subpath", () => {
+  it("should keep every public non-chart component represented by a package subpath", () => {
     expect(THEME_COMPONENT_SUBPATHS).not.toContain("chart");
     expect(THEME_COMPONENT_SUBPATHS).not.toContain("charts");
 
@@ -49,7 +49,7 @@ describe("component coverage matrix", () => {
     }
   });
 
-  it("should keeps direct tests and composition benches attached to the public catalog", () => {
+  it("should keep direct tests and composition benches attached to the public catalog", () => {
     for (const testFile of DIRECT_TESTS) {
       assertFileExists(testFile, `missing direct test file ${testFile}`);
     }

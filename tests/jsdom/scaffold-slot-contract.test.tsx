@@ -31,7 +31,7 @@ describe("empty state slot contract", () => {
     resetTestRoutes();
   });
 
-  it("should emits canonical data-slot hooks for common composition", async () => {
+  it("should emit canonical data-slot hooks for common composition", async () => {
     testRoute("/example", () => (
       <div class="dashboard-page">
         <EmptyState

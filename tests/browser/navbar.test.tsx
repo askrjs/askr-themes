@@ -78,7 +78,7 @@ describe("navbar browser smoke", () => {
     expect(controls?.[0]?.getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("should renders semantic navbar structure with Block layout styles", async () => {
+  it("should render semantic navbar structure with Block layout styles", async () => {
     testRoute("/docs", () => (
       <Header sticky>
         <Container>
@@ -136,7 +136,7 @@ describe("navbar browser smoke", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Components");
   });
 
-  it("should centers primary routes between brand and end actions", async () => {
+  it("should center primary routes between brand and end actions", async () => {
     testRoute("/docs", () => (
       <Header sticky>
         <Container>
@@ -227,7 +227,7 @@ describe("navbar browser smoke", () => {
     expect(getComputedStyle(brand!).overflow).toBe("hidden");
   });
 
-  it("should switches responsive navbar between collapsed and inline content", async () => {
+  it("should switch responsive navbar between collapsed and inline content", async () => {
     const ResponsiveNav = () => (
       <Navbar aria-label="Responsive docs navigation" collapseAt="md">
         <NavBrand asChild>
@@ -309,7 +309,7 @@ describe("navbar browser smoke", () => {
     );
   });
 
-  it("should opens NavDropdown with route-aware NavLink children", async () => {
+  it("should open NavDropdown with route-aware NavLink children", async () => {
     testRoute("/docs", () => (
       <Navbar aria-label="Dropdown docs navigation">
         <NavBrand as="a" href="/">
