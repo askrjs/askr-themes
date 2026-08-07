@@ -1,23 +1,10 @@
 export {
-  Command,
-  CommandDialog,
-  CommandInput,
-  CommandHeader,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandGroupHeading,
-  CommandItem,
-  CommandSeparator,
-  CommandShortcut,
-} from "../components/catalog";
-export {
   CommandPalette,
   CommandPaletteContent,
   CommandPaletteLink,
   CommandPaletteList,
   CommandPaletteTrigger,
-} from "../components/command-palette";
+} from "./command-palette";
 export type {
   CommandPaletteContentProps,
   CommandPaletteLinkProps,
@@ -25,4 +12,4 @@ export type {
   CommandPaletteProps,
   CommandPaletteTriggerAsChildProps,
   CommandPaletteTriggerProps,
-} from "../components/command-palette";
+} from "./command-palette.types";

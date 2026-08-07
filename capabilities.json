@@ -16,7 +16,7 @@
       "intent": "component presets and layout helpers",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/components",
-      "exports": ["EmptyState", "Spinner", "Badge", "Stack", "Button"],
+      "exports": ["EmptyState", "Spinner", "Badge", "Stack", "Button", "CommandPalette"],
       "constraints": ["presets compose headless @askrjs/ui primitives"],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
