@@ -113,7 +113,7 @@ describe("daisy-like class aliases", () => {
     }
   }
 
-  it("should documents raw class authoring examples in the alias contract", () => {
+  it("should document raw class authoring examples in the alias contract", () => {
     const examples = [
       '<button class="btn btn-primary btn-sm">Save</button>',
       '<section class="card"><h3>Usage</h3><div>Current workspace metrics.</div></section>',

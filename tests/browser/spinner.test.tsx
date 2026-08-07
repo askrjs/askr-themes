@@ -30,7 +30,7 @@ describe("spinner browser smoke", () => {
     resetTestRoutes();
   });
 
-  it("should renders spinner sizing", async () => {
+  it("should render spinner sizing", async () => {
     testRoute("/status", () => (
       <div>
         <Spinner label="Syncing" />

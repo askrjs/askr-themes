@@ -32,7 +32,7 @@ describe("navbar and sidebar chrome contracts", () => {
     resetTestRoutes();
   });
 
-  it("should renders the navbar and sidebar chrome with stable slots", async () => {
+  it("should render the navbar and sidebar chrome with stable slots", async () => {
     testRoute("/docs", () => (
       <>
         <Navbar aria-label="Docs navigation" id="docs-navbar">
@@ -84,7 +84,7 @@ describe("navbar and sidebar chrome contracts", () => {
     expect(container?.querySelector("#page")?.textContent).toBe("Docs");
   });
 
-  it("should renders responsive navbar and nav dropdown slots", async () => {
+  it("should render responsive navbar and nav dropdown slots", async () => {
     testRoute("/docs", () => (
       <Navbar aria-label="Responsive docs navigation" collapseAt="md" id="responsive-navbar">
         <NavBrand as="a" href="/">

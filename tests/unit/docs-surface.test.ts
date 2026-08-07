@@ -20,7 +20,7 @@ function sourceFiles(directory: string): string[] {
 }
 
 describe("docs surface", () => {
-  it("should documents the component catalog package surface", () => {
+  it("should document the component catalog package surface", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;
     };
@@ -34,7 +34,7 @@ describe("docs surface", () => {
     expect(pkg.exports?.["./overlays"]).toBeUndefined();
   });
 
-  it("should keeps docs aligned with the new component catalog imports", () => {
+  it("should keep docs aligned with the new component catalog imports", () => {
     const docs = [
       readFileSync(README, "utf-8"),
       readFileSync(THEMES_DOC, "utf-8"),
@@ -55,7 +55,7 @@ describe("docs surface", () => {
     expect(docs).not.toContain("@askrjs/themes/overlays");
   });
 
-  it("should documents catalog coverage without moving charts into themes", () => {
+  it("should document catalog coverage without moving charts into themes", () => {
     const readme = readFileSync(README, "utf-8");
     const themingDoc = readFileSync(THEMING_DOC, "utf-8");
 
@@ -66,7 +66,7 @@ describe("docs surface", () => {
     expect(EXCLUDED_CHART_COMPONENT).toBe("Chart");
   });
 
-  it("should keeps external project attribution in acknowledgements, not source or tests", () => {
+  it("should keep external project attribution in acknowledgements, not source or tests", () => {
     const acknowledgements = readFileSync(ACKNOWLEDGEMENTS, "utf-8");
     const externalProjectNames = [...acknowledgements.matchAll(/^- \[([^\]]+)\]/gmu)].map(
       ([, name]) => name,
