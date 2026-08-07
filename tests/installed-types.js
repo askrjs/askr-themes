@@ -86,7 +86,7 @@ try {
   );
 
   const typescriptCli = resolve(repositoryRoot, "node_modules/@typescript/native/bin/tsc");
-  execFileSync(typescriptCli, ["-p", join(consumerRoot, "tsconfig.json")], {
+  execFileSync(process.execPath, [typescriptCli, "-p", join(consumerRoot, "tsconfig.json")], {
     cwd: consumerRoot,
     stdio: "inherit",
   });
