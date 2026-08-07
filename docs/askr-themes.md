@@ -48,6 +48,10 @@ The focused entrypoints remain available:
 ```ts
 import { Link } from "@askrjs/askr/router";
 import {
+  CommandPalette,
+  CommandPaletteContent,
+  CommandPaletteLink,
+  CommandPaletteTrigger,
   Aside,
   Block,
   Container,
@@ -93,6 +97,51 @@ import {
 Themes re-exports the small set of styled primitives that are common in app
 code. `@askrjs/ui` still owns behavior, keyboard handling, focus management,
 and advanced primitives.
+
+## Command palette
+
+`CommandPalette` is the themed static-site search composition. It delegates
+dialog semantics, focus containment, Escape handling, backdrop dismissal, and
+focus restoration to `@askrjs/ui` while keeping the search surface and result
+links ergonomic:
+
+```tsx
+import { state } from "@askrjs/askr";
+import {
+  CommandHeader,
+  CommandInput,
+  CommandPalette,
+  CommandPaletteContent,
+  CommandPaletteLink,
+  CommandPaletteList,
+  CommandPaletteTrigger,
+} from "@askrjs/themes/command";
+
+const open = state(false);
+
+<CommandPalette open={open()} onOpenChange={open.set}>
+  <CommandPaletteTrigger>Search docs</CommandPaletteTrigger>
+  <CommandPaletteContent title="Search documentation" description="Search every documentation page">
+    <CommandHeader>
+      <CommandInput aria-label="Search documentation" />
+    </CommandHeader>
+    <CommandPaletteList>
+      <CommandPaletteLink href="/getting-started" onBeforeNavigate={() => cancelPendingSearch()}>
+        Getting started
+      </CommandPaletteLink>
+    </CommandPaletteList>
+  </CommandPaletteContent>
+</CommandPalette>;
+```
+
+The command input receives focus by default on mouse, keyboard, and programmatic
+opens. Set `initialFocus` to another selector or target callback when needed.
+Tab and Shift+Tab remain contained while the palette is open, and result links
+stay semantic anchors while closing and cleaning up the palette before
+same-origin Askr navigation. Set
+`closeOnEscape={false}` or `closeOnBackdrop={false}` only when the product has
+another clear dismissal path. The composition performs no browser work during
+SSR or SSG.
 
 ## Block
 

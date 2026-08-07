@@ -119,11 +119,11 @@
     "test:checks": "vp test run -c vitest.test.checks.config.ts"
   },
   "devDependencies": {
-    "@askrjs/askr": ">=0.0.87 <0.1.0",
-    "@askrjs/ui": ">=0.0.25 <0.1.0",
+    "@askrjs/askr": ">=0.0.88 <0.1.0",
+    "@askrjs/ui": ">=0.0.26 <0.1.0",
     "@askrjs/vite": ">=0.0.12 <0.1.0",
     "@tsdown/css": "0.22.14",
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.2.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/browser-playwright": "4.1.10",
     "cross-env": "^10.1.0",
@@ -135,8 +135,8 @@
     "vite-plus": "^0.2.8"
   },
   "peerDependencies": {
-    "@askrjs/askr": ">=0.0.87 <0.1.0",
-    "@askrjs/ui": ">=0.0.25 <0.1.0"
+    "@askrjs/askr": ">=0.0.88 <0.1.0",
+    "@askrjs/ui": ">=0.0.26 <0.1.0"
   },
   "engines": {
     "node": ">=24.0.0"

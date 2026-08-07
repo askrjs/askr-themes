@@ -15,6 +15,7 @@ export const THEME_COMPONENTS = [
   "Collapsible",
   "Combobox",
   "Command",
+  "CommandPalette",
   "ContextMenu",
   "DataTable",
   "DatePicker",

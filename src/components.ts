@@ -197,6 +197,13 @@ export {
   CardTitle,
 } from "./components/card";
 export { Close } from "./components/close";
+export {
+  CommandPalette,
+  CommandPaletteContent,
+  CommandPaletteLink,
+  CommandPaletteList,
+  CommandPaletteTrigger,
+} from "./components/command-palette";
 export { Container } from "./components/container";
 export { EmptyState } from "./components/empty-state";
 export { Field, FieldError, FieldHint } from "./components/field";
@@ -274,6 +281,7 @@ export type * from "./components/block";
 export type * from "./components/button-group";
 export type * from "./components/card";
 export type * from "./components/close";
+export type * from "./components/command-palette";
 export type * from "./components/container";
 export type * from "./components/empty-state";
 export type * from "./components/field";

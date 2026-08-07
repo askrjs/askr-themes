@@ -652,6 +652,44 @@
   box-shadow: var(--ak-shadow-lg);
 }
 
+:where([data-command-palette-content]) {
+  inline-size: min(42rem, calc(100vw - 1rem));
+  max-block-size: min(36rem, calc(100dvh - 1rem));
+  overflow: hidden;
+  padding: 0;
+}
+
+:where([data-command-palette-content] [data-slot="command"]) {
+  min-block-size: 0;
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]) {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--ak-density-control-height-md);
+  padding: var(--ak-space-sm) var(--ak-space-md);
+  border-radius: var(--ak-radius-md);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+:where([data-command-palette-content] [data-slot="command-list"]) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]:hover) {
+  background: var(--ak-color-accent);
+  color: var(--ak-color-accent-ink);
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]:focus-visible) {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
 :where([data-slot="command-header"]) {
   display: flex;
   align-items: center;
