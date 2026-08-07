@@ -12,7 +12,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("Block", () => {
-  it("should renders a canonical wrapper with CSS-driven layout props", () => {
+  it("should render a canonical wrapper with CSS-driven layout props", () => {
     const element = asElement(
       Block({
         maxWidth: "md",
@@ -29,7 +29,7 @@ describe("Block", () => {
     expect(element.props.style).toBeUndefined();
   });
 
-  it("should supports responsive layout props and asChild composition", () => {
+  it("should support responsive layout props and asChild composition", () => {
     const responsive = asElement(
       Block({
         direction: { base: "column", lg: "row" },

@@ -61,7 +61,7 @@ describe("public family browser smoke", () => {
     resetTestRoutes();
   });
 
-  it("should renders the remaining public families in a browser mount", async () => {
+  it("should render the remaining public families in a browser mount", async () => {
     testRoute("/families", () => (
       <Page>
         <Header sticky>

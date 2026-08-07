@@ -12,7 +12,7 @@ import {
 } from "../../src/components/_internal/style";
 
 describe("block layout helpers", () => {
-  it("should serializes layout declarations with user overrides", () => {
+  it("should serialize layout declarations with user overrides", () => {
     expect(
       mergeLayoutStyles(
         {
@@ -27,7 +27,7 @@ describe("block layout helpers", () => {
     ).toBe("--ak-gap-base:var(--ak-space-lg);--ak-px-base:var(--ak-layout-page-gutter);color:red");
   });
 
-  it("should splits block layout props from passthrough props", () => {
+  it("should split block layout props from passthrough props", () => {
     const { blockProps, rest } = splitBlockLayoutProps({
       paddingX: "page",
       maxWidth: "page",
@@ -44,7 +44,7 @@ describe("block layout helpers", () => {
     expect(rest).toEqual({ class: "chrome", title: "Layout chrome" });
   });
 
-  it("should maps block layout props to responsive css custom properties", () => {
+  it("should map block layout props to responsive css custom properties", () => {
     const styles: Record<string, string | number> = {};
 
     applyBlockLayoutStyles(styles, {
@@ -98,7 +98,7 @@ describe("block layout helpers", () => {
 });
 
 describe("style helpers", () => {
-  it("should appends css custom properties to string and object styles", () => {
+  it("should append css custom properties to string and object styles", () => {
     expect(mergeCssVar("color:red", "--ak-test", "1rem")).toBe("color:red;--ak-test:1rem");
     expect(mergeCssVar({ backgroundColor: "red", opacity: 0.5 }, "--ak-test", "1rem")).toBe(
       "background-color:red;opacity:0.5;--ak-test:1rem",

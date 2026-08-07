@@ -85,7 +85,7 @@ describe("theme route persistence", () => {
     restoreLocalStorage = undefined;
   });
 
-  it("should preserves the active theme across route navigation", async () => {
+  it("should preserve the active theme across route navigation", async () => {
     const AppLayout = ({ children }: { children?: unknown }) => (
       <ThemeScope defaultTheme="light">
         <header>
@@ -218,7 +218,7 @@ describe("theme route persistence", () => {
     expect(getVisibleIcon()?.getAttribute("data-icon")).toBe("moon");
   });
 
-  it("should mounts theme controls without render-time state errors", async () => {
+  it("should mount theme controls without render-time state errors", async () => {
     const AppLayout = () => (
       <ThemeScope defaultTheme="light">
         <header>

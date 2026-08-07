@@ -59,7 +59,7 @@ function findElementBySlot(value: unknown, slot: string): ElementLike | undefine
 }
 
 describe("block-first components", () => {
-  it("should exposes the stable core surface", () => {
+  it("should expose the stable core surface", () => {
     for (const component of [
       Block,
       Brand,
@@ -95,7 +95,7 @@ describe("block-first components", () => {
     }
   });
 
-  it("should maps recipe-style Block props to generated layout classes", () => {
+  it("should map recipe-style Block props to generated layout classes", () => {
     const block = asElement(
       Block({
         as: "main",
@@ -122,7 +122,7 @@ describe("block-first components", () => {
     expect(String(block.props.class)).toContain("ak-style-");
   });
 
-  it("should builds semantic wrappers on Block", () => {
+  it("should build semantic wrappers on Block", () => {
     const container = asElement(Container({ children: "container" }));
     const brandRoot = asElement(
       Brand({ children: [BrandMark({ children: "D" }), BrandLabel({ children: "Destroyer" })] }),
@@ -192,7 +192,7 @@ describe("block-first components", () => {
     expect(brand.props["data-slot"]).toBe("nav-brand");
   });
 
-  it("should exposes common composition components without recipe-only layouts", () => {
+  it("should expose common composition components without recipe-only layouts", () => {
     expect(Page({ children: "page" })).toBeTruthy();
     expect(
       PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" }),
@@ -202,7 +202,7 @@ describe("block-first components", () => {
     expect(Text({ tone: "muted", size: "sm", children: "Copy" })).toBeTruthy();
   });
 
-  it("should keeps visual display primitives with one separator name", () => {
+  it("should keep visual display primitives with one separator name", () => {
     expect(Badge({ children: "new", variant: "secondary" })).toBeTruthy();
     expect(Skeleton({})).toBeTruthy();
     expect(Separator({ orientation: "vertical" })).toBeTruthy();

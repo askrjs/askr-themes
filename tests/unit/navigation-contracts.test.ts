@@ -39,7 +39,7 @@ function findElementBySlot(value: unknown, slot: string): ElementLike | undefine
 }
 
 describe("navigation contracts", () => {
-  it("should renders block-first nav primitives with canonical slots", () => {
+  it("should render block-first nav primitives with canonical slots", () => {
     const tabs = asElement(Tabs({ children: "tabs" }));
     const tab = asElement(Tab({ href: "/settings/profile", active: true, children: "Profile" }));
     const tabChild = asElement(tab.props.children);

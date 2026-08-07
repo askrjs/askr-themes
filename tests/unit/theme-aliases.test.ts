@@ -21,7 +21,7 @@ function asElement(value: unknown): ElementLike {
 }
 
 describe("theme alias classes", () => {
-  it("should emits the familiar surface aliases by default", () => {
+  it("should emit the familiar surface aliases by default", () => {
     expect(asElement(Card({ children: "body" })).props.class).toBe("card");
     expect(asElement(Card({ children: "body", variant: "raised" })).props.class).toBe(
       "card card-raised",
@@ -37,7 +37,7 @@ describe("theme alias classes", () => {
     ).toBe("alert alert-info alert-dismissible");
   });
 
-  it("should emits the familiar control aliases by default", () => {
+  it("should emit the familiar control aliases by default", () => {
     expect(asElement(ButtonGroup({ children: "group" })).props.class).toBe("btn-group");
     expect(asElement(ButtonGroup({ children: "group", orientation: "vertical" })).props.class).toBe(
       "btn-group btn-group-vertical",
