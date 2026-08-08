@@ -5,6 +5,7 @@ import {
   type RouteHandler,
   type RouteOptions,
   type RouteRegistry,
+  type RouteRegistryOptions,
 } from "@askrjs/askr/router";
 
 type TestRouteDefinition = {
@@ -38,7 +39,7 @@ export function testRoute(path: string, handler: RouteHandler, options?: RouteOp
   definitions.push({ path, handler, options, groups: [...groupStack] });
 }
 
-export function createTestRegistry(): RouteRegistry {
+export function createTestRegistry(options?: RouteRegistryOptions): RouteRegistry {
   const currentDefinitions = [...definitions];
   return createRouteRegistry(() => {
     for (const definition of currentDefinitions) {
@@ -52,5 +53,5 @@ export function createTestRegistry(): RouteRegistry {
       };
       define(0);
     }
-  });
+  }, options);
 }
