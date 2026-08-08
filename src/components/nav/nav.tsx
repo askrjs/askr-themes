@@ -1,6 +1,6 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
-import { currentRoute, Link, navigate } from "@askrjs/askr/router";
+import { currentRoute, Link } from "@askrjs/askr/router";
 import { Block } from "../block";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
@@ -54,25 +54,6 @@ function isActiveNavLink(
   }
 
   return currentPathname === targetPathname || currentPathname.startsWith(`${targetPathname}/`);
-}
-
-function shouldHandleClientNavigation(
-  event: MouseEvent,
-  target: string | undefined,
-  targetPathname: string | null,
-): boolean {
-  if (targetPathname === null || target) {
-    return false;
-  }
-
-  return (
-    !event.defaultPrevented &&
-    (event.button ?? 0) === 0 &&
-    !event.altKey &&
-    !event.ctrlKey &&
-    !event.metaKey &&
-    !event.shiftKey
-  );
 }
 
 function renderNavSet(
@@ -145,27 +126,14 @@ function renderRoutedLink(
     : {
         "data-active": undefined,
       };
-  const rendersRouterLink =
-    targetPathname !== null &&
-    !target &&
-    !hasDownload &&
-    typeof onClick !== "function" &&
-    typeof onPress !== "function";
+  const rendersRouterLink = targetPathname !== null && !target && !hasDownload;
   const childProps: NavLinkProps = to
-    ? ({ ...childRest, to, target } as NavLinkProps)
-    : ({ ...childRest, href, target } as NavLinkProps);
+    ? ({ ...childRest, to, target, onPress, onClick } as NavLinkProps)
+    : ({ ...childRest, href, target, onPress, onClick } as NavLinkProps);
   const handleClick = (event: MouseEvent) => {
     onPress?.(event);
     if (event.defaultPrevented) return;
     onClick?.(event);
-    if (hasDownload) return;
-
-    if (!shouldHandleClientNavigation(event, target, targetPathname)) {
-      return;
-    }
-
-    event.preventDefault();
-    navigate(href);
   };
 
   return (

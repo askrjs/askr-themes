@@ -5,6 +5,7 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { Link } from "@askrjs/askr/router";
 
 import { Block, NavBrand, NavItem, NavLink, Navbar } from "../../src/core";
+import { Pill, Tab } from "../../src/navs";
 import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from "../../src/overlays";
 
 type ElementLike = {
@@ -200,6 +201,79 @@ describe("navbar link jsdom regression", () => {
     expect(clicks).toBe(1);
     expect(window.location.pathname).toBe("/docs");
     expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
+  });
+
+  it("should preserve the registry base path when a NavLink has a click handler", async () => {
+    let clicks = 0;
+
+    window.history.replaceState({}, "", "/website/");
+    testRoute("/", () => (
+      <NavLink href="/docs" onClick={() => (clicks += 1)}>
+        Docs
+      </NavLink>
+    ));
+    testRoute("/docs", () => <div id="page">Docs page</div>);
+
+    await createSPA({ root: container!, registry: createTestRegistry({ basePath: "/website" }) });
+    await settle();
+
+    const docsLink = container?.querySelector("a") as HTMLAnchorElement | null;
+    expect(docsLink?.getAttribute("href")).toBe("/website/docs");
+
+    docsLink?.dispatchEvent(
+      new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 }),
+    );
+    await settle();
+
+    expect(clicks).toBe(1);
+    expect(window.location.pathname).toBe("/website/docs");
+    expect(container?.querySelector("#page")?.textContent).toBe("Docs page");
+  });
+
+  it("should preserve routed link behavior for onPress, Tab, and Pill", async () => {
+    let presses = 0;
+
+    window.history.replaceState({}, "", "/website/");
+    testRoute("/", () => (
+      <>
+        <NavLink href="/nav" onPress={() => (presses += 1)}>
+          Nav
+        </NavLink>
+        <Tab href="/tab" onClick={(event) => event.preventDefault()}>
+          Tab
+        </Tab>
+        <Pill href="/pill" onClick={() => undefined}>
+          Pill
+        </Pill>
+      </>
+    ));
+    testRoute("/nav", () => <div id="page">Nav page</div>);
+    testRoute("/tab", () => <div id="page">Tab page</div>);
+    testRoute("/pill", () => <div id="page">Pill page</div>);
+
+    await createSPA({ root: container!, registry: createTestRegistry({ basePath: "/website" }) });
+    await settle();
+
+    const links = Array.from(container!.querySelectorAll("a"));
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "/website/nav",
+      "/website/tab",
+      "/website/pill",
+    ]);
+
+    const tabClickWasNotCancelled = links[1]?.dispatchEvent(
+      new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 }),
+    );
+    await settle();
+    expect(tabClickWasNotCancelled).toBe(false);
+    expect(window.location.pathname).toBe("/website/");
+
+    links[0]?.dispatchEvent(
+      new MouseEvent("click", { bubbles: true, cancelable: true, button: 0 }),
+    );
+    await settle();
+    expect(presses).toBe(1);
+    expect(window.location.pathname).toBe("/website/nav");
   });
 
   it("should not intercept modified clicks or explicit targets", async () => {
