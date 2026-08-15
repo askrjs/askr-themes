@@ -27,6 +27,7 @@ function resolveAlign(value: GridAlign): string {
   return value;
 }
 
+/** CSS grid layout primitive: turns `columns`/`gap`/`align` (each optionally responsive) into generated grid-template styles, rendering as `<div>` by default. */
 export function Grid<TElement extends GridElement = "div">(
   props: GridProps<TElement>,
 ): JSX.Element {

@@ -4,16 +4,21 @@ import { cloneElement, isElement, type JSXElement } from "@askrjs/askr/foundatio
 import { Button } from "@askrjs/ui";
 import type { ButtonNativeProps, PressEvent } from "@askrjs/ui";
 
+/** Names of the built-in "cat" theme presets. */
 export const CAT_THEME_NAMES = ["tabby", "ginger", "tuxedo", "calico", "torty"] as const;
 
+/** A built-in "cat" theme name, one of {@link CAT_THEME_NAMES}. */
 export type CatThemeName = (typeof CAT_THEME_NAMES)[number];
+/** Any theme identifier accepted by {@link ThemeScope}: `"light"`, `"dark"`, `"system"`, a {@link CatThemeName}, or a custom string. */
 export type ThemeName = "light" | "dark" | "system" | CatThemeName | (string & {});
 
+/** A theme choice offered by {@link ThemePicker}/{@link ThemeToggle}: a `value` paired with a display `label`. */
 export type ThemeOption = {
   value: ThemeName;
   label: string;
 };
 
+/** Value read from {@link theme}: the active theme, its resolved system value, a setter, and the available theme options. */
 export type ThemeScopeValue = {
   theme: () => ThemeName;
   resolvedSystemTheme: () => "light" | "dark";
@@ -22,6 +27,7 @@ export type ThemeScopeValue = {
   storageKey: string;
 };
 
+/** Props for the {@link ThemeScope} component. */
 export type ThemeScopeProps = {
   children?: unknown;
   defaultTheme?: ThemeName;
@@ -29,6 +35,7 @@ export type ThemeScopeProps = {
   storageKey?: string;
 };
 
+/** Props for the {@link ThemePicker} component. */
 export type ThemePickerProps = Omit<
   JSX.IntrinsicElements["select"],
   "children" | "value" | "defaultValue" | "onChange"
@@ -37,11 +44,13 @@ export type ThemePickerProps = Omit<
   label?: string;
 };
 
+/** Render context passed to a function-as-children {@link ThemeToggleProps.children}. */
 export type ThemeToggleRenderContext = {
   theme: ThemeName;
   nextTheme: ThemeName;
 };
 
+/** Props for the {@link ThemeToggle} component. */
 export type ThemeToggleProps = Omit<ButtonNativeProps, "children" | "onPress"> & {
   children?: unknown | ((context: ThemeToggleRenderContext) => unknown);
   lightIcon?: unknown;
@@ -51,12 +60,14 @@ export type ThemeToggleProps = Omit<ButtonNativeProps, "children" | "onPress"> &
   onPress?: (event: PressEvent) => void;
 };
 
+/** Default light/dark/system theme options used by {@link ThemeScope} and {@link ThemePicker}. */
 export const DEFAULT_THEME_OPTIONS: readonly ThemeOption[] = [
   { value: "system", label: "System" },
   { value: "light", label: "Light" },
   { value: "dark", label: "Dark" },
 ];
 
+/** Theme options for the built-in "cat" theme presets, keyed to {@link CAT_THEME_NAMES}. */
 export const CAT_THEME_OPTIONS: readonly ThemeOption[] = [
   { value: "tabby", label: "Tabby" },
   { value: "ginger", label: "Ginger" },
@@ -84,10 +95,18 @@ const ThemeScopeContext = defineScope<InternalThemeScopeValue>({
   depth: -1,
 });
 
+/** Reads the current {@link ThemeScopeValue} from the nearest enclosing {@link ThemeScope}. */
 export function theme(): ThemeScopeValue {
   return readScope(ThemeScopeContext);
 }
 
+/**
+ * Establishes a theme boundary: tracks the active theme (persisted to
+ * `localStorage` under `storageKey` and synced across tabs/scopes), resolves
+ * the OS `"system"` preference, and reflects the choice onto the DOM via
+ * `data-theme`/`data-theme-choice` attributes. Nested scopes cooperate
+ * through a shared coordinator so the deepest explicitly-set scope wins.
+ */
 export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   const {
     children,
@@ -318,6 +337,7 @@ function createThemeCoordinator() {
   });
 }
 
+/** A `<select>` bound to the current {@link theme}, listing `themes` (defaults to the enclosing scope's options). */
 export function ThemePicker(props: ThemePickerProps): JSX.Element {
   const activeTheme = theme();
   const { themes = activeTheme.themes, label = "Theme", ...rest } = props;
@@ -362,6 +382,11 @@ function getThemePickerTarget(event: Event): HTMLSelectElement | null {
   return null;
 }
 
+/**
+ * A button that cycles through `themes` (defaults to `["light", "dark"]`) on
+ * press. Supports icon props per theme, or a function-as-children render
+ * prop receiving {@link ThemeToggleRenderContext}.
+ */
 export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   const activeTheme = theme();
   const {

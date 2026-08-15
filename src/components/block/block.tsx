@@ -13,6 +13,12 @@ import type { BlockAsChildProps, BlockNativeProps } from "./block.types";
 
 const DEFAULT_ELEMENT = "div";
 
+/**
+ * Low-level layout primitive: renders any element in {@link BlockElement}
+ * (default `<div>`) and turns layout-only props (spacing, alignment,
+ * direction, sizing, etc.) into a generated utility class. With `asChild`,
+ * the layout is merged onto a single child element instead of a wrapper.
+ */
 export function Block(props: BlockNativeProps): JSX.Element;
 export function Block(props: BlockAsChildProps): JSX.Element;
 export function Block(props: BlockNativeProps | BlockAsChildProps) {

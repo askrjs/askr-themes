@@ -3,6 +3,7 @@ import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import type { FieldErrorProps, FieldHintProps, FieldProps } from "./field.types";
 
+/** Groups a form control with its hint/error text, marking `data-invalid` when `invalid` is set. */
 export function Field(props: FieldProps): JSX.Element {
   const { children, class: className, invalid = false, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -15,6 +16,7 @@ export function Field(props: FieldProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders supporting hint text for a {@link Field}. */
 export function FieldHint(props: FieldHintProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -26,6 +28,7 @@ export function FieldHint(props: FieldHintProps): JSX.Element {
   return <p {...finalProps}>{children}</p>;
 }
 
+/** Renders validation error text for a {@link Field}, exposed with `role="alert"`. */
 export function FieldError(props: FieldErrorProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {

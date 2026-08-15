@@ -4,6 +4,11 @@ import { mergeProps } from "../_internal/merge-props";
 import { intrinsicElement } from "../_internal/jsx";
 import type { SeparatorAsChildProps, SeparatorNativeProps } from "./separator.types";
 
+/**
+ * Visual divider, defaulting to horizontal `role="separator"`; pass
+ * `decorative` to drop the semantic role, or `asChild` to merge onto a
+ * single child element.
+ */
 export function Separator(props: SeparatorNativeProps): JSX.Element;
 export function Separator(props: SeparatorAsChildProps): JSX.Element;
 export function Separator(props: SeparatorNativeProps | SeparatorAsChildProps) {

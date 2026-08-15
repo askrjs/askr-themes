@@ -13,6 +13,7 @@ import type {
 
 const DEFAULT_ELEMENT = "div";
 
+/** Renders a brand/logo wrapper, defaulting to a `<div>` (or `<a>`/`<span>` via `as`), or merges onto a single child via `asChild`. */
 export function Brand<TElement extends "div" | "a" | "span" = "div">(
   props: BrandProps<TElement>,
 ): JSX.Element {
@@ -42,6 +43,7 @@ export function Brand<TElement extends "div" | "a" | "span" = "div">(
   return intrinsicElement(as ?? DEFAULT_ELEMENT, finalProps, children);
 }
 
+/** Renders the icon/mark portion of a {@link Brand}. */
 export function BrandMark(props: BrandMarkProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -53,6 +55,7 @@ export function BrandMark(props: BrandMarkProps): JSX.Element {
   return <span {...finalProps}>{children}</span>;
 }
 
+/** Renders the text label portion of a {@link Brand}. */
 export function BrandLabel(props: BrandLabelProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
