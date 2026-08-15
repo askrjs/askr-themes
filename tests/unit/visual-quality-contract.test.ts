@@ -18,6 +18,7 @@ const HEADER_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "header.css");
 const NAVBAR_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "navbar.css");
 const DROPDOWN_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "overlays", "dropdown.css");
 const TOOLTIP_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "overlays", "tooltip.css");
+const ACCESSIBILITY_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "base", "accessibility.css");
 
 function read(path: string): string {
   return readFileSync(path, "utf8");
@@ -63,6 +64,28 @@ describe("visual quality contract", () => {
     expect(visualCheck).toContain('data-theme="dark"');
   });
 
+  it("should ship a permanent forced-colors contract and keep the template synchronized", () => {
+    const accessibilityCss = read(ACCESSIBILITY_CSS_FILE);
+    const templateAccessibilityCss = read(
+      join(ROOT_DIR, "templates", "theme", "styles", "base", "accessibility.css"),
+    );
+    const requiredContracts = [
+      "@media (forced-colors: active)",
+      "outline: 2px solid Highlight",
+      "border-color: ButtonText",
+      "border-color: GrayText",
+      "background: Canvas",
+      "color: CanvasText",
+      '[data-slot="dialog-content"]',
+      '[data-slot="popover-content"]',
+      '[data-slot="dropdown-item"]:is(:focus, :focus-visible)',
+    ] as const;
+
+    expect(accessibilityCss).toBe(templateAccessibilityCss);
+    for (const contract of requiredContracts) expect(accessibilityCss).toContain(contract);
+    expect(accessibilityCss).not.toContain("forced-color-adjust: none");
+  });
+
   it("should document the visual audit standard and responsive widths", () => {
     const requiredDocs = [
       "Visual Quality Standard",
@@ -83,6 +106,14 @@ describe("visual quality contract", () => {
     expect(docsReadme).toContain("visual-check.html");
     expect(docsOverview).toContain("product and admin");
     expect(docsOverview).toContain("[Theming](./theming.md)");
+    for (const accessibilityContract of [
+      "Canonical Accessibility Pairings",
+      "Disabled control fill against the page",
+      "forced-colors: active",
+      "forced-color-adjust: none",
+    ]) {
+      expect(docsTheming).toContain(accessibilityContract);
+    }
   });
 
   it("should document that default theme CSS and templates move together", () => {

@@ -227,6 +227,31 @@ shared control heights, focus ring presence, mobile overlay width, wrapped
 horizontal groups, and audit-page overflow. Screenshot baselines remain a
 manual workflow for now.
 
+### Canonical Accessibility Pairings
+
+Default light and dark mode use one CI-enforced semantic matrix. Tests evaluate
+browser-resolved colors after alpha and element opacity are composited.
+
+| Semantic pairing                                                                        | Minimum |
+| --------------------------------------------------------------------------------------- | ------: |
+| Ordinary or subtle text on its documented surface                                       |   4.5:1 |
+| Strong boundaries, warning UI, and info UI on a surface                                 |     3:1 |
+| The shared focus indicator on page, surface, muted, raised, overlay, and primary layers |     3:1 |
+| Disabled control fill against the page                                                  |   1.5:1 |
+| Disabled control boundary against the page when the fill is below 1.5:1                 |     3:1 |
+
+### Forced Colors
+
+The default stylesheet explicitly supports `forced-colors: active` with the
+system `Canvas`, `CanvasText`, `ButtonText`, `GrayText`, `Highlight`, and
+`HighlightText` colors. These preserve control boundaries, disabled states,
+overlay separation, and focus without disabling native adjustment. Add
+`forced-color-adjust: none` only for a documented, tested semantic exception.
+
+Normal browser CI covers the light/dark matrix. A Chromium context runs with
+forced colors active, and structural stylesheet/template tests protect the
+contract on engines that cannot emulate it.
+
 ## Template Sync
 
 The source default theme and generated theme template must stay visually

@@ -108,9 +108,9 @@ describe("CommandPalette", () => {
     expect(document.activeElement).toBe(input);
 
     await userEvent.tab({ shift: true });
-    expect(document.activeElement).toBe(link);
+    await waitForElement(() => (document.activeElement === link ? link : null));
     await userEvent.tab();
-    expect(document.activeElement).toBe(input);
+    await waitForElement(() => (document.activeElement === input ? input : null));
 
     await userEvent.keyboard("{Escape}");
     await settle();

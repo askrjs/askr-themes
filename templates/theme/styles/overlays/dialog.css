@@ -53,7 +53,7 @@
 }
 
 :where([data-slot="dialog-content"], [data-slot="sheet-content"]) {
-  --_dialog-surface: var(--ak-color-bg);
+  --_dialog-surface: var(--ak-color-surface-raised);
   --_dialog-border: var(--ak-color-border);
 
   display: grid;

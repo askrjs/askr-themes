@@ -123,7 +123,7 @@ describe("responsive and visual theme contracts", () => {
     const normalBorder = getComputedStyle(readonly).borderColor;
 
     expect(getComputedStyle(invalid).borderColor).not.toBe(normalBorder);
-    expect(getComputedStyle(disabled).opacity).toBe("0.5");
+    expect(getComputedStyle(disabled).opacity).toBe("1");
     expect(getComputedStyle(disabled).pointerEvents).toBe("none");
     expect(getComputedStyle(readonly).color).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(readonly).opacity).toBe("1");
