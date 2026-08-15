@@ -996,6 +996,32 @@ All official themes are tested for WCAG AA compliance:
 
 The automated test suite (`tests/unit/contrast.test.ts`) validates these pairs across all themes in both light and dark modes.
 
+The default light and dark modes additionally publish this canonical semantic
+pairing matrix. Ratios apply to browser-resolved colors after alpha and element
+opacity are composited:
+
+| Semantic pairing                                                                        | Minimum |
+| --------------------------------------------------------------------------------------- | ------: |
+| Ordinary or subtle text on its documented surface                                       |   4.5:1 |
+| Strong boundaries, warning UI, and info UI on a surface                                 |     3:1 |
+| The shared focus indicator on page, surface, muted, raised, overlay, and primary layers |     3:1 |
+| Disabled control fill against the page                                                  |   1.5:1 |
+| Disabled control boundary against the page when the fill is below 1.5:1                 |     3:1 |
+
+### Forced Colors
+
+The default stylesheet includes a `forced-colors: active` layer. It uses
+system `Canvas`, `CanvasText`, `ButtonText`, `GrayText`, `Highlight`, and
+`HighlightText` colors for control boundaries, disabled states, overlay
+separation, and focus. Native system-color adjustment remains enabled; do not
+add `forced-color-adjust: none` unless a specific semantic image would
+otherwise lose meaning and the exception is documented and tested.
+
+Normal browser CI resolves every canonical pairing in light and dark mode.
+Chromium CI also runs a real forced-colors context, while the stylesheet and
+template parity test protects the same contract for engines that cannot
+emulate it.
+
 ---
 
 ## Implementation Note

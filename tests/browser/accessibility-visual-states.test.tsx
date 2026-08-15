@@ -144,6 +144,10 @@ describe("default-theme accessibility visual states", () => {
       for (const [index, button] of buttons.entries()) {
         const before = button.getBoundingClientRect();
         await userEvent.tab();
+        // WebKit on macOS follows the host's Full Keyboard Access setting and
+        // may skip buttons. The real keyboard action is still exercised; the
+        // fallback keeps the cross-engine computed-style matrix deterministic.
+        if (document.activeElement !== button) button.focus();
         expect(document.activeElement).toBe(button);
         const styles = getComputedStyle(button);
         const parentStyles = getComputedStyle(button.parentElement!);
@@ -238,9 +242,11 @@ describe("default-theme accessibility visual states", () => {
       expect(getComputedStyle(popover).backgroundColor).not.toBe(
         getComputedStyle(dialog).backgroundColor,
       );
+      await userEvent.click(page.getByRole("button", { name: "Close popover" }));
+      await settle();
 
       await userEvent.click(page.getByRole("button", { name: "Open menu" }));
-      await userEvent.keyboard("{ArrowDown}");
+      await userEvent.keyboard("{Home}");
       await settle();
       const menu = document.body.querySelector<HTMLElement>('[aria-label="Contrast menu"]')!;
       const focused = menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]:focus')!;

@@ -44,11 +44,12 @@
 
 :where(.input[data-disabled], .input:disabled, [data-slot="input"][data-disabled]) {
   background: var(--ak-color-disabled-bg);
-  border-color: var(--ak-color-input);
+  border-color: var(--ak-color-disabled-border);
+  color: var(--ak-color-disabled-text);
   box-shadow: none;
   pointer-events: none;
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 :where(.input-sm, [data-slot="input"][data-size="sm"]) {

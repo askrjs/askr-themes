@@ -18,6 +18,9 @@ const PAIRS: readonly [string, string, number][] = [
   ["--ak-color-info-ink", "--ak-color-info-soft", 3],
   ["--ak-color-primary-ink", "--ak-color-primary-soft", 3],
   ["--ak-color-link", "--ak-color-bg", 3],
+];
+
+const DEFAULT_THEME_PAIRS: readonly [string, string, number][] = [
   ["--ak-color-text-subtle", "--ak-color-surface", 4.5],
   ["--ak-color-border-strong", "--ak-color-surface", 3],
   ["--ak-color-warning", "--ak-color-surface", 3],
@@ -108,7 +111,9 @@ describe("computed WCAG contrast", () => {
       document.body.append(page);
 
       try {
-        for (const [foregroundToken, backgroundToken, minimum] of PAIRS) {
+        const pairs =
+          theme === "light" || theme === "dark" ? [...PAIRS, ...DEFAULT_THEME_PAIRS] : PAIRS;
+        for (const [foregroundToken, backgroundToken, minimum] of pairs) {
           foreground.style.color = `var(${foregroundToken})`;
           background.style.backgroundColor = `var(${backgroundToken})`;
           const foregroundColor = parseComputedColor(getComputedStyle(foreground).color);

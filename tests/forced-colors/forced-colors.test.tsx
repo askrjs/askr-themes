@@ -15,6 +15,7 @@ import {
   DropdownItem,
   DropdownTrigger,
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverPortal,
   PopoverTrigger,
@@ -58,7 +59,10 @@ it("should preserve real controls and layered overlays in emulated forced colors
             <Popover>
               <PopoverTrigger>Open popover</PopoverTrigger>
               <PopoverPortal>
-                <PopoverContent>Popover content</PopoverContent>
+                <PopoverContent>
+                  Popover content
+                  <PopoverClose>Close popover</PopoverClose>
+                </PopoverContent>
               </PopoverPortal>
             </Popover>
             <Dropdown>
@@ -81,20 +85,22 @@ it("should preserve real controls and layered overlays in emulated forced colors
 
   const disabled = container.querySelector<HTMLInputElement>('[aria-label="Disabled field"]')!;
   expect(getComputedStyle(disabled).borderStyle).not.toBe("none");
-  expect(Number(getComputedStyle(disabled).borderTopWidth)).toBeGreaterThanOrEqual(1);
+  expect(Number.parseFloat(getComputedStyle(disabled).borderTopWidth)).toBeGreaterThanOrEqual(1);
 
   await userEvent.click(page.getByRole("button", { name: "Open layers" }));
   await settle();
   const dialog = document.body.querySelector<HTMLElement>('[data-slot="dialog-content"]')!;
-  expect(Number(getComputedStyle(dialog).borderTopWidth)).toBeGreaterThanOrEqual(2);
+  expect(Number.parseFloat(getComputedStyle(dialog).borderTopWidth)).toBeGreaterThanOrEqual(2);
 
   await userEvent.click(page.getByRole("button", { name: "Open popover" }));
   await settle();
   const popover = document.body.querySelector<HTMLElement>('[data-slot="popover-content"]')!;
-  expect(Number(getComputedStyle(popover).borderTopWidth)).toBeGreaterThanOrEqual(2);
+  expect(Number.parseFloat(getComputedStyle(popover).borderTopWidth)).toBeGreaterThanOrEqual(2);
+  await userEvent.click(page.getByRole("button", { name: "Close popover" }));
+  await settle();
 
   await userEvent.click(page.getByRole("button", { name: "Open menu" }));
-  await userEvent.keyboard("{ArrowDown}");
+  await userEvent.keyboard("{Home}");
   const item = document.body.querySelector<HTMLElement>('[data-slot="dropdown-item"]')!;
   expect(getComputedStyle(item).outlineStyle).not.toBe("none");
 });

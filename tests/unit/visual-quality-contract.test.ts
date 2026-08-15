@@ -78,7 +78,7 @@ describe("visual quality contract", () => {
       "color: CanvasText",
       '[data-slot="dialog-content"]',
       '[data-slot="popover-content"]',
-      '[data-slot="dropdown-item"]:focus-visible',
+      '[data-slot="dropdown-item"]:is(:focus, :focus-visible)',
     ] as const;
 
     expect(accessibilityCss).toBe(templateAccessibilityCss);
@@ -106,6 +106,14 @@ describe("visual quality contract", () => {
     expect(docsReadme).toContain("visual-check.html");
     expect(docsOverview).toContain("product and admin");
     expect(docsOverview).toContain("[Theming](./theming.md)");
+    for (const accessibilityContract of [
+      "Canonical Accessibility Pairings",
+      "Disabled control fill against the page",
+      "forced-colors: active",
+      "forced-color-adjust: none",
+    ]) {
+      expect(docsTheming).toContain(accessibilityContract);
+    }
   });
 
   it("should document that default theme CSS and templates move together", () => {

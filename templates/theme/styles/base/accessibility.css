@@ -1,0 +1,88 @@
+/*
+ * Cross-component accessibility states live at the end of the default-theme
+ * cascade so new controls inherit the same perceivability contract.
+ */
+:where(
+  [data-slot="button"][data-disabled],
+  [data-slot="input"][data-disabled],
+  [data-slot="textarea"][data-disabled],
+  [data-slot="select-trigger"][data-disabled],
+  [data-slot="checkbox"][data-disabled],
+  [data-slot="radio-group-item"][data-disabled],
+  [data-slot="switch"][data-disabled]
+) {
+  background: var(--ak-color-disabled-bg);
+  border-color: var(--ak-color-disabled-border);
+  color: var(--ak-color-disabled-text);
+  box-shadow: none;
+  opacity: 1;
+}
+
+@media (forced-colors: active) {
+  :where(
+    [data-slot="button"],
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="checkbox"],
+    [data-slot="radio-group-item"],
+    [data-slot="switch"],
+    [data-slot="dropdown-trigger"],
+    [tabindex]:not([tabindex="-1"]),
+    [role="menuitem"]
+  ):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+
+  :where(
+    [data-slot="button"],
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="checkbox"],
+    [data-slot="radio-group-item"],
+    [data-slot="switch"],
+    [data-slot="dropdown-content"],
+    [data-slot="menubar-content"]
+  ) {
+    border-color: ButtonText;
+  }
+
+  :where([data-disabled]) {
+    border-color: GrayText;
+    color: GrayText;
+    opacity: 1;
+  }
+
+  :where(
+    [data-slot="dialog-content"],
+    [data-slot="sheet-content"],
+    [data-slot="popover-content"],
+    [data-slot="dropdown-content"],
+    [data-slot="menubar-content"]
+  ) {
+    border: 2px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+  }
+
+  :where(
+    [data-slot="dropdown-item"]:is(:focus, :focus-visible),
+    [data-slot="menubar-item"]:is(:focus, :focus-visible),
+    [data-slot="menubar-sub-trigger"]:is(:focus, :focus-visible)
+  ) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  :where([data-slot="dialog-overlay"]) {
+    background: Canvas;
+    opacity: 0.75;
+    backdrop-filter: none;
+  }
+}
