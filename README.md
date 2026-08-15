@@ -121,6 +121,26 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
+### Styling-only compatibility wrappers
+
+`DataTable`, `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle`
+are styling-only catalog compatibility wrappers. Their names do not promise a
+data-grid or panel-resizing runtime:
+
+- `DataTable` provides a `data-table` container slot. It does not sort, filter,
+  select, or paginate. Compose semantic `Table` or `VirtualTable` primitives
+  from `@askrjs/ui` and keep data operations in application-owned state.
+- `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` provide layout
+  and separator slots only. The group does not implement pointer or keyboard
+  resizing, track dimensions, or provide the ARIA value state required by an
+  interactive splitter.
+
+These names remain exported for catalog compatibility. If an application needs
+real resize behavior today, supply the pointer, keyboard, sizing, and ARIA
+contract in application code or a dedicated behavior dependency. A future Askr
+resize primitive must be implemented and tested in `@askrjs/ui` before themes
+can compose and style it.
+
 ## Theme Contract
 
 - Style public `data-*` hooks and token variables, not internal DOM structure.
