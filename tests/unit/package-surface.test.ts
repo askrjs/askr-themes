@@ -282,7 +282,7 @@ describe("package surface", () => {
 
   it("should publish the styling-only contract for catalog names that imply behavior", () => {
     ensureComponentDistArtifacts();
-    const declarations = readFileSync(join(ROOT_DIR, "dist/components.d.ts"), "utf-8");
+    const declarations = readFileSync(join(ROOT_DIR, "dist/components/catalog.d.ts"), "utf-8");
 
     const dataTableDocs = declarationDocumentation(declarations, "DataTable");
     expect(dataTableDocs).toContain("Styling-only");
