@@ -26,6 +26,24 @@ Those wrappers are visual composition. They arrange or style existing controls,
 but they do not own the interaction model. That makes them a good fit for the
 theme package.
 
+## Styling-only compatibility wrappers
+
+Four catalog names are intentionally visual rather than behavioral:
+`DataTable`, `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle`.
+They are retained to keep the public catalog backward compatible, but they do
+not stand in for missing `@askrjs/ui` primitives.
+
+`DataTable` is a container slot and does not sort, filter, select, or paginate.
+Applications should compose the semantic `Table` or `VirtualTable` primitives
+from `@askrjs/ui` and own their data state explicitly. The resizable wrappers
+are layout/separator slots; the group does not implement pointer or keyboard
+resizing, dimension state, or interactive-splitter ARIA values. Applications
+that need those behaviors must provide a complete behavior implementation.
+
+Do not add behavior-looking props to these wrappers. If Askr gains a resizable
+primitive, implement its state, pointer and keyboard interaction, focus, ARIA,
+and browser regressions in `@askrjs/ui`; themes may then re-export and style it.
+
 ## Adding A New Component
 
 When a surface needs behavior:

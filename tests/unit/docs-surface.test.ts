@@ -67,9 +67,9 @@ describe("docs surface", () => {
   });
 
   it("should distinguish styling-only catalog compatibility names from behavior primitives", () => {
-    const docs = [readFileSync(README, "utf-8"), readFileSync(ARCHITECTURE_DOC, "utf-8")].join(
-      "\n",
-    );
+    const docs = [readFileSync(README, "utf-8"), readFileSync(ARCHITECTURE_DOC, "utf-8")]
+      .join("\n")
+      .replace(/\s+/gu, " ");
 
     expect(docs).toContain("Styling-only compatibility wrappers");
     expect(docs).toContain("DataTable");
