@@ -6,6 +6,11 @@ import { styleDeclarationsToClass } from "../_internal/style";
 import { intrinsicElement } from "../_internal/jsx";
 import type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio.types";
 
+/**
+ * Constrains its content to a fixed width/height ratio (defaults to `1`)
+ * using a computed `aspect-ratio` style, rendering as a `<div>` or, with
+ * `asChild`, merging its layout into the single child element.
+ */
 export function AspectRatio(props: AspectRatioProps): JSX.Element;
 export function AspectRatio(props: AspectRatioAsChildProps): JSX.Element;
 export function AspectRatio(props: AspectRatioProps | AspectRatioAsChildProps) {

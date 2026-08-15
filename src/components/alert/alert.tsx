@@ -11,6 +11,11 @@ function resolveAlertRole(variant: AlertProps["variant"] | undefined): "alert" |
   return "status";
 }
 
+/**
+ * Renders an alert/status banner with an optional icon, title, description,
+ * actions, and a dismiss button. Automatically picks an "alert" or "status"
+ * ARIA role from `variant` unless `role` is set explicitly.
+ */
 export function Alert(props: AlertProps): JSX.Element {
   const {
     actions,

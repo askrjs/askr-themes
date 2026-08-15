@@ -9,6 +9,7 @@ import type {
   InputGroupTextProps,
 } from "./input-group.types";
 
+/** Groups related inputs/addons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default. */
 export function InputGroup(props: InputGroupProps): JSX.Element {
   const {
     attached = true,
@@ -39,6 +40,7 @@ export function InputGroup(props: InputGroupProps): JSX.Element {
   );
 }
 
+/** Renders static text/label content within an {@link InputGroup}. */
 export function InputGroupText(props: InputGroupTextProps): JSX.Element;
 export function InputGroupText(props: InputGroupTextAsChildProps): JSX.Element;
 export function InputGroupText(

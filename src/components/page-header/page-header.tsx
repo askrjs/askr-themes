@@ -2,6 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { PageHeaderProps } from "./page-header.types";
 
+/** Page-level header with a title, optional description, and an actions row that wraps to a new line on small screens. */
 export function PageHeader(props: PageHeaderProps): JSX.Element {
   const { title, description, actions, ...rest } = props;
 
