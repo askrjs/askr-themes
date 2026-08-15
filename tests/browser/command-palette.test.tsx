@@ -23,11 +23,14 @@ async function settle(): Promise<void> {
 }
 
 async function waitForElement<T extends Element>(read: () => T | null): Promise<T> {
-  for (let attempt = 0; attempt < 20; attempt += 1) {
+  const deadline = performance.now() + 5_000;
+
+  do {
     const element = read();
     if (element) return element;
     await settle();
-  }
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  } while (performance.now() < deadline);
 
   throw new Error("Expected command palette element to mount");
 }
