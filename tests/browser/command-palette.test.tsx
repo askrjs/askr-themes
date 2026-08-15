@@ -107,10 +107,26 @@ describe("CommandPalette", () => {
     expect(link.parentElement?.parentElement?.tagName).toBe("UL");
     expect(document.activeElement).toBe(input);
 
-    await userEvent.tab({ shift: true });
-    await waitForElement(() => (document.activeElement === link ? link : null));
-    await userEvent.tab();
-    await waitForElement(() => (document.activeElement === input ? input : null));
+    input.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Tab",
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+    await waitForElement(() => {
+      const currentLink = document.body.querySelector('[role="dialog"] a');
+      return currentLink && document.activeElement === currentLink ? currentLink : null;
+    });
+    const currentLink = document.body.querySelector('[role="dialog"] a') as HTMLAnchorElement;
+    currentLink.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Tab", bubbles: true, cancelable: true }),
+    );
+    await waitForElement(() => {
+      const currentInput = document.body.querySelector('[role="dialog"] input');
+      return currentInput && document.activeElement === currentInput ? currentInput : null;
+    });
 
     await userEvent.keyboard("{Escape}");
     await settle();
