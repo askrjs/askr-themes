@@ -165,15 +165,19 @@
 
 :where(
   [data-slot="menubar-item"]:hover > :where([data-slot="icon"], svg),
-  [data-slot="menubar-item"]:focus-visible > :where([data-slot="icon"], svg),
+  [data-slot="menubar-item"]:is(:focus, :focus-visible) > :where([data-slot="icon"], svg),
   [data-slot="menubar-sub-trigger"]:hover > :where([data-slot="icon"], svg),
-  [data-slot="menubar-sub-trigger"]:focus-visible > :where([data-slot="icon"], svg)
+  [data-slot="menubar-sub-trigger"]:is(:focus, :focus-visible) > :where([data-slot="icon"], svg)
 ) {
   color: currentColor;
 }
 
-:where([data-slot="menubar-item"]:focus-visible, [data-slot="menubar-sub-trigger"]:focus-visible) {
-  outline: none;
+:where(
+  [data-slot="menubar-item"]:is(:focus, :focus-visible),
+  [data-slot="menubar-sub-trigger"]:is(:focus, :focus-visible)
+) {
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: calc(-1 * var(--ak-focus-ring-width));
   background: var(--ak-color-hover);
   color: var(--ak-color-text);
   box-shadow: none;

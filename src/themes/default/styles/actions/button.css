@@ -288,3 +288,10 @@
   min-inline-size: var(--_button-height);
   padding-inline: 0;
 }
+
+/* Keep the focus contract last so variant box-shadow resets cannot hide it. */
+:where(.btn, .btn-close, [data-slot="button"]):focus-visible {
+  outline: none;
+  border-color: var(--ak-color-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
