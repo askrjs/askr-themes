@@ -96,6 +96,16 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => requestAnimationFrame(resolve));
 }
 
+async function waitForElement<T extends Element>(read: () => T | null): Promise<T> {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const element = read();
+    if (element) return element;
+    await settle();
+  }
+
+  throw new Error("Expected accessibility test element to reach its observable state");
+}
+
 describe("default-theme accessibility visual states", () => {
   let container: HTMLDivElement;
 
@@ -247,10 +257,12 @@ describe("default-theme accessibility visual states", () => {
 
       await userEvent.click(page.getByRole("button", { name: "Open menu" }));
       await userEvent.keyboard("{Home}");
-      await settle();
-      const menu = document.body.querySelector<HTMLElement>('[aria-label="Contrast menu"]')!;
-      const focused = menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]:focus')!;
-      expect(focused).not.toBeNull();
+      const menu = await waitForElement(() =>
+        document.body.querySelector<HTMLElement>('[aria-label="Contrast menu"]'),
+      );
+      const focused = await waitForElement(() =>
+        menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]:focus'),
+      );
       const focusStyles = getComputedStyle(focused);
       const menuColor = parseColor(getComputedStyle(menu).backgroundColor);
       const indicator = parseColor(focusStyles.outlineColor);
