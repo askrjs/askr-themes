@@ -16,6 +16,35 @@ function removeStyleRegistries(): void {
   }
 }
 
+function cssCommentInjectionCases(): string[] {
+  let state = 0x64c55a1;
+  const nextToken = (): string => {
+    state ^= state << 13;
+    state ^= state >>> 17;
+    state ^= state << 5;
+    return (state >>> 0).toString(36);
+  };
+  const cases: string[] = [];
+
+  for (let index = 0; index < 24; index += 1) {
+    const prefix = nextToken();
+    const suffix = nextToken();
+    for (const delimiter of ["/*", "*/"]) {
+      cases.push(
+        `${delimiter}${suffix}`,
+        `${prefix}${delimiter}${suffix}`,
+        `${prefix}${delimiter}`,
+        `"${prefix}${delimiter}${suffix}"`,
+        `${prefix} ${delimiter} ${suffix}`,
+        `${prefix}${delimiter}${delimiter}${suffix}`,
+      );
+    }
+    cases.push(`${prefix}/*nested*/${suffix}`);
+  }
+
+  return cases;
+}
+
 function renderWithoutBrowserDocument(registry: ReturnType<typeof createRouteRegistry>): string {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, "document");
   Object.defineProperty(globalThis, "document", {
@@ -47,6 +76,23 @@ afterEach(() => {
 });
 
 describe("generated theme style hydration", () => {
+  it("should reject generated CSS comment-delimiter injections without mutating the shared registry", () => {
+    removeStyleRegistries();
+
+    for (const [index, value] of cssCommentInjectionCases().entries()) {
+      expect(styleDeclarationsToClass(`--ak-fuzz-${index}:${value}`), value).toBeUndefined();
+    }
+
+    expect(document.querySelector("style[data-askr-style-registry]")).toBeNull();
+    expect(styleDeclarationsToClass("color:blue")).toMatch(/^ak-style-/);
+    expect(document.querySelector("style[data-askr-style-registry]")?.textContent).toContain(
+      "color:blue",
+    );
+    expect(document.querySelector("style[data-askr-style-registry]")?.textContent).not.toContain(
+      "nested",
+    );
+  });
+
   it("should reject a new rule before exceeding the registry capacity", () => {
     removeStyleRegistries();
 

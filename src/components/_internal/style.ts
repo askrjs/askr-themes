@@ -4,6 +4,7 @@ const cssPropertyNameCache = new Map<string, string>();
 const MAX_PROPERTY_CACHE = 256;
 
 const CSS_UNSAFE_RE = /[{}<>\\]/;
+const CSS_COMMENT_DELIMITER_RE = /\/\*|\*\//;
 const CSS_URI_SCHEME_RE = /(?:^|[\s(,])([a-z][a-z0-9+.-]*):/i;
 const CSS_FUNCTION_NAME_RE = /([a-z-][a-z0-9-]*)\s*\(/gi;
 const CSS_ALLOWED_FUNCTIONS = new Set([
@@ -57,7 +58,13 @@ function isSafeCssPropertyName(name: string): boolean {
 }
 
 function isSafeCssValue(value: string): boolean {
-  if (CSS_UNSAFE_RE.test(value) || CSS_URI_SCHEME_RE.test(value)) return false;
+  if (
+    CSS_UNSAFE_RE.test(value) ||
+    CSS_COMMENT_DELIMITER_RE.test(value) ||
+    CSS_URI_SCHEME_RE.test(value)
+  ) {
+    return false;
+  }
 
   for (const match of value.matchAll(CSS_FUNCTION_NAME_RE)) {
     if (!CSS_ALLOWED_FUNCTIONS.has(match[1]!.toLowerCase())) return false;
