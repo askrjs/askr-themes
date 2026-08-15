@@ -136,6 +136,13 @@ function hasModuleBinding(bindings: ReadonlySet<string>, name: string): boolean 
   return bindings.has(name) || bindings.has(WILDCARD_MODULE_BINDING);
 }
 
+function declarationDocumentation(source: string, component: string): string {
+  const declarationOffset = source.indexOf(`declare function ${component}`);
+  if (declarationOffset < 0) return "";
+  const documentationOffset = source.lastIndexOf("/**", declarationOffset);
+  return source.slice(documentationOffset, declarationOffset);
+}
+
 describe("package surface", () => {
   it("should retain the renderer and UI baselines required by reactive visual guards", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
@@ -270,6 +277,21 @@ describe("package surface", () => {
           `${artifact} should not source ${component} from @askrjs/ui`,
         ).toBe(false);
       }
+    }
+  }, 30_000);
+
+  it("should publish the styling-only contract for catalog names that imply behavior", () => {
+    ensureComponentDistArtifacts();
+    const declarations = readFileSync(join(ROOT_DIR, "dist/components.d.ts"), "utf-8");
+
+    const dataTableDocs = declarationDocumentation(declarations, "DataTable");
+    expect(dataTableDocs).toContain("Styling-only");
+    expect(dataTableDocs).toContain("does not sort, filter, select, or paginate");
+
+    for (const component of ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"]) {
+      const docs = declarationDocumentation(declarations, component);
+      expect(docs, component).toContain("Styling-only");
+      expect(docs, component).toContain("does not implement resizing");
     }
   }, 30_000);
 
