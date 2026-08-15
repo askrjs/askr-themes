@@ -435,7 +435,10 @@ export function CommandShortcut(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "command-shortcut", element: "span" });
 }
 
-/** Renders the `data-table` part of the shadcn-compatible catalog primitives. */
+/**
+ * Styling-only container for the `data-table` catalog slot. It does not sort, filter, select, or paginate data.
+ * Compose semantic `Table`/`VirtualTable` primitives with application-owned data state for those behaviors.
+ */
 export function DataTable(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "data-table" });
 }
@@ -729,17 +732,20 @@ export function PaginationEllipsis(props: CatalogComponentProps): JSX.Element {
   );
 }
 
-/** Renders the `resizable-panel-group` part of the shadcn-compatible catalog primitives. */
+/**
+ * Styling-only container for the `resizable-panel-group` catalog slot. It does not implement resizing.
+ * Consumers own pointer, keyboard, sizing, and ARIA state until a behavior primitive exists in `@askrjs/ui`.
+ */
 export function ResizablePanelGroup(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "resizable-panel-group" });
 }
 
-/** Renders the `resizable-panel` part of the shadcn-compatible catalog primitives. */
+/** Styling-only `resizable-panel` slot; it does not implement resizing or manage panel dimensions. */
 export function ResizablePanel(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "resizable-panel" });
 }
 
-/** Renders the `resizable-handle` part of the shadcn-compatible catalog primitives. */
+/** Styling-only separator slot; it does not implement resizing, pointer dragging, or keyboard controls. */
 export function ResizableHandle(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "resizable-handle", role: "separator" });
 }
