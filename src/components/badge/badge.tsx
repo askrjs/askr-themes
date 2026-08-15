@@ -9,6 +9,7 @@ function normalizeBadgeVariant(variant: BadgeProps["variant"] | undefined) {
   return variant && variant !== "default" ? `badge-${variant}` : undefined;
 }
 
+/** Renders a small status/label badge, defaulting to a `<span>` (or merging onto a child via `asChild`), with a `variant` color modifier. */
 export function Badge(props: BadgeProps): JSX.Element;
 export function Badge(props: BadgeAsChildProps): JSX.Element;
 export function Badge(props: BadgeProps | BadgeAsChildProps) {

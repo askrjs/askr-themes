@@ -39,6 +39,7 @@ function sidebarPart(
   return intrinsicElement(String(as ?? element), finalProps, children);
 }
 
+/** Root `<aside>` sidebar layout with configurable width, side, collapse behavior, and visual variant, exposed as data attributes for CSS. */
 export function Sidebar(props: SidebarProps): JSX.Element {
   const {
     children,
@@ -70,46 +71,57 @@ export function Sidebar(props: SidebarProps): JSX.Element {
   );
 }
 
+/** Scoping wrapper that establishes the sidebar's CSS/context boundary. */
 export function SidebarScope(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-scope");
 }
 
+/** Renders the `<main>` content area beside the {@link Sidebar}. */
 export function SidebarInset(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-inset", "main");
 }
 
+/** Renders the scrollable content region of a {@link Sidebar}. */
 export function SidebarContent(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-content");
 }
 
+/** Renders the header region of a {@link Sidebar}. */
 export function SidebarHeader(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-header");
 }
 
+/** Renders the footer region of a {@link Sidebar}. */
 export function SidebarFooter(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-footer");
 }
 
+/** Groups related {@link SidebarMenu} items together. */
 export function SidebarGroup(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-group");
 }
 
+/** Renders the label for a {@link SidebarGroup}. */
 export function SidebarGroupLabel(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-group-label");
 }
 
+/** Renders the content region of a {@link SidebarGroup}. */
 export function SidebarGroupContent(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-group-content");
 }
 
+/** Renders a `<ul>` list of {@link SidebarMenuItem}s. */
 export function SidebarMenu(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-menu", "ul");
 }
 
+/** Renders a single `<li>` entry within a {@link SidebarMenu}. */
 export function SidebarMenuItem(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-menu-item", "li");
 }
 
+/** Clickable menu button within a {@link SidebarMenuItem}; supports `active`/`size`/`variant` state and an optional tooltip. */
 export function SidebarMenuButton(props: SidebarButtonProps): JSX.Element {
   const {
     active,
@@ -143,6 +155,7 @@ export function SidebarMenuButton(props: SidebarButtonProps): JSX.Element {
   );
 }
 
+/** Renders a secondary action button attached to a {@link SidebarMenuItem}, with an optional tooltip. */
 export function SidebarMenuAction(props: SidebarButtonProps): JSX.Element {
   const {
     asChild,
@@ -166,10 +179,12 @@ export function SidebarMenuAction(props: SidebarButtonProps): JSX.Element {
   );
 }
 
+/** Renders a status badge attached to a {@link SidebarMenuItem}. */
 export function SidebarMenuBadge(props: SidebarPartProps): JSX.Element {
   return sidebarPart(props, "sidebar-menu-badge", "span");
 }
 
+/** Renders a draggable/clickable rail along the sidebar's edge for resizing or toggling it. */
 export function SidebarRail(props: SidebarButtonProps): JSX.Element {
   const { asChild, children, class: className, type = "button", ...rest } = props;
   const finalProps = mergeProps(normalizeAriaProps(rest), {
@@ -184,6 +199,7 @@ export function SidebarRail(props: SidebarButtonProps): JSX.Element {
   );
 }
 
+/** Icon button that toggles the {@link Sidebar}'s open/collapsed state, with an optional tooltip. */
 export function SidebarTrigger(props: SidebarButtonProps): JSX.Element {
   const {
     asChild,

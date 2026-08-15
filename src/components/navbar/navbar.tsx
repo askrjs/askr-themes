@@ -41,6 +41,11 @@ function hasRenderableChildren(children: readonly unknown[]): boolean {
   });
 }
 
+/**
+ * Horizontal navigation bar. Below `collapseAt`/`breakpoint`, non-brand
+ * children are grouped behind a collapsible toggle so brand content stays
+ * visible while the rest collapses on small screens.
+ */
 export function Navbar(props: NavbarProps): JSX.Element {
   const {
     breakpoint,
@@ -106,6 +111,7 @@ export function Navbar(props: NavbarProps): JSX.Element {
   );
 }
 
+/** Renders the brand/logo slot of a {@link Navbar}; excluded from the collapsible section. */
 export function NavBrand(props: NavBrandProps): JSX.Element {
   const { children, ...rest } = props;
 
@@ -123,6 +129,7 @@ export function NavBrand(props: NavBrandProps): JSX.Element {
   );
 }
 
+/** Groups related {@link Navbar} items under an optional label. */
 export function NavGroup(props: NavGroupProps): JSX.Element {
   const { align, children, label, title = label, ...rest } = props;
 
@@ -136,6 +143,7 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
   );
 }
 
+/** Renders a dropdown menu triggered from within a {@link Navbar}. */
 export function NavDropdown(props: NavDropdownProps): JSX.Element {
   const { align = "end", children, label, side = "bottom", sideOffset = 6, ...rest } = props;
 

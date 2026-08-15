@@ -159,26 +159,31 @@ function renderRoutedLink(
   );
 }
 
+/** Renders a `<nav>` wrapper (or, with `asChild`, merges onto a child) for a set of {@link Tab} links. */
 export function Tabs(props: TabsProps): JSX.Element;
 export function Tabs(props: TabsAsChildProps): JSX.Element;
 export function Tabs(props: TabsProps | TabsAsChildProps): JSX.Element {
   return renderNavSet(props, "tabs");
 }
 
+/** Renders a `<nav>` wrapper (or, with `asChild`, merges onto a child) for a set of {@link Pill} links. */
 export function Pills(props: PillsProps): JSX.Element;
 export function Pills(props: PillsAsChildProps): JSX.Element;
 export function Pills(props: PillsProps | PillsAsChildProps): JSX.Element {
   return renderNavSet(props, "pills");
 }
 
+/** A router-aware link styled as a tab, auto-marked active by matching the current route (see {@link NavLinkProps.match}). */
 export function Tab(props: TabProps): JSX.Element {
   return renderRoutedLink(props, "tab", { className: "tab" });
 }
 
+/** A router-aware link styled as a pill, auto-marked active by matching the current route, with an active background highlight. */
 export function Pill(props: PillProps): JSX.Element {
   return renderRoutedLink(props, "pill", { activeBackground: true, className: "pill" });
 }
 
+/** A generic navigation item, rendered as an `<a>` (or, with `asChild`, merged onto a child), highlighted when `active`. */
 export function NavItem(props: NavItemProps): JSX.Element;
 export function NavItem(props: NavItemAsChildProps): JSX.Element;
 export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element {
@@ -230,6 +235,7 @@ export function NavItem(props: NavItemProps | NavItemAsChildProps): JSX.Element 
   );
 }
 
+/** A router-aware navigation link that highlights itself when its route matches the current location. */
 export function NavLink(props: NavLinkProps): JSX.Element {
   return renderRoutedLink(props, "nav-item", { activeBackground: true, inheritSlot: true });
 }

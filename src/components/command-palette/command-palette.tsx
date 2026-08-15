@@ -39,6 +39,11 @@ function readCommandPaletteContext(): CommandPaletteContextValue {
   return context;
 }
 
+/**
+ * Root dialog wrapper for a searchable command palette. Manages open state
+ * (controlled or uncontrolled), tracks the triggering element, and restores
+ * focus to it after the palette closes.
+ */
 export function CommandPalette(props: CommandPaletteProps): JSX.Element {
   const { children, defaultOpen = false, onOpenChange, open, ...rest } = props;
   const openState = controllableState({
@@ -96,6 +101,7 @@ export function CommandPalette(props: CommandPaletteProps): JSX.Element {
   );
 }
 
+/** Trigger that opens the {@link CommandPalette}, registering itself so focus returns here on close. */
 export function CommandPaletteTrigger(props: CommandPaletteTriggerProps): JSX.Element;
 export function CommandPaletteTrigger(props: CommandPaletteTriggerAsChildProps): JSX.Element;
 export function CommandPaletteTrigger(
@@ -119,6 +125,12 @@ function preventDismiss(event: Event, shouldDismiss: boolean): void {
   }
 }
 
+/**
+ * Dialog content for a {@link CommandPalette}: renders the overlay, an
+ * accessible (visually hidden) title/description, and a `Command` list,
+ * moving initial focus to `initialFocus` (defaults to the search input) once
+ * mounted, and optionally suppressing dismiss-on-escape/backdrop.
+ */
 export function CommandPaletteContent(props: CommandPaletteContentProps): JSX.Element {
   const palette = readCommandPaletteContext();
   const {
@@ -208,6 +220,7 @@ function composeBeforeNavigate(
   };
 }
 
+/** A navigable result row that closes the palette on selection (unless `closeOnSelect` is `false`) and supports cancelling navigation via `onBeforeNavigate`. */
 export function CommandPaletteLink(props: CommandPaletteLinkProps): JSX.Element {
   const {
     children,
@@ -232,6 +245,7 @@ export function CommandPaletteLink(props: CommandPaletteLinkProps): JSX.Element 
   );
 }
 
+/** Renders the `<ul>` list wrapper for {@link CommandPalette} results. */
 export function CommandPaletteList(props: CommandPaletteListProps): JSX.Element {
   const { children, class: className, ...rest } = props;
   return (

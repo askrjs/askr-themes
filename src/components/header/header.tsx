@@ -2,6 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { HeaderProps } from "./header.types";
 
+/** Renders a `<header>`-element {@link Block} with a surface background and bottom border, optionally sticky-positioned via `position`/`sticky`. */
 export function Header(props: HeaderProps): JSX.Element {
   const { children, position, sticky = position === "sticky", ...rest } = props;
 

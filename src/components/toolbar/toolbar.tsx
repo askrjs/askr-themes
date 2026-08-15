@@ -2,6 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { ToolbarProps } from "./toolbar.types";
 
+/** Titled toolbar row with an actions area, wrapping to a new line on small screens. */
 export function Toolbar(props: ToolbarProps): JSX.Element {
   const { title, actions, ...rest } = props;
 

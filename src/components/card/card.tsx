@@ -16,6 +16,7 @@ function normalizeVariant(variant: CardVariant | undefined) {
   return variant && variant !== "default" ? variant : undefined;
 }
 
+/** Root card container; applies the `card` class and an optional `variant` modifier. */
 export function Card(props: CardProps): JSX.Element {
   const { children, class: className, variant, ref, ...rest } = props;
   const normalizedVariant = normalizeVariant(variant);
@@ -30,6 +31,7 @@ export function Card(props: CardProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders the header region of a {@link Card}. */
 export function CardHeader(props: CardHeaderProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -41,6 +43,7 @@ export function CardHeader(props: CardHeaderProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders a {@link Card}'s title, defaulting to an `<h3>` (override with `titleAs`). */
 export function CardTitle(props: CardTitleProps): JSX.Element {
   const { children, class: className, ref, titleAs: TitleTag = "h3", ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -52,6 +55,7 @@ export function CardTitle(props: CardTitleProps): JSX.Element {
   return <TitleTag {...finalProps}>{children}</TitleTag>;
 }
 
+/** Renders a {@link Card}'s supporting description text. */
 export function CardDescription(props: CardDescriptionProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -63,6 +67,7 @@ export function CardDescription(props: CardDescriptionProps): JSX.Element {
   return <p {...finalProps}>{children}</p>;
 }
 
+/** Renders the main content region of a {@link Card}. */
 export function CardContent(props: CardContentProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -74,6 +79,7 @@ export function CardContent(props: CardContentProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders the footer region of a {@link Card}. */
 export function CardFooter(props: CardFooterProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -85,6 +91,7 @@ export function CardFooter(props: CardFooterProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders an action/control region of a {@link Card}, typically positioned alongside the header. */
 export function CardAction(props: CardActionProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {

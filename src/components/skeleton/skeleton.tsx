@@ -12,6 +12,7 @@ function resolveSkeletonDimension(value: string | number | undefined): string | 
   return value;
 }
 
+/** Loading placeholder block with configurable `width`/`height`, hidden from assistive tech via `aria-hidden`, rendered as a `<div>` or merged onto a child via `asChild`. */
 export function Skeleton(props: SkeletonProps): JSX.Element;
 export function Skeleton(props: SkeletonAsChildProps): JSX.Element;
 export function Skeleton(props: SkeletonProps | SkeletonAsChildProps) {

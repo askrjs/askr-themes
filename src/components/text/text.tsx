@@ -6,6 +6,7 @@ import type { TextElement, TextProps } from "./text.types";
 
 const DEFAULT_ELEMENT = "p";
 
+/** Typography primitive: renders any {@link TextElement} (default `<p>`) and turns `size`/`tone`/`weight`/`font`/`numeric`/`wrap`/`truncate` into data attributes for CSS styling. */
 export function Text<TElement extends TextElement = "p">(props: TextProps<TElement>): JSX.Element {
   const {
     as,

@@ -10,6 +10,11 @@ function DropdownContentBody(props: DropdownContentBodyProps): JSX.Element {
   return <>{props.render()}</>;
 }
 
+/**
+ * Dropdown/context-menu content wrapper around `@askrjs/ui`'s `DropdownContent`.
+ * Non-`asChild` usage lazily evaluates `children` inside a body component so
+ * they're only rendered once the dropdown is actually open.
+ */
 export function DropdownContent(props: DropdownContentProps): JSX.Element | null;
 export function DropdownContent(props: DropdownContentAsChildProps): JSX.Element | null;
 export function DropdownContent(

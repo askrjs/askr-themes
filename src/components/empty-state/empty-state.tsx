@@ -2,6 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Block } from "../block";
 import type { EmptyStateProps } from "./empty-state.types";
 
+/** Centered placeholder for empty lists/views: an icon, title (default `<h2>`), description, extra content, and an action row. */
 export function EmptyState(props: EmptyStateProps): JSX.Element {
   const { icon, title, titleAs: TitleTag = "h2", description, action, children, ...rest } = props;
 

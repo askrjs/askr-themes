@@ -2,6 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { classes } from "../_internal/classes";
 import { ButtonGroupProps } from "./button-group.types";
 
+/** Groups related buttons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default. */
 export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
   const {
     attached = true,

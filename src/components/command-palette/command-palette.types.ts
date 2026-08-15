@@ -9,10 +9,14 @@ import type {
   DialogTriggerProps,
 } from "@askrjs/ui";
 
+/** Props for the {@link CommandPalette} component. */
 export type CommandPaletteProps = DialogProps;
+/** Props for the {@link CommandPaletteTrigger} component. */
 export type CommandPaletteTriggerProps = DialogTriggerProps;
+/** Props for {@link CommandPaletteTrigger} rendered with `asChild`. */
 export type CommandPaletteTriggerAsChildProps = DialogTriggerAsChildProps;
 
+/** Props for the {@link CommandPaletteContent} component. */
 export type CommandPaletteContentProps = Omit<
   DialogContentProps,
   "children" | "title" | "onEscapeKeyDown" | "onInteractOutside" | "onPointerDownOutside"
@@ -29,11 +33,13 @@ export type CommandPaletteContentProps = Omit<
   onPointerDownOutside?: (event: PointerEvent) => void;
 };
 
+/** Props for the {@link CommandPaletteLink} component. */
 export type CommandPaletteLinkProps = LinkProps & {
   closeOnSelect?: boolean;
   onBeforeNavigate?: () => void;
 };
 
+/** Props for the {@link CommandPaletteList} component. */
 export type CommandPaletteListProps = Omit<JSX.IntrinsicElements["ul"], "children" | "ref"> & {
   children?: unknown;
   ref?: Ref<HTMLUListElement>;

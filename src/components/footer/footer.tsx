@@ -12,6 +12,7 @@ import type {
   FooterTitleProps,
 } from "./footer.types";
 
+/** Renders a `<footer>`-element {@link Block} with a muted background and top border. */
 export function Footer(props: FooterProps): JSX.Element {
   const { children, ...rest } = props;
 
@@ -22,6 +23,7 @@ export function Footer(props: FooterProps): JSX.Element {
   );
 }
 
+/** Renders the main content wrapper of a {@link Footer}. */
 export function FooterContent(props: FooterContentProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -33,6 +35,7 @@ export function FooterContent(props: FooterContentProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders a grouped section within a {@link Footer}. */
 export function FooterSection(props: FooterSectionProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -44,6 +47,7 @@ export function FooterSection(props: FooterSectionProps): JSX.Element {
   return <div {...finalProps}>{children}</div>;
 }
 
+/** Renders a section title (`<h2>`) within a {@link Footer}. */
 export function FooterTitle(props: FooterTitleProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -55,6 +59,7 @@ export function FooterTitle(props: FooterTitleProps): JSX.Element {
   return <h2 {...finalProps}>{children}</h2>;
 }
 
+/** Renders supporting description text within a {@link Footer}. */
 export function FooterDescription(props: FooterDescriptionProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -66,6 +71,7 @@ export function FooterDescription(props: FooterDescriptionProps): JSX.Element {
   return <p {...finalProps}>{children}</p>;
 }
 
+/** Renders a `<nav>` wrapper for a group of {@link FooterLink}s. */
 export function FooterLinks(props: FooterLinksProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -77,6 +83,7 @@ export function FooterLinks(props: FooterLinksProps): JSX.Element {
   return <nav {...finalProps}>{children}</nav>;
 }
 
+/** Renders a single link within a {@link Footer}. */
 export function FooterLink(props: FooterLinkProps): JSX.Element {
   const { children, class: className, ref, ...rest } = props;
   const finalProps = mergeProps(rest, {
