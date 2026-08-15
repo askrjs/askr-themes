@@ -128,7 +128,7 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   const ownedCoordinator = state<ThemeCoordinator>(getDefaultThemeCoordinator())();
   const coordinator = parentScope.coordinator ?? ownedCoordinator;
   const scopeDepth = parentScope.depth + 1;
-  coordinator.register(scopeId, scopeDepth, currentTheme, scopeSignal, (nextTheme) => {
+  coordinator.register(scopeId, scopeDepth, storageKey, currentTheme, scopeSignal, (nextTheme) => {
     if (themeState() !== nextTheme) themeState.set(nextTheme);
   });
 
@@ -235,6 +235,7 @@ function createThemeCoordinator() {
     symbol,
     {
       depth: number;
+      identity: string;
       sequence: number;
       theme: ThemeName;
       signal: AbortSignal;
@@ -296,6 +297,7 @@ function createThemeCoordinator() {
     register(
       id: symbol,
       depth: number,
+      identity: string,
       themeName: ThemeName,
       signal: AbortSignal,
       onThemeChange: (themeName: ThemeName) => void,
@@ -303,6 +305,7 @@ function createThemeCoordinator() {
       const existing = scopes.get(id);
       scopes.set(id, {
         depth,
+        identity,
         sequence: existing?.sequence ?? nextSequence++,
         theme: themeName,
         signal,
@@ -326,8 +329,13 @@ function createThemeCoordinator() {
       if (scope) scope.theme = themeName;
       explicitOwner = id;
       const ownerDepth = scope?.depth;
+      const ownerIdentity = scope?.identity;
       for (const [scopeId, registered] of scopes) {
-        if (scopeId !== id && registered.depth === ownerDepth) {
+        if (
+          scopeId !== id &&
+          registered.depth === ownerDepth &&
+          registered.identity === ownerIdentity
+        ) {
           registered.theme = themeName;
           registered.onThemeChange(themeName);
         }
