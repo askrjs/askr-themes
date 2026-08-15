@@ -234,7 +234,30 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   // Link on backgrounds
   ["--ak-color-link", "--ak-color-bg", 3, "link on bg"],
   ["--ak-color-link", "--ak-color-surface", 3, "link on surface"],
+
+  // Canonical semantic pairings. These are public token contracts, not
+  // component-specific approximations.
+  ["--ak-color-text-subtle", "--ak-color-surface", 4.5, "subtle text on surface"],
+  ["--ak-color-border-strong", "--ak-color-surface", 3, "strong border on surface"],
+  ["--ak-color-warning", "--ak-color-surface", 3, "warning UI on surface"],
+  ["--ak-color-info", "--ak-color-surface", 3, "info UI on surface"],
+
+  // The one shared focus-ring token must remain visible on every documented
+  // surface where a default-theme control can appear.
+  ["--ak-color-focus-ring", "--ak-color-bg", 3, "focus ring on page"],
+  ["--ak-color-focus-ring", "--ak-color-surface", 3, "focus ring on surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-muted", 3, "focus ring on muted surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
+  ["--ak-color-focus-ring", "--ak-color-primary", 3, "focus ring on primary surface"],
 ];
+
+const ELEVATION_LAYERS = [
+  "--ak-color-bg",
+  "--ak-color-surface",
+  "--ak-color-surface-raised",
+  "--ak-color-surface-overlay",
+] as const;
 
 describe("WCAG AA contrast", () => {
   for (const theme of OFFICIAL_THEMES) {
@@ -279,7 +302,10 @@ describe("WCAG AA contrast", () => {
               // Composite semi-transparent bg over page background
               const baseBg = pageBg ?? ([255, 255, 255, 1] as [number, number, number, number]);
               const bg = resolveToOpaque(bgParsed, baseBg);
-              const fg: [number, number, number] = [fgParsed[0], fgParsed[1], fgParsed[2]];
+              // A translucent foreground is the color users actually see
+              // after it composites over the surface. Ignoring alpha here
+              // would allow an invisible focus ring to pass.
+              const fg = resolveToOpaque(fgParsed, [...bg, 1]);
 
               const ratio = contrastRatio(fg, bg);
               expect(
@@ -288,6 +314,20 @@ describe("WCAG AA contrast", () => {
               ).toBeGreaterThanOrEqual(minRatio);
             });
           }
+
+          it("should keep the documented elevation layers visually distinct", () => {
+            const resolvedLayers = ELEVATION_LAYERS.map((token) => {
+              const value = tokens.get(token);
+              if (!value) throw new Error(`Missing elevation token: ${token}`);
+              const parsed = parseColor(resolveTokenValue(value, tokenValues));
+              if (!parsed) throw new Error(`Unsupported elevation color: ${token} (${value})`);
+              return resolveToOpaque(parsed, pageBg ?? [255, 255, 255, 1]);
+            });
+
+            expect(
+              new Set(resolvedLayers.map((color) => color.map(Math.round).join(","))).size,
+            ).toBe(ELEVATION_LAYERS.length);
+          });
         });
       }
     });

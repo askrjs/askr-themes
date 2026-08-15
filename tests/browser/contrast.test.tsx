@@ -18,6 +18,16 @@ const PAIRS: readonly [string, string, number][] = [
   ["--ak-color-info-ink", "--ak-color-info-soft", 3],
   ["--ak-color-primary-ink", "--ak-color-primary-soft", 3],
   ["--ak-color-link", "--ak-color-bg", 3],
+  ["--ak-color-text-subtle", "--ak-color-surface", 4.5],
+  ["--ak-color-border-strong", "--ak-color-surface", 3],
+  ["--ak-color-warning", "--ak-color-surface", 3],
+  ["--ak-color-info", "--ak-color-surface", 3],
+  ["--ak-color-focus-ring", "--ak-color-bg", 3],
+  ["--ak-color-focus-ring", "--ak-color-surface", 3],
+  ["--ak-color-focus-ring", "--ak-color-surface-muted", 3],
+  ["--ak-color-focus-ring", "--ak-color-surface-raised", 3],
+  ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3],
+  ["--ak-color-focus-ring", "--ak-color-primary", 3],
 ];
 
 const THEMES = ["light", "dark", "ginger", "tabby", "tuxedo", "calico", "torty"] as const;
