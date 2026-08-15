@@ -22,6 +22,8 @@ const THEME_STORAGE_KEYS = [
   "askr-theme-empty",
   "askr-theme-nested",
   "askr-theme-blocked",
+  "askr-theme-cross-root-a",
+  "askr-theme-cross-root-b",
   "askr-theme-remount-first",
   "askr-theme-remount-second",
 ] as const;
@@ -324,6 +326,63 @@ describe("theme contracts", () => {
       expect(second.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
         "dark",
       );
+    } finally {
+      cleanupApp(first);
+      cleanupApp(second);
+      first.remove();
+      second.remove();
+    }
+  });
+
+  it("should isolate same-depth independent roots given distinct theme storage identities", async () => {
+    const first = document.createElement("div");
+    const second = document.createElement("div");
+    document.body.append(first, second);
+    const FirstApp = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-cross-root-a">
+        <ThemeToggle aria-label="Toggle first theme" />
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    const SecondApp = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-cross-root-b">
+        <ThemeToggle aria-label="Toggle second theme" />
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", FirstApp);
+    const firstRegistry = createTestRegistry();
+    resetTestRoutes();
+    testRoute("/theme", SecondApp);
+    const secondRegistry = createTestRegistry();
+
+    const probeTheme = (root: HTMLElement) =>
+      root.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme");
+
+    try {
+      await createSPA({ root: first, registry: firstRegistry });
+      await createSPA({ root: second, registry: secondRegistry });
+      await settle();
+
+      (first.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
+      await settle();
+
+      expect(probeTheme(first)).toBe("dark");
+      expect(probeTheme(second)).toBe("light");
+      expect(window.localStorage.getItem("askr-theme-cross-root-a")).toBe("dark");
+      expect(window.localStorage.getItem("askr-theme-cross-root-b")).toBeNull();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+
+      (second.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
+      await settle();
+      (first.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
+      await settle();
+
+      expect(probeTheme(first)).toBe("light");
+      expect(probeTheme(second)).toBe("dark");
+      expect(window.localStorage.getItem("askr-theme-cross-root-a")).toBe("light");
+      expect(window.localStorage.getItem("askr-theme-cross-root-b")).toBe("dark");
+      expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     } finally {
       cleanupApp(first);
       cleanupApp(second);
