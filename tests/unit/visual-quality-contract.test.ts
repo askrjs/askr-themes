@@ -141,6 +141,12 @@ describe("visual quality contract", () => {
     expect(buttonCss).toContain("font-weight: var(--ak-font-weight-medium);");
     expect(buttonCss).toContain("box-shadow: 0 0 0 var(--ak-focus-ring-width)");
     expect(buttonCss).toContain("opacity: 0.5;");
+    expect(buttonCss).toContain(
+      "--_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm));",
+    );
+    expect(buttonCss).not.toContain(
+      "--_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-icon-size",
+    );
 
     expect(inputCss).toContain("min-height: var(--_input-height);");
     expect(inputCss).toContain("background: transparent;");

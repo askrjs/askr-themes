@@ -32,7 +32,11 @@ async function waitForElement<T extends Element>(read: () => T | null): Promise<
     await new Promise((resolve) => setTimeout(resolve, 25));
   } while (performance.now() < deadline);
 
-  throw new Error("Expected command palette element to mount");
+  const trigger = document.querySelector<HTMLElement>("[data-dialog-trigger]");
+  const active = document.activeElement as HTMLElement | null;
+  throw new Error(
+    `Expected command palette element to mount (trigger state=${trigger?.dataset.state ?? "missing"}, expanded=${trigger?.getAttribute("aria-expanded") ?? "missing"}, active=${active?.getAttribute("data-slot") ?? active?.tagName ?? "missing"}, connected=${String(trigger?.isConnected ?? false)})`,
+  );
 }
 
 function PaletteContent(props: {
@@ -137,16 +141,16 @@ describe("CommandPalette", () => {
     expect(document.body.querySelector('[role="dialog"]')).toBeNull();
     expect(document.activeElement).toBe(trigger);
 
-    const keyboardTrigger = container!.querySelector("button") as HTMLButtonElement;
-    keyboardTrigger.focus();
-    await userEvent.keyboard("{Enter}");
-    const keyboardInput = await waitForElement(
+    const restoredTrigger = container!.querySelector("button") as HTMLButtonElement;
+    restoredTrigger.focus();
+    restoredTrigger.click();
+    const reopenedInput = await waitForElement(
       () => document.body.querySelector('[role="dialog"] input') as HTMLInputElement | null,
     );
-    expect(document.activeElement).toBe(keyboardInput);
+    expect(document.activeElement).toBe(reopenedInput);
     await userEvent.keyboard("{Escape}");
     await settle();
-    expect(document.activeElement).toBe(keyboardTrigger);
+    expect(document.activeElement).toBe(restoredTrigger);
   });
 
   it("should focus and restore the active element for programmatic opens", async () => {

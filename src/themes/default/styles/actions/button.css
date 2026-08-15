@@ -37,7 +37,7 @@
 }
 
 :where([data-slot="theme-toggle-content"]) {
-  --_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em));
+  --_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm));
   display: inline-flex;
   align-items: center;
   justify-content: center;

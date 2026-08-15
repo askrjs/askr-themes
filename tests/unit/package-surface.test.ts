@@ -20,6 +20,7 @@ import {
 
 const DEFAULT_INDEX = DEFAULT_THEME_INDEX_FILE;
 const TEMPLATE_INDEX = TEMPLATE_THEME_INDEX_FILE;
+const PACKAGE_LOCK = join(ROOT_DIR, "package-lock.json");
 const COMPONENT_EXPORT_TARGET = {
   types: "./dist/components.d.ts",
   import: "./dist/components.js",
@@ -136,6 +137,23 @@ function hasModuleBinding(bindings: ReadonlySet<string>, name: string): boolean 
 }
 
 describe("package surface", () => {
+  it("should retain the renderer and UI baselines required by reactive visual guards", () => {
+    const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
+      devDependencies?: Record<string, string>;
+      peerDependencies?: Record<string, string>;
+    };
+    const lock = JSON.parse(readFileSync(PACKAGE_LOCK, "utf-8")) as {
+      packages?: Record<string, { version?: string }>;
+    };
+
+    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.0.92 <0.1.0");
+    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.0.92 <0.1.0");
+    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.0.30 <0.1.0");
+    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.0.30 <0.1.0");
+    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.0.92");
+    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.0.30");
+  });
+
   it("should expose the styled component catalog from the aggregate entrypoint", () => {
     const namespace = components as Record<string, unknown>;
 

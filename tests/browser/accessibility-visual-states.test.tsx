@@ -256,10 +256,10 @@ describe("default-theme accessibility visual states", () => {
       await settle();
 
       await userEvent.click(page.getByRole("button", { name: "Open menu" }));
-      await userEvent.keyboard("{Home}");
       const menu = await waitForElement(() =>
         document.body.querySelector<HTMLElement>('[aria-label="Contrast menu"]'),
       );
+      await userEvent.keyboard("{Home}");
       const focused = await waitForElement(() =>
         menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]:focus'),
       );
