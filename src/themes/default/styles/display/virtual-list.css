@@ -38,3 +38,9 @@
 :where([data-slot="virtual-list-row"][data-visible="false"]) {
   color: var(--ak-color-text-muted);
 }
+
+:where([data-slot="virtual-list-spacer"]) {
+  flex: 0 0 auto;
+  inline-size: 100%;
+  pointer-events: none;
+}

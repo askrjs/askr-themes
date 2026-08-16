@@ -49,7 +49,15 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   "tabs",
   "theme-scope",
   "toast-icon",
+  // Present in current askr-ui source but not yet in every compatible published version.
+  "virtual-list-spacer",
+  "virtual-table-cell-content",
 ]);
+
+const REQUIRED_FORWARD_COMPATIBLE_UI_SLOTS = [
+  "virtual-list-spacer",
+  "virtual-table-cell-content",
+] as const;
 
 const ALLOWED_UNCOVERED_UI_SLOTS = new Set([
   "collapsible",
@@ -218,6 +226,12 @@ describe("slot coverage", () => {
       uncovered,
       `Uncovered slots (in askr-ui but not in theme): ${uncovered.join(", ")}`,
     ).toEqual([]);
+  });
+
+  it("should cover required slots from newer compatible askr-ui versions", () => {
+    for (const slot of REQUIRED_FORWARD_COMPATIBLE_UI_SLOTS) {
+      expect(themeSlots.has(slot), `Missing forward-compatible UI slot: ${slot}`).toBe(true);
+    }
   });
 
   it("should not leave stale theme-only slots", () => {

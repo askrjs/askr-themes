@@ -81,6 +81,12 @@
   background: transparent;
 }
 
+:where([data-slot="virtual-table-cell-content"]) {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+}
+
 @media (max-width: 30rem) {
   :where([data-slot="virtual-table-header-cell"], [data-slot="virtual-table-cell"]) {
     padding: var(--ak-space-sm) var(--ak-space-xs);
