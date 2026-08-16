@@ -151,12 +151,12 @@ describe("package surface", () => {
       packages?: Record<string, { version?: string }>;
     };
 
-    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.0.92 <0.1.0");
-    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.0.92 <0.1.0");
-    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.0.30 <0.1.0");
-    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.0.30 <0.1.0");
-    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.0.92");
-    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.0.30");
+    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.2.0 <0.3.0");
+    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.2.0 <0.3.0");
+    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.2.0 <0.3.0");
+    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.2.0 <0.3.0");
+    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.2.0");
+    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.2.0");
   });
 
   it("should expose the styled component catalog from the aggregate entrypoint", () => {
