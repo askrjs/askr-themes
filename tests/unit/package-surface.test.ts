@@ -51,17 +51,14 @@ const REPORTED_CATALOG_WRAPPERS = [
 ] as const;
 const COMPONENT_DIST_ARTIFACTS = ["dist/components.js", "dist/components.d.ts"] as const;
 const WILDCARD_MODULE_BINDING = "*" as const;
+let componentDistArtifactsBuilt = false;
 
 function npmCommand(): string {
   return process.platform === "win32" ? "npm.cmd" : "npm";
 }
 
 function ensureComponentDistArtifacts(): void {
-  const missingArtifacts = COMPONENT_DIST_ARTIFACTS.filter(
-    (artifact) => !existsSync(join(ROOT_DIR, artifact)),
-  );
-
-  if (missingArtifacts.length === 0) {
+  if (componentDistArtifactsBuilt) {
     return;
   }
 
@@ -70,6 +67,7 @@ function ensureComponentDistArtifacts(): void {
     shell: process.platform === "win32",
     stdio: "ignore",
   });
+  componentDistArtifactsBuilt = true;
 }
 
 function addNamedBindings(
@@ -287,6 +285,13 @@ describe("package surface", () => {
     const dataTableDocs = declarationDocumentation(declarations, "DataTable");
     expect(dataTableDocs).toContain("Styling-only");
     expect(dataTableDocs).toContain("does not sort, filter, select, or paginate");
+
+    const entryDeclaration = readFileSync(
+      join(ROOT_DIR, "dist/entries/data-table.d.ts"),
+      "utf-8",
+    );
+    expect(entryDeclaration).toContain("Styling-only");
+    expect(entryDeclaration).toContain("does not sort");
 
     for (const component of ["ResizablePanelGroup", "ResizablePanel", "ResizableHandle"]) {
       const docs = declarationDocumentation(declarations, component);
