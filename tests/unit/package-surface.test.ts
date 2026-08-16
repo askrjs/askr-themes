@@ -286,10 +286,7 @@ describe("package surface", () => {
     expect(dataTableDocs).toContain("Styling-only");
     expect(dataTableDocs).toContain("does not sort, filter, select, or paginate");
 
-    const entryDeclaration = readFileSync(
-      join(ROOT_DIR, "dist/entries/data-table.d.ts"),
-      "utf-8",
-    );
+    const entryDeclaration = readFileSync(join(ROOT_DIR, "dist/entries/data-table.d.ts"), "utf-8");
     expect(entryDeclaration).toContain("Styling-only");
     expect(entryDeclaration).toContain("does not sort");
 
