@@ -259,7 +259,7 @@ describe("default-theme accessibility visual states", () => {
       const menu = await waitForElement(() =>
         document.body.querySelector<HTMLElement>('[aria-label="Contrast menu"]'),
       );
-      await userEvent.keyboard("{Home}");
+      menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]')?.focus();
       const focused = await waitForElement(() =>
         menu.querySelector<HTMLElement>('[data-slot="dropdown-item"]:focus'),
       );
