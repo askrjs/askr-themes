@@ -58,6 +58,7 @@ export type BlockLayoutProps = {
   align?: ResponsiveValue<BlockAlign>;
   justify?: ResponsiveValue<BlockJustify>;
   gap?: ResponsiveValue<BlockSpace>;
+  wrap?: ResponsiveValue<boolean>;
   grow?: ResponsiveValue<boolean | number>;
   shrink?: ResponsiveValue<boolean | number>;
   center?: ResponsiveValue<boolean>;
@@ -156,6 +157,7 @@ const BLOCK_LAYOUT_KEYS = new Set<keyof BlockLayoutProps>([
   "align",
   "justify",
   "gap",
+  "wrap",
   "grow",
   "shrink",
   "center",
@@ -322,6 +324,7 @@ export function applyBlockLayoutStyles(
   setResponsiveVar(styles, "align-items", props.align, resolveAlignValue);
   setResponsiveVar(styles, "justify-content", props.justify, resolveJustifyValue);
   setResponsiveVar(styles, "gap", props.gap, resolveSpaceValue);
+  setResponsiveVar(styles, "flex-wrap", props.wrap, (value) => (value ? "wrap" : "nowrap"));
   setResponsiveVar(styles, "flex-grow", props.grow, resolveFlexFlag);
   setResponsiveVar(styles, "flex-shrink", props.shrink, resolveFlexFlag);
 
