@@ -3,6 +3,8 @@ import { Slot } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 import { DialogContent, DialogDescription, DialogTitle } from "@askrjs/ui";
 import { Block } from "./block";
+import type { BlockDivProps, BlockElement, BlockResponsiveValue, BlockSpace } from "./block";
+import type { BlockLayoutProps } from "./_internal/block-layout";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
@@ -70,7 +72,70 @@ function buttonPart(props: CatalogComponentProps, slot: string, className?: stri
   );
 }
 
-function normalizeLegacySpace(value: unknown): unknown {
+type LegacySpace = BlockSpace | "none" | "1" | "2" | "3" | "4" | "5" | "6" | "8";
+
+type LegacyLayoutConveniences = {
+  gap?: BlockResponsiveValue<LegacySpace>;
+  p?: BlockResponsiveValue<LegacySpace>;
+  padding?: BlockResponsiveValue<LegacySpace>;
+  wrap?: BlockResponsiveValue<boolean>;
+};
+
+type LegacyStructuralProps = Partial<
+  Pick<
+    BlockDivProps,
+    | "children"
+    | "class"
+    | "className"
+    | "style"
+    | "ref"
+    | "id"
+    | "title"
+    | "role"
+    | "tabIndex"
+    | "hidden"
+    | "dir"
+    | "lang"
+    | "onAbort"
+    | "onBlur"
+    | "onChange"
+    | "onClick"
+    | "onDblClick"
+    | "onFocus"
+    | "onInput"
+    | "onKeyDown"
+    | "onKeyUp"
+    | "onMouseDown"
+    | "onMouseEnter"
+    | "onMouseLeave"
+    | "onMouseMove"
+    | "onMouseOut"
+    | "onMouseOver"
+    | "onMouseUp"
+    | "onPointerDown"
+    | "onPointerDownCapture"
+    | "onPointerEnter"
+    | "onPointerLeave"
+    | "onPointerMove"
+    | "onPointerUp"
+    | "onScroll"
+    | "onSubmit"
+    | "onTouchEnd"
+    | "onTouchStart"
+    | "onWheel"
+  >
+> & {
+  as?: BlockElement;
+  asChild?: boolean;
+  [attribute: `aria-${string}`]: BlockDivProps[`aria-${string}`];
+  [attribute: `data-${string}`]: BlockDivProps[`data-${string}`];
+};
+
+export type LegacyLayoutProps = Omit<BlockLayoutProps, "gap" | "padding" | "wrap"> &
+  LegacyStructuralProps &
+  LegacyLayoutConveniences;
+
+function normalizeLegacySpace(value: LegacySpace): BlockSpace {
   if (value === "none") return "0";
   if (value === "1") return "xs";
   if (value === "2") return "xs";
@@ -82,62 +147,70 @@ function normalizeLegacySpace(value: unknown): unknown {
   return value;
 }
 
-function layoutAlias(props: CatalogComponentProps, defaults: Record<string, unknown>): JSX.Element {
-  const { gap, p, padding, style, wrap, ...rest } = props as CatalogComponentProps & {
-    gap?: unknown;
-    p?: unknown;
-    padding?: unknown;
-    style?: Record<string, unknown>;
-    wrap?: boolean | string;
-  };
+function normalizeLegacyResponsiveSpace(
+  value: BlockResponsiveValue<LegacySpace> | undefined,
+): BlockResponsiveValue<BlockSpace> | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([breakpoint, space]) => [
+        breakpoint,
+        normalizeLegacySpace(space as LegacySpace),
+      ]),
+    );
+  }
+  return normalizeLegacySpace(value);
+}
+
+function layoutAlias(props: LegacyLayoutProps, defaults: Record<string, unknown>): JSX.Element {
+  const { gap, p, padding, ...rest } = props as LegacyLayoutProps & Record<string, unknown>;
   const BlockComponent = Block as (blockProps: Record<string, unknown>) => JSX.Element;
-  const wrapStyle = wrap
-    ? {
-        ...style,
-        flexWrap: "wrap",
-      }
-    : style;
 
   return (
     <BlockComponent
       {...defaults}
       {...rest}
-      gap={normalizeLegacySpace(gap)}
-      padding={padding ?? normalizeLegacySpace(p)}
-      style={wrapStyle}
+      gap={normalizeLegacyResponsiveSpace(gap)}
+      padding={normalizeLegacyResponsiveSpace(padding ?? p)}
     />
   );
 }
 
-/** Legacy `Box` layout alias for {@link Block} with no default direction. */
-export function Box(props: CatalogComponentProps): JSX.Element {
+/** @deprecated Use {@link Block} directly. */
+export function Box(props: LegacyLayoutProps): JSX.Element;
+export function Box(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias(props, {});
 }
 
-/** Legacy `Stack` layout alias for {@link Block} that defaults to a column direction. */
-export function Stack(props: CatalogComponentProps): JSX.Element {
+/** @deprecated Use `<Block direction="column">`. */
+export function Stack(props: LegacyLayoutProps): JSX.Element;
+export function Stack(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias(props, { direction: "column" });
 }
 
-/** Legacy `Inline` layout alias for {@link Block} that defaults to a row direction. */
-export function Inline(props: CatalogComponentProps): JSX.Element {
+/** @deprecated Use `<Block direction="row">`. */
+export function Inline(props: LegacyLayoutProps): JSX.Element;
+export function Inline(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias(props, { direction: "row" });
 }
 
-/** Legacy `Shell` layout alias for {@link Block}; the `variant` prop is accepted but ignored. */
-export function Shell(props: CatalogComponentProps & { variant?: unknown }): JSX.Element {
+/** @deprecated Compose semantic {@link Block} primitives instead. */
+export function Shell(props: LegacyLayoutProps & { variant?: string }): JSX.Element;
+export function Shell(props: LegacyLayoutProps & { variant?: string }): JSX.Element {
   const { variant: _variant, ...rest } = props;
   void _variant;
   return layoutAlias(rest, {});
 }
 
-/** Legacy `ShellNav` layout alias for {@link Block}. */
-export function ShellNav(props: CatalogComponentProps): JSX.Element {
+/** @deprecated Use `<Block as="nav">`. */
+export function ShellNav(props: LegacyLayoutProps): JSX.Element;
+export function ShellNav(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias(props, {});
 }
 
-/** Legacy `ShellMain` layout alias for {@link Block} that renders a growing `<main>` element. */
-export function ShellMain(props: CatalogComponentProps): JSX.Element {
+/** @deprecated Use `<Block as="main" grow>`. */
+export function ShellMain(props: LegacyLayoutProps): JSX.Element;
+export function ShellMain(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias(props, { as: "main", grow: true });
 }
 

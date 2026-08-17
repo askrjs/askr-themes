@@ -18,7 +18,7 @@
   align-items: stretch;
 }
 
-:where([data-slot="navbar"] > [data-slot="nav-group"]:not([data-align="end"])) {
+:where([data-slot="navbar"] [data-slot="nav-group"]:not([data-align="end"])) {
   grid-column: 2;
   justify-self: center;
 }
@@ -187,14 +187,15 @@
 }
 
 @media (min-width: 40rem) {
+  :where([data-slot="navbar"][data-collapse-at="sm"]) :where([data-slot="navbar-collapse"]) {
+    display: block;
+    grid-column: 2 / -1;
+    width: 100%;
+  }
+
   :where([data-slot="navbar"][data-collapse-at="sm"]) :where([data-slot="navbar-content"]) {
     display: flex;
-    grid-column: 2;
-    justify-self: center;
-    flex-basis: auto;
-    flex-direction: row;
-    align-items: center;
-    width: auto;
+    width: 100%;
   }
 
   :where([data-slot="navbar"][data-collapse-at="sm"])
@@ -214,14 +215,15 @@
 }
 
 @media (min-width: 48rem) {
+  :where([data-slot="navbar"][data-collapse-at="md"]) :where([data-slot="navbar-collapse"]) {
+    display: block;
+    grid-column: 2 / -1;
+    width: 100%;
+  }
+
   :where([data-slot="navbar"][data-collapse-at="md"]) :where([data-slot="navbar-content"]) {
     display: flex;
-    grid-column: 2;
-    justify-self: center;
-    flex-basis: auto;
-    flex-direction: row;
-    align-items: center;
-    width: auto;
+    width: 100%;
   }
 
   :where([data-slot="navbar"][data-collapse-at="md"])
@@ -241,14 +243,15 @@
 }
 
 @media (min-width: 64rem) {
+  :where([data-slot="navbar"][data-collapse-at="lg"]) :where([data-slot="navbar-collapse"]) {
+    display: block;
+    grid-column: 2 / -1;
+    width: 100%;
+  }
+
   :where([data-slot="navbar"][data-collapse-at="lg"]) :where([data-slot="navbar-content"]) {
     display: flex;
-    grid-column: 2;
-    justify-self: center;
-    flex-basis: auto;
-    flex-direction: row;
-    align-items: center;
-    width: auto;
+    width: 100%;
   }
 
   :where([data-slot="navbar"][data-collapse-at="lg"])
@@ -268,14 +271,15 @@
 }
 
 @media (min-width: 80rem) {
+  :where([data-slot="navbar"][data-collapse-at="xl"]) :where([data-slot="navbar-collapse"]) {
+    display: block;
+    grid-column: 2 / -1;
+    width: 100%;
+  }
+
   :where([data-slot="navbar"][data-collapse-at="xl"]) :where([data-slot="navbar-content"]) {
     display: flex;
-    grid-column: 2;
-    justify-self: center;
-    flex-basis: auto;
-    flex-direction: row;
-    align-items: center;
-    width: auto;
+    width: 100%;
   }
 
   :where([data-slot="navbar"][data-collapse-at="xl"])

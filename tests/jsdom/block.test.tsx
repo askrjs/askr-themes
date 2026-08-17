@@ -33,6 +33,7 @@ describe("Block", () => {
     const responsive = asElement(
       Block({
         direction: { base: "column", lg: "row" },
+        wrap: { base: true, lg: false },
         hide: { base: true, lg: false },
         children: "content",
       }),
@@ -47,6 +48,7 @@ describe("Block", () => {
 
     expect(String(responsive.props.class)).toContain("ak-style-");
     expect(responsive.props["data-ak-layout"]).toBe("true");
+    expect(responsive.props.wrap).toBeUndefined();
     expect(asChild.props["data-ak-layout"]).toBe("true");
     expect(asChild.type).toBeDefined();
   });

@@ -1,5 +1,6 @@
 import { createTestRegistry, resetTestRoutes, testRoute } from "../router-test-utils";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
+import { page } from "@vitest/browser/context";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 import { Link } from "@askrjs/askr/router";
@@ -30,23 +31,11 @@ function px(value: string): number {
   return Number.parseFloat(value.replace("px", ""));
 }
 
-function setViewport(width: number): void {
-  if (typeof window.resizeTo === "function") {
-    try {
-      window.resizeTo(width, window.innerHeight || 900);
-    } catch {
-      // Ignore browser runtimes that expose resizeTo but block it.
-    }
-  }
-
-  window.dispatchEvent(new Event("resize"));
-}
-
 describe("navbar browser smoke", () => {
   let container: HTMLDivElement | undefined;
 
-  beforeEach(() => {
-    setViewport(1200);
+  beforeEach(async () => {
+    await page.viewport(1200, 900);
     container = document.createElement("div");
     document.body.appendChild(container);
     window.history.replaceState({}, "", "/docs");
@@ -187,8 +176,49 @@ describe("navbar browser smoke", () => {
     expect(getComputedStyle(activeItem!).overflowWrap).toBe("anywhere");
   });
 
+  it("should align collapsed-navbar desktop groups to the navbar grid", async () => {
+    await page.viewport(1200, 900);
+    testRoute("/docs", () => (
+      <Navbar width="full" collapseAt="md" aria-label="Responsive app navigation">
+        <NavBrand as="a" href="/">
+          Askr
+        </NavBrand>
+        <NavGroup>
+          <NavLink href="/docs">Docs</NavLink>
+        </NavGroup>
+        <NavGroup align="end">
+          <button data-slot="button">Account</button>
+        </NavGroup>
+      </Navbar>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const navbar = container?.querySelector('[data-slot="navbar"]') as HTMLElement;
+    const content = container?.querySelector('[data-slot="navbar-content"]') as HTMLElement;
+    const primary = content.querySelector(
+      '[data-slot="nav-group"]:not([data-align="end"])',
+    ) as HTMLElement;
+    const trailing = content.querySelector(
+      '[data-slot="nav-group"][data-align="end"]',
+    ) as HTMLElement;
+    const navbarRect = navbar.getBoundingClientRect();
+    const trailingRect = trailing.getBoundingClientRect();
+
+    expect(getComputedStyle(content).display).toBe("flex");
+    expect(primary.getBoundingClientRect().left).toBeGreaterThanOrEqual(navbarRect.left);
+    expect(Math.abs(trailingRect.right - navbarRect.right)).toBeLessThanOrEqual(1);
+
+    navbar.dir = "rtl";
+    await settle();
+    expect(
+      Math.abs(trailing.getBoundingClientRect().left - navbar.getBoundingClientRect().left),
+    ).toBeLessThanOrEqual(1);
+  });
+
   it("should prevent brand content from overlapping centered routes", async () => {
-    setViewport(390);
+    await page.viewport(390, 900);
 
     testRoute("/docs", () => (
       <div style={{ width: "390px" }}>
@@ -259,7 +289,7 @@ describe("navbar browser smoke", () => {
       </>
     ));
 
-    setViewport(375);
+    await page.viewport(375, 900);
     await createSPA({ root: container!, registry: createTestRegistry() });
     await settle();
 

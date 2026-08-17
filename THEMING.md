@@ -147,7 +147,7 @@ giving up the canonical `data-slot` contract.
 Responsive rules:
 
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
-- `Block` is the only layout engine. Responsive layout props use `base`, `sm`, `md`, `lg`, and `xl`.
+- `Block` is the only layout engine. Responsive layout props, including boolean `wrap`, use `base`, `sm`, `md`, `lg`, and `xl`; omitted `wrap` retains `nowrap`.
 - The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for layout variables.
 - Keep breakpoint values centralized in theme tokens so the default theme and generated themes stay aligned.
 - Responsive behavior must target only public hooks and Block-owned CSS variables.
