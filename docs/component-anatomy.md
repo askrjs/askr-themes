@@ -25,19 +25,19 @@ own a focused visual job.
 `data-ak-layout="true"`. If no slot is provided, it emits `data-slot="block"`.
 Semantic wrappers use their own slots.
 
-| Component    | Shape                                                                       | Stable slots                                                                                                                    | Style here                                                                                              | Avoid                                                                   |
-| ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `Block`      | One semantic element selected by `as` or `asChild`.                         | `block` by default, or the explicit `data-slot` you pass.                                                                       | Use layout props for spacing, sizing, flex, responsive values, and common visuals.                      | Do not create `Box`, `Stack`, `Flex`, or wrapper aliases.               |
-| `Container`  | A `Block` that constrains width, centers content, and applies page gutters. | `container`                                                                                                                     | Use `size`, `paddingX`, and token overrides.                                                            | Do not use it as a generic flex row.                                    |
-| `Header`     | Semantic header with surface background and optional sticky behavior.       | `header`                                                                                                                        | Use for app or page chrome.                                                                             | Do not build a second header shell component.                           |
-| `Main`       | Semantic main region that can grow in app frames.                           | `main`                                                                                                                          | Use for the primary document region.                                                                    | Do not use it for card bodies or panels.                                |
-| `Section`    | Semantic section with vertical rhythm.                                      | `section`                                                                                                                       | Use for page sections.                                                                                  | Do not nest section wrappers to create spacing. Use `Block gap`.        |
-| `Aside`      | Semantic aside.                                                             | `aside`                                                                                                                         | Use for complementary content.                                                                          | Do not use as a sidebar shell when `Sidebar` fits.                      |
-| `Sidebar`    | Fixed-width side region with surface, border, and spacing defaults.         | `sidebar`                                                                                                                       | Use for app navigation rails. Use `tooltip` with explicit `tooltipSide` for collapsed icon rail labels. | Do not make product-specific shell behavior part of `Sidebar`.          |
-| `Page`       | `main` plus centered page content.                                          | `page`, `container`, inner `block`                                                                                              | Use for ordinary product pages.                                                                         | Do not use for split-screen auth or custom app shells.                  |
-| `PageHeader` | Responsive title, description, and actions.                                 | `page-header`, `page-header-copy`, `page-header-title`, `page-header-description`, `page-header-actions`                        | Use for page-level copy and action groups.                                                              | Do not put filters, tabs, or tables inside the header copy slot.        |
-| `Toolbar`    | Compact title and actions row.                                              | `toolbar`, `toolbar-title`, `toolbar-actions`                                                                                   | Use for section/tool action bars.                                                                       | Do not use as a full page header when `PageHeader` communicates better. |
-| `EmptyState` | Centered message with optional icon and actions.                            | `empty-state`, `empty-state-content`, `empty-state-icon`, `empty-state-title`, `empty-state-description`, `empty-state-actions` | Use for no data, no results, or empty collections.                                                      | Do not add extra explanatory panels around it.                          |
+| Component    | Shape                                                                       | Stable slots                                                                                                                    | Style here                                                                                                      | Avoid                                                                   |
+| ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `Block`      | One semantic element selected by `as` or `asChild`.                         | `block` by default, or the explicit `data-slot` you pass.                                                                       | Use layout props for spacing, sizing, flex, responsive values, and common visuals, including responsive `wrap`. | Do not create `Box`, `Stack`, `Flex`, or wrapper aliases.               |
+| `Container`  | A `Block` that constrains width, centers content, and applies page gutters. | `container`                                                                                                                     | Use `size`, `paddingX`, and token overrides.                                                                    | Do not use it as a generic flex row.                                    |
+| `Header`     | Semantic header with surface background and optional sticky behavior.       | `header`                                                                                                                        | Use for app or page chrome.                                                                                     | Do not build a second header shell component.                           |
+| `Main`       | Semantic main region that can grow in app frames.                           | `main`                                                                                                                          | Use for the primary document region.                                                                            | Do not use it for card bodies or panels.                                |
+| `Section`    | Semantic section with vertical rhythm.                                      | `section`                                                                                                                       | Use for page sections.                                                                                          | Do not nest section wrappers to create spacing. Use `Block gap`.        |
+| `Aside`      | Semantic aside.                                                             | `aside`                                                                                                                         | Use for complementary content.                                                                                  | Do not use as a sidebar shell when `Sidebar` fits.                      |
+| `Sidebar`    | Fixed-width side region with surface, border, and spacing defaults.         | `sidebar`                                                                                                                       | Use for app navigation rails. Use `tooltip` with explicit `tooltipSide` for collapsed icon rail labels.         | Do not make product-specific shell behavior part of `Sidebar`.          |
+| `Page`       | `main` plus centered page content.                                          | `page`, `container`, inner `block`                                                                                              | Use for ordinary product pages.                                                                                 | Do not use for split-screen auth or custom app shells.                  |
+| `PageHeader` | Responsive title, description, and actions.                                 | `page-header`, `page-header-copy`, `page-header-title`, `page-header-description`, `page-header-actions`                        | Use for page-level copy and action groups.                                                                      | Do not put filters, tabs, or tables inside the header copy slot.        |
+| `Toolbar`    | Compact title and actions row.                                              | `toolbar`, `toolbar-title`, `toolbar-actions`                                                                                   | Use for section/tool action bars.                                                                               | Do not use as a full page header when `PageHeader` communicates better. |
+| `EmptyState` | Centered message with optional icon and actions.                            | `empty-state`, `empty-state-content`, `empty-state-icon`, `empty-state-title`, `empty-state-description`, `empty-state-actions` | Use for no data, no results, or empty collections.                                                              | Do not add extra explanatory panels around it.                          |
 
 Safe override:
 
@@ -46,6 +46,33 @@ Safe override:
   flex-wrap: wrap;
 }
 ```
+
+Prefer the layout prop when the wrapping belongs to `Block` itself:
+
+```tsx
+<Block direction="row" gap="xs" wrap>
+  {actions}
+</Block>
+
+<Block direction="row" wrap={{ base: true, md: false }}>
+  {filters}
+</Block>
+```
+
+`wrap` defaults to `false` (`nowrap`). User styles retain their normal
+precedence over generated layout declarations.
+
+## Legacy layout aliases
+
+`Box`, `Stack`, `Inline`, `Shell`, `ShellNav`, and `ShellMain` are deprecated.
+Use `Block`, adding `direction="column"`, `direction="row"`, `as="nav"`, or
+`as="main" grow` as appropriate. Legacy spacing values map as follows:
+`none` to `0`, `1` and `2` to `xs`, `3` to `sm`, `4` to `md`, `5` to `lg`,
+`6` to `xl`, and `8` to `2xl`.
+
+Raw responsive CSS sizes are intentionally not layout tokens. Use a project
+class with media queries, or a CSS custom property through `style`, when a
+value such as `18rem` is genuinely application-specific.
 
 ## Navbar
 

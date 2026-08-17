@@ -50,6 +50,7 @@ describe("block layout helpers", () => {
     applyBlockLayoutStyles(styles, {
       paddingX: "page",
       maxWidth: "page",
+      wrap: { base: true, lg: false },
       grow: true,
       rowFrom: "lg",
       hide: { base: true, lg: false },
@@ -58,6 +59,8 @@ describe("block layout helpers", () => {
 
     expect(styles["--ak-px-base"]).toBe("var(--ak-layout-page-gutter)");
     expect(styles["--ak-max-width-base"]).toBe("var(--ak-layout-content-max-width)");
+    expect(styles["--ak-flex-wrap-base"]).toBe("wrap");
+    expect(styles["--ak-flex-wrap-lg"]).toBe("nowrap");
     expect(styles["--ak-flex-grow-base"]).toBe(1);
     expect(styles["--ak-flex-direction-lg"]).toBe("row");
     expect(styles["--ak-display-base"]).toBe("none");

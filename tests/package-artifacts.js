@@ -18,6 +18,16 @@ const packedFiles = new Set(result[0].files.map(({ path }) => normalize(path)));
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const sourceMappingPattern = /[#@]\s*sourceMappingURL=([^\s*]+)/gu;
 
+const componentDeclarations = ["dist/components.d.ts", "dist/components/catalog.d.ts"]
+  .map((file) => readFileSync(file, "utf8"))
+  .join("\n");
+for (const alias of ["Box", "Stack", "Inline", "Shell", "ShellNav", "ShellMain"]) {
+  const declarationPattern = new RegExp(String.raw`@deprecated[^]*?function ${alias}\b`);
+  if (!declarationPattern.test(componentDeclarations)) {
+    throw new Error(`Public ${alias} declaration is missing @deprecated guidance.`);
+  }
+}
+
 const componentExport = packageJson.exports["./*"];
 if (
   componentExport?.import !== "./dist/entries/*.js" ||
