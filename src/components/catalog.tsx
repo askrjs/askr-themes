@@ -3,7 +3,8 @@ import { Slot } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 import { DialogContent, DialogDescription, DialogTitle } from "@askrjs/ui";
 import { Block } from "./block";
-import type { BlockDivProps, BlockResponsiveValue, BlockSpace } from "./block";
+import type { BlockDivProps, BlockElement, BlockResponsiveValue, BlockSpace } from "./block";
+import type { BlockLayoutProps } from "./_internal/block-layout";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
@@ -80,14 +81,58 @@ type LegacyLayoutConveniences = {
   wrap?: BlockResponsiveValue<boolean>;
 };
 
-type RemoveIndexSignature<T> = {
-  [TKey in keyof T as string extends TKey ? never : number extends TKey ? never : TKey]: T[TKey];
+type LegacyStructuralProps = Partial<
+  Pick<
+    BlockDivProps,
+    | "children"
+    | "class"
+    | "className"
+    | "style"
+    | "ref"
+    | "id"
+    | "title"
+    | "role"
+    | "tabIndex"
+    | "hidden"
+    | "dir"
+    | "lang"
+    | "onAbort"
+    | "onBlur"
+    | "onChange"
+    | "onClick"
+    | "onDblClick"
+    | "onFocus"
+    | "onInput"
+    | "onKeyDown"
+    | "onKeyUp"
+    | "onMouseDown"
+    | "onMouseEnter"
+    | "onMouseLeave"
+    | "onMouseMove"
+    | "onMouseOut"
+    | "onMouseOver"
+    | "onMouseUp"
+    | "onPointerDown"
+    | "onPointerDownCapture"
+    | "onPointerEnter"
+    | "onPointerLeave"
+    | "onPointerMove"
+    | "onPointerUp"
+    | "onScroll"
+    | "onSubmit"
+    | "onTouchEnd"
+    | "onTouchStart"
+    | "onWheel"
+  >
+> & {
+  as?: BlockElement;
+  asChild?: boolean;
+  [attribute: `aria-${string}`]: BlockDivProps[`aria-${string}`];
+  [attribute: `data-${string}`]: BlockDivProps[`data-${string}`];
 };
 
-export type LegacyLayoutProps = Omit<
-  RemoveIndexSignature<BlockDivProps>,
-  "gap" | "padding" | "wrap"
-> &
+export type LegacyLayoutProps = Omit<BlockLayoutProps, "gap" | "padding" | "wrap"> &
+  LegacyStructuralProps &
   LegacyLayoutConveniences;
 
 function normalizeLegacySpace(value: LegacySpace): BlockSpace {

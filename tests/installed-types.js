@@ -60,7 +60,7 @@ try {
       'import { Label, type LabelProps } from "@askrjs/themes/label";',
       'import { CommandPalette, CommandPaletteContent, CommandPaletteLink, CommandPaletteList, CommandPaletteTrigger, type CommandPaletteContentProps } from "@askrjs/themes/command";',
       'import "@askrjs/themes/templates/theme/index.css";',
-      'import { Block, Box, Inline, Stack, type BlockProps, type DialogProps, type GridProps, type SidebarRailProps, type TextProps } from "@askrjs/themes/components";',
+      'import { Block, Box, Inline, Stack, type BlockProps, type DialogProps, type GridProps, type LegacyLayoutProps, type SidebarRailProps, type TextProps } from "@askrjs/themes/components";',
       'import { withThemeStyles } from "@askrjs/themes/ssr";',
       "const fixture = <Block><span>strict consumer</span></Block>;",
       'const palette = <CommandPalette><CommandPaletteTrigger>Search</CommandPaletteTrigger><CommandPaletteContent title="Search docs"><CommandPaletteList><CommandPaletteLink href="/docs">Docs</CommandPaletteLink></CommandPaletteList></CommandPaletteContent></CommandPalette>;',
@@ -68,6 +68,8 @@ try {
       'const block: BlockProps = { padding: "md", wrap: { base: true, md: false } };',
       "const wrapped = <Block wrap><span>wrapped</span></Block>;",
       'const legacy = <><Box padding="4" /><Stack gap="2" /><Inline wrap /></>;',
+      'const legacyProps: LegacyLayoutProps = { minWidth: "sm", class: "legacy", style: { color: "red" }, "aria-label": "Legacy", "data-project": "example", onClick: () => {} };',
+      "const typedLegacy = Box(legacyProps);",
       "// @ts-expect-error wrap accepts only booleans or responsive booleans",
       'const invalidWrap = <Block wrap="yes" />;',
       "// @ts-expect-error legacy aliases reject unsupported responsive sizes",
@@ -77,7 +79,7 @@ try {
       "const grid: GridProps = { columns: 2 };",
       'const text: TextProps = { tone: "success" };',
       'const rail: SidebarRailProps = { type: "button" };',
-      "void fixture; void palette; void paletteContent; void block; void wrapped; void legacy; void invalidWrap; void invalidLegacySize; void invalidLegacyProp; void grid; void text; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
+      "void fixture; void palette; void paletteContent; void block; void wrapped; void legacy; void legacyProps; void typedLegacy; void invalidWrap; void invalidLegacySize; void invalidLegacyProp; void grid; void text; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
     ].join("\n"),
   );
   writeFileSync(
