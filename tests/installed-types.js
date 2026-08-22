@@ -67,7 +67,7 @@ try {
       'const paletteContent: CommandPaletteContentProps = { title: "Search docs" };',
       'const block: BlockProps = { padding: "md", wrap: { base: true, md: false } };',
       "const wrapped = <Block wrap><span>wrapped</span></Block>;",
-      'const legacy = <><Box padding="4" /><Stack gap="2" /><Inline wrap /></>;',
+      'const legacy = <><Box padding="4" wrap="wrap" /><Stack gap="2" wrap={{ base: "nowrap", md: "wrap" }} /><Inline wrap="nowrap" /></>;',
       'const legacyProps: LegacyLayoutProps = { minWidth: "sm", class: "legacy", style: { color: "red" }, "aria-label": "Legacy", "data-project": "example", onClick: () => {} };',
       "const typedLegacy = Box(legacyProps);",
       "// @ts-expect-error wrap accepts only booleans or responsive booleans",

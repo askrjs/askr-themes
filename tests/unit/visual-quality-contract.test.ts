@@ -2,7 +2,13 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 
-import { DOCS_DIR, DEFAULT_THEME_STYLES_DIR, ROOT_DIR, THEMING_FILE } from "./test-paths";
+import {
+  DOCS_DIR,
+  DEFAULT_THEME_STYLES_DIR,
+  ROOT_DIR,
+  TEMPLATE_THEME_STYLES_DIR,
+  THEMING_FILE,
+} from "./test-paths";
 
 const VISUAL_CHECK_FILE = join(ROOT_DIR, "visual-check.html");
 const DOCS_README_FILE = join(DOCS_DIR, "README.md");
@@ -13,12 +19,15 @@ const INPUT_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "forms", "input.css");
 const CARD_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "card.css");
 const CATALOG_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "catalog.css");
 const TABLE_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "table.css");
+const VIRTUAL_TABLE_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "virtual-table.css");
 const BLOCK_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "layout", "block.css");
 const HEADER_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "header.css");
 const NAVBAR_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "navbar.css");
 const DROPDOWN_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "overlays", "dropdown.css");
 const TOOLTIP_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "overlays", "tooltip.css");
 const ACCESSIBILITY_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "base", "accessibility.css");
+const RESET_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "base", "reset.css");
+const TEMPLATE_RESET_CSS_FILE = join(TEMPLATE_THEME_STYLES_DIR, "base", "reset.css");
 
 function read(path: string): string {
   return readFileSync(path, "utf8");
@@ -35,11 +44,21 @@ describe("visual quality contract", () => {
   const cardCss = read(CARD_CSS_FILE);
   const catalogCss = read(CATALOG_CSS_FILE);
   const tableCss = read(TABLE_CSS_FILE);
+  const virtualTableCss = read(VIRTUAL_TABLE_CSS_FILE);
   const blockCss = read(BLOCK_CSS_FILE);
   const headerCss = read(HEADER_CSS_FILE);
   const navbarCss = read(NAVBAR_CSS_FILE);
   const dropdownCss = read(DROPDOWN_CSS_FILE);
   const tooltipCss = read(TOOLTIP_CSS_FILE);
+
+  it("should ship native-control typography through default and template foundations", () => {
+    const expected = ':where([data-askr-native-control="true"])';
+
+    expect(read(RESET_CSS_FILE)).toContain(expected);
+    expect(read(RESET_CSS_FILE)).toContain("font: inherit;");
+    expect(read(TEMPLATE_RESET_CSS_FILE)).toContain(expected);
+    expect(read(TEMPLATE_RESET_CSS_FILE)).toContain("font: inherit;");
+  });
 
   it("should keep the manual audit page broad enough for polish work", () => {
     const requiredAuditCopy = [
@@ -184,7 +203,18 @@ describe("visual quality contract", () => {
     expect(catalogCss).toContain("inline-size: 2rem;");
 
     expect(tableCss).toContain('[data-slot="data-table"]');
-    expect(tableCss).toContain("background: var(--ak-color-surface-muted);");
+    expect(tableCss).toContain("table-layout: auto;");
+    expect(tableCss).toContain("caption-side: bottom;");
+    expect(tableCss).toContain('[data-state="selected"]');
+    expect(tableCss).toContain('[role="checkbox"]');
+    expect(tableCss).toContain("vertical-align: middle;");
+    expect(tableCss).toContain("white-space: normal;");
+    expect(tableCss).toContain("background: color-mix(");
     expect(tableCss).toContain('[data-slot="table-row"]:last-child');
+    expect(virtualTableCss).toContain("block-size: 2.5rem;");
+    expect(virtualTableCss).toContain("font-weight: var(--ak-font-weight-medium);");
+    expect(virtualTableCss).toContain("background: color-mix(");
+    expect(virtualTableCss).toContain('[role="checkbox"]');
+    expect(virtualTableCss).toContain("background: var(--ak-color-surface);");
   });
 });

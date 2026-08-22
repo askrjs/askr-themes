@@ -166,13 +166,7 @@ describe("visual polish contracts", () => {
     );
 
     for (const header of tableHeaders) {
-      const expectedHeaderWrap = window.matchMedia("(max-width: 30rem)").matches
-        ? "anywhere"
-        : "normal";
-      expect(getComputedStyle(header).overflowWrap, header.textContent ?? "").toBe(
-        expectedHeaderWrap,
-      );
-      expect(header.scrollWidth, header.textContent ?? "").toBeLessThanOrEqual(header.clientWidth);
+      expect(getComputedStyle(header).whiteSpace, header.textContent ?? "").toBe("normal");
     }
   });
 
@@ -340,6 +334,7 @@ describe("visual polish contracts", () => {
     const headerCell = wrapper.querySelector(
       '[data-slot="virtual-table-header-cell"]',
     ) as HTMLElement;
+    const tableHead = wrapper.querySelector('[data-slot="virtual-table-head"]') as HTMLElement;
     const selectedRow = wrapper.querySelector(
       '[data-slot="virtual-table-row"][data-selected="true"]',
     ) as HTMLElement;
@@ -363,6 +358,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(tableInner).borderCollapse).toBe("collapse");
     expect(px(getComputedStyle(tableInner).minWidth)).toBe(640);
     expect(getComputedStyle(headerCell).fontWeight).not.toBe("400");
+    expect(getComputedStyle(tableHead).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(selectedRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(tableCell).textOverflow).toBe("ellipsis");
     expect(getComputedStyle(monoText).fontVariantNumeric).toContain("tabular-nums");
@@ -516,6 +512,7 @@ describe("visual polish contracts", () => {
       const overflowing = [...doc.querySelectorAll("body *")]
         .filter((el) => {
           const htmlEl = el as HTMLElement;
+          if (htmlEl.closest(".compact-table-wrap")) return false;
           const bounds = htmlEl.getBoundingClientRect();
           return bounds.left < -2 || bounds.right > root.clientWidth + 2;
         })
@@ -585,10 +582,11 @@ describe("visual polish contracts", () => {
     const headerCell = table.querySelector('[data-slot="table-header-cell"]') as HTMLElement;
     const bodyCell = table.querySelector('[data-slot="table-cell"]') as HTMLElement;
 
-    expect(getComputedStyle(table).tableLayout).toBe("fixed");
-    expect(table.scrollWidth).toBeLessThanOrEqual(table.clientWidth + 4);
-    expect(headerCell.scrollWidth).toBeLessThanOrEqual(headerCell.clientWidth);
-    expect(bodyCell.scrollWidth).toBeLessThanOrEqual(bodyCell.clientWidth);
+    expect(getComputedStyle(table).tableLayout).toBe("auto");
+    expect(getComputedStyle(headerCell).whiteSpace).toBe("normal");
+    expect(getComputedStyle(bodyCell).whiteSpace).toBe("normal");
+    expect(getComputedStyle(headerCell).verticalAlign).toBe("middle");
+    expect(getComputedStyle(bodyCell).verticalAlign).toBe("middle");
     expect(px(getComputedStyle(headerCell).paddingInlineStart)).toBeLessThanOrEqual(8);
     expect(getComputedStyle(headerCell).letterSpacing).toBe("normal");
   });

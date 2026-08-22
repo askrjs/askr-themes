@@ -73,12 +73,13 @@ function buttonPart(props: CatalogComponentProps, slot: string, className?: stri
 }
 
 type LegacySpace = BlockSpace | "none" | "1" | "2" | "3" | "4" | "5" | "6" | "8";
+type LegacyWrap = boolean | "wrap" | "nowrap";
 
 type LegacyLayoutConveniences = {
   gap?: BlockResponsiveValue<LegacySpace>;
   p?: BlockResponsiveValue<LegacySpace>;
   padding?: BlockResponsiveValue<LegacySpace>;
-  wrap?: BlockResponsiveValue<boolean>;
+  wrap?: BlockResponsiveValue<LegacyWrap>;
 };
 
 type LegacyStructuralProps = Partial<
@@ -162,8 +163,49 @@ function normalizeLegacyResponsiveSpace(
   return normalizeLegacySpace(value);
 }
 
-function layoutAlias(props: LegacyLayoutProps, defaults: Record<string, unknown>): JSX.Element {
-  const { gap, p, padding, ...rest } = props as LegacyLayoutProps & Record<string, unknown>;
+function normalizeLegacyWrap(value: LegacyWrap): boolean {
+  if (value === "wrap") return true;
+  if (value === "nowrap") return false;
+  return value;
+}
+
+function normalizeLegacyResponsiveWrap(
+  value: BlockResponsiveValue<LegacyWrap> | undefined,
+): BlockResponsiveValue<boolean> | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([breakpoint, wrap]) => [
+        breakpoint,
+        normalizeLegacyWrap(wrap as LegacyWrap),
+      ]),
+    );
+  }
+  return normalizeLegacyWrap(value);
+}
+
+const warnedLegacyLayouts = new Set<string>();
+
+function warnDeprecatedLayout(component: string, replacement: string) {
+  const metaEnvironment = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env;
+  const nodeEnvironment = (
+    globalThis as typeof globalThis & { process?: { env?: { NODE_ENV?: string } } }
+  ).process?.env?.NODE_ENV;
+
+  if (metaEnvironment?.DEV !== true && nodeEnvironment !== "development") return;
+  if (warnedLegacyLayouts.has(component)) return;
+  warnedLegacyLayouts.add(component);
+  console.warn(`[askr-themes] ${component} is deprecated. ${replacement}`);
+}
+
+function layoutAlias(
+  component: string,
+  replacement: string,
+  props: LegacyLayoutProps,
+  defaults: Record<string, unknown>,
+): JSX.Element {
+  warnDeprecatedLayout(component, replacement);
+  const { gap, p, padding, wrap, ...rest } = props as LegacyLayoutProps & Record<string, unknown>;
   const BlockComponent = Block as (blockProps: Record<string, unknown>) => JSX.Element;
 
   return (
@@ -172,6 +214,7 @@ function layoutAlias(props: LegacyLayoutProps, defaults: Record<string, unknown>
       {...rest}
       gap={normalizeLegacyResponsiveSpace(gap)}
       padding={normalizeLegacyResponsiveSpace(padding ?? p)}
+      wrap={normalizeLegacyResponsiveWrap(wrap)}
     />
   );
 }
@@ -179,19 +222,19 @@ function layoutAlias(props: LegacyLayoutProps, defaults: Record<string, unknown>
 /** @deprecated Use {@link Block} directly. */
 export function Box(props: LegacyLayoutProps): JSX.Element;
 export function Box(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias(props, {});
+  return layoutAlias("Box", "Use Block directly.", props, {});
 }
 
 /** @deprecated Use `<Block direction="column">`. */
 export function Stack(props: LegacyLayoutProps): JSX.Element;
 export function Stack(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias(props, { direction: "column" });
+  return layoutAlias("Stack", 'Use <Block direction="column">.', props, { direction: "column" });
 }
 
 /** @deprecated Use `<Block direction="row">`. */
 export function Inline(props: LegacyLayoutProps): JSX.Element;
 export function Inline(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias(props, { direction: "row" });
+  return layoutAlias("Inline", 'Use <Block direction="row">.', props, { direction: "row" });
 }
 
 /** @deprecated Compose semantic {@link Block} primitives instead. */
@@ -199,19 +242,22 @@ export function Shell(props: LegacyLayoutProps & { variant?: string }): JSX.Elem
 export function Shell(props: LegacyLayoutProps & { variant?: string }): JSX.Element {
   const { variant: _variant, ...rest } = props;
   void _variant;
-  return layoutAlias(rest, {});
+  return layoutAlias("Shell", "Compose semantic Block primitives instead.", rest, {});
 }
 
 /** @deprecated Use `<Block as="nav">`. */
 export function ShellNav(props: LegacyLayoutProps): JSX.Element;
 export function ShellNav(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias(props, {});
+  return layoutAlias("ShellNav", 'Use <Block as="nav">.', props, {});
 }
 
 /** @deprecated Use `<Block as="main" grow>`. */
 export function ShellMain(props: LegacyLayoutProps): JSX.Element;
 export function ShellMain(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias(props, { as: "main", grow: true });
+  return layoutAlias("ShellMain", 'Use <Block as="main" grow>.', props, {
+    as: "main",
+    grow: true,
+  });
 }
 
 /** Renders the `alert-title` part of the shadcn-compatible catalog primitives. */
@@ -230,7 +276,14 @@ export function AlertDescription(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `breadcrumb` part of the shadcn-compatible catalog primitives. */
 export function Breadcrumb(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "breadcrumb", element: "nav", role: "navigation" });
+  return catalogPart(
+    { "aria-label": "Breadcrumb", ...props },
+    {
+      slot: "breadcrumb",
+      element: "nav",
+      role: "navigation",
+    },
+  );
 }
 
 /** Renders the `breadcrumb-list` part of the shadcn-compatible catalog primitives. */
@@ -325,12 +378,12 @@ export function CalendarNextButton(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `calendar-grid` part of the shadcn-compatible catalog primitives. */
 export function CalendarGrid(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "calendar-grid", role: "grid" });
+  return catalogPart(props, { slot: "calendar-grid" });
 }
 
 /** Renders the `calendar-head` part of the shadcn-compatible catalog primitives. */
 export function CalendarHead(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "calendar-head", role: "row" });
+  return catalogPart(props, { slot: "calendar-head" });
 }
 
 /** Renders the `calendar-body` part of the shadcn-compatible catalog primitives. */
@@ -340,12 +393,12 @@ export function CalendarBody(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `calendar-row` part of the shadcn-compatible catalog primitives. */
 export function CalendarRow(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "calendar-row", role: "row" });
+  return catalogPart(props, { slot: "calendar-row" });
 }
 
 /** Renders the `calendar-cell` part of the shadcn-compatible catalog primitives. */
 export function CalendarCell(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "calendar-cell", role: "gridcell" });
+  return catalogPart(props, { slot: "calendar-cell" });
 }
 
 /** Renders a single selectable day cell in the calendar grid, with selection/range/today state exposed as data attributes. */
@@ -365,7 +418,6 @@ export function CalendarDay(
     {
       disabled,
       "aria-disabled": disabled ? "true" : undefined,
-      "aria-selected": selected ? "true" : undefined,
       "data-disabled": disabled ? "" : undefined,
       "data-outside": outside ? "true" : undefined,
       "data-range-end": rangeEnd ? "true" : undefined,
@@ -411,14 +463,13 @@ export function Combobox(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "combobox" });
 }
 
-/** Renders the combobox's text input, wired up with `role="combobox"`. */
+/** Styling-only combobox input; consumers supplying behavior also own its complete ARIA contract. */
 export function ComboboxInput(props: CatalogComponentProps): JSX.Element {
   const { ref, class: className, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
     class: classes("input", className),
     "data-slot": "combobox-input",
-    role: "combobox",
   });
 
   return <input {...finalProps} />;
@@ -426,12 +477,12 @@ export function ComboboxInput(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `combobox-list` part of the shadcn-compatible catalog primitives. */
 export function ComboboxList(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "combobox-list", role: "listbox" });
+  return catalogPart(props, { slot: "combobox-list" });
 }
 
 /** Renders the `combobox-option` part of the shadcn-compatible catalog primitives. */
 export function ComboboxOption(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "combobox-option", role: "option" });
+  return catalogPart(props, { slot: "combobox-option" });
 }
 
 /** Renders the `command` part of the shadcn-compatible catalog primitives. */
@@ -463,7 +514,7 @@ export function CommandHeader(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `command-list` part of the shadcn-compatible catalog primitives. */
 export function CommandList(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "command-list", role: "listbox" });
+  return catalogPart(props, { slot: "command-list" });
 }
 
 /** Renders the `command-empty` part of the shadcn-compatible catalog primitives. */
@@ -489,12 +540,11 @@ export function CommandItem(
   return catalogPart(
     {
       "aria-disabled": disabled ? "true" : undefined,
-      "aria-selected": selected || active ? "true" : undefined,
       "data-disabled": disabled ? "" : undefined,
       "data-selected": selected || active ? "true" : undefined,
       ...rest,
     },
-    { slot: "command-item", role: "option" },
+    { slot: "command-item" },
   );
 }
 
@@ -755,7 +805,14 @@ export function NavigationMenuIndicator(props: CatalogComponentProps): JSX.Eleme
 
 /** Renders the `pagination` part of the shadcn-compatible catalog primitives. */
 export function Pagination(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "pagination", element: "nav", role: "navigation" });
+  return catalogPart(
+    { "aria-label": "Pagination", ...props },
+    {
+      slot: "pagination",
+      element: "nav",
+      role: "navigation",
+    },
+  );
 }
 
 /** Renders the `pagination-content` part of the shadcn-compatible catalog primitives. */
@@ -820,12 +877,12 @@ export function ResizablePanel(props: CatalogComponentProps): JSX.Element {
 
 /** Styling-only separator slot; it does not implement resizing, pointer dragging, or keyboard controls. */
 export function ResizableHandle(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "resizable-handle", role: "separator" });
+  return catalogPart(props, { slot: "resizable-handle" });
 }
 
 /** Renders the `tabs-list` part of the shadcn-compatible catalog primitives. */
 export function TabsList(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "tabs-list", role: "tablist" });
+  return catalogPart(props, { slot: "tabs-list" });
 }
 
 /** Renders the `tabs-content` part of the shadcn-compatible catalog primitives. */
@@ -835,7 +892,7 @@ export function TabsTrigger(props: CatalogComponentProps): JSX.Element {
 
 /** Renders the `tabs-content` part of the shadcn-compatible catalog primitives. */
 export function TabsContent(props: CatalogComponentProps): JSX.Element {
-  return catalogPart(props, { slot: "tabs-content", role: "tabpanel" });
+  return catalogPart(props, { slot: "tabs-content" });
 }
 
 /** Sheet variant of the dialog content part; defaults to sliding in from the right. */
