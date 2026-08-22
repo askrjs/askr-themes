@@ -22,6 +22,10 @@
   display: block;
 }
 
+:where([data-askr-native-control="true"]) {
+  font: inherit;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--ak-color-primary-soft) 84%, transparent);
   color: var(--ak-color-text);
