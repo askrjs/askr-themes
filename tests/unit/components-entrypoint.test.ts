@@ -14,6 +14,7 @@ import {
   BrandMark,
   Calendar,
   CalendarDay,
+  CalendarGrid,
   CalendarHeader,
   Card,
   CardContent,
@@ -22,10 +23,14 @@ import {
   Carousel,
   Checkbox,
   Combobox,
+  ComboboxInput,
+  ComboboxList,
+  ComboboxOption,
   Command,
   CommandPalette,
   CommandGroupHeading,
   CommandItem,
+  CommandList,
   DataTable,
   DatePicker,
   Dialog,
@@ -47,6 +52,7 @@ import {
   Pagination,
   Popover,
   ResizablePanelGroup,
+  ResizableHandle,
   Select,
   Sheet,
   SheetContent,
@@ -173,7 +179,7 @@ describe("components entrypoint", () => {
       "command-group-heading",
     );
     expect(
-      asElement(CommandItem({ children: "Calendar", selected: true })).props["aria-selected"],
+      asElement(CommandItem({ children: "Calendar", selected: true })).props["data-selected"],
     ).toBe("true");
     expect(
       asElement(ItemGroup({ children: ItemHeader({ children: "Header" }) })).props["data-slot"],
@@ -251,5 +257,23 @@ describe("components entrypoint", () => {
     expect(text.props["data-numeric"]).toBe("tabular");
     expect(text.props["data-wrap"]).toBe("anywhere");
     expect(text.props["data-truncate"]).toBe("true");
+  });
+
+  it("should leave behavior-owned roles off styling-only compatibility anatomy", () => {
+    for (const component of [
+      CalendarGrid({}),
+      ComboboxInput({}),
+      ComboboxList({}),
+      ComboboxOption({}),
+      CommandList({}),
+      CommandItem({}),
+      ResizableHandle({}),
+      TabsList({}),
+      TabsContent({}),
+    ]) {
+      expect(asElement(component).props.role).toBeUndefined();
+    }
+
+    expect(asElement(TabsList({ role: "tablist" })).props.role).toBe("tablist");
   });
 });

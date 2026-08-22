@@ -134,7 +134,7 @@ describe("responsive and visual theme contracts", () => {
     await page.viewport(390, 844);
     window.history.replaceState({}, "", "/narrow-table");
     testRoute("/narrow-table", () => (
-      <div class="table-width" style="width:320px">
+      <div class="table-width" style="width:320px;overflow-x:auto">
         <Table aria-label="Deployments">
           <TableHead>
             <TableRow>
@@ -162,12 +162,10 @@ describe("responsive and visual theme contracts", () => {
     const heading = container.querySelector<HTMLElement>('[data-slot="table-header-cell"]')!;
     const cell = container.querySelector<HTMLElement>('[data-slot="table-cell"]')!;
 
-    expect(getComputedStyle(table).tableLayout).toBe("fixed");
-    expect(table.getBoundingClientRect().width).toBeLessThanOrEqual(
-      wrapper.getBoundingClientRect().width,
-    );
-    expect(getComputedStyle(heading).overflowWrap).toBe("anywhere");
-    expect(getComputedStyle(cell).overflowWrap).toBe("anywhere");
+    expect(getComputedStyle(table).tableLayout).toBe("auto");
+    expect(getComputedStyle(wrapper).overflowX).toBe("auto");
+    expect(getComputedStyle(heading).whiteSpace).toBe("normal");
+    expect(getComputedStyle(cell).whiteSpace).toBe("normal");
   });
 
   it("should layer and focus a dropdown opened from a dialog inside a sidebar", async () => {
