@@ -669,6 +669,9 @@
             <nav data-slot="menu-content" aria-label="Modal menu audit">
               ${menuItems("modal")}
             </nav>
+            <nav data-slot="menubar-content" aria-label="Menubar popup inside modal">
+              ${menuItems("menubar")}
+            </nav>
             <footer data-slot="dialog-footer">
               <button class="btn" data-slot="button" type="button">Cancel</button>
               <button class="btn btn-primary" data-slot="button" type="button">Open view</button>
@@ -846,6 +849,86 @@
           </nav>
         </div>`;
 
+      const completeFamilyCompositionContent = `
+        <div class="stack" data-slot="page" data-audit-composition="all-theme-families">
+          <header data-slot="header">
+            <div data-slot="container">
+              <a data-slot="brand" href="#family-audit">
+                <span data-slot="brand-mark" aria-hidden="true">A</span>
+                <span data-slot="brand-label">Askr Operations</span>
+              </a>
+            </div>
+          </header>
+          <div data-slot="page-header">
+            <div data-slot="page-header-copy">
+              <h3 data-slot="page-header-title">Production readiness</h3>
+              <p data-slot="page-header-description">A combined application surface for family-level visual proof.</p>
+            </div>
+            <div data-slot="page-header-actions">
+              <span data-slot="copy-button-wrap">
+                <button class="btn btn-outline" data-slot="copy-button" type="button">
+                  <span data-slot="copy-button-icon" aria-hidden="true">□</span>
+                  Copy report
+                </button>
+                <span class="sr-only" data-slot="copy-button-status" aria-live="polite"></span>
+              </span>
+            </div>
+          </div>
+          <dl data-slot="meta-strip">
+            <div data-slot="meta-strip-item">
+              <dt data-slot="meta-strip-label">Region</dt>
+              <dd data-slot="meta-strip-value">us-east-1</dd>
+            </div>
+            <div data-slot="meta-strip-item">
+              <dt data-slot="meta-strip-label">Release</dt>
+              <dd data-slot="meta-strip-value">2026.08.23</dd>
+            </div>
+          </dl>
+          <div data-slot="toolbar">
+            <h3 data-slot="toolbar-title">Deployment controls</h3>
+            <div data-slot="toolbar-actions">
+              <div data-slot="input-group">
+                <span data-slot="input-group-text">?</span>
+                <input class="input" data-slot="input" aria-label="Filter deployments" />
+              </div>
+            </div>
+          </div>
+          <div data-slot="grid" style="display:grid;grid-template-columns:minmax(0,1fr);gap:var(--ak-space-4);">
+            <main data-slot="main">
+              <section data-slot="section">
+                <div class="row">
+                  <article data-slot="stat">
+                    <span data-slot="stat-label">Healthy services</span>
+                    <strong data-slot="stat-value">18</strong>
+                    <span data-slot="stat-description">Across production regions</span>
+                  </article>
+                  <div data-slot="progress-circle" aria-label="Syncing"></div>
+                </div>
+              </section>
+            </main>
+            <aside data-slot="aside">
+              <strong>Audit notes</strong>
+              <p data-slot="text">Long operational copy wraps without forcing the application grid wider.</p>
+            </aside>
+          </div>
+          <section data-slot="dialog-content">
+            <button class="btn btn-close" data-slot="close" type="button" aria-label="Close command palette">x</button>
+            <h3 data-slot="dialog-title">Command palette composition</h3>
+            <ul data-slot="command-list">
+              <li data-slot="command-item">Open production dashboard</li>
+              <li data-slot="command-item">Review deployment history</li>
+            </ul>
+          </section>
+          <footer data-slot="footer">
+            <div data-slot="footer-content">
+              <div data-slot="footer-section">
+                <strong data-slot="footer-title">Askr</strong>
+                <span data-slot="footer-description">Operational UI correctness audit.</span>
+              </div>
+            </div>
+          </footer>
+        </div>`;
+
       const layoutContent = `
         <div class="stack">
           <div class="layout-demo">
@@ -965,7 +1048,7 @@
         </div>`;
 
       const textFieldsContent = `
-        <div class="stack">
+        <form class="stack" data-slot="form" aria-label="Profile settings audit">
           ${renderField(
             "Email",
             '<input class="input" data-slot="input" placeholder="name@company.com" />',
@@ -991,7 +1074,7 @@
             '<textarea class="textarea" data-slot="textarea" data-disabled disabled>Disabled textarea</textarea>',
             '<p class="field-hint" data-slot="field-hint">Disabled controls should sit back quietly.</p>',
           )}
-        </div>`;
+        </form>`;
 
       const selectionContent = `
         <div class="stack">
@@ -1334,6 +1417,16 @@
 
       const displayContent = `
         <div class="stack">
+          <div data-slot="virtual-list" data-viewport="lg" aria-label="Virtual deployment history" style="block-size: 9rem;">
+            <div data-slot="virtual-list-spacer" data-position="before" style="block-size: 6rem;"></div>
+            <div data-slot="virtual-list-row" data-key="audit-row-17" data-visible="true">
+              <span style="padding:var(--ak-space-3);">Deployment 17 · production control plane</span>
+            </div>
+            <div data-slot="virtual-list-row" data-key="audit-row-18" data-visible="true">
+              <span style="padding:var(--ak-space-3);">Deployment 18 · a long operational label that must remain readable</span>
+            </div>
+            <div data-slot="virtual-list-spacer" data-position="after" style="block-size: 18rem;"></div>
+          </div>
           <div class="stack" aria-label="Card list recipe">
             <article class="card" data-slot="card">
               <div>Default row with calm spacing</div>
@@ -1524,6 +1617,12 @@
           title: "Foundations",
           note: "Type, semantic colors, badges, and low-noise alert surfaces.",
           cards: [
+            {
+              title: "All theme families",
+              note: "Every owned family rendered in one realistic application composition.",
+              span: "full",
+              content: completeFamilyCompositionContent,
+            },
             {
               title: "Quality checklist",
               note: "The manual audit standard used for every family.",
