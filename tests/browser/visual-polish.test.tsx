@@ -31,6 +31,52 @@ describe("visual polish contracts", () => {
     document.body.innerHTML = "";
   });
 
+  it("should keep the complete audit surface geometrically sound across theme, direction, and width permutations", async () => {
+    for (const width of [320, 768, 1440]) {
+      document.body.innerHTML = "";
+      const iframe = await loadAuditFrame(width);
+      const doc = iframe.contentDocument!;
+
+      for (const direction of ["ltr", "rtl"] as const) {
+        doc.documentElement.dir = direction;
+
+        for (const theme of ["light", "dark"] as const) {
+          const previews = [
+            ...doc.querySelectorAll<HTMLElement>(`.preview[data-theme="${theme}"]`),
+          ];
+          expect(previews.length, `${theme} preview count`).toBeGreaterThan(0);
+
+          for (const preview of previews) {
+            expect(
+              preview.scrollWidth,
+              `${theme} ${direction} overflow in ${preview.closest(".audit-card")?.querySelector("h3")?.textContent}`,
+            ).toBeLessThanOrEqual(preview.clientWidth + 1);
+          }
+
+          const slots = [
+            ...doc.querySelectorAll<HTMLElement>(`.preview[data-theme="${theme}"] [data-slot]`),
+          ].filter((element) => {
+            const style = getComputedStyle(element);
+            return (
+              style.display !== "none" && style.visibility !== "hidden" && element.checkVisibility()
+            );
+          });
+
+          expect(slots.length, `${theme} slot count`).toBeGreaterThan(100);
+          for (const element of slots) {
+            const bounds = element.getBoundingClientRect();
+            expect(Number.isFinite(bounds.width), element.outerHTML).toBe(true);
+            expect(Number.isFinite(bounds.height), element.outerHTML).toBe(true);
+            if (element.dataset.slot !== "virtual-list-spacer") {
+              expect(bounds.width, element.outerHTML).toBeGreaterThan(0);
+              expect(bounds.height, element.outerHTML).toBeGreaterThan(0);
+            }
+          }
+        }
+      }
+    }
+  }, 60_000);
+
   it("should keep core interactive controls on one shared density rhythm", () => {
     document.body.innerHTML = `
       <button class="btn" data-slot="button">Save</button>

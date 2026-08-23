@@ -674,6 +674,9 @@
               <button class="btn btn-primary" data-slot="button" type="button">Open view</button>
             </footer>
           </section>
+          <nav data-slot="menubar-content" aria-label="Menubar popup composition">
+            ${menuItems("menubar")}
+          </nav>
         </div>`;
 
       const badgeVariantsMarkup = [
@@ -965,7 +968,7 @@
         </div>`;
 
       const textFieldsContent = `
-        <div class="stack">
+        <form class="stack" data-slot="form" aria-label="Profile settings audit">
           ${renderField(
             "Email",
             '<input class="input" data-slot="input" placeholder="name@company.com" />',
@@ -991,7 +994,7 @@
             '<textarea class="textarea" data-slot="textarea" data-disabled disabled>Disabled textarea</textarea>',
             '<p class="field-hint" data-slot="field-hint">Disabled controls should sit back quietly.</p>',
           )}
-        </div>`;
+        </form>`;
 
       const selectionContent = `
         <div class="stack">
@@ -1334,6 +1337,13 @@
 
       const displayContent = `
         <div class="stack">
+          <div data-slot="virtual-list" style="max-block-size: 9rem; overflow: auto;">
+            <div data-slot="virtual-list-spacer" style="block-size: 0;"></div>
+            <div data-slot="virtual-list-row" data-key="audit-row-1">Virtualized deployment row</div>
+            <div data-slot="virtual-list-row" data-key="audit-row-2">
+              Virtualized row with a long operational label that must remain readable
+            </div>
+          </div>
           <div class="stack" aria-label="Card list recipe">
             <article class="card" data-slot="card">
               <div>Default row with calm spacing</div>
