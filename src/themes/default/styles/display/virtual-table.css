@@ -9,6 +9,9 @@
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--ak-color-border-strong) transparent;
+  transition:
+    border-color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
 :where([data-slot="virtual-table"][data-viewport="lg"]) {
@@ -30,11 +33,18 @@
 }
 
 :where([data-slot="virtual-table-head"]) {
-  background: var(--ak-color-surface);
+  background: var(--ak-color-surface-muted);
+  box-shadow: inset 0 -1px 0 var(--ak-color-border);
 }
 
 :where([data-slot="virtual-table-header-row"]) {
-  background: var(--ak-color-surface);
+  background: inherit;
+}
+
+:where([data-slot="virtual-table"][data-at-top="false"]) :where([data-slot="virtual-table-head"]) {
+  box-shadow:
+    inset 0 -1px 0 var(--ak-color-border),
+    var(--ak-shadow-md);
 }
 
 :where([data-slot="virtual-table-body"]) {
@@ -42,37 +52,73 @@
 }
 
 :where([data-slot="virtual-table-header-cell"], [data-slot="virtual-table-cell"]) {
-  padding: var(--ak-space-sm) var(--ak-space-xs);
-  border-block-end: 1px solid var(--ak-color-border);
-  color: var(--ak-color-text);
   font-size: var(--ak-font-size-sm);
   line-height: var(--ak-line-height-normal);
   text-align: start;
   vertical-align: middle;
+}
+
+:where([data-slot="virtual-table-header-cell"]) {
+  padding: 0 var(--ak-space-sm);
+  background: inherit;
+  color: var(--ak-color-text-muted);
+  font-weight: var(--ak-font-weight-medium);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-:where([data-slot="virtual-table-header-cell"]) {
-  block-size: 2.5rem;
-  font-weight: var(--ak-font-weight-medium);
+:where([data-slot="virtual-table-cell"]) {
+  position: relative;
+  padding: 0;
+  border-block-end: 1px solid var(--ak-color-border);
+  color: var(--ak-color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 :where([data-slot="virtual-table-row"]) {
   background: transparent;
+  cursor: pointer;
   transition:
     background var(--ak-duration-fast) var(--ak-ease-standard),
-    color var(--ak-duration-fast) var(--ak-ease-standard);
+    color var(--ak-duration-fast) var(--ak-ease-standard),
+    box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
+}
+
+:where([data-slot="virtual-table-row"])
+  :where(
+    [data-slot="input"]:not(:disabled, [data-disabled], [aria-disabled="true"]),
+    [data-slot="textarea"]:not(:disabled, [data-disabled], [aria-disabled="true"]),
+    [contenteditable="true"],
+    [role="searchbox"],
+    [role="spinbutton"],
+    [role="textbox"]
+  ) {
+  cursor: text;
 }
 
 :where([data-slot="virtual-table-row"]:hover) {
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 50%, transparent);
+  background: var(--ak-color-hover);
 }
 
 :where([data-slot="virtual-table-row"][data-selected="true"]) {
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 50%, transparent);
+  background: var(--ak-color-selected);
   color: var(--ak-color-text);
+  box-shadow: inset 0 0 0 var(--ak-border-width-sm) var(--ak-color-selected-border);
+}
+
+:where(
+  [data-slot="virtual-table-row"][data-selected="true"]
+    > [data-slot="virtual-table-cell"]:first-child
+)::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--ak-border-width-md);
+  background: var(--ak-color-primary);
+  content: "";
 }
 
 :where([data-slot="virtual-table-spacer-row"]) {
@@ -82,27 +128,98 @@
 :where([data-slot="virtual-table-cell-content"]) {
   display: flex;
   align-items: center;
+  gap: var(--ak-space-xs);
+  inline-size: 100%;
+  block-size: 100%;
   min-inline-size: 0;
+  padding-inline: var(--ak-space-sm);
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where(
+  [data-slot="virtual-table-cell-content"] > [data-slot="text"],
+  [data-slot="virtual-table-cell-content"] > [data-truncate="true"]
+) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 :where(
   [data-slot="virtual-table-header-cell"]:has([role="checkbox"]),
-  [data-slot="virtual-table-cell"]:has([role="checkbox"])
+  [data-slot="virtual-table-cell-content"]:has([role="checkbox"])
 ) {
   padding-inline-end: 0;
 }
 
-:where(
-  [data-slot="virtual-table-header-cell"] > [role="checkbox"],
-  [data-slot="virtual-table-cell"] > [role="checkbox"]
-) {
+:where([data-slot="virtual-table-header-cell"] > [role="checkbox"]) {
   transform: translateY(2px);
 }
 
-@media (max-width: 30rem) {
+:where(
+  [data-slot="virtual-table-body"]
+    > [data-slot="virtual-table-row"][data-terminal-row="true"]
+    > [data-slot="virtual-table-cell"]
+) {
+  border-block-end: 0;
+}
+
+:where([data-slot="virtual-table"]:focus-visible, [data-slot="virtual-table-table"]:focus-visible) {
+  outline: none;
+}
+
+:where(
+  [data-slot="virtual-table"]:focus-visible,
+  [data-slot="virtual-table"]:has([data-slot="virtual-table-table"]:focus-visible)
+) {
+  border-color: var(--ak-color-ring);
+  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+}
+
+@media (forced-colors: active) {
+  :where([data-slot="virtual-table"]) {
+    border-color: CanvasText;
+  }
+
+  :where(
+    [data-slot="virtual-table"]:focus-visible,
+    [data-slot="virtual-table"]:has([data-slot="virtual-table-table"]:focus-visible)
+  ) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+
+  :where([data-slot="virtual-table-head"]) {
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: inset 0 -1px 0 CanvasText;
+  }
+
   :where([data-slot="virtual-table-header-cell"], [data-slot="virtual-table-cell"]) {
-    padding: var(--ak-space-sm) var(--ak-space-xs);
-    font-size: var(--ak-font-size-xs);
-    line-height: var(--ak-line-height-tight);
+    border-color: CanvasText;
+  }
+
+  :where([data-slot="virtual-table-row"][data-selected="true"]) {
+    background: Highlight;
+    color: HighlightText;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+    box-shadow: none;
+  }
+
+  :where([data-slot="virtual-table-row"][data-selected="true"] > [data-slot="virtual-table-cell"]) {
+    color: HighlightText;
+  }
+
+  :where(
+    [data-slot="virtual-table-row"][data-selected="true"]
+      > [data-slot="virtual-table-cell"]:first-child
+  )::before {
+    background: HighlightText;
   }
 }

@@ -23,7 +23,13 @@ own a focused visual job.
 
 `Block` renders one element, defaults to `div`, and always emits
 `data-ak-layout="true"`. If no slot is provided, it emits `data-slot="block"`.
-Semantic wrappers use their own slots.
+Semantic wrappers use their own slots. `Block` uses `display: flex` as its
+documented layout-engine default. Every other layout fallback matches the
+theme baseline for a plain element (including the global border-box reset), so
+an author class can provide only the properties it needs without an omitted
+property silently changing behavior.
+Passing a Block prop, including a responsive value, explicitly overrides that
+property through the generated custom-property contract.
 
 | Component    | Shape                                                                       | Stable slots                                                                                                                    | Style here                                                                                                      | Avoid                                                                   |
 | ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -59,8 +65,8 @@ Prefer the layout prop when the wrapping belongs to `Block` itself:
 </Block>
 ```
 
-`wrap` defaults to `false` (`nowrap`). User styles retain their normal
-precedence over generated layout declarations.
+`wrap` follows the CSS initial value (`nowrap`) when omitted. User styles retain
+their normal precedence over generated layout declarations.
 
 ## Legacy layout aliases
 

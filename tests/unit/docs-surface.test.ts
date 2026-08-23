@@ -10,6 +10,9 @@ const THEMES_DOC = join(DOCS_DIR, "askr-themes.md");
 const THEMING_DOC = join(DOCS_DIR, "theming.md");
 const ARCHITECTURE_DOC = join(DOCS_DIR, "architecture.md");
 const ACKNOWLEDGEMENTS = join(DOCS_DIR, "acknowledgements.md");
+const ROOT_THEMING = join(ROOT_DIR, "THEMING.md");
+const COMPONENT_ANATOMY = join(DOCS_DIR, "component-anatomy.md");
+const CHANGELOG = join(ROOT_DIR, "CHANGELOG.md");
 
 function sourceFiles(directory: string): string[] {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -20,6 +23,20 @@ function sourceFiles(directory: string): string[] {
 }
 
 describe("docs surface", () => {
+  it("should document native Block fallbacks and token-level dialog backdrop customization", () => {
+    const rootTheming = readFileSync(ROOT_THEMING, "utf-8");
+    const componentAnatomy = readFileSync(COMPONENT_ANATOMY, "utf-8");
+    const changelog = readFileSync(CHANGELOG, "utf-8");
+
+    expect(componentAnatomy).toContain("theme baseline for a plain element");
+    expect(componentAnatomy).toContain("display: flex");
+    expect(rootTheming).toContain("shipped `DialogOverlay` or `AlertDialogOverlay`");
+    expect(rootTheming).toContain("--ak-color-backdrop");
+    expect(rootTheming).toContain("--ak-z-modal-backdrop");
+    expect(rootTheming).toContain("Do not: bypass the shipped overlay treatment");
+    expect(changelog).toContain("Corrected `Block` layout fallbacks");
+  });
+
   it("should document the component catalog package surface", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       exports?: Record<string, unknown>;

@@ -104,3 +104,40 @@ it("should preserve real controls and layered overlays in emulated forced colors
   const item = document.body.querySelector<HTMLElement>('[data-slot="dropdown-item"]')!;
   expect(getComputedStyle(item).outlineStyle).not.toBe("none");
 });
+
+it("should preserve virtual-table focus, hierarchy, and selection in emulated forced colors", async () => {
+  expect(matchMedia("(forced-colors: active)").matches).toBe(true);
+  container.innerHTML = `
+    <div data-slot="virtual-table">
+      <table data-slot="virtual-table-table" role="grid" tabindex="0">
+        <thead data-slot="virtual-table-head">
+          <tr data-slot="virtual-table-header-row">
+            <th data-slot="virtual-table-header-cell">Service</th>
+          </tr>
+        </thead>
+        <tbody data-slot="virtual-table-body">
+          <tr data-slot="virtual-table-row" data-selected="true">
+            <td data-slot="virtual-table-cell">
+              <div data-slot="virtual-table-cell-content"><span>router</span></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  const table = container.querySelector<HTMLElement>('[data-slot="virtual-table"]')!;
+  const focusTarget = container.querySelector<HTMLElement>('[data-slot="virtual-table-table"]')!;
+  const tableHead = container.querySelector<HTMLElement>('[data-slot="virtual-table-head"]')!;
+  const selectedRow = container.querySelector<HTMLElement>(
+    '[data-slot="virtual-table-row"][data-selected="true"]',
+  )!;
+
+  await userEvent.tab();
+  expect(document.activeElement).toBe(focusTarget);
+  expect(getComputedStyle(table).outlineStyle).not.toBe("none");
+  expect(getComputedStyle(table).borderTopStyle).not.toBe("none");
+  expect(getComputedStyle(tableHead).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+  expect(getComputedStyle(selectedRow).outlineStyle).not.toBe("none");
+  expect(getComputedStyle(selectedRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+});

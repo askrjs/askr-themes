@@ -134,9 +134,16 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
   const { align, children, label, title = label, ...rest } = props;
 
   return (
-    <LayoutBlock align={align} gap="sm" {...rest} data-align={align} data-slot="nav-group">
+    <LayoutBlock
+      direction="column"
+      align={align}
+      gap="sm"
+      {...rest}
+      data-align={align}
+      data-slot="nav-group"
+    >
       {title !== undefined ? <div data-slot="nav-group-label">{title}</div> : null}
-      <LayoutBlock gap="xs" data-slot="nav-group-body">
+      <LayoutBlock direction="column" gap="xs" data-slot="nav-group-body">
         {children}
       </LayoutBlock>
     </LayoutBlock>

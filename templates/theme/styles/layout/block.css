@@ -1,5 +1,4 @@
 :where(
-  [data-slot="block"],
   [data-slot="container"],
   [data-slot="header"],
   [data-slot="main"],

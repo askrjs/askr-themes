@@ -1,3 +1,4 @@
+import { userEvent } from "@vitest/browser/context";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import "../../src/themes/default/index.css";
@@ -280,7 +281,7 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(menubarSubTrigger).textDecorationLine).toBe("none");
   });
 
-  it("should give virtualized list and table surfaces stable default polish", () => {
+  it("should give virtualized list and table surfaces stable default polish", async () => {
     document.body.innerHTML = `
       <div style="width: 320px; overflow: auto;">
         <div data-slot="virtual-list" data-viewport="lg">
@@ -292,7 +293,7 @@ describe("visual polish contracts", () => {
           </div>
         </div>
         <div data-slot="virtual-table" data-viewport="lg" data-table-width="compact">
-          <table data-slot="virtual-table-table">
+          <table data-slot="virtual-table-table" tabindex="0">
             <thead data-slot="virtual-table-head">
               <tr data-slot="virtual-table-header-row">
                 <th data-slot="virtual-table-header-cell">Time</th>
@@ -302,9 +303,30 @@ describe("visual polish contracts", () => {
             </thead>
             <tbody data-slot="virtual-table-body">
               <tr data-slot="virtual-table-row" data-selected="true">
-                <td data-slot="virtual-table-cell">09:17</td>
-                <td data-slot="virtual-table-cell">router</td>
-                <td data-slot="virtual-table-cell">Long route verification message</td>
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">09:17</div>
+                </td>
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">router</div>
+                </td>
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">
+                    Long route verification message
+                  </div>
+                </td>
+              </tr>
+              <tr data-slot="virtual-table-row" data-selected="false">
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">09:18</div>
+                </td>
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">worker</div>
+                </td>
+                <td data-slot="virtual-table-cell">
+                  <div data-slot="virtual-table-cell-content">
+                    Background reconciliation completed without errors
+                  </div>
+                </td>
               </tr>
               <tr data-slot="virtual-table-spacer-row">
                 <td style="height: 960px;"></td>
@@ -338,7 +360,13 @@ describe("visual polish contracts", () => {
     const selectedRow = wrapper.querySelector(
       '[data-slot="virtual-table-row"][data-selected="true"]',
     ) as HTMLElement;
+    const hoverRow = wrapper.querySelector(
+      '[data-slot="virtual-table-row"][data-selected="false"]',
+    ) as HTMLElement;
     const tableCell = wrapper.querySelector('[data-slot="virtual-table-cell"]') as HTMLElement;
+    const tableCellContent = wrapper.querySelector(
+      '[data-slot="virtual-table-cell-content"]',
+    ) as HTMLElement;
     const monoText = wrapper.querySelector('[data-slot="text"][data-font="mono"]') as HTMLElement;
     const wrappedText = wrapper.querySelector(
       '[data-slot="text"][data-wrap="anywhere"]',
@@ -359,8 +387,22 @@ describe("visual polish contracts", () => {
     expect(px(getComputedStyle(tableInner).minWidth)).toBe(640);
     expect(getComputedStyle(headerCell).fontWeight).not.toBe("400");
     expect(getComputedStyle(tableHead).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(tableHead).backgroundColor).not.toBe(
+      getComputedStyle(table).backgroundColor,
+    );
+    expect(getComputedStyle(tableHead).boxShadow).not.toBe("none");
+    expect(getComputedStyle(headerCell).color).not.toBe(getComputedStyle(tableCell).color);
     expect(getComputedStyle(selectedRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+    expect(getComputedStyle(selectedRow).boxShadow).not.toBe("none");
+    await userEvent.hover(hoverRow);
+    expect(getComputedStyle(hoverRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
     expect(getComputedStyle(tableCell).textOverflow).toBe("ellipsis");
+    expect(px(getComputedStyle(tableCellContent).paddingInlineStart)).toBeGreaterThanOrEqual(8);
+    expect(getComputedStyle(tableCellContent).alignItems).toBe("center");
+    expect(getComputedStyle(tableCellContent).textOverflow).toBe("ellipsis");
+    await userEvent.tab();
+    expect([table, tableInner]).toContain(document.activeElement);
+    expect(getComputedStyle(table).boxShadow).not.toBe("none");
     expect(getComputedStyle(monoText).fontVariantNumeric).toContain("tabular-nums");
     expect(getComputedStyle(monoText).textOverflow).toBe("ellipsis");
     expect(getComputedStyle(wrappedText).overflowWrap).toBe("anywhere");
