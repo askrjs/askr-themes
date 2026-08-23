@@ -2,6 +2,7 @@ import { userEvent } from "@vitest/browser/context";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import "../../src/themes/default/index.css";
+import { THEME_FAMILY_AUDIT_SELECTORS } from "../fixtures/component-audit-matrix";
 
 function px(value: string): number {
   return Number.parseFloat(value.replace("px", ""));
@@ -46,6 +47,13 @@ describe("visual polish contracts", () => {
           ];
           expect(previews.length, `${theme} preview count`).toBeGreaterThan(0);
 
+          for (const [family, selector] of Object.entries(THEME_FAMILY_AUDIT_SELECTORS)) {
+            expect(
+              doc.querySelector(`.preview[data-theme="${theme}"] ${selector}`),
+              `${theme} is missing rendered ${family}`,
+            ).not.toBeNull();
+          }
+
           for (const preview of previews) {
             expect(
               preview.scrollWidth,
@@ -71,6 +79,25 @@ describe("visual polish contracts", () => {
               expect(bounds.width, element.outerHTML).toBeGreaterThan(0);
               expect(bounds.height, element.outerHTML).toBeGreaterThan(0);
             }
+          }
+
+          const virtualList = doc.querySelector<HTMLElement>(
+            `.preview[data-theme="${theme}"] [data-slot="virtual-list"]`,
+          )!;
+          const virtualRows = [
+            ...virtualList.querySelectorAll<HTMLElement>('[data-slot="virtual-list-row"]'),
+          ];
+          const virtualSpacers = [
+            ...virtualList.querySelectorAll<HTMLElement>('[data-slot="virtual-list-spacer"]'),
+          ];
+          expect(virtualList.scrollHeight).toBeGreaterThan(virtualList.clientHeight);
+          expect(virtualRows).toHaveLength(2);
+          expect(virtualSpacers).toHaveLength(2);
+          for (const spacer of virtualSpacers) {
+            expect(spacer.getBoundingClientRect().height).toBeGreaterThan(0);
+          }
+          for (const row of virtualRows) {
+            expect(row.scrollWidth, row.outerHTML).toBeLessThanOrEqual(virtualList.clientWidth);
           }
         }
       }
@@ -693,9 +720,21 @@ describe("visual polish contracts", () => {
           const container = doc.querySelector(
             `[data-audit-menu-case="${caseName}"]`,
           ) as HTMLElement;
-          const items = [...container.querySelectorAll('[data-slot="menu-item"]')] as HTMLElement[];
+          const menuSurface = container.querySelector(
+            ':scope > [data-slot="menu-content"]',
+          ) as HTMLElement;
+          const items = [
+            ...menuSurface.querySelectorAll('[data-slot="menu-item"]'),
+          ] as HTMLElement[];
 
           expect(items.length, `${direction} ${caseName} item count at ${width}px`).toBe(4);
+          if (caseName === "modal") {
+            const menubar = container.querySelector(
+              ':scope > [data-slot="menubar-content"]',
+            ) as HTMLElement;
+            expect(menubar, `${direction} modal menubar at ${width}px`).not.toBeNull();
+            expect(menubar.querySelectorAll('[data-slot="menu-item"]')).toHaveLength(4);
+          }
           expect(
             container.scrollWidth,
             `${direction} ${caseName} overflow at ${width}px`,
