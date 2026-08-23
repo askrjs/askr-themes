@@ -1,0 +1,18 @@
+:where([data-slot="copy-button-wrap"]) {
+  display: inline-flex;
+}
+
+:where([data-slot="copy-button-icon"]) {
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--ak-font-family-mono);
+  line-height: 1;
+}
+
+:where([data-slot="copy-button"][data-state="success"]) {
+  color: var(--ak-color-success);
+}
+
+:where([data-slot="copy-button"][data-state="error"]) {
+  color: var(--ak-color-danger);
+}

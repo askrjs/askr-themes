@@ -78,7 +78,9 @@ export type {
 export { ButtonGroup } from "./components/button-group";
 export type * from "./components/button-group";
 export { Close } from "./components/close";
+export { CopyButton } from "./components/copy-button";
 export type * from "./components/close";
+export type * from "./components/copy-button";
 export { Field, FieldError, FieldHint } from "./components/field";
 export type * from "./components/field";
 export { InputGroup, InputGroupText } from "./components/input-group";

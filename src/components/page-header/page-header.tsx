@@ -15,7 +15,7 @@ export function PageHeader(props: PageHeaderProps): JSX.Element {
       {...rest}
       data-slot="page-header"
     >
-      <Block gap="xs" data-slot="page-header-copy">
+      <Block direction="column" gap="xs" data-slot="page-header-copy">
         <h1 data-slot="page-header-title">{title}</h1>
         {description !== undefined ? (
           <p data-slot="page-header-description">{description}</p>
