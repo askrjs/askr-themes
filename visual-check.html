@@ -563,6 +563,31 @@
         inline-size: 100%;
       }
 
+      .menu-audit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+        gap: var(--ak-space-lg);
+        align-items: start;
+      }
+
+      .menu-audit-case {
+        display: grid;
+        gap: var(--ak-space-xs);
+        min-inline-size: 0;
+      }
+
+      .menu-audit-case > small {
+        color: var(--ak-color-text-muted);
+      }
+
+      .menu-audit-dialog {
+        position: static;
+        translate: none;
+        inline-size: min(100%, 28rem);
+        max-inline-size: 100%;
+        margin-inline: auto;
+      }
+
       @media (max-width: 64rem) {
         .hero-grid {
           grid-template-columns: 1fr;
@@ -590,6 +615,65 @@
           <p data-slot="toast-description">${description}</p>
           <button data-slot="toast-action">${action}</button>
           <button data-slot="toast-close" aria-label="Dismiss">x</button>
+        </div>`;
+
+      const menuItems = (prefix) => `
+        <a data-slot="menu-item" href="#${prefix}-overview">
+          <span data-slot="menu-item-icon" aria-hidden="true">●</span>
+          <span data-slot="menu-item-label">Overview</span>
+          <span data-slot="menu-item-description">Current workspace status</span>
+        </a>
+        <a data-slot="menu-item" href="#${prefix}-deployments">
+          <span data-slot="menu-item-label">Deployments without an icon</span>
+          <span data-slot="menu-item-description">Production and preview environments</span>
+        </a>
+        <button data-slot="menu-item" type="button">
+          <span data-slot="menu-item-icon" aria-hidden="true">◆</span>
+          <span data-slot="menu-item-label">An exceptionally long menu label that must wrap</span>
+          <span data-slot="menu-item-description">
+            A long operational description with production-north-america-control-plane details.
+          </span>
+        </button>
+        <button data-slot="menu-item" data-disabled="true" aria-disabled="true" type="button">
+          <span data-slot="menu-item-label">Disabled action</span>
+        </button>`;
+
+      const menuAuditContent = `
+        <div class="menu-audit-grid">
+          <article class="menu-audit-case card" data-slot="card" data-audit-menu-case="standalone">
+            <div data-slot="card-header">
+              <small>Card navigation · mixed links and buttons</small>
+              <strong data-slot="card-title">Workspace</strong>
+              <span class="badge" data-slot="badge" data-variant="success">Healthy</span>
+            </div>
+            <nav data-slot="menu-content" aria-label="Standalone menu audit">
+              ${menuItems("standalone")}
+            </nav>
+            <div data-slot="card-footer">
+              <button class="btn" data-slot="button" type="button">Manage workspace</button>
+            </div>
+          </article>
+          <div class="menu-audit-case" data-audit-menu-case="constrained" style="max-inline-size: 15rem">
+            <small>Constrained · 15rem</small>
+            <nav data-slot="menu-content" aria-label="Constrained menu audit">
+              ${menuItems("constrained")}
+            </nav>
+          </div>
+          <section class="menu-audit-dialog" data-slot="dialog-content" data-audit-menu-case="modal">
+            <h4 data-slot="dialog-title">Choose a workspace view</h4>
+            <p data-slot="dialog-description">Structured menu content inside a modal surface.</p>
+            <div class="field" data-slot="field">
+              <label class="label" data-slot="label" for="menu-audit-filter">Filter views</label>
+              <input class="input" data-slot="input" id="menu-audit-filter" value="Production" />
+            </div>
+            <nav data-slot="menu-content" aria-label="Modal menu audit">
+              ${menuItems("modal")}
+            </nav>
+            <footer data-slot="dialog-footer">
+              <button class="btn" data-slot="button" type="button">Cancel</button>
+              <button class="btn btn-primary" data-slot="button" type="button">Open view</button>
+            </footer>
+          </section>
         </div>`;
 
       const badgeVariantsMarkup = [
@@ -1628,6 +1712,12 @@
               title: "Dropdown",
               note: "Trigger, panel, and item focus states.",
               content: dropdownContent,
+            },
+            {
+              title: "Structured menus",
+              note: "Icon, no-icon, long, disabled, constrained, and modal permutations.",
+              span: "full",
+              content: menuAuditContent,
             },
             {
               title: "Tooltip",

@@ -197,6 +197,7 @@ export {
   CardTitle,
 } from "./components/card";
 export { Close } from "./components/close";
+export { CopyButton } from "./components/copy-button";
 export {
   CommandPalette,
   CommandPaletteContent,
@@ -220,6 +221,7 @@ export { Grid } from "./components/grid";
 export { Header } from "./components/header";
 export { InputGroup, InputGroupText } from "./components/input-group";
 export { Main } from "./components/main";
+export { MetaStrip } from "./components/meta-strip";
 export { Aside } from "./components/aside";
 export {
   DropdownContent,
@@ -281,6 +283,7 @@ export type * from "./components/block";
 export type * from "./components/button-group";
 export type * from "./components/card";
 export type * from "./components/close";
+export type * from "./components/copy-button";
 export type * from "./components/command-palette";
 export type * from "./components/container";
 export type * from "./components/empty-state";
@@ -290,6 +293,7 @@ export type * from "./components/grid";
 export type * from "./components/header";
 export type * from "./components/input-group";
 export type * from "./components/main";
+export type * from "./components/meta-strip";
 export type * from "./components/aside";
 export type * from "./components/navbar";
 export type * from "./components/page";

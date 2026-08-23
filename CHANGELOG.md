@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Restore `PageHeader` title and description stacking after the `Block` native-initial fix in #94/#96, and add computed-style regression coverage.
+- Add `MetaStrip` for semantic compact key/value facts in inline and stacked layouts.
+- Add `CopyButton` with Clipboard API failure handling, timed visual feedback, and live-region announcements.
+- Theme standalone UI menus with default borders, item dividers, link states, icons, labels, and descriptions.
+
 ## 0.2.3 - 2026-08-23
 
 - Corrected `Block` layout fallbacks so omitted properties now resolve to

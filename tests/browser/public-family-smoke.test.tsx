@@ -21,6 +21,7 @@ import {
   EmptyState,
   Header,
   Main,
+  MetaStrip,
   Page,
   PageHeader,
   Section,
@@ -77,6 +78,25 @@ describe("public family browser smoke", () => {
           title="Families"
           description="Theme surface smoke coverage."
           actions={<Button variant="secondary">Create</Button>}
+        />
+        <MetaStrip
+          data-testid="inline-meta"
+          items={[
+            { label: "Region", value: "us-east-1", font: "mono" },
+            { label: "Replicas", value: 3, numeric: "tabular" },
+          ]}
+        />
+        <MetaStrip
+          data-testid="stacked-meta"
+          density="stacked"
+          style={{ inlineSize: "12rem" }}
+          items={[
+            {
+              label: "Identifier",
+              value: "a-very-long-identifier-that-must-wrap-within-the-container",
+              font: "mono",
+            },
+          ]}
         />
 
         <Toolbar
@@ -155,6 +175,7 @@ describe("public family browser smoke", () => {
       "page",
       "header",
       "page-header",
+      "meta-strip",
       "toolbar",
       "section",
       "main",
@@ -198,6 +219,20 @@ describe("public family browser smoke", () => {
     expect(getComputedStyle(header!).position).toBe("sticky");
     expect(getComputedStyle(sidebar!).borderRightWidth).not.toBe("0px");
     expect(getComputedStyle(aspectRatioEl!).aspectRatio).not.toBe("auto");
+    expect(
+      getComputedStyle(container!.querySelector('[data-slot="page-header-copy"]')!).flexDirection,
+    ).toBe("column");
+    expect(
+      getComputedStyle(container!.querySelector('[data-slot="page-header"]')!).flexDirection,
+    ).toBe("row");
+    const inlineMeta = container!.querySelector('[data-testid="inline-meta"]') as HTMLElement;
+    const stackedMeta = container!.querySelector('[data-testid="stacked-meta"]') as HTMLElement;
+    expect(inlineMeta.tagName).toBe("DL");
+    expect(inlineMeta.querySelectorAll(":scope > div > dt")).toHaveLength(2);
+    expect(inlineMeta.querySelectorAll(":scope > div > dd")).toHaveLength(2);
+    expect(getComputedStyle(inlineMeta).flexWrap).toBe("wrap");
+    expect(getComputedStyle(stackedMeta).flexDirection).toBe("column");
+    expect(stackedMeta.scrollWidth).toBeLessThanOrEqual(stackedMeta.clientWidth);
   });
 
   it("should keep attached input groups on one row in constrained toolbar actions", async () => {
