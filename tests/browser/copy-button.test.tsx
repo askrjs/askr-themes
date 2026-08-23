@@ -27,7 +27,7 @@ describe("CopyButton", () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
     testRoute("/copy", () => (
-      <CopyButton text="resource-123" label="Copy resource ID" resetAfter={250} />
+      <CopyButton text="resource-123" label="Copy resource ID" resetAfter={1000} />
     ));
     await createSPA({ root: container, registry: createTestRegistry() });
 

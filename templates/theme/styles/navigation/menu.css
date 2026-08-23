@@ -1,6 +1,7 @@
 :where([data-slot="menu-content"]) {
   display: grid;
-  min-inline-size: 12rem;
+  min-inline-size: min(12rem, 100%);
+  max-inline-size: 100%;
   overflow: hidden;
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-lg);
