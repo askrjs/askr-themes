@@ -640,33 +640,48 @@ describe("visual polish contracts", () => {
       const doc = iframe.contentDocument!;
       const cases = ["standalone", "constrained", "modal"];
 
-      for (const caseName of cases) {
-        const container = doc.querySelector(`[data-audit-menu-case="${caseName}"]`) as HTMLElement;
-        const items = [...container.querySelectorAll('[data-slot="menu-item"]')] as HTMLElement[];
+      for (const direction of ["ltr", "rtl"] as const) {
+        doc.documentElement.dir = direction;
 
-        expect(items.length, `${caseName} item count at ${width}px`).toBe(4);
-        expect(container.scrollWidth, `${caseName} overflow at ${width}px`).toBeLessThanOrEqual(
-          container.clientWidth,
-        );
-
-        for (const item of items) {
-          expect(item.scrollWidth, item.outerHTML).toBeLessThanOrEqual(item.clientWidth);
-        }
-
-        for (const item of items.filter((candidate) =>
-          candidate.querySelector('[data-slot="menu-item-description"]'),
-        )) {
-          const label = item.querySelector('[data-slot="menu-item-label"]') as HTMLElement;
-          const description = item.querySelector(
-            '[data-slot="menu-item-description"]',
+        for (const caseName of cases) {
+          const container = doc.querySelector(
+            `[data-audit-menu-case="${caseName}"]`,
           ) as HTMLElement;
-          const labelBounds = label.getBoundingClientRect();
-          const descriptionBounds = description.getBoundingClientRect();
+          const items = [...container.querySelectorAll('[data-slot="menu-item"]')] as HTMLElement[];
 
-          expect(descriptionBounds.left, item.outerHTML).toBeCloseTo(labelBounds.left, 0);
-          expect(descriptionBounds.top + 0.5, item.outerHTML).toBeGreaterThanOrEqual(
-            labelBounds.bottom,
-          );
+          expect(items.length, `${direction} ${caseName} item count at ${width}px`).toBe(4);
+          expect(
+            container.scrollWidth,
+            `${direction} ${caseName} overflow at ${width}px`,
+          ).toBeLessThanOrEqual(container.clientWidth);
+
+          for (const item of items) {
+            expect(item.scrollWidth, item.outerHTML).toBeLessThanOrEqual(item.clientWidth);
+          }
+
+          for (const item of items.filter((candidate) =>
+            candidate.querySelector('[data-slot="menu-item-description"]'),
+          )) {
+            const icon = item.querySelector('[data-slot="menu-item-icon"]') as HTMLElement | null;
+            const label = item.querySelector('[data-slot="menu-item-label"]') as HTMLElement;
+            const description = item.querySelector(
+              '[data-slot="menu-item-description"]',
+            ) as HTMLElement;
+            const labelBounds = label.getBoundingClientRect();
+            const descriptionBounds = description.getBoundingClientRect();
+
+            expect(descriptionBounds.left, item.outerHTML).toBeCloseTo(labelBounds.left, 0);
+            expect(descriptionBounds.top + 0.5, item.outerHTML).toBeGreaterThanOrEqual(
+              labelBounds.bottom,
+            );
+            if (icon) {
+              const iconBounds = icon.getBoundingClientRect();
+              if (direction === "ltr")
+                expect(iconBounds.right, item.outerHTML).toBeLessThanOrEqual(labelBounds.left);
+              else
+                expect(iconBounds.left, item.outerHTML).toBeGreaterThanOrEqual(labelBounds.right);
+            }
+          }
         }
       }
     }
