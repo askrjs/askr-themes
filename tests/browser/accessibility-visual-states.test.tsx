@@ -159,6 +159,7 @@ describe("default-theme accessibility visual states", () => {
         // fallback keeps the cross-engine computed-style matrix deterministic.
         if (document.activeElement !== button) button.focus();
         expect(document.activeElement).toBe(button);
+        await settle();
         const styles = getComputedStyle(button);
         const parentStyles = getComputedStyle(button.parentElement!);
         const parent = parseColor(parentStyles.backgroundColor);
@@ -169,7 +170,7 @@ describe("default-theme accessibility visual states", () => {
           ratio(opaque(ring, parentRgb), parentRgb),
           `${mode}: ${surfaces[index]}`,
         ).toBeGreaterThanOrEqual(3);
-        expect(styles.boxShadow).not.toBe("none");
+        expect(styles.boxShadow, `${mode}: ${surfaces[index]}`).not.toBe("none");
         expect(button.getBoundingClientRect().width).toBe(before.width);
         expect(button.getBoundingClientRect().height).toBe(before.height);
       }
