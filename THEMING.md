@@ -568,7 +568,10 @@ Status badge:
 
 Dialog backdrop:
 
-- use `--ak-color-backdrop`
+- use the shipped `DialogOverlay` or `AlertDialogOverlay`; the default theme
+  already applies `--ak-color-backdrop`, blur, stacking, and animation
+- customize the theme-level values of `--ak-color-backdrop` and
+  `--ak-z-modal-backdrop` when the product needs a different backdrop
 
 ### Incorrect usage examples
 
@@ -579,6 +582,24 @@ Do not:
 - use border colors as text colors
 - derive component styling from unrelated tokens
 - invent one-off component colors inside `askr-ui`
+- replace the shipped dialog overlay treatment with a competing
+  `class`/`className` that sets `background` or `z-index` directly
+
+Dialog backdrop customization:
+
+```css
+/* Do: customize the shared theme contract. */
+:root {
+  --ak-color-backdrop: rgb(8 12 20 / 18%);
+  --ak-z-modal-backdrop: 1040;
+}
+
+/* Do not: bypass the shipped overlay treatment. */
+.dialog-overlay {
+  background: rgb(0 0 0 / 90%);
+  z-index: 9999;
+}
+```
 
 ---
 

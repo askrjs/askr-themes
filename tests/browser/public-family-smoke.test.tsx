@@ -232,4 +232,50 @@ describe("public family browser smoke", () => {
       Math.abs(prefix!.getBoundingClientRect().top - input!.getBoundingClientRect().top),
     ).toBeLessThan(1);
   });
+
+  it("should preserve native CSS initials for Block properties omitted by the caller", async () => {
+    testRoute("/families", () => (
+      <>
+        <style>{`
+          .partial-block,
+          .partial-control {
+            display: flex;
+            align-items: flex-start;
+          }
+        `}</style>
+        <Block className="partial-block">Content</Block>
+        <div className="partial-control">Control</div>
+      </>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const block = container?.querySelector(".partial-block") as HTMLElement;
+    const control = container?.querySelector(".partial-control") as HTMLElement;
+    const blockStyle = getComputedStyle(block);
+    const controlStyle = getComputedStyle(control);
+
+    expect(blockStyle.display).toBe("flex");
+    expect(blockStyle.alignItems).toBe("flex-start");
+
+    for (const property of [
+      "flexDirection",
+      "flexWrap",
+      "justifyContent",
+      "gap",
+      "flexGrow",
+      "flexShrink",
+      "minWidth",
+      "maxWidth",
+      "boxSizing",
+      "position",
+      "borderTopStyle",
+      "borderTopWidth",
+      "borderRadius",
+      "boxShadow",
+    ] as const) {
+      expect(blockStyle[property], property).toBe(controlStyle[property]);
+    }
+  });
 });

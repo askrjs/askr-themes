@@ -87,6 +87,18 @@ describe("responsive theme contract", () => {
     for (const snippet of REQUIRED_LAYOUT_SNIPPETS) {
       expect(normalizedDefaultLayout).toContain(snippet);
     }
+
+    for (const nativeInitial of [
+      "--ak-flex-direction-base: row",
+      "--ak-align-items-base: normal",
+      "--ak-justify-content-base: normal",
+      "--ak-gap-base: normal",
+      "--ak-min-width-base: auto",
+      "--ak-border-base: medium none currentcolor",
+      "box-sizing: border-box",
+    ]) {
+      expect(normalizedDefaultLayout).toContain(nativeInitial);
+    }
   });
 
   it("should keep the generated theme template aligned with the default layout contract", () => {
