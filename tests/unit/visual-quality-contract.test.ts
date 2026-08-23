@@ -20,6 +20,11 @@ const CARD_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "card.css");
 const CATALOG_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "catalog.css");
 const TABLE_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "table.css");
 const VIRTUAL_TABLE_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "display", "virtual-table.css");
+const TEMPLATE_VIRTUAL_TABLE_CSS_FILE = join(
+  TEMPLATE_THEME_STYLES_DIR,
+  "display",
+  "virtual-table.css",
+);
 const BLOCK_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "layout", "block.css");
 const HEADER_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "header.css");
 const NAVBAR_CSS_FILE = join(DEFAULT_THEME_STYLES_DIR, "shell", "navbar.css");
@@ -45,6 +50,7 @@ describe("visual quality contract", () => {
   const catalogCss = read(CATALOG_CSS_FILE);
   const tableCss = read(TABLE_CSS_FILE);
   const virtualTableCss = read(VIRTUAL_TABLE_CSS_FILE);
+  const templateVirtualTableCss = read(TEMPLATE_VIRTUAL_TABLE_CSS_FILE);
   const blockCss = read(BLOCK_CSS_FILE);
   const headerCss = read(HEADER_CSS_FILE);
   const navbarCss = read(NAVBAR_CSS_FILE);
@@ -69,6 +75,7 @@ describe("visual quality contract", () => {
       "Responsive composition",
       "Mobile stress",
       "Supporting primitives",
+      "Virtual table",
       "Overlays",
       "Light mode",
       "Dark mode",
@@ -81,6 +88,10 @@ describe("visual quality contract", () => {
     expect(visualCheck).toContain("No clipped text");
     expect(visualCheck).toContain("Dense SaaS compositions");
     expect(visualCheck).toContain('data-theme="dark"');
+    expect(visualCheck).toContain('data-slot="virtual-table"');
+    expect(visualCheck).toContain('aria-label="Recent production deployments"');
+    expect(visualCheck).toContain('role="grid"');
+    expect(visualCheck).toContain('data-selected="${selected}"');
   });
 
   it("should ship a permanent forced-colors contract and keep the template synchronized", () => {
@@ -154,6 +165,34 @@ describe("visual quality contract", () => {
     expect(rootTheming).toContain("templates/theme/styles");
   });
 
+  it("should keep virtual-table geometry, interaction states, and template CSS aligned", () => {
+    expect(templateVirtualTableCss).toBe(virtualTableCss);
+    expect(virtualTableCss).not.toContain("block-size: 2.5rem;");
+
+    for (const contract of [
+      "background: var(--ak-color-surface-muted);",
+      "box-shadow: inset 0 -1px 0 var(--ak-color-border);",
+      '[data-at-top="false"]',
+      "var(--ak-shadow-md);",
+      "box-sizing: border-box;",
+      "block-size: 100%;",
+      "padding-inline: var(--ak-space-sm);",
+      "text-overflow: ellipsis;",
+      "cursor: pointer;",
+      '[data-slot="virtual-table-cell-content"]:has([role="checkbox"])',
+      '[data-slot="virtual-table-header-cell"] > [role="checkbox"]',
+      '[data-slot="virtual-table-row"][data-terminal-row="true"]',
+      '[data-slot="virtual-table-table"]:focus-visible',
+      ':has([data-slot="virtual-table-table"]:focus-visible)',
+      "background: var(--ak-color-hover);",
+      "background: var(--ak-color-selected);",
+      "background: var(--ak-color-primary);",
+      "@media (forced-colors: active)",
+    ]) {
+      expect(virtualTableCss).toContain(contract);
+    }
+  });
+
   it("should keep shared primitives visually aligned with the default theme baseline", () => {
     expect(buttonCss).toContain("--_button-height: var(--ak-density-control-height-md);");
     expect(buttonCss).toContain("background: var(--ak-color-primary);");
@@ -211,9 +250,7 @@ describe("visual quality contract", () => {
     expect(tableCss).toContain("white-space: normal;");
     expect(tableCss).toContain("background: color-mix(");
     expect(tableCss).toContain('[data-slot="table-row"]:last-child');
-    expect(virtualTableCss).toContain("block-size: 2.5rem;");
     expect(virtualTableCss).toContain("font-weight: var(--ak-font-weight-medium);");
-    expect(virtualTableCss).toContain("background: color-mix(");
     expect(virtualTableCss).toContain('[role="checkbox"]');
     expect(virtualTableCss).toContain("background: var(--ak-color-surface);");
   });

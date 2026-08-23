@@ -449,6 +449,113 @@
         border-radius: var(--ak-radius-lg);
       }
 
+      .virtual-table-audit-frame {
+        display: grid;
+        gap: 0.75rem;
+        min-inline-size: 0;
+      }
+
+      .virtual-table-audit-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+      }
+
+      .virtual-table-audit-summary {
+        display: grid;
+        gap: 0.2rem;
+        min-inline-size: 0;
+      }
+
+      .virtual-table-audit-summary span {
+        color: var(--ak-color-text-muted);
+        font-size: var(--ak-font-size-sm);
+      }
+
+      .virtual-table-audit {
+        block-size: 20rem;
+      }
+
+      .virtual-table-audit.compact-table-wrap {
+        overflow: auto;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-table"]) {
+        min-inline-size: 62rem;
+        table-layout: fixed;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-head"]) {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: 2;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-header-row"]) {
+        block-size: 3rem;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-header-cell"]) {
+        block-size: 3rem;
+        max-block-size: 3rem;
+        box-sizing: border-box;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-row"]) {
+        block-size: 3rem;
+        overflow: hidden;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-cell"]) {
+        position: relative;
+        block-size: 3rem;
+        max-block-size: 3rem;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-cell-content"]) {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      .virtual-table-audit :where([data-slot="virtual-table-spacer-row"] > td) {
+        block-size: 12rem;
+        padding: 0;
+        border: 0;
+      }
+
+      .virtual-table-audit :where([data-audit-column="select"]) {
+        inline-size: 3rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="time"]) {
+        inline-size: 9rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="deployment"]) {
+        inline-size: 18rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="environment"]) {
+        inline-size: 8rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="status"]) {
+        inline-size: 8rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="owner"]) {
+        inline-size: 9rem;
+      }
+
+      .virtual-table-audit :where([data-audit-column="actions"]) {
+        inline-size: 5rem;
+      }
+
       .preview-surface :where([data-slot="navbar"]) {
         display: flex;
         align-items: center;
@@ -909,6 +1016,238 @@
           </table>
         </div>`;
 
+      const virtualTableAuditRows = [
+        {
+          time: "Aug 22, 14:32:18",
+          deployment: "customer-hub-api / deploy #1842",
+          environment: "Production",
+          status: "Healthy",
+          statusVariant: "success",
+          owner: "Avery Chen",
+        },
+        {
+          time: "Aug 22, 14:28:04",
+          deployment: "billing-reconciler / canary promotion #992",
+          environment: "Production",
+          status: "Deploying",
+          statusVariant: "info",
+          owner: "Morgan Lee",
+        },
+        {
+          time: "Aug 22, 14:17:51",
+          deployment: "identity-api / rollback guard verification #6401",
+          environment: "Staging",
+          status: "Review",
+          statusVariant: "warning",
+          owner: "Riley Patel",
+        },
+        {
+          time: "Aug 22, 14:09:36",
+          deployment: "pdf-renderer / immutable-live-alias-rollout-20260822.3",
+          environment: "Production",
+          status: "Healthy",
+          statusVariant: "success",
+          owner: "Sam Rivera",
+          selected: true,
+        },
+        {
+          time: "Aug 22, 13:58:12",
+          deployment: "search-indexer / regional backfill #318",
+          environment: "Preview",
+          status: "Queued",
+          statusVariant: "secondary",
+          owner: "Taylor Kim",
+        },
+        {
+          time: "Aug 22, 13:42:29",
+          deployment: "websocket-gateway / connection-drain #2274",
+          environment: "Production",
+          status: "Failed",
+          statusVariant: "danger",
+          owner: "Jordan Bell",
+        },
+        {
+          time: "Aug 22, 13:31:07",
+          deployment: "messaging-topology / broker rebalance #810",
+          environment: "Staging",
+          status: "Healthy",
+          statusVariant: "success",
+          owner: "Casey Wong",
+        },
+        {
+          time: "Aug 22, 13:22:44",
+          deployment: "audit-log-archiver / retention sweep #1289",
+          environment: "Production",
+          status: "Healthy",
+          statusVariant: "success",
+          owner: "Alex Smith",
+        },
+        {
+          time: "Aug 22, 13:14:03",
+          deployment: "customer-data-export / eu-west checkpoint #556",
+          environment: "Development",
+          status: "Paused",
+          statusVariant: "secondary",
+          owner: "Jamie Park",
+        },
+        {
+          time: "Aug 22, 13:05:27",
+          deployment: "notification-worker / queue recovery #1097",
+          environment: "Production",
+          status: "Review",
+          statusVariant: "warning",
+          owner: "Drew Martin",
+        },
+      ];
+
+      const virtualTableAuditHeaders = [
+        ["select", "Select"],
+        ["time", "Started"],
+        ["deployment", "Deployment"],
+        ["environment", "Environment"],
+        ["status", "Status"],
+        ["owner", "Owner"],
+        ["actions", "Actions"],
+      ];
+
+      const virtualTableAuditRowsMarkup = virtualTableAuditRows
+        .map((row, index) => {
+          const selected = row.selected === true;
+          const rowNumber = index + 2;
+          const rowKey = `deployment-${index + 1}`;
+          const checkbox = `
+            <button
+              type="button"
+              data-slot="checkbox"
+              role="checkbox"
+              aria-checked="${selected}"
+              aria-label="Select ${row.deployment}"
+              ${selected ? 'data-state="checked"' : ""}
+            ></button>`;
+          const status = `
+            <span
+              class="badge badge-${row.statusVariant}"
+              data-slot="badge"
+              data-variant="${row.statusVariant}"
+            >${row.status}</span>`;
+          const action = `
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm"
+              data-slot="button"
+              data-variant="ghost"
+              data-size="sm"
+              aria-label="Open actions for ${row.deployment}"
+            >More</button>`;
+
+          const cells = [
+            checkbox,
+            `<span data-slot="text" data-numeric="tabular" data-truncate="true">${row.time}</span>`,
+            `<span data-slot="text" data-truncate="true" title="${row.deployment}">${row.deployment}</span>`,
+            row.environment,
+            status,
+            `<span data-slot="text" data-truncate="true">${row.owner}</span>`,
+            action,
+          ]
+            .map(
+              (content, columnIndex) => `
+                <td
+                  data-slot="virtual-table-cell"
+                  data-column-id="${virtualTableAuditHeaders[columnIndex][0]}"
+                  aria-colindex="${columnIndex + 1}"
+                >
+                  <div data-slot="virtual-table-cell-content">${content}</div>
+                </td>`,
+            )
+            .join("");
+
+          return `
+            <tr
+              data-slot="virtual-table-row"
+              data-row-index="${index}"
+              data-row-key="${rowKey}"
+              data-selected="${selected}"
+              aria-rowindex="${rowNumber}"
+              aria-selected="${selected}"
+            >${cells}</tr>`;
+        })
+        .join("");
+
+      const virtualTableContent = `
+        <div class="virtual-table-audit-frame">
+          <div class="virtual-table-audit-toolbar">
+            <div class="virtual-table-audit-summary">
+              <strong>Recent production deployments</strong>
+              <span>48 records across four environments</span>
+            </div>
+            <div class="row">
+              <span class="badge badge-success" data-slot="badge" data-variant="success">
+                Live
+              </span>
+              <button class="btn btn-outline btn-sm" data-slot="button" data-size="sm">
+                Filter deployments
+              </button>
+            </div>
+          </div>
+          <div
+            class="virtual-table-audit compact-table-wrap"
+            data-slot="virtual-table"
+            data-virtual-table="true"
+            data-viewport="lg"
+            data-table-width="compact"
+            data-at-top="true"
+            data-at-bottom="false"
+            data-empty="false"
+          >
+            <table
+              data-slot="virtual-table-table"
+              data-virtual-table-table="true"
+              role="grid"
+              aria-label="Recent production deployments"
+              aria-rowcount="49"
+              aria-colcount="7"
+              tabindex="0"
+            >
+              <colgroup>
+                ${virtualTableAuditHeaders
+                  .map(([column]) => `<col data-audit-column="${column}" />`)
+                  .join("")}
+              </colgroup>
+              <thead data-slot="virtual-table-head">
+                <tr data-slot="virtual-table-header-row" aria-rowindex="1">
+                  ${virtualTableAuditHeaders
+                    .map(
+                      ([column, label], columnIndex) => `
+                        <th
+                          data-slot="virtual-table-header-cell"
+                          data-column-id="${column}"
+                          scope="col"
+                          aria-colindex="${columnIndex + 1}"
+                        >
+                          ${
+                            column === "select"
+                              ? '<button type="button" data-slot="checkbox" role="checkbox" aria-checked="mixed" aria-label="Select all visible deployments"></button>'
+                              : label
+                          }
+                        </th>`,
+                    )
+                    .join("")}
+                </tr>
+              </thead>
+              <tbody data-slot="virtual-table-body">
+                ${virtualTableAuditRowsMarkup}
+                <tr
+                  data-slot="virtual-table-spacer-row"
+                  role="presentation"
+                  aria-hidden="true"
+                >
+                  <td colspan="7"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+
       const displayContent = `
         <div class="stack">
           <div class="stack" aria-label="Card list recipe">
@@ -1252,6 +1591,12 @@
               content: tableContent,
             },
             {
+              title: "Virtual table",
+              note: "Scrollable deployment data with sticky headers, selection, status, and row actions.",
+              span: "full",
+              content: virtualTableContent,
+            },
+            {
               title: "Display states",
               note: "List rows, progress, and skeleton in one dense surface.",
               content: displayContent,
@@ -1385,6 +1730,17 @@
         </section>`;
 
       document.getElementById("audit-root").innerHTML = hero + sections.map(renderSection).join("");
+
+      document.querySelectorAll('[data-slot="virtual-table"]').forEach((table) => {
+        const syncScrollEdges = () => {
+          const maximumScrollTop = Math.max(0, table.scrollHeight - table.clientHeight);
+          table.dataset.atTop = String(table.scrollTop <= 0);
+          table.dataset.atBottom = String(table.scrollTop >= maximumScrollTop - 1);
+        };
+
+        table.addEventListener("scroll", syncScrollEdges, { passive: true });
+        syncScrollEdges();
+      });
     </script>
   </body>
 </html>
