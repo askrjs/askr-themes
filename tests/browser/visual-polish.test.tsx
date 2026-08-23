@@ -2,6 +2,7 @@ import { userEvent } from "@vitest/browser/context";
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import "../../src/themes/default/index.css";
+import { THEME_FAMILY_AUDIT_SELECTORS } from "../fixtures/component-audit-matrix";
 
 function px(value: string): number {
   return Number.parseFloat(value.replace("px", ""));
@@ -30,6 +31,78 @@ describe("visual polish contracts", () => {
     document.documentElement.removeAttribute("data-theme");
     document.body.innerHTML = "";
   });
+
+  it("should keep the complete audit surface geometrically sound across theme, direction, and width permutations", async () => {
+    for (const width of [320, 768, 1440]) {
+      document.body.innerHTML = "";
+      const iframe = await loadAuditFrame(width);
+      const doc = iframe.contentDocument!;
+
+      for (const direction of ["ltr", "rtl"] as const) {
+        doc.documentElement.dir = direction;
+
+        for (const theme of ["light", "dark"] as const) {
+          const previews = [
+            ...doc.querySelectorAll<HTMLElement>(`.preview[data-theme="${theme}"]`),
+          ];
+          expect(previews.length, `${theme} preview count`).toBeGreaterThan(0);
+
+          for (const [family, selector] of Object.entries(THEME_FAMILY_AUDIT_SELECTORS)) {
+            expect(
+              doc.querySelector(`.preview[data-theme="${theme}"] ${selector}`),
+              `${theme} is missing rendered ${family}`,
+            ).not.toBeNull();
+          }
+
+          for (const preview of previews) {
+            expect(
+              preview.scrollWidth,
+              `${theme} ${direction} overflow in ${preview.closest(".audit-card")?.querySelector("h3")?.textContent}`,
+            ).toBeLessThanOrEqual(preview.clientWidth + 1);
+          }
+
+          const slots = [
+            ...doc.querySelectorAll<HTMLElement>(`.preview[data-theme="${theme}"] [data-slot]`),
+          ].filter((element) => {
+            const style = getComputedStyle(element);
+            return (
+              style.display !== "none" && style.visibility !== "hidden" && element.checkVisibility()
+            );
+          });
+
+          expect(slots.length, `${theme} slot count`).toBeGreaterThan(100);
+          for (const element of slots) {
+            const bounds = element.getBoundingClientRect();
+            expect(Number.isFinite(bounds.width), element.outerHTML).toBe(true);
+            expect(Number.isFinite(bounds.height), element.outerHTML).toBe(true);
+            if (element.dataset.slot !== "virtual-list-spacer") {
+              expect(bounds.width, element.outerHTML).toBeGreaterThan(0);
+              expect(bounds.height, element.outerHTML).toBeGreaterThan(0);
+            }
+          }
+
+          const virtualList = doc.querySelector<HTMLElement>(
+            `.preview[data-theme="${theme}"] [data-slot="virtual-list"]`,
+          )!;
+          const virtualRows = [
+            ...virtualList.querySelectorAll<HTMLElement>('[data-slot="virtual-list-row"]'),
+          ];
+          const virtualSpacers = [
+            ...virtualList.querySelectorAll<HTMLElement>('[data-slot="virtual-list-spacer"]'),
+          ];
+          expect(virtualList.scrollHeight).toBeGreaterThan(virtualList.clientHeight);
+          expect(virtualRows).toHaveLength(2);
+          expect(virtualSpacers).toHaveLength(2);
+          for (const spacer of virtualSpacers) {
+            expect(spacer.getBoundingClientRect().height).toBeGreaterThan(0);
+          }
+          for (const row of virtualRows) {
+            expect(row.scrollWidth, row.outerHTML).toBeLessThanOrEqual(virtualList.clientWidth);
+          }
+        }
+      }
+    }
+  }, 60_000);
 
   it("should keep core interactive controls on one shared density rhythm", () => {
     document.body.innerHTML = `
@@ -647,9 +720,21 @@ describe("visual polish contracts", () => {
           const container = doc.querySelector(
             `[data-audit-menu-case="${caseName}"]`,
           ) as HTMLElement;
-          const items = [...container.querySelectorAll('[data-slot="menu-item"]')] as HTMLElement[];
+          const menuSurface = container.querySelector(
+            ':scope > [data-slot="menu-content"]',
+          ) as HTMLElement;
+          const items = [
+            ...menuSurface.querySelectorAll('[data-slot="menu-item"]'),
+          ] as HTMLElement[];
 
           expect(items.length, `${direction} ${caseName} item count at ${width}px`).toBe(4);
+          if (caseName === "modal") {
+            const menubar = container.querySelector(
+              ':scope > [data-slot="menubar-content"]',
+            ) as HTMLElement;
+            expect(menubar, `${direction} modal menubar at ${width}px`).not.toBeNull();
+            expect(menubar.querySelectorAll('[data-slot="menu-item"]')).toHaveLength(4);
+          }
           expect(
             container.scrollWidth,
             `${direction} ${caseName} overflow at ${width}px`,
