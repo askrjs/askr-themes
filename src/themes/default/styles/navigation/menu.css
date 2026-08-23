@@ -46,6 +46,7 @@
 }
 
 :where([data-slot="menu-item-label"]) {
+  grid-column: 2;
   min-inline-size: 0;
   font-weight: var(--ak-font-weight-medium);
 }
