@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.3 - 2026-08-23
+
 - Corrected `Block` layout fallbacks so omitted properties now resolve to
   their native CSS initial values. Existing consumers that unintentionally
   relied on `Block` forcing column direction, stretched alignment, zero gap,
@@ -12,3 +14,12 @@
 - Clarified that the shipped Dialog and AlertDialog overlays already provide
   the default backdrop, blur, stacking, and animation treatment, and documented
   token-level customization instead of competing overlay classes.
+- Preserve the divider on every nonterminal virtual-table row by consuming the
+  UI component's explicit terminal-row marker, with synchronized generated
+  theme styles and forced-colors coverage.
+- Keep the default navbar groups and page body direction explicit where their
+  intended column layout differs from `Block`'s native row default.
+- Refresh the transitive Nano ID lockfile resolution to address the current
+  audit advisory.
+- Refresh eligible AskrJS and development-tool dependency ranges with
+  `askr update`, including the required UI `0.2.2` terminal-row contract.
