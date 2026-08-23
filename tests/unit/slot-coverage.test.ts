@@ -52,11 +52,17 @@ const ALLOWED_THEME_ONLY_SLOTS = new Set([
   // Present in current askr-ui source but not yet in every compatible published version.
   "virtual-list-spacer",
   "virtual-table-cell-content",
+  "menu-item-description",
+  "menu-item-icon",
+  "menu-item-label",
 ]);
 
 const REQUIRED_FORWARD_COMPATIBLE_UI_SLOTS = [
   "virtual-list-spacer",
   "virtual-table-cell-content",
+  "menu-item-description",
+  "menu-item-icon",
+  "menu-item-label",
 ] as const;
 
 const ALLOWED_UNCOVERED_UI_SLOTS = new Set([

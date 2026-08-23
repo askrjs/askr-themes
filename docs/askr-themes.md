@@ -220,6 +220,7 @@ across applications:
 
 - `Page`: main plus centered page content.
 - `PageHeader`: title, optional description, and optional actions.
+- `MetaStrip`: compact semantic facts with responsive inline or stacked density.
 - `Toolbar`: compact title plus actions row.
 - `EmptyState`: consistent empty or no-results messaging.
 
@@ -228,10 +229,21 @@ layouts, split pages, form pages, responsive rows, panel grids, card lists, and
 form actions locally until repeated use proves they deserve promotion.
 
 ```tsx
+const facts = [
+  { label: "Region", value: "us-east-1", font: "mono" },
+  { label: "Replicas", value: 3, numeric: "tabular" },
+];
+
 export function ProjectsPage() {
   return (
     <Page>
-      <PageHeader title="Projects" actions={<button type="button">New project</button>} />
+      <PageHeader
+        title="Projects"
+        description="Production resources in this workspace."
+        actions={<button type="button">New project</button>}
+      />
+      <MetaStrip items={facts} />
+      <MetaStrip density="stacked" items={facts} aria-label="Project facts on narrow surfaces" />
       <EmptyState
         title="No projects yet"
         description="Create your first project to get started."
@@ -240,6 +252,14 @@ export function ProjectsPage() {
     </Page>
   );
 }
+```
+
+Use `CopyButton` as the canonical copy-to-clipboard control for identifiers,
+tokens, and URLs. It copies asynchronously, shows a success icon for two
+seconds, and announces both success and failure to assistive technology.
+
+```tsx
+<CopyButton text={project.id} label="Copy project ID" />
 ```
 
 ## Navigation
