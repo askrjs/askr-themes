@@ -23,6 +23,7 @@
 }
 
 :where([data-slot="sidebar"][data-side="right"]) {
+  order: 1;
   border-inline-start: 1px solid var(--ak-color-border);
   border-inline-end: 0;
 }
@@ -226,6 +227,10 @@
 
 :where([data-slot="sidebar-trigger"]) {
   flex: none;
+}
+
+[data-slot="sidebar"][data-collapsible="icon"] {
+  --ak-width-base: var(--ak-layout-sidebar-rail-width);
 }
 
 :where([data-slot="sidebar"][data-collapsible="icon"]) :where([data-slot="sidebar-group-label"]),

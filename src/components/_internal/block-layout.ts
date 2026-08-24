@@ -310,6 +310,7 @@ export function applyBlockLayoutStyles(
   );
 
   if (props.rowFrom !== undefined) {
+    styles["--ak-flex-direction-base"] = "column";
     styles[`--ak-flex-direction-${props.rowFrom}`] = "row";
   }
   if (props.center !== undefined) {

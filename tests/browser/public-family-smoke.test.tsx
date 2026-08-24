@@ -224,7 +224,7 @@ describe("public family browser smoke", () => {
     ).toBe("column");
     expect(
       getComputedStyle(container!.querySelector('[data-slot="page-header"]')!).flexDirection,
-    ).toBe("row");
+    ).toBe(window.matchMedia("(min-width: 48rem)").matches ? "row" : "column");
     const inlineMeta = container!.querySelector('[data-testid="inline-meta"]') as HTMLElement;
     const stackedMeta = container!.querySelector('[data-testid="stacked-meta"]') as HTMLElement;
     expect(inlineMeta.tagName).toBe("DL");

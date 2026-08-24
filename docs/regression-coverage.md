@@ -22,9 +22,14 @@ exports, class/slot structure, CSS tokens, responsive layout, and composed
 | Responsive navigation regressions | Browser tests must cover long labels, breakpoint collapse, menu close paths, Escape, resize, and nav activation.                                             |
 | Overlay composition drift         | Browser tests must compose themed overlays through public exports and assert real `askr-ui` behavior remains intact.                                         |
 | Command palette regressions       | Browser tests must cover mouse, keyboard, and programmatic focus; Tab containment; dismissal opt-outs; semantic result links; and cleanup before navigation. |
+| Cancelable callback contracts     | Browser tests must call `preventDefault()` from each documented cancelable callback and assert every guarded action is suppressed.                           |
+| Rendered layout contracts         | Browser tests must assert computed direction, width, and physical placement for responsive and sidebar layout props, not only variable strings.              |
+| Persistent component timers       | Repeated interactions across rerenders must refresh one lifetime-owned timer and release its cleanup listener at unmount.                                    |
 | Token or selector drift           | Unit contracts must assert semantic token names, selectors, aliases, contrast, and template parity.                                                          |
 | Slot/prop passthrough drift       | Unit or jsdom tests must assert `asChild`, class merging, data slots, ARIA passthrough, and ref-safe composition where applicable.                           |
 | Route/theme persistence           | jsdom and browser tests must assert theme state across navigation and reload-shaped flows.                                                                   |
+| Theme identity coordination       | Nested and sibling scopes with distinct storage keys must cover stored adoption, storage events, initial arbitration, and explicit ownership.                |
+| Browser global-state isolation    | Test files that mutate shared browser state such as the viewport must run serially within each browser instance.                                             |
 | Cross-package version drift       | Package surface tests and integration smoke must fail before a released `askr-ui` or `askr` dependency breaks themed exports.                                |
 
 ## Current focused follow-ups

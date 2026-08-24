@@ -92,6 +92,12 @@ export function AppTheme({ children }: { children?: unknown }) {
 Use `CAT_THEME_NAMES` for compact toggles that cycle only through the preset
 family.
 
+Each `ThemeScope` reads and listens to its own `storageKey`, including nested
+scopes. Independent top-level scopes with different keys keep their local
+state isolated; mounting a later sibling does not replace the initial document
+theme merely because it registered later. An explicit picker/toggle change
+establishes the current document theme owner.
+
 | Preset   | Use when                                                                    |
 | -------- | --------------------------------------------------------------------------- |
 | `tabby`  | You want a warm neutral SaaS/admin baseline close to the default density.   |

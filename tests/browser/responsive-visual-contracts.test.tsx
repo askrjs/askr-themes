@@ -2,7 +2,7 @@ import { page } from "@vitest/browser/context";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 
-import { Block, Container, Grid, Section, Sidebar } from "../../src/core";
+import { Block, Container, Grid, PageHeader, Section, Sidebar, Toolbar } from "../../src/core";
 import { Input } from "../../src/controls";
 import {
   Dialog,
@@ -69,6 +69,8 @@ describe("responsive and visual theme contracts", () => {
               <div>three</div>
             </Grid>
           </Block>
+          <Toolbar title="A long project title" actions={<button>Toolbar action</button>} />
+          <PageHeader title="Overview" actions={<button>Header action</button>} />
         </Section>
       </Container>
     ));
@@ -80,17 +82,35 @@ describe("responsive and visual theme contracts", () => {
     const grid = container.querySelector<HTMLElement>(".responsive-grid")!;
     const content = container.querySelector<HTMLElement>(".responsive-container")!;
     const section = container.querySelector<HTMLElement>(".responsive-section")!;
+    const toolbar = container.querySelector<HTMLElement>('[data-slot="toolbar"]')!;
+    const pageHeader = container.querySelector<HTMLElement>('[data-slot="page-header"]')!;
     const mobilePadding = Number.parseFloat(getComputedStyle(content).paddingInlineStart);
     const mobileSectionPadding = Number.parseFloat(getComputedStyle(section).paddingBlockStart);
 
     expect(getComputedStyle(block).flexDirection).toBe("column");
+    expect(getComputedStyle(section).flexDirection).toBe("column");
+    expect(getComputedStyle(toolbar).flexDirection).toBe("column");
+    expect(getComputedStyle(pageHeader).flexDirection).toBe("column");
     expect(columnCount(getComputedStyle(grid).gridTemplateColumns)).toBe(1);
-    expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
+    const contentRight = content.getBoundingClientRect().right;
+    const overflowDetails = [content, ...content.querySelectorAll<HTMLElement>("*")]
+      .map((element) => ({
+        slot: element.getAttribute("data-slot") ?? element.tagName.toLowerCase(),
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        right: Math.round(element.getBoundingClientRect().right),
+      }))
+      .filter((entry) => entry.scrollWidth > entry.clientWidth || entry.right > contentRight);
+    expect(content.scrollWidth, JSON.stringify(overflowDetails)).toBeLessThanOrEqual(
+      content.clientWidth,
+    );
 
     await page.viewport(1024, 900);
     await settle();
 
     expect(getComputedStyle(block).flexDirection).toBe("row");
+    expect(getComputedStyle(toolbar).flexDirection).toBe("row");
+    expect(getComputedStyle(pageHeader).flexDirection).toBe("row");
     expect(columnCount(getComputedStyle(grid).gridTemplateColumns)).toBe(3);
     expect(Number.parseFloat(getComputedStyle(content).paddingInlineStart)).toBeGreaterThan(
       mobilePadding,

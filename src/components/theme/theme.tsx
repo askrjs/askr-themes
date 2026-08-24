@@ -84,6 +84,22 @@ type InternalThemeScopeValue = ThemeScopeValue & {
   readonly coordinator: ThemeCoordinator | null;
   readonly depth: number;
 };
+type ThemeScopeLifecycle = {
+  cleanupSignal: AbortSignal | null;
+  coordinatorAttached: boolean;
+  persistenceComplete: boolean;
+  storageKey: string;
+  storageListener: ((event: StorageEvent) => void) | null;
+  storageWindow: Window | null;
+};
+
+function detachThemeScopeStorage(lifecycle: ThemeScopeLifecycle): void {
+  if (lifecycle.storageWindow && lifecycle.storageListener) {
+    lifecycle.storageWindow.removeEventListener("storage", lifecycle.storageListener);
+  }
+  lifecycle.storageListener = null;
+  lifecycle.storageWindow = null;
+}
 
 const ThemeScopeContext = defineScope<InternalThemeScopeValue>({
   theme: () => "system",
@@ -122,7 +138,15 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   // hydration verifier has accepted the server markup.
   const themeState = state<ThemeName>(defaultTheme);
   const localResolvedSystemTheme = state<"light" | "dark">("light");
-  const persistenceAdoption = state({ complete: false })();
+  const lifecycle = state<ThemeScopeLifecycle>({
+    cleanupSignal: null,
+    coordinatorAttached: false,
+    persistenceComplete: false,
+    storageKey,
+    storageListener: null,
+    storageWindow: null,
+  })();
+  lifecycle.storageKey = storageKey;
   const currentTheme = themeState();
   const parentScope = readScope(ThemeScopeContext);
   const ownedCoordinator = state<ThemeCoordinator>(getDefaultThemeCoordinator())();
@@ -131,6 +155,12 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
   coordinator.register(scopeId, scopeDepth, storageKey, currentTheme, scopeSignal, (nextTheme) => {
     if (themeState() !== nextTheme) themeState.set(nextTheme);
   });
+  if (lifecycle.cleanupSignal !== scopeSignal) {
+    lifecycle.cleanupSignal = scopeSignal;
+    scopeSignal.addEventListener("abort", () => detachThemeScopeStorage(lifecycle), {
+      once: true,
+    });
+  }
 
   const setTheme = (nextTheme: ThemeName) => {
     themeState.set(nextTheme);
@@ -150,53 +180,52 @@ export function ThemeScope(props: ThemeScopeProps): JSX.Element {
     coordinator,
     depth: scopeDepth,
   };
+  const bindScope = (element: HTMLElement | null) => {
+    if (element && parentScope.coordinator === null && !lifecycle.coordinatorAttached) {
+      lifecycle.coordinatorAttached = true;
+      coordinator.attach(
+        element,
+        (nextTheme) => localResolvedSystemTheme.set(nextTheme),
+        scopeSignal,
+      );
+    }
+
+    const storageWindow = element?.ownerDocument.defaultView ?? null;
+    if (storageWindow !== lifecycle.storageWindow) {
+      detachThemeScopeStorage(lifecycle);
+      if (storageWindow) {
+        lifecycle.storageWindow = storageWindow;
+        lifecycle.storageListener = (event) => {
+          let storageMatches = event.storageArea == null;
+          try {
+            storageMatches ||= event.storageArea === storageWindow.localStorage;
+          } catch {
+            // Locked-down/private contexts may deny access to localStorage.
+          }
+          if (!storageMatches || event.key !== lifecycle.storageKey) {
+            return;
+          }
+          const nextTheme = event.newValue as ThemeName | null;
+          if (!nextTheme) return;
+          themeState.set(nextTheme);
+          coordinator.activate(scopeId, nextTheme);
+        };
+        storageWindow.addEventListener("storage", lifecycle.storageListener);
+      }
+    }
+
+    if (!element || lifecycle.persistenceComplete) return;
+    lifecycle.persistenceComplete = true;
+    const storedTheme = readStoredTheme(storageKey);
+    if (storedTheme && storedTheme !== themeState()) {
+      themeState.set(storedTheme);
+      coordinator.activate(scopeId, storedTheme);
+    }
+  };
 
   return (
     <ThemeScopeContext value={value}>
-      <div
-        data-slot="theme-scope"
-        ref={
-          parentScope.coordinator === null
-            ? (element: HTMLElement | null) => {
-                coordinator.attach(
-                  element,
-                  (nextTheme) => localResolvedSystemTheme.set(nextTheme),
-                  scopeSignal,
-                );
-                if (element && typeof window !== "undefined") {
-                  const onStorage = (event: StorageEvent) => {
-                    let storageMatches = event.storageArea == null;
-                    try {
-                      storageMatches ||= event.storageArea === window.localStorage;
-                    } catch {
-                      // Locked-down/private contexts may deny access to localStorage.
-                    }
-                    if (!storageMatches || event.key !== storageKey) {
-                      return;
-                    }
-                    const nextTheme = event.newValue as ThemeName | null;
-                    if (!nextTheme) return;
-                    themeState.set(nextTheme);
-                    coordinator.activate(scopeId, nextTheme);
-                  };
-                  window.addEventListener("storage", onStorage);
-                  scopeSignal.addEventListener(
-                    "abort",
-                    () => window.removeEventListener("storage", onStorage),
-                    { once: true },
-                  );
-                }
-                if (!element || persistenceAdoption.complete) return;
-                persistenceAdoption.complete = true;
-                const storedTheme = readStoredTheme(storageKey);
-                if (storedTheme && storedTheme !== themeState()) {
-                  themeState.set(storedTheme);
-                  coordinator.activate(scopeId, storedTheme);
-                }
-              }
-            : undefined
-        }
-      >
+      <div data-slot="theme-scope" ref={bindScope}>
         {children}
       </div>
     </ThemeScopeContext>
@@ -254,12 +283,16 @@ function createThemeCoordinator() {
   };
   const syncActive = (): void => {
     if (explicitOwner !== undefined) return;
-    let candidate: { depth: number; sequence: number; theme: ThemeName } | undefined;
+    let candidate:
+      | { depth: number; identity: string; sequence: number; theme: ThemeName }
+      | undefined;
     for (const scope of scopes.values()) {
       if (
         !candidate ||
         scope.depth > candidate.depth ||
-        (scope.depth === candidate.depth && scope.sequence > candidate.sequence)
+        (scope.depth === candidate.depth &&
+          scope.identity === candidate.identity &&
+          scope.sequence > candidate.sequence)
       ) {
         candidate = scope;
       }

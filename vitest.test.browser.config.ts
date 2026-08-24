@@ -8,6 +8,9 @@ export default defineConfig({
     api: {
       host: "127.0.0.1",
     },
+    // Browser files share page-level state such as the viewport. Keep files
+    // serial within each browser instance so responsive tests cannot race.
+    fileParallelism: false,
     globals: true,
     browser: {
       api: {

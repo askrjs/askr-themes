@@ -3,6 +3,13 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 
+import {
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarScope,
+} from "../../src/components";
 import { Block, Container, Main, NavGroup, NavLink, PageHeader, Sidebar } from "../../src/core";
 
 import "../../src/themes/default/index.css";
@@ -36,6 +43,48 @@ describe("sidebar browser smoke", () => {
     }
 
     resetTestRoutes();
+  });
+
+  it("should narrow an icon sidebar and dock its right side after the inset", async () => {
+    testRoute("/docs", () => (
+      <SidebarScope>
+        <Sidebar collapsible="icon" side="right" aria-label="Workspace navigation">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <svg aria-hidden="true" viewBox="0 0 16 16" />
+                <span>Dashboard</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </Sidebar>
+        <SidebarInset>Workspace</SidebarInset>
+      </SidebarScope>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const scope = container?.querySelector('[data-slot="sidebar-scope"]') as HTMLElement;
+    const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement;
+    const inset = container?.querySelector('[data-slot="sidebar-inset"]') as HTMLElement;
+    const rootFontSize = px(getComputedStyle(document.documentElement).fontSize);
+    const railWidth =
+      Number.parseFloat(
+        getComputedStyle(sidebar).getPropertyValue("--ak-layout-sidebar-rail-width"),
+      ) * rootFontSize;
+
+    expect(sidebar.getBoundingClientRect().width).toBeCloseTo(railWidth, 0);
+    expect(sidebar.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+      inset.getBoundingClientRect().right - 1,
+    );
+    expect(sidebar.getBoundingClientRect().right).toBeCloseTo(
+      scope.getBoundingClientRect().right,
+      0,
+    );
+    expect(
+      getComputedStyle(container!.querySelector('[data-slot="sidebar-menu-button"] span')!).display,
+    ).toBe("none");
   });
 
   it("should render sidebar as a semantic Block preset beside main content", async () => {
