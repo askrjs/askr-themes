@@ -29,6 +29,7 @@ exports, class/slot structure, CSS tokens, responsive layout, and composed
 | Slot/prop passthrough drift       | Unit or jsdom tests must assert `asChild`, class merging, data slots, ARIA passthrough, and ref-safe composition where applicable.                           |
 | Route/theme persistence           | jsdom and browser tests must assert theme state across navigation and reload-shaped flows.                                                                   |
 | Theme identity coordination       | Nested and sibling scopes with distinct storage keys must cover stored adoption, storage events, initial arbitration, and explicit ownership.                |
+| Browser global-state isolation    | Test files that mutate shared browser state such as the viewport must run serially within each browser instance.                                             |
 | Cross-package version drift       | Package surface tests and integration smoke must fail before a released `askr-ui` or `askr` dependency breaks themed exports.                                |
 
 ## Current focused follow-ups
