@@ -492,6 +492,58 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("torty");
   });
 
+  it("should let the deepest scope own the document when every depth adopts storage", async () => {
+    window.localStorage.setItem("askr-theme", "dark");
+    window.localStorage.setItem("askr-theme-nested", "calico");
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
+        <ThemeProbe id="outer" />
+        <ThemeScope defaultTheme="tabby" storageKey="askr-theme-nested">
+          <ThemeProbe id="inner" />
+        </ThemeScope>
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const probeTheme = (id: string) =>
+      container?.querySelector(`[data-probe-id="${id}"]`)?.getAttribute("data-theme");
+    expect(probeTheme("outer")).toBe("dark");
+    expect(probeTheme("inner")).toBe("calico");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("calico");
+  });
+
+  it("should retain the deepest document owner when a shallower scope activates later", async () => {
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
+        <ThemeProbe id="outer" />
+        <ThemeSetButton label="Set outer dark" theme="dark" />
+        <ThemeScope defaultTheme="tabby" storageKey="askr-theme-nested">
+          <ThemeProbe id="inner" />
+          <ThemeSetButton label="Set inner calico" theme="calico" />
+        </ThemeScope>
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const click = (label: string) =>
+      (container?.querySelector(`[aria-label="${label}"]`) as HTMLButtonElement | null)?.click();
+    const probeTheme = (id: string) =>
+      container?.querySelector(`[data-probe-id="${id}"]`)?.getAttribute("data-theme");
+
+    click("Set inner calico");
+    await settle();
+    click("Set outer dark");
+    await settle();
+
+    expect(probeTheme("outer")).toBe("dark");
+    expect(probeTheme("inner")).toBe("calico");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("calico");
+  });
+
   it("should expose the default theme options and scoped state", async () => {
     expect(DEFAULT_THEME_OPTIONS).toEqual([
       { value: "system", label: "System" },
