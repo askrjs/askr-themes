@@ -40,7 +40,7 @@ export type BlockZIndex =
   | "toast"
   | "tooltip";
 
-export type BlockLayoutProps = {
+type BlockLayoutBaseProps = {
   padding?: ResponsiveValue<BlockSpace>;
   paddingX?: ResponsiveValue<BlockSpace>;
   paddingY?: ResponsiveValue<BlockSpace>;
@@ -53,8 +53,6 @@ export type BlockLayoutProps = {
   height?: ResponsiveValue<BlockSize>;
   minHeight?: ResponsiveValue<BlockSize>;
   maxHeight?: ResponsiveValue<BlockSize>;
-  rowFrom?: BlockRowFrom;
-  direction?: ResponsiveValue<BlockDirection>;
   align?: ResponsiveValue<BlockAlign>;
   justify?: ResponsiveValue<BlockJustify>;
   gap?: ResponsiveValue<BlockSpace>;
@@ -74,6 +72,18 @@ export type BlockLayoutProps = {
   shadow?: ResponsiveValue<BlockShadow>;
   hide?: ResponsiveValue<boolean>;
 };
+
+type BlockDirectionProps =
+  | {
+      rowFrom: BlockRowFrom;
+      direction?: never;
+    }
+  | {
+      rowFrom?: never;
+      direction?: ResponsiveValue<BlockDirection>;
+    };
+
+export type BlockLayoutProps = BlockLayoutBaseProps & BlockDirectionProps;
 
 const BREAKPOINTS: readonly LayoutBreakpoint[] = ["base", "sm", "md", "lg", "xl"];
 
@@ -312,6 +322,8 @@ export function applyBlockLayoutStyles(
   if (props.rowFrom !== undefined) {
     styles["--ak-flex-direction-base"] = "column";
     styles[`--ak-flex-direction-${props.rowFrom}`] = "row";
+  } else {
+    setResponsiveVar(styles, "flex-direction", props.direction, (value) => value);
   }
   if (props.center !== undefined) {
     setResponsiveVar(styles, "align-items", props.center, (value) =>
@@ -321,7 +333,6 @@ export function applyBlockLayoutStyles(
       value ? "center" : "flex-start",
     );
   }
-  setResponsiveVar(styles, "flex-direction", props.direction, (value) => value);
   setResponsiveVar(styles, "align-items", props.align, resolveAlignValue);
   setResponsiveVar(styles, "justify-content", props.justify, resolveJustifyValue);
   setResponsiveVar(styles, "gap", props.gap, resolveSpaceValue);

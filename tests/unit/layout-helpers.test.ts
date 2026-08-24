@@ -89,15 +89,16 @@ describe("block layout helpers", () => {
     expect(styles["--ak-border-top-xl"]).toBe("0");
   });
 
-  it("should lets explicit direction override rowFrom", () => {
+  it("should preserve rowFrom when conflicting direction props bypass the public type", () => {
     const styles: Record<string, string | number> = {};
 
     applyBlockLayoutStyles(styles, {
-      rowFrom: "lg",
-      direction: { lg: "column" },
-    });
+      rowFrom: "md",
+      direction: "row",
+    } as Parameters<typeof applyBlockLayoutStyles>[1]);
 
-    expect(styles["--ak-flex-direction-lg"]).toBe("column");
+    expect(styles["--ak-flex-direction-base"]).toBe("column");
+    expect(styles["--ak-flex-direction-md"]).toBe("row");
   });
 });
 

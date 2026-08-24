@@ -359,10 +359,10 @@ function createThemeCoordinator() {
     },
     activate(id: symbol, themeName: ThemeName) {
       const scope = scopes.get(id);
-      if (scope) scope.theme = themeName;
-      explicitOwner = id;
-      const ownerDepth = scope?.depth;
-      const ownerIdentity = scope?.identity;
+      if (!scope) return;
+      scope.theme = themeName;
+      const ownerDepth = scope.depth;
+      const ownerIdentity = scope.identity;
       for (const [scopeId, registered] of scopes) {
         if (
           scopeId !== id &&
@@ -373,7 +373,11 @@ function createThemeCoordinator() {
           registered.onThemeChange(themeName);
         }
       }
-      syncThemeTarget(target(), themeName);
+      const currentOwner = explicitOwner === undefined ? undefined : scopes.get(explicitOwner);
+      if (!currentOwner || ownerDepth >= currentOwner.depth) {
+        explicitOwner = id;
+        syncThemeTarget(target(), themeName);
+      }
     },
   });
 }

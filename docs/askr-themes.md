@@ -171,8 +171,9 @@ Use explicit prop names. The API intentionally avoids shorthand aliases such as
 </Block>
 ```
 
-`rowFrom="lg"` means column below `lg` and row from `lg` upward. An explicit
-responsive `direction` still overrides either side of that shorthand.
+`rowFrom="lg"` means column below `lg` and row from `lg` upward. Use either
+`rowFrom` or `direction`; they are mutually exclusive so one responsive axis
+cannot silently overwrite the other.
 
 Responsive behavior uses one pattern everywhere:
 

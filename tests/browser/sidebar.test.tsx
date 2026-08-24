@@ -8,6 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarRail,
   SidebarScope,
 } from "../../src/components";
 import { Block, Container, Main, NavGroup, NavLink, PageHeader, Sidebar } from "../../src/core";
@@ -45,47 +46,82 @@ describe("sidebar browser smoke", () => {
     resetTestRoutes();
   });
 
-  it("should narrow an icon sidebar and dock its right side after the inset", async () => {
-    testRoute("/docs", () => (
-      <SidebarScope>
-        <Sidebar collapsible="icon" side="right" aria-label="Workspace navigation">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <svg aria-hidden="true" viewBox="0 0 16 16" />
-                <span>Dashboard</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </Sidebar>
-        <SidebarInset>Workspace</SidebarInset>
-      </SidebarScope>
-    ));
+  for (const direction of ["ltr", "rtl"] as const) {
+    it(`should narrow an icon sidebar and dock its right side after the inset in ${direction}`, async () => {
+      testRoute("/docs", () => (
+        <SidebarScope dir={direction}>
+          <Sidebar collapsible="icon" side="right" aria-label="Workspace navigation">
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <svg aria-hidden="true" viewBox="0 0 16 16" />
+                  <span>Dashboard</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </Sidebar>
+          <SidebarRail aria-label="Resize workspace navigation" />
+          <SidebarInset>Workspace</SidebarInset>
+        </SidebarScope>
+      ));
 
-    await createSPA({ root: container!, registry: createTestRegistry() });
-    await settle();
+      await createSPA({ root: container!, registry: createTestRegistry() });
+      await settle();
 
-    const scope = container?.querySelector('[data-slot="sidebar-scope"]') as HTMLElement;
-    const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement;
-    const inset = container?.querySelector('[data-slot="sidebar-inset"]') as HTMLElement;
-    const rootFontSize = px(getComputedStyle(document.documentElement).fontSize);
-    const railWidth =
-      Number.parseFloat(
-        getComputedStyle(sidebar).getPropertyValue("--ak-layout-sidebar-rail-width"),
-      ) * rootFontSize;
+      const scope = container?.querySelector('[data-slot="sidebar-scope"]') as HTMLElement;
+      const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement;
+      const rail = container?.querySelector('[data-slot="sidebar-rail"]') as HTMLElement;
+      const inset = container?.querySelector('[data-slot="sidebar-inset"]') as HTMLElement;
+      const rootFontSize = px(getComputedStyle(document.documentElement).fontSize);
+      const railWidth =
+        Number.parseFloat(
+          getComputedStyle(sidebar).getPropertyValue("--ak-layout-sidebar-rail-width"),
+        ) * rootFontSize;
 
-    expect(sidebar.getBoundingClientRect().width).toBeCloseTo(railWidth, 0);
-    expect(sidebar.getBoundingClientRect().left).toBeGreaterThanOrEqual(
-      inset.getBoundingClientRect().right - 1,
-    );
-    expect(sidebar.getBoundingClientRect().right).toBeCloseTo(
-      scope.getBoundingClientRect().right,
-      0,
-    );
-    expect(
-      getComputedStyle(container!.querySelector('[data-slot="sidebar-menu-button"] span')!).display,
-    ).toBe("none");
-  });
+      expect(sidebar.getBoundingClientRect().width).toBeCloseTo(railWidth, 0);
+      expect(sidebar.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+        inset.getBoundingClientRect().right - 1,
+      );
+      expect(rail.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+        inset.getBoundingClientRect().right - 1,
+      );
+      expect(rail.getBoundingClientRect().right).toBeCloseTo(
+        sidebar.getBoundingClientRect().left,
+        0,
+      );
+      expect(sidebar.getBoundingClientRect().right).toBeCloseTo(
+        scope.getBoundingClientRect().right,
+        0,
+      );
+      expect(
+        getComputedStyle(container!.querySelector('[data-slot="sidebar-menu-button"] span')!)
+          .display,
+      ).toBe("none");
+    });
+
+    it(`should keep a left sidebar rail between the sidebar and inset in ${direction}`, async () => {
+      testRoute("/docs", () => (
+        <SidebarScope dir={direction}>
+          <Sidebar side="left" aria-label="Workspace navigation" />
+          <SidebarRail aria-label="Resize workspace navigation" />
+          <SidebarInset>Workspace</SidebarInset>
+        </SidebarScope>
+      ));
+
+      await createSPA({ root: container!, registry: createTestRegistry() });
+      await settle();
+
+      const sidebar = container?.querySelector('[data-slot="sidebar"]') as HTMLElement;
+      const rail = container?.querySelector('[data-slot="sidebar-rail"]') as HTMLElement;
+      const inset = container?.querySelector('[data-slot="sidebar-inset"]') as HTMLElement;
+
+      expect(sidebar.getBoundingClientRect().right).toBeCloseTo(
+        rail.getBoundingClientRect().left,
+        0,
+      );
+      expect(rail.getBoundingClientRect().right).toBeCloseTo(inset.getBoundingClientRect().left, 0);
+    });
+  }
 
   it("should render sidebar as a semantic Block preset beside main content", async () => {
     testRoute("/docs", () => (
