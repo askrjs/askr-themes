@@ -86,3 +86,27 @@
     backdrop-filter: none;
   }
 }
+
+@media print {
+  :where(
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="native-select"],
+    [data-slot="table"]
+  ) {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  :where(
+    [data-slot="field"],
+    [data-slot="table"],
+    [data-slot="table-row"],
+    [data-slot="data-table"]
+  ) {
+    break-inside: avoid;
+  }
+}
