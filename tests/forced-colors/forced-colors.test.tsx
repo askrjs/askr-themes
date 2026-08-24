@@ -21,6 +21,7 @@ import {
   PopoverTrigger,
 } from "../../src/overlays";
 import { createTestRegistry, resetTestRoutes, testRoute } from "../router-test-utils";
+import { THEME_FAMILY_AUDIT_SELECTORS } from "../fixtures/component-audit-matrix";
 
 import "../../src/themes/default/index.css";
 
@@ -140,4 +141,24 @@ it("should preserve virtual-table focus, hierarchy, and selection in emulated fo
   expect(getComputedStyle(tableHead).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
   expect(getComputedStyle(selectedRow).outlineStyle).not.toBe("none");
   expect(getComputedStyle(selectedRow).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+});
+
+it("should keep every public theme family perceptible in emulated forced colors", async () => {
+  expect(matchMedia("(forced-colors: active)").matches).toBe(true);
+
+  for (const [family, selector] of Object.entries(THEME_FAMILY_AUDIT_SELECTORS)) {
+    const slot = selector.match(/data-slot="([^"]+)"/u)?.[1];
+    const element = document.createElement("div");
+    element.dataset.slot = slot!;
+    element.tabIndex = 0;
+    element.textContent = family;
+    container.append(element);
+  }
+
+  for (const element of container.children) {
+    (element as HTMLElement).focus();
+    const style = getComputedStyle(element);
+    expect(style.color, (element as HTMLElement).dataset.slot).not.toBe("rgba(0, 0, 0, 0)");
+    expect(style.outlineStyle, (element as HTMLElement).dataset.slot).not.toBe("none");
+  }
 });
