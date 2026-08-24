@@ -72,7 +72,7 @@ export function AppShell() {
       </ButtonGroup>
 
       <Field>
-        <Label for="workspace">Workspace</Label>
+        <Label htmlFor="workspace">Workspace</Label>
         <InputGroup>
           <Input id="workspace" name="workspace" />
         </InputGroup>
@@ -121,11 +121,27 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
+The default theme is intentionally neutral and uses a grayscale primary scale.
+Choose a preset or override the primary tokens before shipping when the product
+needs a branded accent:
+
+```css
+:root {
+  --ak-color-primary: oklch(0.55 0.18 255);
+  --ak-color-primary-soft: oklch(0.95 0.04 255);
+  --ak-color-primary-ink: oklch(0.3 0.12 255);
+}
+```
+
+See [THEMING.md](./THEMING.md#required-tokens) for the complete primary,
+hover, active, focus, and contrast contract.
+
 ### Styling-only compatibility wrappers
 
-`DataTable`, `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle`
-are styling-only catalog compatibility wrappers. Their names do not promise a
-data-grid or panel-resizing runtime:
+`DataTable`, `DatePicker`, `TabsList`, `TabsTrigger`, `TabsContent`,
+`ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` are styling-only
+catalog compatibility wrappers. Their names do not promise a data-grid,
+headless tabs, calendar, or panel-resizing runtime:
 
 - `DataTable` provides a `data-table` container slot. It does not sort, filter,
   select, or paginate. Compose semantic `Table` or `VirtualTable` primitives
@@ -134,12 +150,19 @@ data-grid or panel-resizing runtime:
   and separator slots only. The group does not implement pointer or keyboard
   resizing, track dimensions, or provide the ARIA value state required by an
   interactive splitter.
+- `DatePicker` is a layout slot around `DatePickerInput`. The input is the
+  browser-native `<input type="date">`; the wrapper does not provide a custom
+  popup calendar, localized formatter, or calendar-grid keyboard model.
+- `TabsList`, `TabsTrigger`, and `TabsContent` provide styling slots only. They
+  do not coordinate selection, panels, ARIA state, or arrow-key navigation.
+  `Tabs` and `Tab` are separate, functional navigation-link components; they
+  are not a headless tab-panel system and do not share state with these slots.
 
 These names remain exported for catalog compatibility. If an application needs
-real resize behavior today, supply the pointer, keyboard, sizing, and ARIA
-contract in application code or a dedicated behavior dependency. A future Askr
-resize primitive must be implemented and tested in `@askrjs/ui` before themes
-can compose and style it.
+real tab-panel, calendar, or resize behavior today, supply that state, keyboard,
+and ARIA contract in application code or a dedicated behavior dependency. A
+future Askr behavior primitive must be implemented and tested in `@askrjs/ui`
+before themes can compose and style it.
 
 ## Theme Contract
 
