@@ -62,6 +62,7 @@ describe("block layout helpers", () => {
     expect(styles["--ak-flex-wrap-base"]).toBe("wrap");
     expect(styles["--ak-flex-wrap-lg"]).toBe("nowrap");
     expect(styles["--ak-flex-grow-base"]).toBe(1);
+    expect(styles["--ak-flex-direction-base"]).toBe("column");
     expect(styles["--ak-flex-direction-lg"]).toBe("row");
     expect(styles["--ak-display-base"]).toBe("none");
     expect(styles["--ak-display-lg"]).toBe("flex");

@@ -20,8 +20,15 @@ describe("CopyButton", () => {
     cleanupApp(container);
     container.remove();
     resetTestRoutes();
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
+
+  async function flushCopyUpdates(): Promise<void> {
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+  }
 
   it("should announce success and restore its idle state after copying", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
@@ -53,5 +60,32 @@ describe("CopyButton", () => {
       .poll(() => container.querySelector('[data-slot="copy-button-status"]')?.textContent)
       .toBe("Could not copy to clipboard.");
     expect(container.querySelector("button")?.getAttribute("data-state")).toBe("error");
+  });
+
+  it("should refresh one lifetime-owned reset timer after a rapid second copy", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
+    testRoute("/copy", () => (
+      <CopyButton text="resource-123" label="Copy resource ID" resetAfter={1000} />
+    ));
+    await createSPA({ root: container, registry: createTestRegistry() });
+    vi.useFakeTimers();
+
+    container.querySelector("button")?.click();
+    await flushCopyUpdates();
+    expect(container.querySelector("button")?.getAttribute("data-state")).toBe("success");
+
+    await vi.advanceTimersByTimeAsync(300);
+    container.querySelector("button")?.click();
+    await flushCopyUpdates();
+    await vi.advanceTimersByTimeAsync(700);
+    await flushCopyUpdates();
+
+    expect(writeText).toHaveBeenCalledTimes(2);
+    expect(container.querySelector("button")?.getAttribute("data-state")).toBe("success");
+
+    await vi.advanceTimersByTimeAsync(300);
+    await flushCopyUpdates();
+    expect(container.querySelector("button")?.getAttribute("data-state")).toBe("idle");
   });
 });

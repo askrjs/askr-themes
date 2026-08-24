@@ -36,7 +36,7 @@ export type CommandPaletteContentProps = Omit<
 /** Props for the {@link CommandPaletteLink} component. */
 export type CommandPaletteLinkProps = LinkProps & {
   closeOnSelect?: boolean;
-  onBeforeNavigate?: () => void;
+  onBeforeNavigate?: (event: Event) => void;
 };
 
 /** Props for the {@link CommandPaletteList} component. */

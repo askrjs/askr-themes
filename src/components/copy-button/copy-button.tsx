@@ -20,12 +20,29 @@ export function CopyButton(props: CopyButtonProps): JSX.Element {
     ...rest
   } = props;
   const copyState = state<CopyState>("idle");
-  let resetTimer: ReturnType<typeof setTimeout> | undefined;
-  getSignal().addEventListener("abort", () => clearTimeout(resetTimer), { once: true });
+  const lifecycle = state<{
+    resetTimer: ReturnType<typeof setTimeout> | undefined;
+    cleanupSignal: AbortSignal | null;
+  }>({ resetTimer: undefined, cleanupSignal: null })();
+  const signal = getSignal();
+  if (lifecycle.cleanupSignal !== signal) {
+    lifecycle.cleanupSignal = signal;
+    signal.addEventListener(
+      "abort",
+      () => {
+        clearTimeout(lifecycle.resetTimer);
+        lifecycle.resetTimer = undefined;
+      },
+      { once: true },
+    );
+  }
 
   const resetLater = () => {
-    clearTimeout(resetTimer);
-    resetTimer = setTimeout(() => copyState.set("idle"), resetAfter);
+    clearTimeout(lifecycle.resetTimer);
+    lifecycle.resetTimer = setTimeout(() => {
+      lifecycle.resetTimer = undefined;
+      copyState.set("idle");
+    }, resetAfter);
   };
   const copy = async () => {
     try {

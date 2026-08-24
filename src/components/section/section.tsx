@@ -7,7 +7,7 @@ export function Section(props: SectionProps): JSX.Element {
   const { children, ...rest } = props;
 
   return (
-    <Block as="section" gap="lg" paddingY="xl" {...rest} data-slot="section">
+    <Block as="section" direction="column" gap="lg" paddingY="xl" {...rest} data-slot="section">
       {children}
     </Block>
   );

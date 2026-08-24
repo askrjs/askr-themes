@@ -345,7 +345,7 @@ describe("theme contracts", () => {
       </ThemeScope>
     );
     const SecondApp = () => (
-      <ThemeScope defaultTheme="light" storageKey="askr-theme-cross-root-b">
+      <ThemeScope defaultTheme="dark" storageKey="askr-theme-cross-root-b">
         <ThemeToggle aria-label="Toggle second theme" />
         <ThemeProbe />
       </ThemeScope>
@@ -364,11 +364,15 @@ describe("theme contracts", () => {
       await createSPA({ root: second, registry: secondRegistry });
       await settle();
 
+      expect(probeTheme(first)).toBe("light");
+      expect(probeTheme(second)).toBe("dark");
+      expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+
       (first.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
       await settle();
 
       expect(probeTheme(first)).toBe("dark");
-      expect(probeTheme(second)).toBe("light");
+      expect(probeTheme(second)).toBe("dark");
       expect(window.localStorage.getItem("askr-theme-cross-root-a")).toBe("dark");
       expect(window.localStorage.getItem("askr-theme-cross-root-b")).toBeNull();
       expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
@@ -379,9 +383,9 @@ describe("theme contracts", () => {
       await settle();
 
       expect(probeTheme(first)).toBe("light");
-      expect(probeTheme(second)).toBe("dark");
+      expect(probeTheme(second)).toBe("light");
       expect(window.localStorage.getItem("askr-theme-cross-root-a")).toBe("light");
-      expect(window.localStorage.getItem("askr-theme-cross-root-b")).toBe("dark");
+      expect(window.localStorage.getItem("askr-theme-cross-root-b")).toBe("light");
       expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     } finally {
       cleanupApp(first);
@@ -453,6 +457,39 @@ describe("theme contracts", () => {
       "dark",
     );
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("should adopt and receive storage updates for a nested scope identity", async () => {
+    window.localStorage.setItem("askr-theme-nested", "calico");
+    const App = () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme">
+        <ThemeProbe id="outer" />
+        <ThemeScope defaultTheme="tabby" storageKey="askr-theme-nested">
+          <ThemeProbe id="inner" />
+        </ThemeScope>
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    const probeTheme = (id: string) =>
+      container?.querySelector(`[data-probe-id="${id}"]`)?.getAttribute("data-theme");
+    expect(probeTheme("outer")).toBe("light");
+    expect(probeTheme("inner")).toBe("calico");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("calico");
+
+    window.dispatchEvent(
+      new StorageEvent("storage", {
+        key: "askr-theme-nested",
+        newValue: "torty",
+      }),
+    );
+    await settle();
+
+    expect(probeTheme("outer")).toBe("light");
+    expect(probeTheme("inner")).toBe("torty");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("torty");
   });
 
   it("should expose the default theme options and scoped state", async () => {

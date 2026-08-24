@@ -210,7 +210,7 @@ function composeBeforeNavigate(
   onPress: CommandPaletteLinkProps["onPress"],
 ): (event: Event) => void {
   return (event) => {
-    beforeNavigate?.();
+    beforeNavigate?.(event);
     if (!event.defaultPrevented) {
       onPress?.(event);
     }

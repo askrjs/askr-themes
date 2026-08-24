@@ -126,7 +126,13 @@ const open = state(false);
       <CommandInput aria-label="Search documentation" />
     </CommandHeader>
     <CommandPaletteList>
-      <CommandPaletteLink href="/getting-started" onBeforeNavigate={() => cancelPendingSearch()}>
+      <CommandPaletteLink
+        href="/getting-started"
+        onBeforeNavigate={(event) => {
+          cancelPendingSearch();
+          if (!canNavigate()) event.preventDefault();
+        }}
+      >
         Getting started
       </CommandPaletteLink>
     </CommandPaletteList>
@@ -138,7 +144,8 @@ The command input receives focus by default on mouse, keyboard, and programmatic
 opens. Set `initialFocus` to another selector or target callback when needed.
 Tab and Shift+Tab remain contained while the palette is open, and result links
 stay semantic anchors while closing and cleaning up the palette before
-same-origin Askr navigation. Set
+same-origin Askr navigation. `onBeforeNavigate` receives the press event; call
+`preventDefault()` to keep both navigation and palette dismissal from running. Set
 `closeOnEscape={false}` or `closeOnBackdrop={false}` only when the product has
 another clear dismissal path. The composition performs no browser work during
 SSR or SSG.
@@ -163,6 +170,9 @@ Use explicit prop names. The API intentionally avoids shorthand aliases such as
   <p>Page content.</p>
 </Block>
 ```
+
+`rowFrom="lg"` means column below `lg` and row from `lg` upward. An explicit
+responsive `direction` still overrides either side of that shorthand.
 
 Responsive behavior uses one pattern everywhere:
 
@@ -189,7 +199,9 @@ another layout system.
 - `Header`: semantic header with surface background and optional sticky mode.
 - `Main`: semantic main region that can grow inside app frames.
 - `Section`: semantic page section with default vertical rhythm.
-- `Aside` and `Sidebar`: semantic side regions.
+- `Aside` and `Sidebar`: semantic side regions. `collapsible="icon"` uses the
+  sidebar rail width, and `side="right"` docks the sidebar after its inset in
+  the standard `SidebarScope` composition.
 - `Navbar`, `NavBrand`, `NavDropdown`, `NavGroup`, `NavLink`, and `NavItem`: lightweight navigation structure.
 
 ```tsx
@@ -256,7 +268,8 @@ export function ProjectsPage() {
 
 Use `CopyButton` as the canonical copy-to-clipboard control for identifiers,
 tokens, and URLs. It copies asynchronously, shows a success icon for two
-seconds, and announces both success and failure to assistive technology.
+seconds after the latest copy, and announces both success and failure to
+assistive technology.
 
 ```tsx
 <CopyButton text={project.id} label="Copy project ID" />
