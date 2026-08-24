@@ -138,6 +138,7 @@ describe("block-first components", () => {
     const header = asElement(Header({ sticky: true, children: "header" }));
     const main = asElement(Main({ children: "main" }));
     const section = asElement(Section({ children: "section" }));
+    const horizontalSection = asElement(Section({ direction: "row", children: "section" }));
     const aside = asElement(Aside({ children: "aside" }));
     const sidebar = asElement(Sidebar({ children: "sidebar" }));
     const navbar = asElement(Navbar({ children: "navbar" }));
@@ -179,6 +180,8 @@ describe("block-first components", () => {
     expect(main.props.as).toBe("main");
     expect(main.props.grow).toBe(true);
     expect(section.props.as).toBe("section");
+    expect(section.props.direction).toBe("column");
+    expect(horizontalSection.props.direction).toBe("row");
     expect(aside.props.as).toBe("aside");
     expect(sidebar.props.as).toBe("aside");
     expect(sidebar.props.width).toBe("sidebar");
@@ -193,7 +196,12 @@ describe("block-first components", () => {
   });
 
   it("should expose common composition components without recipe-only layouts", () => {
-    expect(Page({ children: "page" })).toBeTruthy();
+    const page = asElement(Page({ children: "page" }));
+    const pageContainer = asElement(page.props.children);
+    const pageContent = asElement(pageContainer.props.children);
+
+    expect(pageContent.type).toBe(Block);
+    expect(pageContent.props.direction).toBe("column");
     expect(
       PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" }),
     ).toBeTruthy();

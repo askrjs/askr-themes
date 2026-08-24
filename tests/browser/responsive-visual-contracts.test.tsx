@@ -88,6 +88,7 @@ describe("responsive and visual theme contracts", () => {
     const mobileSectionPadding = Number.parseFloat(getComputedStyle(section).paddingBlockStart);
 
     expect(getComputedStyle(block).flexDirection).toBe("column");
+    expect(getComputedStyle(section).flexDirection).toBe("column");
     expect(getComputedStyle(toolbar).flexDirection).toBe("column");
     expect(getComputedStyle(pageHeader).flexDirection).toBe("column");
     expect(columnCount(getComputedStyle(grid).gridTemplateColumns)).toBe(1);
