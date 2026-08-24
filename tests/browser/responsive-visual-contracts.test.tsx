@@ -91,7 +91,18 @@ describe("responsive and visual theme contracts", () => {
     expect(getComputedStyle(toolbar).flexDirection).toBe("column");
     expect(getComputedStyle(pageHeader).flexDirection).toBe("column");
     expect(columnCount(getComputedStyle(grid).gridTemplateColumns)).toBe(1);
-    expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
+    const contentRight = content.getBoundingClientRect().right;
+    const overflowDetails = [content, ...content.querySelectorAll<HTMLElement>("*")]
+      .map((element) => ({
+        slot: element.getAttribute("data-slot") ?? element.tagName.toLowerCase(),
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        right: Math.round(element.getBoundingClientRect().right),
+      }))
+      .filter((entry) => entry.scrollWidth > entry.clientWidth || entry.right > contentRight);
+    expect(content.scrollWidth, JSON.stringify(overflowDetails)).toBeLessThanOrEqual(
+      content.clientWidth,
+    );
 
     await page.viewport(1024, 900);
     await settle();
