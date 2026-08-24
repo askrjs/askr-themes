@@ -566,12 +566,15 @@ export function DataTable(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "data-table" });
 }
 
-/** Renders the `date-picker` part of the shadcn-compatible catalog primitives. */
+/**
+ * Styling-only `date-picker` container. It does not implement a popup calendar, formatting, or
+ * calendar-grid keyboard behavior; pair it with {@link DatePickerInput} for a native date input.
+ */
 export function DatePicker(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "date-picker" });
 }
 
-/** Renders the date picker's `<input type="date">` by default. */
+/** Native `<input type="date">` styling slot; browser behavior and localization remain native. */
 export function DatePickerInput(props: CatalogComponentProps): JSX.Element {
   const { ref, class: className, type = "date", ...rest } = props;
   const finalProps = mergeProps(rest, {
@@ -880,17 +883,17 @@ export function ResizableHandle(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "resizable-handle" });
 }
 
-/** Renders the `tabs-list` part of the shadcn-compatible catalog primitives. */
+/** Styling-only tabs-list slot; it does not own tab selection, ARIA state, or keyboard behavior. */
 export function TabsList(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "tabs-list" });
 }
 
-/** Renders the `tabs-content` part of the shadcn-compatible catalog primitives. */
+/** Styling-only trigger button; it does not select or associate a tab panel. */
 export function TabsTrigger(props: CatalogComponentProps): JSX.Element {
   return buttonPart(props, "tabs-trigger", "tab");
 }
 
-/** Renders the `tabs-content` part of the shadcn-compatible catalog primitives. */
+/** Styling-only tabs-content slot; visibility and panel association are consumer-owned. */
 export function TabsContent(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "tabs-content" });
 }
