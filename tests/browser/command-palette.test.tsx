@@ -1,7 +1,7 @@
 import { page, userEvent } from "@vitest/browser/context";
 import { state } from "@askrjs/askr";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
-import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 import {
   CommandHeader,
@@ -43,7 +43,7 @@ function PaletteContent(props: {
   closeOnBackdrop?: boolean;
   closeOnEscape?: boolean;
   linkHref?: string;
-  onBeforeNavigate?: () => void;
+  onBeforeNavigate?: (event: Event) => void;
 }) {
   return (
     <CommandPaletteContent
@@ -277,5 +277,26 @@ describe("CommandPalette", () => {
     expect(targetObservedClosed).toBe(true);
     expect(window.location.pathname).toBe("/guide");
     expect(container!.textContent).toContain("Guide");
+  });
+
+  it("should let onBeforeNavigate cancel navigation and palette dismissal", async () => {
+    const onBeforeNavigate = vi.fn((event: Event) => event.preventDefault());
+    testRoute("/docs", () => (
+      <CommandPalette defaultOpen>
+        <PaletteContent onBeforeNavigate={onBeforeNavigate} linkHref="/guide" />
+      </CommandPalette>
+    ));
+    testRoute("/guide", () => <main>Guide</main>);
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    const link = await waitForElement(
+      () => document.body.querySelector('[data-slot="command-item"]') as HTMLAnchorElement | null,
+    );
+    link.click();
+    await settle();
+
+    expect(onBeforeNavigate).toHaveBeenCalledOnce();
+    expect(window.location.pathname).toBe("/docs");
+    expect(document.body.querySelector('[role="dialog"]')).not.toBeNull();
   });
 });
