@@ -44,10 +44,20 @@ const A11Y_EXPORT_PATTERN = new RegExp(
   `${["A11Y", "CONTRACT"].join("_")}|${["A11y", "Contract"].join("")}`,
 );
 const REPORTED_CATALOG_WRAPPERS = [
+  "Calendar",
+  "Carousel",
+  "Combobox",
+  "Command",
   "DataTable",
+  "DatePicker",
+  "InputOTP",
+  "NavigationMenu",
   "ResizablePanelGroup",
   "ResizablePanel",
   "ResizableHandle",
+  "TabsList",
+  "TabsTrigger",
+  "TabsContent",
 ] as const;
 const COMPONENT_DIST_ARTIFACTS = ["dist/components.js", "dist/components.d.ts"] as const;
 const WILDCARD_MODULE_BINDING = "*" as const;
@@ -294,6 +304,23 @@ describe("package surface", () => {
       const docs = declarationDocumentation(declarations, component);
       expect(docs, component).toContain("Styling-only");
       expect(docs, component).toContain("does not implement resizing");
+    }
+
+    for (const component of [
+      "Calendar",
+      "Carousel",
+      "Combobox",
+      "Command",
+      "DatePicker",
+      "InputOTP",
+      "NavigationMenu",
+      "TabsList",
+      "TabsTrigger",
+      "TabsContent",
+    ]) {
+      expect(declarationDocumentation(declarations, component), component).toContain(
+        "Styling-only",
+      );
     }
   }, 30_000);
 

@@ -138,10 +138,21 @@ hover, active, focus, and contrast contract.
 
 ### Styling-only compatibility wrappers
 
-`DataTable`, `DatePicker`, `TabsList`, `TabsTrigger`, `TabsContent`,
-`ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` are styling-only
-catalog compatibility wrappers. Their names do not promise a data-grid,
-headless tabs, calendar, or panel-resizing runtime:
+The following catalog families are styling-only compatibility anatomy. Their
+names do not promise widget state, keyboard interaction, focus management, or
+complete ARIA relationships:
+
+- `TabsList`, `TabsTrigger`, and `TabsContent`
+- `Combobox`, `ComboboxInput`, `ComboboxList`, and `ComboboxOption`
+- `Calendar*`, `DatePicker`, and `DatePickerInput`
+- `Command*` (except the separately documented functional `CommandPalette`)
+- `NavigationMenu*`
+- `Carousel*`
+- `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle`
+- `InputOTP`, `InputOTPGroup`, `InputOTPSlot`, and `InputOTPSeparator`
+- `DataTable`
+
+Specifically:
 
 - `DataTable` provides a `data-table` container slot. It does not sort, filter,
   select, or paginate. Compose semantic `Table` or `VirtualTable` primitives
@@ -157,12 +168,25 @@ headless tabs, calendar, or panel-resizing runtime:
   do not coordinate selection, panels, ARIA state, or arrow-key navigation.
   `Tabs` and `Tab` are separate, functional navigation-link components; they
   are not a headless tab-panel system and do not share state with these slots.
+- `Combobox*` does not manage a value, filter options, open a popup, move focus,
+  or emit the combobox/listbox ARIA relationship.
+- `Calendar*` exposes visual day/month slots but does not own dates, selection,
+  grid focus, localization, or month navigation. Its previous/next/day buttons
+  remain ordinary caller-controlled buttons.
+- `Command*` exposes search/list/item styling but does not filter, select, or
+  move focus. `CommandPalette` is a separate functional dialog composition.
+- `NavigationMenu*` exposes navigation layout but does not coordinate content,
+  disclosure state, roving focus, or arrow-key behavior.
+- `Carousel*` exposes slide and control slots but does not track an active
+  slide, scroll, announce changes, or implement keyboard controls.
+- `InputOTP*` exposes groups, cells, and separators but deliberately renders no
+  hidden input and owns no value, focus, paste, or validation behavior.
 
 These names remain exported for catalog compatibility. If an application needs
-real tab-panel, calendar, or resize behavior today, supply that state, keyboard,
-and ARIA contract in application code or a dedicated behavior dependency. A
-future Askr behavior primitive must be implemented and tested in `@askrjs/ui`
-before themes can compose and style it.
+behavior for any of these families today, use a dedicated behavior dependency
+and compose these slots only as presentation. A future Askr behavior primitive
+must be implemented and tested in `@askrjs/ui` before themes can compose and
+style it; themes must never duplicate behavioral state.
 
 ## Theme Contract
 

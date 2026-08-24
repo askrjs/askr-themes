@@ -336,7 +336,7 @@ export function BreadcrumbEllipsis(props: CatalogComponentProps): JSX.Element {
   );
 }
 
-/** Renders the `calendar` part of the shadcn-compatible catalog primitives. */
+/** Styling-only calendar anatomy; it does not own dates, grid focus, selection, or month navigation. */
 export function Calendar(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "calendar" });
 }
@@ -431,7 +431,7 @@ export function CalendarDay(
   );
 }
 
-/** Renders the `carousel` part of the shadcn-compatible catalog primitives. */
+/** Styling-only carousel anatomy; it does not own an active slide, scrolling, or keyboard navigation. */
 export function Carousel(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "carousel" });
 }
@@ -458,7 +458,7 @@ export function CarouselNext(props: CatalogComponentProps): JSX.Element {
   return buttonPart({ children, ...rest }, "carousel-next", "btn btn-icon");
 }
 
-/** Renders the `combobox` part of the shadcn-compatible catalog primitives. */
+/** Styling-only combobox anatomy; it does not own value, popup, filtering, focus, or ARIA state. */
 export function Combobox(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "combobox" });
 }
@@ -485,7 +485,7 @@ export function ComboboxOption(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "combobox-option" });
 }
 
-/** Renders the `command` part of the shadcn-compatible catalog primitives. */
+/** Styling-only command anatomy; it does not own filtering, selection, focus, or keyboard commands. */
 export function Command(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "command" });
 }
@@ -662,7 +662,7 @@ export function FieldSeparator(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "field-separator", role: "separator" });
 }
 
-/** Renders the `input-otp` part of the shadcn-compatible catalog primitives. */
+/** Styling-only OTP anatomy; it does not render an input or own value, focus, paste, or validation behavior. */
 export function InputOTP(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "input-otp", role: "group" });
 }
@@ -766,7 +766,7 @@ export function NativeSelect(props: CatalogComponentProps): JSX.Element {
   return <select {...finalProps}>{children}</select>;
 }
 
-/** Renders the `navigation-menu` part of the shadcn-compatible catalog primitives. */
+/** Styling-only navigation-menu anatomy; it does not own disclosure, roving focus, or keyboard behavior. */
 export function NavigationMenu(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "navigation-menu", element: "nav" });
 }
