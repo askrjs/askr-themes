@@ -706,6 +706,31 @@ describe("visual polish contracts", () => {
     expect(getComputedStyle(headerCell).letterSpacing).toBe("normal");
   });
 
+  it("should render a complete, labeled form audit with input and textarea states", async () => {
+    document.body.innerHTML = "";
+    const iframe = await loadAuditFrame(1440);
+    const doc = iframe.contentDocument!;
+    const form = doc.querySelector('[data-slot="form"]') as HTMLFormElement | null;
+
+    expect(form, 'visual-check.html is missing a rendered [data-slot="form"]').not.toBeNull();
+    expect(form!.tagName).toBe("FORM");
+
+    const fields = [...form!.querySelectorAll('[data-slot="field"]')];
+    expect(fields.length).toBeGreaterThanOrEqual(5);
+
+    for (const field of fields) {
+      const label = field.querySelector('[data-slot="label"]') as HTMLElement;
+      const control = field.querySelector(
+        '[data-slot="input"], [data-slot="textarea"]',
+      ) as HTMLElement;
+
+      expect(label, field.outerHTML).not.toBeNull();
+      expect(label.textContent?.trim(), field.outerHTML).not.toBe("");
+      expect(control, field.outerHTML).not.toBeNull();
+      expect(control.getBoundingClientRect().width, field.outerHTML).toBeGreaterThan(0);
+    }
+  });
+
   it("should stack structured menu labels and descriptions across standalone and modal contexts", async () => {
     for (const width of [320, 768, 1440]) {
       document.body.innerHTML = "";
