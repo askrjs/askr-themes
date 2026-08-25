@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.2.4 - 2026-08-25
+
 - Restore `PageHeader` title and description stacking after the `Block` native-initial fix in #94/#96, and add computed-style regression coverage.
 - Add `MetaStrip` for semantic compact key/value facts in inline and stacked layouts.
 - Add `CopyButton` with Clipboard API failure handling, timed visual feedback, and live-region announcements.
