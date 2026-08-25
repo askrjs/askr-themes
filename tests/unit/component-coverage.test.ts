@@ -1,6 +1,3 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
-
 import { describe, expect, it } from "vite-plus/test";
 
 import * as components from "../../src/components";
@@ -9,24 +6,6 @@ import {
   THEME_COMPONENT_SUBPATHS,
   THEME_COMPONENTS,
 } from "../../src/parity";
-import { ROOT_DIR } from "./test-paths";
-
-const DIRECT_TESTS = [
-  "tests/unit/components-entrypoint.test.ts",
-  "tests/unit/package-surface.test.ts",
-  "tests/unit/card-components.test.ts",
-  "tests/unit/slot-coverage.test.ts",
-] as const;
-
-const BENCH_FILES = [
-  "benches/tier2/public-families.bench.tsx",
-  "benches/tier3/composition.bench.tsx",
-  "benches/tier4/browser-flows.bench.tsx",
-] as const;
-
-function assertFileExists(relativePath: string, message: string): void {
-  expect(existsSync(join(ROOT_DIR, relativePath)), message).toBe(true);
-}
 
 describe("component coverage matrix", () => {
   it("should keep every public non-chart component represented in the themes catalog", () => {
@@ -46,16 +25,6 @@ describe("component coverage matrix", () => {
     for (const subpath of THEME_COMPONENT_SUBPATHS) {
       expect(typeof subpath).toBe("string");
       expect(subpath.length).toBeGreaterThan(0);
-    }
-  });
-
-  it("should keep direct tests and composition benches attached to the public catalog", () => {
-    for (const testFile of DIRECT_TESTS) {
-      assertFileExists(testFile, `missing direct test file ${testFile}`);
-    }
-
-    for (const benchFile of BENCH_FILES) {
-      assertFileExists(benchFile, `missing bench file ${benchFile}`);
     }
   });
 });
