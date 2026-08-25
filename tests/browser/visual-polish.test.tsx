@@ -712,7 +712,7 @@ describe("visual polish contracts", () => {
     const doc = iframe.contentDocument!;
     const form = doc.querySelector('[data-slot="form"]') as HTMLFormElement | null;
 
-    expect(form, "visual-check.html is missing a rendered [data-slot=\"form\"]").not.toBeNull();
+    expect(form, 'visual-check.html is missing a rendered [data-slot="form"]').not.toBeNull();
     expect(form!.tagName).toBe("FORM");
 
     const fields = [...form!.querySelectorAll('[data-slot="field"]')];
