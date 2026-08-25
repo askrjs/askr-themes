@@ -120,8 +120,8 @@
     "test:checks": "vp test run -c vitest.test.checks.config.ts"
   },
   "devDependencies": {
-    "@askrjs/askr": ">=0.2.3 <0.3.0",
-    "@askrjs/ui": ">=0.2.3 <0.3.0",
+    "@askrjs/askr": ">=0.2.2 <0.3.0",
+    "@askrjs/ui": ">=0.2.2 <0.3.0",
     "@askrjs/vite": ">=0.2.1 <0.3.0",
     "@tsdown/css": "0.22.14",
     "@types/node": "^26.3.0",
@@ -137,8 +137,8 @@
     "vite-plus": "^0.2.9"
   },
   "peerDependencies": {
-    "@askrjs/askr": ">=0.2.3 <0.3.0",
-    "@askrjs/ui": ">=0.2.3 <0.3.0"
+    "@askrjs/askr": ">=0.2.0 <0.3.0",
+    "@askrjs/ui": ">=0.2.2 <0.3.0"
   },
   "engines": {
     "node": ">=24.0.0"
