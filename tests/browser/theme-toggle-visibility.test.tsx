@@ -200,4 +200,66 @@ describe("theme toggle visibility", () => {
     expect(textToggleAgain?.getAttribute("data-theme-choice")).toBe("light");
     expect(textToggleAgain?.getAttribute("data-next-theme")).toBe("dark");
   });
+
+  it("should size the theme-toggle icon to track --ak-font-size-sm, not --ak-icon-size-sm", async () => {
+    testRoute("/theme-visibility", () => (
+      <ThemeScope defaultTheme="light" storageKey="askr-theme-toggle-visibility">
+        <Header>
+          <Container>
+            <Navbar aria-label="Theme visibility">
+              <NavGroup align="end">
+                <ThemeToggle
+                  lightIcon={
+                    <svg aria-hidden="true" data-icon="sun" data-slot="icon" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="4" />
+                    </svg>
+                  }
+                  darkIcon={
+                    <svg aria-hidden="true" data-icon="moon" data-slot="icon" viewBox="0 0 24 24">
+                      <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" />
+                    </svg>
+                  }
+                />
+              </NavGroup>
+            </Navbar>
+          </Container>
+        </Header>
+      </ThemeScope>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    // Probe elements resolve each candidate token to a real computed pixel
+    // value, so this assertion tracks the tokens' *actual* defined values
+    // rather than pinning a hardcoded px string that would silently drift
+    // out of sync with the design tokens file.
+    const fontSizeSmProbe = document.createElement("span");
+    fontSizeSmProbe.style.fontSize = "var(--ak-font-size-sm)";
+    document.body.appendChild(fontSizeSmProbe);
+    const expectedIconSizePx = getComputedStyle(fontSizeSmProbe).fontSize;
+
+    const iconSizeSmProbe = document.createElement("span");
+    iconSizeSmProbe.style.inlineSize = "var(--ak-icon-size-sm)";
+    document.body.appendChild(iconSizeSmProbe);
+    const iconSizeSmPx = getComputedStyle(iconSizeSmProbe).inlineSize;
+
+    const toggle = container?.querySelector('[data-theme-control="toggle"]');
+    const icon = toggle?.querySelector(
+      '[data-slot="theme-toggle-icon"]:not([hidden]) svg',
+    ) as SVGElement | null;
+    expect(icon).not.toBeNull();
+
+    const computed = getComputedStyle(icon as SVGElement);
+    // Sanity: the two tokens actually differ in this theme, otherwise this
+    // test could pass by accident regardless of which token is wired up.
+    expect(expectedIconSizePx).not.toBe(iconSizeSmPx);
+
+    expect(computed.inlineSize).toBe(expectedIconSizePx);
+    expect(computed.blockSize).toBe(expectedIconSizePx);
+    expect(computed.inlineSize).not.toBe(iconSizeSmPx);
+
+    fontSizeSmProbe.remove();
+    iconSizeSmProbe.remove();
+  });
 });

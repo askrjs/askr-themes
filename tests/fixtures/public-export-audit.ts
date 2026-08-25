@@ -70,20 +70,3 @@ export const PUBLIC_EXPORT_OWNERSHIP = {
 } as const;
 
 export type PublicExportOwner = keyof typeof PUBLIC_EXPORT_OWNERSHIP;
-
-export const PUBLIC_EXPORT_EVIDENCE: Record<PublicExportOwner, readonly string[]> = {
-  "ui-behavior": [
-    "tests/browser/public-family-smoke.test.tsx",
-    "tests/browser/aria-role-audit.test.tsx",
-  ],
-  "themes-behavior": [
-    "tests/unit/components-entrypoint.test.ts",
-    "tests/jsdom/theme-contract.test.tsx",
-    "tests/browser/public-family-smoke.test.tsx",
-  ],
-  "styling-only": [
-    "tests/unit/components-entrypoint.test.ts",
-    "tests/unit/slot-coverage.test.ts",
-    "tests/unit/package-surface.test.ts",
-  ],
-};
