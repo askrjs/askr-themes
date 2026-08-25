@@ -122,9 +122,9 @@
   "devDependencies": {
     "@askrjs/askr": ">=0.2.2 <0.3.0",
     "@askrjs/ui": ">=0.2.2 <0.3.0",
-    "@askrjs/vite": ">=0.2.0 <0.3.0",
+    "@askrjs/vite": ">=0.2.1 <0.3.0",
     "@tsdown/css": "0.22.14",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/browser-playwright": "4.1.10",
     "axe-core": "^4.13.0",
