@@ -33,24 +33,3 @@ export const THEME_FAMILY_AUDIT_SELECTORS = {
   theme: '[data-slot="theme-picker"]',
   toolbar: '[data-slot="toolbar"]',
 } as const;
-
-export const DIMENSION_EVIDENCE = {
-  light: ["tests/browser/visual-polish.test.tsx", 'for (const theme of ["light", "dark"]'],
-  dark: ["tests/browser/visual-polish.test.tsx", 'for (const theme of ["light", "dark"]'],
-  mobile: ["tests/browser/visual-polish.test.tsx", "for (const width of [320, 768, 1440]"],
-  desktop: ["tests/browser/visual-polish.test.tsx", "for (const width of [320, 768, 1440]"],
-  ltr: ["tests/browser/visual-polish.test.tsx", 'for (const direction of ["ltr", "rtl"]'],
-  rtl: ["tests/browser/visual-polish.test.tsx", 'for (const direction of ["ltr", "rtl"]'],
-  focus: ["tests/browser/accessibility-visual-states.test.tsx", "keyboard focus ring on every"],
-  disabled: ["tests/browser/accessibility-visual-states.test.tsx", "disabled-control perception"],
-  "long-content": ["tests/browser/visual-polish.test.tsx", "long-label overflow"],
-  composition: ["tests/browser/visual-polish.test.tsx", "standalone and modal contexts"],
-} as const;
-
-export const REQUIRED_COMPOSITION_SLOTS = [
-  "form",
-  "menubar-content",
-  "virtual-list",
-  "virtual-list-row",
-  "virtual-list-spacer",
-] as const;
