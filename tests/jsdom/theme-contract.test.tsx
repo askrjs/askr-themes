@@ -166,6 +166,21 @@ describe("theme contracts", () => {
     document.documentElement.removeAttribute("data-theme-choice");
   });
 
+  it("should synchronize the committed root theme within microtask settlement", async () => {
+    testRoute("/theme", () => (
+      <ThemeScope defaultTheme="dark" storageKey="askr-theme">
+        <ThemeProbe />
+      </ThemeScope>
+    ));
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
   it("should hydrate deterministic markup given a persisted theme when adopting SSR", async () => {
     const App = () => (
       <ThemeScope defaultTheme="light" storageKey="askr-theme">
