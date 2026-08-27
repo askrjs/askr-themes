@@ -18,6 +18,7 @@ export const THEME_FAMILY_AUDIT_SELECTORS = {
   heading: '[data-slot="text"][data-heading-level]',
   header: '[data-slot="header"]',
   "input-group": '[data-slot="input-group"]',
+  "intent-layouts": '[data-slot="stack"]',
   main: '[data-slot="main"]',
   "meta-strip": '[data-slot="meta-strip"]',
   nav: '[data-slot="tabs"]',

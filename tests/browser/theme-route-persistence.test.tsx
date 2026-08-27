@@ -55,8 +55,8 @@ describe("theme route persistence in the browser", () => {
     await createSPA({ root: container!, registry: createTestRegistry() });
 
     expect(container.querySelector('[data-slot="theme-scope"]')).not.toBeNull();
-    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
-    expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("light");
 
     await settle();
 
@@ -127,8 +127,8 @@ describe("theme route persistence in the browser", () => {
 
     await createSPA({ root: container!, registry: createTestRegistry() });
 
-    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
-    expect(document.documentElement.getAttribute("data-theme-choice")).toBeNull();
+    expect(document.documentElement.getAttribute("data-theme")).toBe("tabby");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("tabby");
 
     await settle();
 

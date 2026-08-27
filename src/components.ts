@@ -264,6 +264,7 @@ export {
 } from "./components/sidebar";
 export { Skeleton } from "./components/skeleton";
 export { Spinner } from "./components/spinner";
+export { Center, Cluster, Stack } from "./components/intent-layouts";
 export { Stat, StatDescription, StatLabel, StatValue } from "./components/stat";
 export { Text } from "./components/text";
 export { Toolbar } from "./components/toolbar";
@@ -294,6 +295,7 @@ export type * from "./components/footer";
 export type * from "./components/grid";
 export type * from "./components/header";
 export type * from "./components/input-group";
+export type * from "./components/intent-layouts";
 export type * from "./components/main";
 export type * from "./components/meta-strip";
 export type * from "./components/aside";

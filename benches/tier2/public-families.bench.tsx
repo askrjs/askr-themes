@@ -8,7 +8,7 @@ import {
   buildSurfacesFixture,
 } from "../_shared/fixtures";
 import { consume } from "../_shared/sink";
-import { Block } from "../../src/core";
+import { Block, Center, Cluster, Stack } from "../../src/core";
 
 const BATCH = 64;
 
@@ -34,6 +34,14 @@ describe("tier2 public family render benches", () => {
           children: "Content",
         }),
       );
+    }
+  });
+
+  bench("intent layouts over Block resolver", () => {
+    for (let i = 0; i < BATCH; i += 1) {
+      consume(Stack({ gap: "sm", children: "Flow" }));
+      consume(Cluster({ gap: "xs", children: "Actions" }));
+      consume(Center({ minHeight: "sm", children: "Loading" }));
     }
   });
 

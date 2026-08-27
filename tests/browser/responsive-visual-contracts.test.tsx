@@ -4,6 +4,8 @@ import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 
 import {
   Block,
+  Center,
+  Cluster,
   Container,
   Grid,
   Heading,
@@ -11,6 +13,7 @@ import {
   PageHeader,
   Section,
   Sidebar,
+  Stack,
   Text,
   Toolbar,
 } from "../../src/core";
@@ -294,5 +297,46 @@ describe("responsive and visual theme contracts", () => {
       Number.parseInt(getComputedStyle(dialog).zIndex, 10),
     );
     expect(menu === document.activeElement || menu.contains(document.activeElement)).toBe(true);
+  });
+
+  it("should preserve intent layout geometry without narrow viewport overflow", async () => {
+    await page.viewport(390, 844);
+    window.history.replaceState({}, "", "/intent-layouts");
+    testRoute("/intent-layouts", () => (
+      <Stack gap="sm" width="full" data-test="stack">
+        <Cluster gap="xs" data-test="cluster">
+          <span style="width:240px;flex-shrink:0">Primary action</span>
+          <span style="width:240px;flex-shrink:0">Secondary action</span>
+        </Cluster>
+        <Center width="full" height="sm" data-test="center">
+          <span>Loading</span>
+        </Center>
+      </Stack>
+    ));
+
+    await createSPA({ root: container, registry: createTestRegistry() });
+    await settle();
+
+    const stack = container.querySelector<HTMLElement>('[data-test="stack"]')!;
+    const cluster = container.querySelector<HTMLElement>('[data-test="cluster"]')!;
+    const center = container.querySelector<HTMLElement>('[data-test="center"]')!;
+    const clusterChildren = [...cluster.children] as HTMLElement[];
+    const centerBounds = center.getBoundingClientRect();
+    const centeredChild = center.firstElementChild!.getBoundingClientRect();
+
+    expect(stack.scrollWidth).toBeLessThanOrEqual(stack.clientWidth);
+    expect(clusterChildren[1]!.getBoundingClientRect().top).toBeGreaterThan(
+      clusterChildren[0]!.getBoundingClientRect().top,
+    );
+    expect(
+      Math.abs(
+        centeredChild.left + centeredChild.width / 2 - (centerBounds.left + centerBounds.width / 2),
+      ),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(
+        centeredChild.top + centeredChild.height / 2 - (centerBounds.top + centerBounds.height / 2),
+      ),
+    ).toBeLessThanOrEqual(1);
   });
 });
