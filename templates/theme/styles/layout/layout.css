@@ -40,7 +40,7 @@
   --ak-flex-basis-sm: var(--ak-flex-basis-base);
   --ak-flex-basis-md: var(--ak-flex-basis-sm);
   --ak-flex-basis-lg: var(--ak-flex-basis-md);
-  --ak-min-width-base: auto;
+  --ak-min-width-base: 0;
   --ak-min-width-sm: var(--ak-min-width-base);
   --ak-min-width-md: var(--ak-min-width-sm);
   --ak-min-width-lg: var(--ak-min-width-md);

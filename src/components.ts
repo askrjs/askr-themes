@@ -219,6 +219,8 @@ export {
 } from "./components/footer";
 export { Grid } from "./components/grid";
 export { Header } from "./components/header";
+export { Heading } from "./components/heading";
+export type * from "./components/heading";
 export { InputGroup, InputGroupText } from "./components/input-group";
 export { Main } from "./components/main";
 export { MetaStrip } from "./components/meta-strip";

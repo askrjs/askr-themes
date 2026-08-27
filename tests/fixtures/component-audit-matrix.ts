@@ -15,6 +15,7 @@ export const THEME_FAMILY_AUDIT_SELECTORS = {
   field: '[data-slot="field"]',
   footer: '[data-slot="footer"]',
   grid: '[data-slot="grid"]',
+  heading: '[data-slot="text"][data-heading-level]',
   header: '[data-slot="header"]',
   "input-group": '[data-slot="input-group"]',
   main: '[data-slot="main"]',

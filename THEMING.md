@@ -50,6 +50,20 @@ level beneath an existing heading:
 <CardTitle titleAs="h2">Live sessions</CardTitle>
 ```
 
+Use `PageHeader` for the conventional page title and actions composition. Use
+the typed `Heading` primitive for article and section structure outside a card;
+its explicit semantic level is independent from visual size:
+
+```tsx
+<Heading level={1} size="3xl">Operations guide</Heading>
+<Heading level={2} size="xl">Recovery workflow</Heading>
+```
+
+Use `CardTitle` for headings owned by cards. The compatibility
+`TypographyH1`–`TypographyH4` catalog components remain available, but new
+application document structure should prefer `Heading` for native attributes,
+typed refs, and levels one through six.
+
 Icon override:
 
 ```css

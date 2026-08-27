@@ -52,6 +52,7 @@ export const PUBLIC_EXPORT_OWNERSHIP = {
     "drawer",
     "empty",
     "field",
+    "heading",
     "input-group",
     "input-otp",
     "item",

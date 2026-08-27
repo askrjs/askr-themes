@@ -20,6 +20,8 @@ export { Grid } from "./components/grid";
 export type * from "./components/grid";
 export { Header } from "./components/header";
 export type * from "./components/header";
+export { Heading } from "./components/heading";
+export type * from "./components/heading";
 export { Main } from "./components/main";
 export type * from "./components/main";
 export { Section } from "./components/section";
