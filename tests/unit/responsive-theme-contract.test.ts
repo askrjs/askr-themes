@@ -93,7 +93,7 @@ describe("responsive theme contract", () => {
       "--ak-align-items-base: normal",
       "--ak-justify-content-base: normal",
       "--ak-gap-base: normal",
-      "--ak-min-width-base: auto",
+      "--ak-min-width-base: 0",
       "--ak-border-base: medium none currentcolor",
       "box-sizing: border-box",
     ]) {

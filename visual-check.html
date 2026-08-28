@@ -931,7 +931,7 @@
 
       const layoutContent = `
         <div class="stack">
-          <div class="layout-demo">
+          <div class="layout-demo" data-slot="stack">
             <div data-slot="block" class="layout-grid">
               <aside class="layout-sidebar sidebar" data-slot="sidebar" data-responsive-collapsed="false">
                 <div data-slot="nav-brand">
@@ -1644,7 +1644,7 @@
                 <div class="stack">
                   <div class="stack">
                     <p class="audit-kicker">Typography</p>
-                    <h1>Admin clarity</h1>
+                    <h1 class="text" data-slot="text" data-heading-level="1" data-size="3xl" data-weight="bold">Admin clarity</h1>
                     <h2>Section rhythm</h2>
                     <p>
                       Body copy should stay readable, muted copy should recede, and headings

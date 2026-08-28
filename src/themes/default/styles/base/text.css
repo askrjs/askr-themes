@@ -13,6 +13,18 @@
   font-size: var(--ak-font-size-lg);
 }
 
+:where([data-slot="text"][data-size="xl"]) {
+  font-size: var(--ak-font-size-xl);
+}
+
+:where([data-slot="text"][data-size="2xl"]) {
+  font-size: var(--ak-font-size-2xl);
+}
+
+:where([data-slot="text"][data-size="3xl"]) {
+  font-size: var(--ak-font-size-3xl);
+}
+
 :where([data-slot="text"][data-tone="muted"]) {
   color: var(--ak-color-text-muted);
 }

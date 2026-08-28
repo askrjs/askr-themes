@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.2.5 - 2026-08-28
+
+- Restore vertical flow inside `EmptyState` content.
+- Keep `Stack` as a supported intent-level layout while preserving its former
+  spacing, padding, and wrapping conveniences.
+- Require installed package entries for the supported `Stack`, `Cluster`, and
+  `Center` layouts and execute TypeScript JSX unit tests in the standard gate.
+
 ## 0.2.4 - 2026-08-25
 
 - Restore `PageHeader` title and description stacking after the `Block` native-initial fix in #94/#96, and add computed-style regression coverage.

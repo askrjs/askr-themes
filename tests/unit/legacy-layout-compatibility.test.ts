@@ -15,7 +15,7 @@ describe("legacy layout compatibility", () => {
 
   it("should normalize legacy wrap strings like their boolean equivalents", async () => {
     vi.resetModules();
-    const { Inline, Stack } = await import("../../src/components/catalog");
+    const { Inline } = await import("../../src/components/catalog");
 
     expect(asElement(Inline({ wrap: "wrap" })).props.class).toBe(
       asElement(Inline({ wrap: true })).props.class,
@@ -23,29 +23,24 @@ describe("legacy layout compatibility", () => {
     expect(asElement(Inline({ wrap: "nowrap" })).props.class).toBe(
       asElement(Inline({ wrap: false })).props.class,
     );
-    expect(asElement(Stack({ wrap: { base: "nowrap", md: "wrap" } })).props.class).toBe(
-      asElement(Stack({ wrap: { base: false, md: true } })).props.class,
-    );
   });
 
   it("should warn once per deprecated component with its replacement", async () => {
     vi.resetModules();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const { Box, Inline, Shell, ShellMain, ShellNav, Stack } =
+    const { Box, Inline, Shell, ShellMain, ShellNav } =
       await import("../../src/components/catalog");
 
     Box({});
     Box({});
-    Stack({});
     Inline({});
     Shell({});
     ShellNav({});
     ShellMain({});
 
-    expect(warn).toHaveBeenCalledTimes(6);
+    expect(warn).toHaveBeenCalledTimes(5);
     expect(warn.mock.calls.map(([message]) => String(message))).toEqual([
       "[askr-themes] Box is deprecated. Use Block directly.",
-      '[askr-themes] Stack is deprecated. Use <Block direction="column">.',
       '[askr-themes] Inline is deprecated. Use <Block direction="row">.',
       "[askr-themes] Shell is deprecated. Compose semantic Block primitives instead.",
       '[askr-themes] ShellNav is deprecated. Use <Block as="nav">.',
