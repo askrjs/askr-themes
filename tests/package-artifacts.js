@@ -21,7 +21,7 @@ const sourceMappingPattern = /[#@]\s*sourceMappingURL=([^\s*]+)/gu;
 const componentDeclarations = ["dist/components.d.ts", "dist/components/catalog.d.ts"]
   .map((file) => readFileSync(file, "utf8"))
   .join("\n");
-for (const alias of ["Box", "Stack", "Inline", "Shell", "ShellNav", "ShellMain"]) {
+for (const alias of ["Box", "Inline", "Shell", "ShellNav", "ShellMain"]) {
   const declarationPattern = new RegExp(String.raw`@deprecated[^]*?function ${alias}\b`);
   if (!declarationPattern.test(componentDeclarations)) {
     throw new Error(`Public ${alias} declaration is missing @deprecated guidance.`);
@@ -39,6 +39,12 @@ if (
 const componentEntries = readdirSync("src/entries")
   .filter((file) => file.endsWith(".ts"))
   .map((file) => file.slice(0, -3));
+
+for (const layout of ["stack", "cluster", "center"]) {
+  if (!componentEntries.includes(layout)) {
+    throw new Error(`Expected supported ${layout} package entry.`);
+  }
+}
 
 for (const component of componentEntries) {
   if (!packedFiles.has(normalize(`dist/entries/${component}.js`))) {

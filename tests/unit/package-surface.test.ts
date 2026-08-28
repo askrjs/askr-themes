@@ -165,8 +165,8 @@ describe("package surface", () => {
     expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.2.0 <0.3.0");
     expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.2.2 <0.3.0");
     expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.2.2 <0.3.0");
-    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.2.2");
-    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.2.2");
+    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.2.4");
+    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.2.4");
   });
 
   it("should expose the styled component catalog from the aggregate entrypoint", () => {

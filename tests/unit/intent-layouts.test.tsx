@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
+import { Block } from "../../src/components/block";
 import { Center, Cluster, Stack } from "../../src/components/intent-layouts";
 
 type ElementLike = { props: Record<string, unknown> };
@@ -16,9 +17,13 @@ describe("intent-level layouts", () => {
     expect(stack.props["data-ak-layout"]).toBe("true");
     expect(cluster.props["data-ak-layout"]).toBe("true");
     expect(center.props["data-ak-layout"]).toBe("true");
-    expect(stack.props.class).toMatch(/ak-dyn-/);
-    expect(cluster.props.class).toMatch(/ak-dyn-/);
-    expect(center.props.class).toMatch(/ak-dyn-/);
+    expect(stack.props.class).toBe(element(Block({ direction: "column", gap: "sm" })).props.class);
+    expect(cluster.props.class).toBe(
+      element(Block({ direction: "row", gap: "xs", wrap: true })).props.class,
+    );
+    expect(center.props.class).toBe(
+      element(Block({ align: "center", justify: "center", minHeight: "sm" })).props.class,
+    );
   });
 
   it("should enforce owned axes even given untyped conflicting values", () => {
@@ -31,5 +36,13 @@ describe("intent-level layouts", () => {
     expect(element(Center({ align: "start", justify: "end" } as never)).props.class).toBe(
       element(Center({ align: "center", justify: "center" } as never)).props.class,
     );
+  });
+
+  it("should preserve the former Stack convenience props without deprecating Stack", () => {
+    const legacy = element(Stack({ p: "4", gap: "2", wrap: "wrap" }));
+    const canonical = element(Stack({ padding: "md", gap: "xs", wrap: true }));
+
+    expect(legacy.props.class).toBe(canonical.props.class);
+    expect(legacy.props.p).toBeUndefined();
   });
 });
