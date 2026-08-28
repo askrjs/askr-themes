@@ -17,6 +17,7 @@ import {
   FooterTitle,
   Grid,
   Header,
+  Heading,
   Main,
   Navbar,
   NavBrand,
@@ -202,12 +203,17 @@ describe("block-first components", () => {
 
     expect(pageContent.type).toBe(Block);
     expect(pageContent.props.direction).toBe("column");
+    expect(pageContent.props.width).toBe("full");
     expect(
       PageHeader({ title: "Projects", description: "Manage work.", actions: "actions" }),
     ).toBeTruthy();
     expect(Toolbar({ title: "Projects", actions: "actions" })).toBeTruthy();
     expect(EmptyState({ title: "No projects", action: "Create project" })).toBeTruthy();
     expect(Text({ tone: "muted", size: "sm", children: "Copy" })).toBeTruthy();
+    const heading = asElement(Heading({ level: 1, size: "3xl", children: "Title" }));
+    expect(heading.type).toBe("h1");
+    expect(heading.props["data-size"]).toBe("3xl");
+    expect(heading.props["data-heading-level"]).toBe("1");
   });
 
   it("should keep visual display primitives with one separator name", () => {

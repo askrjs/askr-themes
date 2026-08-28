@@ -225,17 +225,14 @@ export function Box(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias("Box", "Use Block directly.", props, {});
 }
 
-/** @deprecated Use `<Block direction="column">`. */
-export function Stack(props: LegacyLayoutProps): JSX.Element;
-export function Stack(props: LegacyLayoutProps): JSX.Element {
-  return layoutAlias("Stack", 'Use <Block direction="column">.', props, { direction: "column" });
-}
-
 /** @deprecated Use `<Block direction="row">`. */
 export function Inline(props: LegacyLayoutProps): JSX.Element;
 export function Inline(props: LegacyLayoutProps): JSX.Element {
   return layoutAlias("Inline", 'Use <Block direction="row">.', props, { direction: "row" });
 }
+
+export { Stack } from "./intent-layouts";
+export type { StackProps } from "./intent-layouts";
 
 /** @deprecated Compose semantic {@link Block} primitives instead. */
 export function Shell(props: LegacyLayoutProps & { variant?: string }): JSX.Element;

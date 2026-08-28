@@ -2,7 +2,21 @@ import { page } from "@vitest/browser/context";
 import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 import { cleanupApp, createSPA } from "@askrjs/askr/boot";
 
-import { Block, Container, Grid, PageHeader, Section, Sidebar, Toolbar } from "../../src/core";
+import {
+  Block,
+  Center,
+  Cluster,
+  Container,
+  Grid,
+  Heading,
+  Page,
+  PageHeader,
+  Section,
+  Sidebar,
+  Stack,
+  Text,
+  Toolbar,
+} from "../../src/core";
 import { Input } from "../../src/controls";
 import {
   Dialog,
@@ -120,6 +134,60 @@ describe("responsive and visual theme contracts", () => {
     );
   });
 
+  it("should let Page content occupy the available container width", async () => {
+    window.history.replaceState({}, "", "/page-width");
+    testRoute("/page-width", () => (
+      <Page>
+        <Heading level={1}>Operations overview</Heading>
+        <Grid class="page-grid" columns={2}>
+          <div>Deployments</div>
+          <div>Incidents</div>
+        </Grid>
+      </Page>
+    ));
+
+    await createSPA({ root: container, registry: createTestRegistry() });
+    await settle();
+
+    const pageContainer = container.querySelector<HTMLElement>('[data-slot="container"]')!;
+    const pageContent = pageContainer.querySelector<HTMLElement>('[data-slot="block"]')!;
+    const grid = container.querySelector<HTMLElement>(".page-grid")!;
+
+    expect(pageContent.getBoundingClientRect().width).toBeGreaterThan(
+      pageContainer.getBoundingClientRect().width * 0.8,
+    );
+    expect(grid.getBoundingClientRect().width).toBeGreaterThan(0);
+    expect(columnCount(getComputedStyle(grid).gridTemplateColumns)).toBe(2);
+  });
+
+  it("should let nested Blocks shrink inside a constrained row", async () => {
+    window.history.replaceState({}, "", "/block-shrink");
+    testRoute("/block-shrink", () => (
+      <Block class="constrained-row" direction="row" width="full" style="width:280px">
+        <Block class="shrinking-child" grow>
+          <Text truncate>production-control-plane-event-identifier-with-long-content</Text>
+        </Block>
+        <Block class="fixed-child">Inspect</Block>
+        <Block class="explicit-auto" minWidth="auto">
+          Natural width
+        </Block>
+      </Block>
+    ));
+
+    await createSPA({ root: container, registry: createTestRegistry() });
+    await settle();
+
+    const row = container.querySelector<HTMLElement>(".constrained-row")!;
+    const shrinkingChild = container.querySelector<HTMLElement>(".shrinking-child")!;
+    const explicitAuto = container.querySelector<HTMLElement>(".explicit-auto")!;
+
+    expect(getComputedStyle(shrinkingChild).minWidth).toBe("0px");
+    expect(shrinkingChild.getBoundingClientRect().right).toBeLessThanOrEqual(
+      row.getBoundingClientRect().right,
+    );
+    expect(getComputedStyle(explicitAuto).minWidth).toBe("auto");
+  });
+
   it("should keep form control states readable in the default theme", async () => {
     window.history.replaceState({}, "", "/form-states");
     testRoute("/form-states", () => (
@@ -229,5 +297,46 @@ describe("responsive and visual theme contracts", () => {
       Number.parseInt(getComputedStyle(dialog).zIndex, 10),
     );
     expect(menu === document.activeElement || menu.contains(document.activeElement)).toBe(true);
+  });
+
+  it("should preserve intent layout geometry without narrow viewport overflow", async () => {
+    await page.viewport(390, 844);
+    window.history.replaceState({}, "", "/intent-layouts");
+    testRoute("/intent-layouts", () => (
+      <Stack gap="sm" width="full" data-test="stack">
+        <Cluster gap="xs" data-test="cluster">
+          <span style="width:240px;flex-shrink:0">Primary action</span>
+          <span style="width:240px;flex-shrink:0">Secondary action</span>
+        </Cluster>
+        <Center width="full" height="sm" data-test="center">
+          <span>Loading</span>
+        </Center>
+      </Stack>
+    ));
+
+    await createSPA({ root: container, registry: createTestRegistry() });
+    await settle();
+
+    const stack = container.querySelector<HTMLElement>('[data-test="stack"]')!;
+    const cluster = container.querySelector<HTMLElement>('[data-test="cluster"]')!;
+    const center = container.querySelector<HTMLElement>('[data-test="center"]')!;
+    const clusterChildren = [...cluster.children] as HTMLElement[];
+    const centerBounds = center.getBoundingClientRect();
+    const centeredChild = center.firstElementChild!.getBoundingClientRect();
+
+    expect(stack.scrollWidth).toBeLessThanOrEqual(stack.clientWidth);
+    expect(clusterChildren[1]!.getBoundingClientRect().top).toBeGreaterThan(
+      clusterChildren[0]!.getBoundingClientRect().top,
+    );
+    expect(
+      Math.abs(
+        centeredChild.left + centeredChild.width / 2 - (centerBounds.left + centerBounds.width / 2),
+      ),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(
+        centeredChild.top + centeredChild.height / 2 - (centerBounds.top + centerBounds.height / 2),
+      ),
+    ).toBeLessThanOrEqual(1);
   });
 });

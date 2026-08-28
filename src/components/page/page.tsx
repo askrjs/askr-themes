@@ -10,7 +10,7 @@ export function Page(props: PageProps): JSX.Element {
   return (
     <Block as="main" grow {...rest} data-slot="page">
       <Container>
-        <Block direction="column" paddingY="xl" gap="lg">
+        <Block direction="column" paddingY="xl" gap="lg" width="full">
           {children}
         </Block>
       </Container>

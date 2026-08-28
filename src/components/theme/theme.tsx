@@ -302,11 +302,11 @@ function createThemeCoordinator() {
   const schedule = (): void => {
     if (typeof document === "undefined" || scheduled) return;
     scheduled = true;
-    setTimeout(() => {
+    queueMicrotask(() => {
       scheduled = false;
       syncActive();
       if (scopes.size === 0) removeEmptyGeneratedStyleRegistries(root);
-    }, 0);
+    });
   };
 
   return Object.freeze({

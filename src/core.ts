@@ -2,6 +2,8 @@ import "./themes/default/index.css";
 
 export { Block } from "./components/block";
 export type * from "./components/block";
+export { Center, Cluster, Stack } from "./components/intent-layouts";
+export type * from "./components/intent-layouts";
 export { Brand, BrandLabel, BrandMark } from "./components/brand";
 export type * from "./components/brand";
 export { Container } from "./components/container";
@@ -20,6 +22,8 @@ export { Grid } from "./components/grid";
 export type * from "./components/grid";
 export { Header } from "./components/header";
 export type * from "./components/header";
+export { Heading } from "./components/heading";
+export type * from "./components/heading";
 export { Main } from "./components/main";
 export type * from "./components/main";
 export { Section } from "./components/section";
