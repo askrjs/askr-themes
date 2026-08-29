@@ -34,7 +34,15 @@
 :where([data-slot="checkbox"][aria-checked="true"]) {
   border-color: var(--ak-color-primary);
   background-color: var(--ak-color-primary);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.25' d='M3.5 8.25 6.5 11.25 12.5 4.75'/%3E%3C/svg%3E");
+  background-image:
+    linear-gradient(135deg, transparent 40%, var(--ak-color-text-inverse) 40% 60%, transparent 60%),
+    linear-gradient(45deg, transparent 43%, var(--ak-color-text-inverse) 43% 57%, transparent 57%);
+  background-position:
+    0.2rem 0.48rem,
+    0.4rem 0.18rem;
+  background-size:
+    0.35rem 0.35rem,
+    0.5rem 0.6rem;
   box-shadow: none;
 }
 
@@ -42,7 +50,8 @@
 :where([data-slot="checkbox"][aria-checked="mixed"]) {
   border-color: var(--ak-color-primary);
   background-color: var(--ak-color-primary);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='white' stroke-linecap='round' stroke-width='2.25' d='M4 8h8'/%3E%3C/svg%3E");
+  background-image: linear-gradient(var(--ak-color-text-inverse), var(--ak-color-text-inverse));
+  background-size: 0.5rem 0.125rem;
   box-shadow: none;
 }
 
