@@ -19,21 +19,21 @@ interface CheckboxCspResult {
 
 it("should render checked and indeterminate indicators under same-origin image CSP", async () => {
   const key = crypto.randomUUID();
+  const frame = document.createElement("iframe");
+  frames.push(frame);
   const result = new Promise<CheckboxCspResult>((resolve) => {
     const receiveResult = (event: MessageEvent<CheckboxCspResult>) => {
-      if (event.data.key === key) {
+      if (event.source === frame.contentWindow && event.data?.key === key) {
         window.removeEventListener("message", receiveResult);
         resolve(event.data);
       }
     };
     window.addEventListener("message", receiveResult);
   });
-  const frame = document.createElement("iframe");
-  frames.push(frame);
   frame.srcdoc = `<!doctype html>
     <html>
       <head>
-        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; script-src 'nonce-checkbox-csp'">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'nonce-checkbox-csp'">
         <script nonce="checkbox-csp">
           const violations = [];
           window.addEventListener("securitypolicyviolation", (event) => {

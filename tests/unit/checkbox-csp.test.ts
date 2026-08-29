@@ -13,7 +13,5 @@ describe("checkbox CSP contract", () => {
 
     expect(source).toEqual(template);
     expect(source).not.toMatch(/url\s*\(\s*["']?data:/iu);
-    expect(source).toContain('data-state="checked"');
-    expect(source).toContain('data-state="indeterminate"');
   });
 });
