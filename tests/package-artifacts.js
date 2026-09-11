@@ -3,12 +3,13 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, normalize } from "node:path";
 
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
-const result = JSON.parse(
+const packedResult = JSON.parse(
   execFileSync(npm, ["pack", "--ignore-scripts", "--dry-run", "--json"], {
     encoding: "utf8",
     shell: process.platform === "win32",
   }),
 );
+const result = Array.isArray(packedResult) ? packedResult : [packedResult];
 
 if (result.length !== 1) {
   throw new Error(`Expected one packed artifact, received ${result.length}.`);
