@@ -378,7 +378,7 @@
   align-items: center;
   gap: var(--ak-space-md);
   min-inline-size: 0;
-  padding: 0.75rem);
+  padding: 0.75rem;
   border: 1px solid transparent;
   border-radius: var(--ak-radius-md);
   color: var(--ak-color-text);
@@ -656,7 +656,7 @@
   display: flex;
   align-items: center;
   border-block-end: 1px solid var(--ak-color-border);
-  padding-inline: 0.75rem);
+  padding-inline: 0.75rem;
 }
 
 :where([data-slot="command-input"]) {
