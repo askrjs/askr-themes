@@ -69,13 +69,12 @@ Prefer the layout prop when the wrapping belongs to `Block` itself:
 `wrap` follows the CSS initial value (`nowrap`) when omitted. User styles retain
 their normal precedence over generated layout declarations.
 
-## Legacy layout aliases
+## Layout primitives
 
-`Box`, `Stack`, `Inline`, `Shell`, `ShellNav`, and `ShellMain` are deprecated.
-Use `Block`, adding `direction="column"`, `direction="row"`, `as="nav"`, or
-`as="main" grow` as appropriate. Legacy spacing values map as follows:
-`none` to `0`, `1` and `2` to `xs`, `3` to `sm`, `4` to `md`, `5` to `lg`,
-`6` to `xl`, and `8` to `2xl`.
+Use `Block` for structural layout, adding `direction="column"`,
+`direction="row"`, `as="nav"`, or `as="main" grow` as appropriate. Use the
+semantic spacing tokens directly; numeric spacing aliases and wrapper aliases
+are not part of the 0.3 public API.
 
 Raw responsive CSS sizes are intentionally not layout tokens. Use a project
 class with media queries, or a CSS custom property through `style`, when a

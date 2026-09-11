@@ -30,10 +30,10 @@ const sourceMappingPattern = /[#@]\s*sourceMappingURL=([^\s*]+)/gu;
 const componentDeclarations = ["dist/components.d.ts", "dist/components/catalog.d.ts"]
   .map((file) => readFileSync(file, "utf8"))
   .join("\n");
-for (const alias of ["Box", "Inline", "Shell", "ShellNav", "ShellMain"]) {
-  const declarationPattern = new RegExp(String.raw`@deprecated[^]*?function ${alias}\b`);
-  if (!declarationPattern.test(componentDeclarations)) {
-    throw new Error(`Public ${alias} declaration is missing @deprecated guidance.`);
+for (const alias of ["Box", "Inline", "Shell", "ShellNav", "ShellMain", "LegacyLayoutProps"]) {
+  const declarationPattern = new RegExp(String.raw`\b${alias}\b`);
+  if (declarationPattern.test(componentDeclarations)) {
+    throw new Error(`Removed legacy layout symbol ${alias} is still public.`);
   }
 }
 

@@ -29,11 +29,11 @@ const mergePropsInjected = {
 const layoutStyle = {
   display: "grid",
   gridTemplateColumns: "1fr 2fr",
-  gap: "var(--ak-space-2)",
+  gap: "var(--ak-space-sm)",
 };
 
 const layoutObjectUserStyle = {
-  gap: "var(--ak-space-4)",
+  gap: "var(--ak-space-md)",
   padding: "1rem",
 };
 

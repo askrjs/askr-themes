@@ -5,8 +5,8 @@ type WithoutOwnedLayout<TProps, TKey extends PropertyKey> = TProps extends unkno
   ? Omit<TProps, TKey>
   : never;
 
-type StackSpace = BlockSpace | "none" | "1" | "2" | "3" | "4" | "5" | "6" | "8";
-type StackWrap = boolean | "wrap" | "nowrap";
+type StackSpace = BlockSpace;
+type StackWrap = boolean;
 
 export type StackProps = WithoutOwnedLayout<
   BlockProps,
@@ -50,32 +50,15 @@ function normalizeResponsiveValue<
   ) as BlockResponsiveValue<TOutput>;
 }
 
-function normalizeStackSpace(value: StackSpace): BlockSpace {
-  if (value === "none") return "0";
-  if (value === "1" || value === "2") return "xs";
-  if (value === "3") return "sm";
-  if (value === "4") return "md";
-  if (value === "5") return "lg";
-  if (value === "6") return "xl";
-  if (value === "8") return "2xl";
-  return value;
-}
-
-function normalizeStackWrap(value: StackWrap): boolean {
-  if (value === "wrap") return true;
-  if (value === "nowrap") return false;
-  return value;
-}
-
 /** Vertical content flow with responsive, token-backed spacing. */
 export function Stack(props: StackProps): JSX.Element {
   const { gap, p, padding, wrap, ...rest } = props;
   return renderBlock({
     ...withSlot(rest, "stack"),
     direction: "column",
-    gap: normalizeResponsiveValue(gap, normalizeStackSpace),
-    padding: normalizeResponsiveValue(padding ?? p, normalizeStackSpace),
-    wrap: normalizeResponsiveValue(wrap, normalizeStackWrap),
+    gap,
+    padding: padding ?? p,
+    wrap,
   });
 }
 

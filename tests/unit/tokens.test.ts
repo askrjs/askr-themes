@@ -157,7 +157,7 @@ const REQUIRED_TOKEN_CATEGORIES = {
     "--ak-font-weight-medium",
     "--ak-line-height-normal",
   ],
-  spacing: ["--ak-space-xs", "--ak-space-md", "--ak-space-xl", "--ak-space-1"],
+  spacing: ["--ak-space-xs", "--ak-space-md", "--ak-space-xl", "--ak-space-2xl"],
   density: [
     "--ak-density-control-height-xs",
     "--ak-density-control-height-md",
@@ -448,15 +448,6 @@ describe("token completeness", () => {
       "--ak-section-2",
       "--ak-section-3",
       "--ak-section-4",
-      "--ak-space-1",
-      "--ak-space-2",
-      "--ak-space-3",
-      "--ak-space-4",
-      "--ak-space-5",
-      "--ak-space-6",
-      "--ak-space-7",
-      "--ak-space-8",
-      "--ak-space-9",
     ] as const;
 
     const missing = requiredLayoutTokens.filter(
@@ -535,14 +526,9 @@ describe("token completeness", () => {
     );
   });
 
-  it("should treat numeric spacing tokens as compatibility aliases for the semantic scale", () => {
+  it("should omit removed numeric spacing compatibility aliases", () => {
     const css = readFileSync(TOKENS_FILE, "utf-8");
-    expect(css).toContain("--ak-space-1: var(--ak-space-xs);");
-    expect(css).toContain("--ak-space-2: var(--ak-space-sm);");
-    expect(css).toContain("--ak-space-4: var(--ak-space-md);");
-    expect(css).toContain("--ak-space-5: var(--ak-space-xl);");
-    expect(css).toContain("--ak-space-6: var(--ak-space-2xl);");
-    expect(css).toContain("--ak-space-8: var(--ak-space-3xl);");
+    expect(css).not.toMatch(/--ak-space-[1-9]\b/);
   });
 
   it("should keep base typography predictable for app screens", () => {

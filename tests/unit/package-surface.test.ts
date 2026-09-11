@@ -161,10 +161,10 @@ describe("package surface", () => {
       packages?: Record<string, { version?: string }>;
     };
 
-    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.2.2 <0.3.0");
-    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.2.0 <0.3.0");
-    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.2.2 <0.3.0");
-    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.2.2 <0.3.0");
+    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.3.0 <0.4.0");
+    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.3.0 <0.4.0");
+    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.3.0 <0.4.0");
+    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.3.0 <0.4.0");
     expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toBe("0.2.4");
     expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toBe("0.2.4");
   });

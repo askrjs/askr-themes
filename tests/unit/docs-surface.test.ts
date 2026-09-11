@@ -83,12 +83,12 @@ describe("docs surface", () => {
     expect(EXCLUDED_CHART_COMPONENT).toBe("Chart");
   });
 
-  it("should distinguish styling-only catalog compatibility names from behavior primitives", () => {
+  it("should distinguish styling-only catalog names from behavior primitives", () => {
     const docs = [readFileSync(README, "utf-8"), readFileSync(ARCHITECTURE_DOC, "utf-8")]
       .join("\n")
       .replace(/\s+/gu, " ");
 
-    expect(docs).toContain("Styling-only compatibility wrappers");
+    expect(docs).toContain("Styling-only catalog anatomy");
     expect(docs).toContain("DataTable");
     expect(docs).toContain("ResizablePanelGroup");
     expect(docs).toContain("does not sort, filter, select, or paginate");

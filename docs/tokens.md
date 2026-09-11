@@ -16,7 +16,7 @@ repeated, real design-system need.
 | ---------- | --------------------------------------------------------------------------- |
 | Color      | Brand, text, surface, border, status, disabled, selected, hover, and active |
 | Typography | Font families, sizes, weights, and line heights                             |
-| Spacing    | Semantic spacing scale and numeric compatibility aliases                    |
+| Spacing    | Semantic spacing scale                                                       |
 | Density    | Control heights and horizontal padding                                      |
 | Layout     | Navbar, sidebar, container, section, gutter, and panel sizing               |
 | Elevation  | Shadow levels for raised surfaces and overlays                              |
@@ -31,7 +31,7 @@ repeated, real design-system need.
 | ---------- | --------------------------------------------------------------------- |
 | Color      | `--ak-color-primary`, `--ak-color-surface`, `--ak-color-text`         |
 | Typography | `--ak-font-size-sm`, `--ak-font-size-md`, `--ak-font-weight-medium`   |
-| Spacing    | `--ak-space-1`, `--ak-space-md`, `--ak-layout-page-gutter`            |
+| Spacing    | `--ak-space-xs`, `--ak-space-md`, `--ak-layout-page-gutter`            |
 | Density    | `--ak-density-control-height-md`, `--ak-density-control-padding-x-md` |
 | Layout     | `--ak-layout-navbar-height`, `--ak-layout-sidebar-width`              |
 | Elevation  | `--ak-shadow-sm`, `--ak-shadow-lg`                                    |

@@ -1,7 +1,7 @@
 :where(.textarea, [data-slot="textarea"]) {
   --_textarea-min-height: 5rem;
   --_textarea-padding-block: var(--ak-space-sm);
-  --_textarea-padding-inline: var(--ak-space-3);
+  --_textarea-padding-inline: 0.75rem);
   box-sizing: border-box;
   width: 100%;
   min-height: var(--_textarea-min-height);
