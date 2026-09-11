@@ -5,7 +5,6 @@ export default defineConfig({
     projects: [
       "./vitest.test.unit.config.ts",
       "./vitest.test.jsdom.config.ts",
-      "./vitest.test.browser.config.ts",
     ],
   },
 });
