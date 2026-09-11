@@ -52,6 +52,11 @@ Thumbs.db
 .env
 .env.*
 !.env.example
-__screenshots__/
 .vitest-attachments/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
 .claude/
