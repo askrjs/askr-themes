@@ -9,10 +9,18 @@ const packedResult = JSON.parse(
     shell: process.platform === "win32",
   }),
 );
-const result = Array.isArray(packedResult) ? packedResult : [packedResult];
+
+function findPackRecords(value) {
+  if (Array.isArray(value)) return value.flatMap(findPackRecords);
+  if (!value || typeof value !== "object") return [];
+  if (Array.isArray(value.files)) return [value];
+  return Object.values(value).flatMap(findPackRecords);
+}
+
+const result = findPackRecords(packedResult);
 
 if (result.length !== 1) {
-  throw new Error(`Expected one packed artifact, received ${result.length}.`);
+  throw new Error(`Expected one packed artifact with files, received ${result.length}.`);
 }
 
 const packedFiles = new Set(result[0].files.map(({ path }) => normalize(path)));
