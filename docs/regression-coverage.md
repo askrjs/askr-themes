@@ -12,7 +12,7 @@ exports, class/slot structure, CSS tokens, responsive layout, and composed
 | Component families          | Unit coverage matrix maps every public family to direct tests and benches.                                     |
 | CSS and tokens              | Token, selector, contrast, no-important, visual-quality, and template-parity tests.                            |
 | jsdom composition           | Core structure, theme scope, nav, route persistence, and slot-contract tests.                                  |
-| Browser visual behavior     | Navbar, sidebar, route persistence, overlay recipe, table theme, public family, and visual-polish smoke tests. |
+| Browser visual behavior     | Navbar, sidebar, route persistence, overlay recipe, table theme, public family, and visual-polish browser tests. |
 | Bench coverage              | Tier 2 public families, Tier 3 composition, and Tier 4 browser flows after correctness is protected.           |
 
 ## Regression classes
@@ -30,12 +30,12 @@ exports, class/slot structure, CSS tokens, responsive layout, and composed
 | Route/theme persistence           | jsdom and browser tests must assert theme state across navigation and reload-shaped flows.                                                                   |
 | Theme identity coordination       | Nested and sibling scopes with distinct storage keys must cover stored adoption, storage events, initial arbitration, and explicit ownership.                |
 | Browser global-state isolation    | Browser tests run on native Playwright: every test gets its own page, so viewport and document state are per-test and the suite runs fully parallel.         |
-| Cross-package version drift       | Package surface tests and integration smoke must fail before a released `askr-ui` or `askr` dependency breaks themed exports.                                |
+| Cross-package version drift       | Package surface tests and integration coverage must fail before a released `askr-ui` or `askr` dependency breaks themed exports.                                |
 
 ## Current focused follow-ups
 
 - Navbar, sidebar, overlays, theme route persistence, and visual-polish browser
-  smoke tests cover the highest-risk visual regressions.
+  tests cover the highest-risk visual regressions.
 - Public family coverage is enforced by `tests/unit/component-coverage.test.ts`;
   update that matrix with each new export instead of relying on ad hoc tests.
 - When a themed regression is caused by runtime ownership, event timing, or

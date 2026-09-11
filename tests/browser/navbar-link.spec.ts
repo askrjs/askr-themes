@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test.describe("navbar link browser smoke", () => {
+test.describe("navbar link browser behavior", () => {
   test("should update active NavLink state across client-side navigation inside a persistent layout", async ({
     render,
     page,
