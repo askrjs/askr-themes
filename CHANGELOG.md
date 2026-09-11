@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## 0.3.0 - 2026-09-11
+
+### Removed
+
+- **Breaking:** removed the legacy layout aliases `Box`, `Inline`, `Shell`,
+  `ShellNav`, and `ShellMain`, along with the `LegacyLayoutProps` type. Use
+  `Block` with an explicit `direction`.
+- **Breaking:** removed the legacy layout prop conveniences from the intent
+  layouts: the `gap`, `p`, `padding`, and `wrap` shorthands, the
+  `"none" | "1" … "8"` legacy space scale, and the `"wrap" | "nowrap"` string
+  forms. Use the `Block` spacing props and the named space scale.
+
+### Changed
+
+- `Stack`, `Cluster`, and `Center` remain supported intent layouts; only their
+  legacy props were removed.
+- Moved the `@askrjs/askr` and `@askrjs/ui` peer ranges to `>=0.3.0 <0.4.0`.
+
 ## 0.2.5 - 2026-08-28
 
 - Restore vertical flow inside `EmptyState` content.
