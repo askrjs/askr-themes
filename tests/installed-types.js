@@ -86,7 +86,6 @@ try {
       'const invalidToolbarDirection = <Toolbar title="Title" direction="row" />;',
       "// @ts-expect-error PageHeader owns its responsive axis",
       'const invalidPageHeaderRowFrom = <PageHeader title="Title" rowFrom="lg" />;',
-      "// @ts-expect-error legacy aliases reject unsupported responsive sizes",
       "const grid: GridProps = { columns: 2 };",
       'const text: TextProps = { tone: "success" };',
       'const heading = <Heading level={1} size="3xl" id="overview">Overview</Heading>;',
@@ -96,7 +95,7 @@ try {
       "// @ts-expect-error Heading levels are restricted to native h1 through h6",
       "const invalidHeadingLevel = <Heading level={7}>Invalid</Heading>;",
       'const rail: SidebarRailProps = { type: "button" };',
-      "void fixture; void granular; void palette; void paletteContent; void block; void wrapped; void legacy; void legacyProps; void typedLegacy; void invalidWrap; void invalidDirectionContract; void invalidToolbarDirection; void invalidPageHeaderRowFrom; void invalidLegacySize; void grid; void text; void heading; void headingProps; void missingHeadingLevel; void invalidHeadingLevel; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
+      "void fixture; void granular; void palette; void paletteContent; void block; void wrapped; void invalidWrap; void invalidDirectionContract; void invalidToolbarDirection; void invalidPageHeaderRowFrom; void grid; void text; void heading; void headingProps; void missingHeadingLevel; void invalidHeadingLevel; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
     ].join("\n"),
   );
   writeFileSync(
