@@ -210,8 +210,8 @@ describe("visual quality contract", () => {
     expect(inputCss).toContain("background: transparent;");
     expect(inputCss).toContain("box-shadow: var(--ak-shadow-xs);");
 
-    expect(cardCss).toContain("gap: var(--ak-space-6);");
-    expect(cardCss).toContain("padding: var(--ak-space-6) 0;");
+    expect(cardCss).toContain("gap: var(--ak-space-2xl);");
+    expect(cardCss).toContain("padding: var(--ak-space-2xl) 0;");
 
     expect(dropdownCss).toContain("--_dropdown-surface: var(--ak-color-popover);");
     expect(dropdownCss).toContain("min-height: 2rem;");

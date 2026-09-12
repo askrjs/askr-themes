@@ -105,7 +105,7 @@ export const staticConfig = {
 
 The wrapper also applies `context.cspNonce` to the emitted style registry and
 requires the request-local style registrations provided by `@askrjs/askr`
-`>=0.2.2 <0.3.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
+`>=0.3.0 <0.4.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
 diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 `document` callback.
 
@@ -136,7 +136,7 @@ needs a branded accent:
 See [THEMING.md](./THEMING.md#required-tokens) for the complete primary,
 hover, active, focus, and contrast contract.
 
-### Styling-only compatibility wrappers
+### Styling-only catalog anatomy
 
 The following catalog families are styling-only compatibility anatomy. Their
 names do not promise widget state, keyboard interaction, focus management, or
@@ -182,8 +182,8 @@ Specifically:
 - `InputOTP*` exposes groups, cells, and separators but deliberately renders no
   hidden input and owns no value, focus, paste, or validation behavior.
 
-These names remain exported for catalog compatibility. If an application needs
-behavior for any of these families today, use a dedicated behavior dependency
+These names are intentionally styling-only catalog exports. If an application
+needs behavior for any of these families today, use a dedicated behavior dependency
 and compose these slots only as presentation. A future Askr behavior primitive
 must be implemented and tested in `@askrjs/ui` before themes can compose and
 style it; themes must never duplicate behavioral state.

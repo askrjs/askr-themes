@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test.describe("sidebar browser smoke", () => {
+test.describe("sidebar browser behavior", () => {
   for (const direction of ["ltr", "rtl"] as const) {
     test(`should narrow an icon sidebar and dock its right side after the inset in ${direction}`, async ({
       render,

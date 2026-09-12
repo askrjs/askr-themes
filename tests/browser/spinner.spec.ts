@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test.describe("spinner browser smoke", () => {
+test.describe("spinner browser behavior", () => {
   test("should render spinner sizing", async ({ render, root }) => {
     await render();
 

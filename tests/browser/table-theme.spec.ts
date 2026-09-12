@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-test.describe("table theme smoke test", () => {
+test.describe("table theme browser behavior", () => {
   test("should style the semantic table primitives through the default theme bundle", async ({
     render,
     root,

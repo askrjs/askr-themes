@@ -3,7 +3,7 @@ import { expect, test } from "./fixtures";
 /** The viewport the original suite pinned in `beforeEach`. */
 const DESKTOP = { width: 1200, height: 900 };
 
-test.describe("navbar browser smoke", () => {
+test.describe("navbar browser behavior", () => {
   test("should preserve explicit false ARIA state through theme controls", async ({
     render,
     page,

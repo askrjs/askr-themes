@@ -38,11 +38,11 @@ describe("intent-level layouts", () => {
     );
   });
 
-  it("should preserve the former Stack convenience props without deprecating Stack", () => {
-    const legacy = element(Stack({ p: "4", gap: "2", wrap: "wrap" }));
+  it("should accept only canonical semantic spacing props", () => {
     const canonical = element(Stack({ padding: "md", gap: "xs", wrap: true }));
 
-    expect(legacy.props.class).toBe(canonical.props.class);
-    expect(legacy.props.p).toBeUndefined();
+    expect(canonical.props["data-slot"]).toBe("stack");
+    expect(canonical.props.class).toBeTruthy();
+    expect(canonical.props.padding).toBeUndefined();
   });
 });

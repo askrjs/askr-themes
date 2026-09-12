@@ -34,7 +34,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ak-space-2);
+  gap: var(--ak-space-sm);
   flex-wrap: wrap;
   max-inline-size: 100%;
 }
