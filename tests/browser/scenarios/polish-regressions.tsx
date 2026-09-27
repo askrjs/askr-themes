@@ -1,6 +1,6 @@
 import { createIsland } from "@askrjs/askr/boot";
 
-import { Block, ButtonGroup, Card, CardTitle, Text } from "../../../src/components";
+import { Block, ButtonGroup, Card, CardTitle, EmptyState, Text } from "../../../src/components";
 import { Button, Input } from "../../../src/controls";
 
 export default function composedControls(root: HTMLElement): void {
@@ -73,6 +73,50 @@ export function verticalGroups(root: HTMLElement): void {
         </ButtonGroup>
         <ButtonGroup aria-label="Lone" orientation="vertical" data-testid="vertical-lone">
           <Button>Only</Button>
+        </ButtonGroup>
+      </main>
+    ),
+  });
+}
+
+export function componentProps(root: HTMLElement): void {
+  createIsland({
+    root,
+    component: () => (
+      <main style="width: 600px">
+        <Card data-testid="prop-card">
+          <Block maxWidth="sm" marginX="auto" data-testid="centered-block">
+            Centered
+          </Block>
+        </Card>
+        <EmptyState hide title="Hidden" data-testid="hidden-empty" />
+        <EmptyState padding="none" title="Flush" data-testid="flush-empty" />
+        <ButtonGroup attached={false} aria-label="Sizes">
+          <Button size="lg" data-testid="grouped-large">
+            Large
+          </Button>
+        </ButtonGroup>
+        <Button size="lg" data-testid="reference-large">
+          Large
+        </Button>
+        <div style="width: 180px">
+          <ButtonGroup aria-label="Narrow" data-testid="narrow-group">
+            <Button>Compact</Button>
+            <Button>Comfortable</Button>
+            <Button>Spacious</Button>
+          </ButtonGroup>
+        </div>
+        <ButtonGroup aria-label="Row" orientation="horizontal" data-testid="explicit-row">
+          <Button>One</Button>
+        </ButtonGroup>
+        <ButtonGroup aria-label="Detached" attached={false} data-testid="detached-group">
+          <Button>One</Button>
+        </ButtonGroup>
+        <ButtonGroup aria-label="Mixed" orientation="vertical" data-testid="mixed-vertical">
+          <Button>Edit document</Button>
+          <Button size="icon" aria-label="More">
+            +
+          </Button>
         </ButtonGroup>
       </main>
     ),

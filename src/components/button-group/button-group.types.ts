@@ -2,8 +2,8 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 
 /**
- * Layout direction of a {@link ButtonGroup}. When omitted, the group is a row that stacks at
- * phone width; an explicit value always wins.
+ * Layout direction of a {@link ButtonGroup}. When omitted, an attached group is a row that
+ * stacks at phone width unless it contains icon buttons; an explicit value always wins.
  */
 export type ButtonGroupOrientation = "horizontal" | "vertical";
 

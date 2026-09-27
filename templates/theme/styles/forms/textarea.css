@@ -43,7 +43,12 @@
     color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 
-:where(.textarea[data-disabled], .textarea:disabled, [data-slot="textarea"][data-disabled]) {
+:where(
+  .textarea[data-disabled],
+  .textarea:disabled,
+  [data-slot="textarea"][data-disabled],
+  [data-slot="textarea"]:disabled
+) {
   background: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);

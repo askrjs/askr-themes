@@ -2,19 +2,36 @@
 
 ## Unreleased
 
+### Breaking
+
+- `Card` owns its inset: the root pads all four sides with the new
+  card-scoped `--_card-inset`, and `CardHeader`, `CardContent`, and
+  `CardFooter` no longer add inline padding. Direct children no longer receive
+  per-child padding or margins, so `Block` layout props work inside cards.
+  `menu-content` placed directly in a card still runs edge to edge.
+- Attached `ButtonGroup`s without an explicit `orientation` now emit
+  `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
+  Pass `orientation="horizontal"` to keep the row. Groups that contain icon
+  buttons, and detached groups, keep their row. Raw markup opts in with
+  `data-responsive="true"`.
+- Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
+  require `data-attached="true"`, including for the `.btn-group-vertical`
+  class alias.
+
 ### Changed
 
-- Attached `ButtonGroup`s without an explicit `orientation` now stack at phone
-  width (`max-width: 30rem`) and emit `data-responsive="true"`. Pass
-  `orientation="horizontal"` to keep the row; groups containing icon buttons
-  also keep the row. Stacked labels wrap instead of overflowing.
+- The default palette moves from grayscale to an ink plum accent with warm
+  neutral surfaces in light and dark mode.
 - Attached vertical `ButtonGroup`s round only their outer top and bottom
   corners at every width, and a lone button keeps all four corners.
-- Direct `Card` children: raw elements keep the card's inline padding, while
-  slotted components (`Button`, `Block`, `Text`, `CardTitle`, `Input`, …) are
-  inset with `margin-inline` so their own padding is preserved.
-- Synced `templates/theme` with the default theme's button, block, coverage,
-  and virtual-list fixes; template parity now covers every shared file.
+- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm; the
+  `EmptyState` component keeps its `Block` props (`hide`, `padding`, `gap`).
+- Textareas use the body font, and disabled textareas (including the native
+  `disabled` attribute on raw markup) use the disabled color tokens instead of
+  half opacity.
+- Breadcrumb links and pages get a small inline padding.
+- Synced `templates/theme` with the default theme; template parity now covers
+  every shared file.
 
 ## 0.3.0 - 2026-09-11
 

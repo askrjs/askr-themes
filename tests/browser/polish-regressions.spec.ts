@@ -52,12 +52,17 @@ for (const mode of ["light", "dark"] as const) {
         ],
         textareaFont: getComputedStyle(textarea).fontFamily,
         disabledTextareaOpacity: getComputedStyle(disabledTextarea).opacity,
+        textareaColor: getComputedStyle(textarea).color,
+        disabledTextareaColor: getComputedStyle(disabledTextarea).color,
         bodyFont: getComputedStyle(scope).fontFamily,
-        cardInset: Number.parseFloat(getComputedStyle(cardContent).paddingInlineStart),
+        cardInset:
+          cardContent.getBoundingClientRect().left -
+          card.getBoundingClientRect().left -
+          Number.parseFloat(getComputedStyle(card).borderInlineStartWidth),
         groupWidth: group.clientWidth,
         groupScrollWidth: group.scrollWidth,
         groupButtonHeights: buttons.map((button) => button.getBoundingClientRect().height),
-        groupButtonWhiteSpace: buttons.map((button) => getComputedStyle(button).whiteSpace),
+        groupOverflow: getComputedStyle(group).overflow,
       };
     });
 
@@ -65,10 +70,11 @@ for (const mode of ["light", "dark"] as const) {
     for (const gap of measured.emptyGaps) expect(gap).toBeGreaterThanOrEqual(8);
     expect(measured.textareaFont).toBe(measured.bodyFont);
     expect(measured.disabledTextareaOpacity).toBe("1");
+    expect(measured.disabledTextareaColor).not.toBe(measured.textareaColor);
     expect(measured.cardInset).toBeGreaterThanOrEqual(20);
     expect(measured.groupScrollWidth).toBeLessThanOrEqual(measured.groupWidth);
     expect(measured.groupButtonHeights).toEqual([36, 36, 36]);
-    expect(measured.groupButtonWhiteSpace).toEqual(["nowrap", "nowrap", "nowrap"]);
+    expect(measured.groupOverflow).toBe("visible");
   });
 }
 
@@ -76,7 +82,7 @@ test("should show every attached action at phone width", async ({ page, markup, 
   await page.setViewportSize({ width: 320, height: 800 });
   await markup(`
     <div style="width: 220px">
-      <div data-slot="button-group" data-attached="true">
+      <div data-slot="button-group" data-attached="true" data-responsive="true">
         <button data-slot="button">Compact</button>
         <button data-slot="button">Comfortable</button>
         <button data-slot="button">Disabled</button>
@@ -251,4 +257,62 @@ test("should join vertical ButtonGroups on the block axis at desktop width", asy
   expect(last![2]).not.toBe("0px");
   expect(new Set(radii.lone[0]).size).toBe(1);
   expect(radii.lone[0]![0]).not.toBe("0px");
+});
+
+test("should keep component props and every action visible inside narrow desktop containers", async ({
+  page,
+  render,
+  root,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await render("componentProps");
+
+  const measured = await root.evaluate((container) => {
+    const find = (testId: string): HTMLElement =>
+      container.querySelector(`[data-testid="${testId}"]`) as HTMLElement;
+    const card = find("prop-card").getBoundingClientRect();
+    const block = find("centered-block").getBoundingClientRect();
+    const narrow = find("narrow-group");
+    const narrowBox = narrow.getBoundingClientRect();
+    const vertical = [
+      ...find("mixed-vertical").querySelectorAll<HTMLElement>('[data-slot="button"]'),
+    ];
+    const padding = (testId: string): string => getComputedStyle(find(testId)).paddingInlineStart;
+
+    return {
+      blockWidth: block.width,
+      cardWidth: card.width,
+      blockCenterOffset: Math.abs(block.left + block.width / 2 - (card.left + card.width / 2)),
+      hiddenEmptyDisplay: getComputedStyle(find("hidden-empty")).display,
+      flushEmptyPadding: getComputedStyle(find("flush-empty")).paddingInlineStart,
+      groupedLargePadding: padding("grouped-large"),
+      referenceLargePadding: padding("reference-large"),
+      narrowOverflow: getComputedStyle(narrow).overflow,
+      narrowButtons: [...narrow.querySelectorAll<HTMLElement>('[data-slot="button"]')].map(
+        (button) => {
+          const box = button.getBoundingClientRect();
+          return { left: box.left - narrowBox.left, right: narrowBox.right - box.right };
+        },
+      ),
+      narrowResponsive: narrow.dataset.responsive,
+      explicitResponsive: find("explicit-row").dataset.responsive,
+      detachedResponsive: find("detached-group").dataset.responsive,
+      verticalWidths: vertical.map((button) => button.getBoundingClientRect().width),
+    };
+  });
+
+  expect(measured.blockWidth).toBeLessThan(measured.cardWidth - 100);
+  expect(measured.blockCenterOffset).toBeLessThanOrEqual(1);
+  expect(measured.hiddenEmptyDisplay).toBe("none");
+  expect(measured.flushEmptyPadding).toBe("0px");
+  expect(measured.groupedLargePadding).toBe(measured.referenceLargePadding);
+  expect(measured.narrowOverflow).toBe("visible");
+  for (const button of measured.narrowButtons) {
+    expect(button.left).toBeGreaterThanOrEqual(0);
+    expect(button.right).toBeGreaterThanOrEqual(0);
+  }
+  expect(measured.narrowResponsive).toBe("true");
+  expect(measured.explicitResponsive).toBeUndefined();
+  expect(measured.detachedResponsive).toBeUndefined();
+  expect(new Set(measured.verticalWidths).size).toBe(1);
 });

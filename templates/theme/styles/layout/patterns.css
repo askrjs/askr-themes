@@ -1,9 +1,13 @@
 :where(.empty-state, [data-slot="empty-state"]) {
+  text-align: center;
+}
+
+/* The EmptyState component lays out through Block props; raw markup gets the same rhythm here. */
+:where(.empty-state, [data-slot="empty-state"]):where(:not([data-ak-layout])) {
   display: grid;
   justify-items: center;
   gap: var(--ak-space-sm);
   padding: var(--ak-space-xl) var(--ak-space-md);
-  text-align: center;
 }
 
 :where(.empty-state-icon, [data-slot="empty-state-icon"]) {
