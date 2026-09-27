@@ -68,6 +68,7 @@
   --ak-space-lg: 1.125rem;
   --ak-space-xl: 1.5rem;
   --ak-space-2xl: 2.25rem;
+  --ak-card-inset: var(--ak-space-2xl);
   --ak-space-3xl: 3.5rem;
 
   --ak-radius-sm: 6px;

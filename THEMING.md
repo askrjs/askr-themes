@@ -187,7 +187,9 @@ Responsive rules:
   `CardHeader`, `CardContent`, `CardFooter` (at any depth), and edge-to-edge
   `menu-content` children stay aligned. Like any token it inherits, so it also
   applies to nested cards unless they set their own. Card sections used outside
-  a `Card` keep their own inline padding.
+  a `Card` keep their own inline padding. Add `data-bleed` to a direct child
+  (media, a table, a separator) to run it edge to edge; `menu-content` placed
+  directly in a card does this by default.
 - `ButtonGroup` emits `data-responsive="true"` when it is attached and has no
   explicit `orientation`; responsive attached groups without icon buttons stack
   at phone width. Raw markup opts in with both `data-attached="true"` and

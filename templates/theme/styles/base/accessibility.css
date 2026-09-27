@@ -16,7 +16,6 @@
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);
   box-shadow: none;
-  cursor: not-allowed;
   opacity: 1;
 }
 

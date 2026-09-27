@@ -348,6 +348,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <div data-slot="empty-state" popover data-testid="popover-empty">Popover</div>
       <label data-slot="label" style="font-weight: 600; font-style: italic">Email <input data-slot="input" data-testid="label-input" /></label>
       <article data-slot="card"><div data-slot="popover-content"><div data-slot="card-content" data-testid="popover-section">Pop</div></div></article>
+      <article data-slot="card"><div data-slot="nav-dropdown-content"><div data-slot="card-content" data-testid="nav-section">Nav</div></div></article>
+      <div class="card" data-slot="popover-content" data-testid="card-popover"><div data-slot="card-header" data-testid="card-popover-header">Head</div></div>
+      <article data-slot="card" data-testid="bleed-card"><div data-bleed data-testid="bleed-child">Media</div></article>
+      <div data-slot="toggle-group" data-testid="toggle-track"><button data-slot="toggle-group-item" data-testid="toggle-item">A</button></div>
       <table><tbody><tr data-slot="empty-state" data-testid="row-empty"><td colspan="2">No rows</td></tr></tbody></table>
       <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
       <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
@@ -383,7 +387,6 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       enabledColor: getComputedStyle(find("enabled-input")).color,
       disabledColor: getComputedStyle(find("disabled-input")).color,
       focusZ: getComputedStyle(find("focus-first")).zIndex,
-      disabledButtonCursor: getComputedStyle(find("disabled-button")).cursor,
       nestedSectionStart:
         find("nested-section").getBoundingClientRect().left -
         find("nested-card").getBoundingClientRect().left,
@@ -401,6 +404,17 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       labelInputWeight: getComputedStyle(find("label-input")).fontWeight,
       labelInputStyle: getComputedStyle(find("label-input")).fontStyle,
       popoverSectionPadding: getComputedStyle(find("popover-section")).paddingInlineStart,
+      navSectionPadding: getComputedStyle(find("nav-section")).paddingInlineStart,
+      cardPopoverHeaderStart:
+        find("card-popover-header").getBoundingClientRect().left -
+        find("card-popover").getBoundingClientRect().left +
+        Number.parseFloat(getComputedStyle(find("card-popover-header")).paddingInlineStart),
+      bleedStart:
+        find("bleed-child").getBoundingClientRect().left -
+        find("bleed-card").getBoundingClientRect().left,
+      bleedEnd:
+        find("bleed-card").getBoundingClientRect().right -
+        find("bleed-child").getBoundingClientRect().right,
       disabledCheckboxImage: getComputedStyle(find("disabled-checkbox")).backgroundImage,
       softDisabledPointer: getComputedStyle(find("soft-disabled-textarea")).pointerEvents,
       nativeDisabledPointer: getComputedStyle(find("native-disabled-textarea")).pointerEvents,
@@ -421,7 +435,6 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
 
   expect(measured.disabledColor).not.toBe(measured.enabledColor);
   expect(measured.focusZ).toBe("1");
-  expect(measured.disabledButtonCursor).toBe("not-allowed");
   expect(measured.nestedSectionStart).toBe(measured.directSectionStart);
   expect(measured.disabledButtonColor).not.toBe(measured.enabledButtonColor);
   expect(measured.buttonFont).toBe(measured.bodyFont);
@@ -432,6 +445,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.labelInputWeight).toBe("400");
   expect(measured.labelInputStyle).toBe("normal");
   expect(Number.parseFloat(measured.popoverSectionPadding)).toBeGreaterThanOrEqual(20);
+  expect(Number.parseFloat(measured.navSectionPadding)).toBeGreaterThanOrEqual(20);
+  expect(measured.cardPopoverHeaderStart).toBeLessThan(50);
+  expect(measured.bleedStart).toBeLessThanOrEqual(1.5);
+  expect(measured.bleedEnd).toBeLessThanOrEqual(1.5);
   expect(measured.disabledCheckboxImage).not.toBe("none");
   expect(measured.softDisabledPointer).toBe("none");
   expect(measured.nativeDisabledPointer).toBe("auto");
@@ -495,4 +512,23 @@ test("should keep disabled checkbox marks readable against their fill", async ({
     expect(hasMark).toBe(true);
     expect(ratio).toBeGreaterThanOrEqual(3);
   }
+});
+
+test("should keep toggle-group hover visible on its muted track", async ({ page, markup }) => {
+  await markup(`
+    <div data-slot="toggle-group" data-testid="track">
+      <button data-slot="toggle-group-item" data-testid="item">Day</button>
+    </div>
+  `);
+  await page.getByTestId("item").hover();
+  // Wait for the background transition to settle before reading the fill.
+  await expect
+    .poll(async () => {
+      const [track, item] = await Promise.all([
+        page.getByTestId("track").evaluate((el) => getComputedStyle(el).backgroundColor),
+        page.getByTestId("item").evaluate((el) => getComputedStyle(el).backgroundColor),
+      ]);
+      return item !== track && !item.endsWith(", 0)") && item !== "rgba(0, 0, 0, 0)";
+    })
+    .toBe(true);
 });

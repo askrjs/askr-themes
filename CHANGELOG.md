@@ -12,10 +12,10 @@
   `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
   `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
   their own inline padding anywhere inside a card; outside a card they keep it.
-  Direct children such as separators, tables, and images are now inset rather
-  than running to the card edges; `menu-content` placed directly in a card
-  still runs edge to edge. Change the inset with `--ak-card-inset`, not
-  `padding`.
+  Direct children such as separators, tables, and images are now inset; add
+  `data-bleed` to a direct child to run it edge to edge (`menu-content` placed
+  directly in a card does so by default). `--ak-card-inset` is declared in the
+  default tokens; change the inset with it, not `padding`.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
@@ -35,8 +35,10 @@
   cards unless they set their own.
 - Disabled switches, including natively disabled ones, use the disabled track
   and draw their thumb in the disabled ink so on and off stay distinguishable.
-- Card sections inside floating or menu surfaces within a card keep their own
-  inline padding.
+- Card sections inside floating, navigation, menu, or toast surfaces within a
+  card keep their own inline padding.
+- Toggle-group item hover lifts toward the selected surface so it stays
+  visible on the muted track.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Raw `[data-slot="empty-state"]` markup on plain block containers (`div`,
   `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
@@ -48,7 +50,7 @@
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
   markup (raw disabled buttons also stop reacting to the pointer, like the
-  `.btn` alias) and changes only `background-color` so the checkbox mark keeps
+  `.btn` alias), and changes only `background-color` so the checkbox mark keeps
   its image. Disabled checked and mixed checkboxes, including natively disabled
   ones, draw their mark in the disabled ink on the disabled fill.
 - Disabled textareas use the disabled tokens instead of half opacity.

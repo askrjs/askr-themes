@@ -61,6 +61,11 @@
   color: var(--ak-color-text);
 }
 
+/* Inside the muted track, hover lifts toward the selected surface so it stays visible. */
+:where([data-slot="toggle-group"]) > :where([data-slot="toggle-group-item"]:hover) {
+  background: color-mix(in oklch, var(--ak-color-surface) 65%, var(--ak-color-surface-muted));
+}
+
 :where([data-slot="toggle"]:focus-visible, [data-slot="toggle-group-item"]:focus-visible) {
   outline: none;
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);

@@ -57,15 +57,12 @@
 }
 
 :where([data-slot="checkbox"]:where([data-disabled], :disabled)) {
+  /* Disabled marks switch to the disabled ink so checked and mixed states stay readable. */
+  --_checkbox-mark: var(--ak-color-disabled-text);
   background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-input);
   box-shadow: none;
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
-}
-
-/* Disabled marks switch to the disabled ink so checked and mixed states stay readable. */
-:where([data-slot="checkbox"]:where([data-disabled], :disabled)) {
-  --_checkbox-mark: var(--ak-color-disabled-text);
 }
