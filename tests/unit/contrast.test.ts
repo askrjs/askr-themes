@@ -218,6 +218,7 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-text", "--ak-color-surface", 4.5, "text on surface"],
   ["--ak-color-text-muted", "--ak-color-bg", 3, "muted text on bg"],
   ["--ak-color-text-muted", "--ak-color-surface", 3, "muted text on surface"],
+  ["--ak-color-disabled-text", "--ak-color-disabled-bg", 3, "disabled text on disabled control"],
 
   // Inverse text on primary
   ["--ak-color-text-inverse", "--ak-color-primary", 4.5, "inverse text on primary"],
@@ -250,6 +251,12 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
   ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
   ["--ak-color-focus-ring", "--ak-color-primary", 3, "focus ring on primary surface"],
+
+  // Menu, select, and command items show hover and keyboard focus only through
+  // the hover fill, so it must stay perceptible on the popover surface.
+  ["--ak-color-hover", "--ak-color-surface-overlay", 1.1, "hover fill on overlay surface"],
+  // Pills and toggle groups hover on a muted track.
+  ["--ak-color-hover", "--ak-color-surface-muted", 1.05, "hover fill on muted track"],
 ];
 
 const ELEVATION_LAYERS = [
@@ -314,6 +321,29 @@ describe("WCAG AA contrast", () => {
               ).toBeGreaterThanOrEqual(minRatio);
             });
           }
+
+          it("should keep selected and current fills stronger than hover", () => {
+            const resolve = (token: string): [number, number, number, number] => {
+              const value = tokens.get(token);
+              if (!value) throw new Error(`Missing fill token: ${token}`);
+              const parsed = parseColor(resolveTokenValue(value, tokenValues));
+              if (!parsed) throw new Error(`Unsupported fill color: ${token} (${value})`);
+              return parsed;
+            };
+            const surface = resolveToOpaque(
+              resolve("--ak-color-surface"),
+              pageBg ?? [255, 255, 255, 1],
+            );
+            const ratioOnSurface = (token: string): number =>
+              contrastRatio(resolveToOpaque(resolve(token), [...surface, 1]), surface);
+
+            const hover = ratioOnSurface("--ak-color-hover");
+            const selected = ratioOnSurface("--ak-color-selected");
+            expect(selected).toBeGreaterThan(hover);
+            // THEMING invariant: selected must be visibly distinct from hover, not one step apart.
+            expect(selected / hover).toBeGreaterThanOrEqual(1.08);
+            expect(ratioOnSurface("--ak-color-primary-soft") / hover).toBeGreaterThanOrEqual(1.08);
+          });
 
           it("should keep the documented elevation layers visually distinct", () => {
             const resolvedLayers = ELEVATION_LAYERS.map((token) => {

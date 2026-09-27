@@ -1,4 +1,5 @@
 :where([data-slot="checkbox"]) {
+  --_checkbox-mark: var(--ak-color-text-inverse);
   appearance: none;
   display: inline-grid;
   place-content: center;
@@ -35,8 +36,8 @@
   border-color: var(--ak-color-primary);
   background-color: var(--ak-color-primary);
   background-image:
-    linear-gradient(135deg, transparent 40%, var(--ak-color-text-inverse) 40% 60%, transparent 60%),
-    linear-gradient(45deg, transparent 43%, var(--ak-color-text-inverse) 43% 57%, transparent 57%);
+    linear-gradient(135deg, transparent 40%, var(--_checkbox-mark) 40% 60%, transparent 60%),
+    linear-gradient(45deg, transparent 43%, var(--_checkbox-mark) 43% 57%, transparent 57%);
   background-position:
     0.2rem 0.48rem,
     0.4rem 0.18rem;
@@ -50,13 +51,15 @@
 :where([data-slot="checkbox"][aria-checked="mixed"]) {
   border-color: var(--ak-color-primary);
   background-color: var(--ak-color-primary);
-  background-image: linear-gradient(var(--ak-color-text-inverse), var(--ak-color-text-inverse));
+  background-image: linear-gradient(var(--_checkbox-mark), var(--_checkbox-mark));
   background-size: 0.5rem 0.125rem;
   box-shadow: none;
 }
 
-:where([data-slot="checkbox"][data-disabled]) {
-  background: var(--ak-color-disabled-bg);
+:where([data-slot="checkbox"]:where([data-disabled], :disabled)) {
+  /* Disabled marks switch to muted ink, which stays readable on the disabled fill in every theme. */
+  --_checkbox-mark: var(--ak-color-text-muted);
+  background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-input);
   box-shadow: none;
   opacity: 0.5;

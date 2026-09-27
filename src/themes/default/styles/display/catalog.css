@@ -24,6 +24,7 @@
   display: grid;
   gap: var(--ak-space-sm);
   min-inline-size: 0;
+  padding-inline: var(--_card-section-inset, var(--ak-space-2xl));
 }
 
 :where([data-slot="card-header"]) {
@@ -31,21 +32,15 @@
   column-gap: var(--ak-space-md);
   row-gap: var(--ak-space-sm);
   align-items: start;
-  padding-inline: var(--ak-space-2xl);
 }
 
 :where([data-slot="card-header"]:has(> [data-slot="card-action"])) {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
-:where([data-slot="card-content"]) {
-  padding-inline: var(--ak-space-2xl);
-}
-
 :where([data-slot="card-footer"]) {
   display: flex;
   align-items: center;
-  padding-inline: var(--ak-space-2xl);
 }
 
 :where([data-slot="card-title"]) {

@@ -37,7 +37,7 @@
 }
 
 :where([data-slot="theme-toggle-content"]) {
-  --_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em));
+  --_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -90,7 +90,12 @@
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where(.btn[data-disabled], .btn:disabled, [data-slot="button"][data-disabled]) {
+:where(
+  .btn[data-disabled],
+  .btn:disabled,
+  [data-slot="button"][data-disabled],
+  [data-slot="button"]:disabled
+) {
   pointer-events: none;
   cursor: not-allowed;
   opacity: 0.5;

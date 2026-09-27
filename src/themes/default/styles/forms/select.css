@@ -42,7 +42,12 @@
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where(.select-trigger[data-disabled], [data-slot="select-trigger"][data-disabled]) {
+:where(
+  .select-trigger[data-disabled],
+  .select-trigger:disabled,
+  [data-slot="select-trigger"][data-disabled],
+  [data-slot="select-trigger"]:disabled
+) {
   background: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-input);
   box-shadow: none;

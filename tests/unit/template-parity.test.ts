@@ -73,24 +73,21 @@ describe("template parity", () => {
     ).toEqual([]);
   });
 
-  it("should template tokens expose the same canonical token names as the default theme", () => {
-    const defaultTokens = extractTokenNames(readFileSync(DEFAULT_TOKENS, "utf-8"));
-    const templateTokens = extractTokenNames(readFileSync(TEMPLATE_TOKENS, "utf-8"));
-
-    expect(templateTokens).toEqual(defaultTokens);
+  it("should generate the same default palette in new themes", () => {
+    expect(readFileSync(TEMPLATE_TOKENS, "utf-8")).toEqual(readFileSync(DEFAULT_TOKENS, "utf-8"));
   });
 
   it("should template entrypoint imports the same component CSS as the default theme", () => {
     expect(readFileSync(TEMPLATE_INDEX, "utf-8")).toEqual(readFileSync(DEFAULT_INDEX, "utf-8"));
   });
 
-  it("should template keeps tabs, pills, and Navbar styles aligned with the default theme", () => {
-    const navFiles = ["navigation/nav.css", "shell/navbar.css"];
+  it("should keep every shared component style identical to the theme template", () => {
+    const sharedFiles = defaultFiles.filter((file) => templateFiles.includes(file));
 
-    for (const file of navFiles) {
+    for (const file of sharedFiles) {
       expect(
         readFileSync(join(TEMPLATE_COMPONENTS, file), "utf-8"),
-        `${file} drifted from the default theme`,
+        `${file} drifted from the default theme; copy the change into templates/theme/styles`,
       ).toEqual(readFileSync(join(DEFAULT_COMPONENTS, file), "utf-8"));
     }
   });

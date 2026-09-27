@@ -51,7 +51,7 @@
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where([data-slot="switch"][data-disabled]) {
+:where([data-slot="switch"]:where([data-disabled], :disabled)) {
   background: var(--ak-color-input);
   border-color: transparent;
   box-shadow: none;
@@ -60,7 +60,8 @@
   cursor: not-allowed;
 }
 
-:where([data-slot="switch"][data-disabled])::after {
-  background: var(--ak-color-surface);
+:where([data-slot="switch"]:where([data-disabled], :disabled))::after {
+  /* Muted ink keeps the thumb position readable on the shared disabled fill in every theme. */
+  background: var(--ak-color-text-muted);
   box-shadow: none;
 }

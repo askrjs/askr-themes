@@ -1,4 +1,4 @@
-:where(.btn-group, [data-slot="button-group"]) {
+:where(.btn-group, .btn-group-vertical, [data-slot="button-group"]) {
   display: inline-flex;
   align-items: stretch;
   gap: 0;
@@ -6,11 +6,17 @@
   max-inline-size: 100%;
 }
 
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]) {
+:where(
+  :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+  [data-slot="button-group"][data-attached="true"]
+) {
   flex-wrap: nowrap;
 }
 
-:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"]) {
+:where(
+  :is(.btn-group, .btn-group-vertical)[data-attached="false"],
+  [data-slot="button-group"][data-attached="false"]
+) {
   flex-wrap: wrap;
 }
 
@@ -18,47 +24,107 @@
   flex-direction: column;
 }
 
-:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"]) {
+:where(
+  :is(.btn-group, .btn-group-vertical)[data-attached="false"],
+  [data-slot="button-group"][data-attached="false"]
+) {
   gap: var(--ak-space-xs);
 }
 
-:where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]) {
+:where(.btn-group, .btn-group-vertical, [data-slot="button-group"])
+  > :where(.btn, [data-slot="button"]) {
   position: relative;
   min-inline-size: 0;
   box-shadow: none;
 }
 
-:where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
+/* Attached buttons overlap by 1px; lift the focused one so its neighbor cannot cover the ring.
+   Only focus lifts, so tooltips on hovered buttons keep the group's stacking order. */
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+    [data-slot="button-group"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):focus-visible {
+  z-index: 1;
+}
+
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="false"],
+    [data-slot="button-group"][data-attached="false"]
+  )
   > :where(.btn, [data-slot="button"]) {
   border-radius: var(--ak-radius-lg);
   box-shadow: none;
 }
 
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+    [data-slot="button-group"][data-attached="true"]
+  )
   > :where(.btn, [data-slot="button"]) {
   border-radius: 0;
 }
 
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+    [data-slot="button-group"][data-attached="true"]
+  )
   > :where(.btn, [data-slot="button"]):first-child {
   border-start-start-radius: var(--ak-radius-lg);
   border-end-start-radius: var(--ak-radius-lg);
 }
 
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+    [data-slot="button-group"][data-attached="true"]
+  )
   > :where(.btn, [data-slot="button"]):last-child {
   border-start-end-radius: var(--ak-radius-lg);
   border-end-end-radius: var(--ak-radius-lg);
 }
 
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+    [data-slot="button-group"][data-attached="true"]
+  )
   > :where(.btn, [data-slot="button"])
   + :where(.btn, [data-slot="button"]) {
   margin-inline-start: -1px;
 }
 
+:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"])
+  > :where(.btn, [data-slot="button"]) {
+  inline-size: 100%;
+  justify-content: center;
+}
+
+/* Attached columns join buttons on the block axis. */
 :where(
-    .btn-group-vertical,
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):first-child {
+  border-radius: var(--ak-radius-lg) var(--ak-radius-lg) 0 0;
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):last-child:not(:first-child) {
+  border-radius: 0 0 var(--ak-radius-lg) var(--ak-radius-lg);
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):only-child {
+  border-radius: var(--ak-radius-lg);
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"])
@@ -67,8 +133,48 @@
   margin-block-start: -1px;
 }
 
-:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"])
-  > :where(.btn, [data-slot="button"]) {
-  inline-size: 100%;
-  justify-content: center;
+/* Responsive attached groups become attached columns at phone width; icon groups keep the row. */
+@media (max-width: 30rem) {
+  :where(.btn-group, [data-slot="button-group"]):where(
+    [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+  ) {
+    flex-direction: column;
+  }
+
+  :where(.btn-group, [data-slot="button-group"]):where(
+      [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+    )
+    > :where(.btn, [data-slot="button"]) {
+    inline-size: 100%;
+  }
+
+  :where(.btn-group, [data-slot="button-group"]):where(
+      [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+    )
+    > :where(.btn, [data-slot="button"]):first-child {
+    border-radius: var(--ak-radius-lg) var(--ak-radius-lg) 0 0;
+  }
+
+  :where(.btn-group, [data-slot="button-group"]):where(
+      [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+    )
+    > :where(.btn, [data-slot="button"]):last-child:not(:first-child) {
+    border-radius: 0 0 var(--ak-radius-lg) var(--ak-radius-lg);
+  }
+
+  :where(.btn-group, [data-slot="button-group"]):where(
+      [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+    )
+    > :where(.btn, [data-slot="button"]):only-child {
+    border-radius: var(--ak-radius-lg);
+  }
+
+  :where(.btn-group, [data-slot="button-group"]):where(
+      [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
+    )
+    > :where(.btn, [data-slot="button"])
+    + :where(.btn, [data-slot="button"]) {
+    margin-inline-start: 0;
+    margin-block-start: -1px;
+  }
 }

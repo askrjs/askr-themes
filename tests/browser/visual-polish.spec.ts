@@ -740,6 +740,7 @@ test.describe("visual polish contracts", () => {
         separatorHeight: px(getComputedStyle(separator).height),
         buttonGroupFlexWrap: getComputedStyle(buttonGroup).flexWrap,
         buttonGroupScrollWidth: buttonGroup.scrollWidth,
+        buttonGroupOverflowX: getComputedStyle(buttonGroup).overflowX,
         labelOverflowWrap: getComputedStyle(label).overflowWrap,
         themePickerScrollWidth: themePicker.scrollWidth,
         themePickerRenderedHeight: themePicker.getBoundingClientRect().height,
@@ -765,6 +766,7 @@ test.describe("visual polish contracts", () => {
 
     expect(measured.buttonGroupFlexWrap).toBe("nowrap");
     expect(measured.buttonGroupScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
+    expect(measured.buttonGroupOverflowX).toBe("visible");
     expect(measured.labelOverflowWrap).toBe("anywhere");
     expect(measured.themePickerScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
     // WebKit reports the native select's intrinsic min-height rather than the

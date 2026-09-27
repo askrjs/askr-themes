@@ -80,6 +80,8 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
 restrained enough for application chrome, and polished enough that downstream apps should not
 need to fix basic spacing or type rhythm.
+Ink plum actions, warm neutral surfaces, and subtle borders carry through its light
+and dark palettes.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
 component family in light and dark mode at desktop, tablet, and mobile widths.
@@ -148,7 +150,7 @@ Theme state helpers also live there: `ThemeScope`, `ThemePicker`,
 icons; applications pass their own icon/content props. The rendered content is
 wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
 be styled consistently across themes. If you use icon children, the direct child
-icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em))`,
+icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
 `ThemeName` accepts application-defined strings intentionally. Register custom
 names in the scope's theme options and provide a matching `[data-theme="..."]`
@@ -177,6 +179,23 @@ Responsive rules:
 - Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Product-style or marketing-style page layouts belong in userland composition, not the shipped theme package.
 - Comfortable density is tokenized through `--ak-density-control-height-*` and `--ak-density-control-padding-x-*`; apps should tune those before overriding component CSS.
 - Future class aliases must be added selectively with contract tests; do not mirror every internal slot as a class by default.
+
+## Component Layout Hooks
+
+- `Card` owns its inline inset. Set `--ak-card-inset` (a single length, default
+  `var(--ak-space-2xl)`) on a card instead of overriding its `padding`, so
+  `CardHeader`, `CardContent`, `CardFooter` (at any depth), and edge-to-edge
+  `menu-content` children stay aligned. Like any token it inherits, so it also
+  applies to nested cards unless they set their own. Card sections used outside
+  a `Card` keep their own inline padding. Add `data-bleed` to a direct child
+  (media, a table, a separator) to run it edge to edge; `menu-content` placed
+  directly in a card does this by default.
+- `ButtonGroup` emits `data-responsive="true"` when it is attached and has no
+  explicit `orientation`; responsive attached groups without icon buttons stack
+  at phone width. Raw markup opts in with both `data-attached="true"` and
+  `data-responsive="true"`. A stacked group keeps `data-orientation="horizontal"`,
+  so style phone-width stacking with the same media query rather than that
+  attribute.
 
 ## Token Contract
 
