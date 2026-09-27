@@ -9,11 +9,18 @@ import { ButtonGroupProps } from "./button-group.types";
  * keep the row.
  */
 export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
-  const { attached = true, children, class: className, orientation, ref, role, ...rest } = props;
+  const {
+    attached = true,
+    children,
+    class: className,
+    orientation,
+    ref,
+    role,
+    "data-responsive": dataResponsive,
+    ...rest
+  } = props;
   // A caller-supplied data-responsive wins; otherwise attached groups without an orientation opt in.
-  const responsive =
-    (rest as Record<string, unknown>)["data-responsive"] ??
-    (attached && orientation == null ? "true" : undefined);
+  const responsive = dataResponsive ?? (attached && orientation == null ? "true" : undefined);
 
   return (
     <div
@@ -26,7 +33,7 @@ export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
       )}
       data-attached={attached ? "true" : "false"}
       data-orientation={orientation ?? "horizontal"}
-      data-responsive={responsive as string | undefined}
+      data-responsive={responsive}
       data-slot="button-group"
       role={(role ?? "group") as string}
     >

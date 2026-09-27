@@ -29,8 +29,11 @@
 
 - Attached vertical `ButtonGroup`s round only their outer top and bottom
   corners at every width, and a lone button keeps all four corners.
-- Buttons in an attached `ButtonGroup` draw their focus ring inside the button
-  so the -1px overlap never covers it.
+- Buttons in an attached `ButtonGroup` draw their focus ring inside the button,
+  keeping the destructive tint, so the -1px overlap never covers it; in forced
+  colors the outline moves inside the button for the same reason.
+- `--ak-card-inset` applies to the card it is set on; nested cards fall back to
+  the default unless they set their own.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm, except
   `hidden` empty states and table, list, and disclosure parts, which keep their
@@ -41,9 +44,12 @@
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
   markup, sets `cursor: not-allowed`, and changes only `background-color` so
-  checkbox and select indicators stay visible. Disabled textareas use the
-  disabled tokens instead of half opacity; raw natively disabled ones stay
-  scrollable.
+  checkbox and select indicators keep their images. Disabled checked and mixed
+  checkboxes draw their mark in the disabled ink so it stays readable.
+- Disabled textareas use the disabled tokens instead of half opacity.
+  Natively disabled textareas (including the `Textarea` component) stay
+  scrollable and selectable; `data-disabled` without the native attribute
+  blocks pointer input.
 - Hover fills stay perceptible on popover surfaces in light and dark mode, and
   selected and primary-soft fills stay clearly stronger than hover (light
   primary-soft and selected are now `#ebe2f0`).

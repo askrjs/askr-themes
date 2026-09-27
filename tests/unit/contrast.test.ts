@@ -321,17 +321,19 @@ describe("WCAG AA contrast", () => {
           }
 
           it("should keep selected and current fills stronger than hover", () => {
-            const surface = parseColor(
-              resolveTokenValue(tokens.get("--ak-color-surface") ?? "", tokenValues),
-            );
-            const ratioOnSurface = (token: string): number => {
-              const parsed = parseColor(resolveTokenValue(tokens.get(token) ?? "", tokenValues));
-              if (!parsed || !surface) throw new Error(`Unsupported fill color: ${token}`);
-              return contrastRatio(
-                resolveToOpaque(parsed, [...resolveToOpaque(surface, [255, 255, 255, 1]), 1]),
-                resolveToOpaque(surface, [255, 255, 255, 1]),
-              );
+            const resolve = (token: string): [number, number, number, number] => {
+              const value = tokens.get(token);
+              if (!value) throw new Error(`Missing fill token: ${token}`);
+              const parsed = parseColor(resolveTokenValue(value, tokenValues));
+              if (!parsed) throw new Error(`Unsupported fill color: ${token} (${value})`);
+              return parsed;
             };
+            const surface = resolveToOpaque(
+              resolve("--ak-color-surface"),
+              pageBg ?? [255, 255, 255, 1],
+            );
+            const ratioOnSurface = (token: string): number =>
+              contrastRatio(resolveToOpaque(resolve(token), [...surface, 1]), surface);
 
             const hover = ratioOnSurface("--ak-color-hover");
             const selected = ratioOnSurface("--ak-color-selected");

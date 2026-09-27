@@ -82,7 +82,7 @@ const ALLOWED_ALIAS_CLASSES: Record<string, readonly string[]> = {
     "btn-secondary",
     "btn-sm",
   ],
-  "button-group.css": ["btn", "btn-group", "btn-group-vertical", "btn-icon"],
+  "button-group.css": ["btn", "btn-destructive", "btn-group", "btn-group-vertical", "btn-icon"],
   "card.css": ["card", "card-raised"],
   "field.css": ["field", "field-error", "field-hint"],
   "dropdown.css": [

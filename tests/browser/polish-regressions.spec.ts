@@ -348,6 +348,13 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <table><tbody><tr data-slot="empty-state" data-testid="row-empty"><td colspan="2">No rows</td></tr></tbody></table>
       <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
       <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
+      <textarea data-slot="textarea" data-disabled disabled data-testid="native-disabled-textarea"></textarea>
+      <div data-slot="button-group" data-attached="true">
+        <button data-slot="button" data-variant="destructive" data-testid="focus-destructive">Delete</button>
+      </div>
+      <article data-slot="card" style="--ak-card-inset: 0px" data-testid="flush-card">
+        <article data-slot="card" data-testid="inner-card"><div data-slot="card-content" data-testid="inner-content">Inner</div></article>
+      </article>
       <style>:where(.app-pad [data-slot="card-content"]) { padding-inline: 10px; }</style>
       <div class="app-pad"><article data-slot="card"><div data-slot="card-content" data-testid="app-padded-section">App</div></article></div>
       <table><tbody><tr><td data-slot="empty-state" colspan="2" data-testid="cell-empty">No rows</td></tr></tbody></table>
@@ -392,6 +399,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       rowEmptyDisplay: getComputedStyle(find("row-empty")).display,
       disabledCheckboxImage: getComputedStyle(find("disabled-checkbox")).backgroundImage,
       softDisabledPointer: getComputedStyle(find("soft-disabled-textarea")).pointerEvents,
+      nativeDisabledPointer: getComputedStyle(find("native-disabled-textarea")).pointerEvents,
+      innerInset:
+        find("inner-content").getBoundingClientRect().left -
+        find("inner-card").getBoundingClientRect().left,
       appPaddedSection: getComputedStyle(find("app-padded-section")).paddingInlineStart,
       looseSectionPadding: getComputedStyle(find("loose-section")).paddingInlineStart,
       aliasMarginTop: getComputedStyle(find("alias-only").children[1] as HTMLElement)
@@ -413,9 +424,51 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.rowEmptyDisplay).toBe("table-row");
   expect(measured.disabledCheckboxImage).not.toBe("none");
   expect(measured.softDisabledPointer).toBe("none");
+  expect(measured.nativeDisabledPointer).toBe("auto");
+  expect(measured.innerInset).toBeGreaterThanOrEqual(20);
   expect(measured.appPaddedSection).toBe("10px");
   expect(Number.parseFloat(measured.looseSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.aliasMarginTop).toBe("0px");
   expect(Math.abs(measured.menuStart)).toBeLessThanOrEqual(0.5);
   expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);
+});
+
+test("should keep destructive rings and disabled checkbox marks readable", async ({
+  page,
+  markup,
+  root,
+}) => {
+  await markup(`
+    <div>
+      <div data-slot="button-group" data-attached="true">
+        <button data-slot="button" data-variant="destructive" data-testid="destructive">Delete</button>
+      </div>
+      <button data-slot="button" data-variant="destructive" data-testid="lone-destructive">Delete</button>
+      <button data-slot="checkbox" data-state="checked" data-disabled disabled data-testid="checked"></button>
+    </div>
+  `);
+  await page.keyboard.press("Shift");
+  await page.getByTestId("destructive").focus();
+  const grouped = await page
+    .getByTestId("destructive")
+    .evaluate((el) => getComputedStyle(el).boxShadow);
+  await page.getByTestId("lone-destructive").focus();
+  const lone = await page
+    .getByTestId("lone-destructive")
+    .evaluate((el) => getComputedStyle(el).boxShadow);
+
+  const checkbox = await root.evaluate((container) => {
+    const el = container.querySelector('[data-testid="checked"]') as HTMLElement;
+    const probe = document.createElement("span");
+    probe.style.color = "var(--ak-color-disabled-text)";
+    container.append(probe);
+    const disabledText = getComputedStyle(probe).color;
+    probe.remove();
+    return { image: getComputedStyle(el).backgroundImage, disabledText };
+  });
+
+  expect(grouped).toContain("inset");
+  // The grouped ring keeps the destructive tint rather than the generic focus color.
+  expect(grouped.replace(" inset", "").split(")")[0]).toBe(lone.split(")")[0]);
+  expect(checkbox.image).toContain(checkbox.disabledText);
 });

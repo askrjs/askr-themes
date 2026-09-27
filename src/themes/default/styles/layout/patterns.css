@@ -2,8 +2,8 @@
   text-align: center;
 }
 
-/* The EmptyState component lays out through Block props; raw block markup gets the same rhythm
-   here. Hidden empty states and table, list, and disclosure parts keep their native display. */
+/* The EmptyState component lays out through Block props; raw block markup gets a compact
+   centered rhythm here. Hidden empty states and table, list, and disclosure parts keep their native display. */
 :where(.empty-state, [data-slot="empty-state"]):where(
   :not([data-ak-layout], [hidden], caption, thead, tbody, tfoot, tr, td, th, li, dt, dd, summary)
 ) {

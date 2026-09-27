@@ -123,11 +123,12 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 
 The default theme pairs an ink plum accent with warm neutral surfaces in
 light and dark mode. Override the semantic tokens for each mode to match your
-product. Light values sit on `[data-theme="light"]`, and dark mode (both
-`[data-theme="dark"]` and the system preference) reads the `--ak-dark-color-*`
-tokens, so a single `:root` override would leak light values into dark mode:
+product. Dark mode (both `[data-theme="dark"]` and the system preference)
+reads the `--ak-dark-color-*` tokens, so keep light overrides off an explicitly
+dark root; a plain `:root` override would leak light values into dark mode:
 
 ```css
+:root:where(:not([data-theme="dark"])),
 [data-theme="light"] {
   --ak-color-primary: oklch(0.55 0.18 255);
   --ak-color-primary-soft: oklch(0.95 0.04 255);

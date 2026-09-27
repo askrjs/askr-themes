@@ -15,5 +15,7 @@ export type ButtonGroupProps = DivProps & {
   children?: unknown;
   attached?: boolean;
   orientation?: ButtonGroupOrientation;
+  /** Stack at phone width. Defaults to `"true"` for attached groups without an `orientation`. */
+  "data-responsive"?: "true" | "false";
   ref?: Ref<HTMLDivElement>;
 };

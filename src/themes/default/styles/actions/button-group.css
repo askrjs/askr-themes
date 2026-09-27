@@ -29,19 +29,17 @@
 }
 
 /* Attached buttons overlap by 1px, so their focus ring is drawn inside the button where no
-   neighbor can cover it and no stacking context is needed. The :is() gives (0,2,0) so the ring
-   wins over the button focus contract whichever file loads first. */
+   neighbor can cover it and no stacking context is needed. Like every theme rule this relies on
+   the index cascade order, loading after the button focus contract. */
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
-  > :is(.btn, [data-slot="button"]):focus-visible {
+  > :where(.btn, [data-slot="button"]):focus-visible {
   box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-@media (forced-colors: active) {
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
-    > :is(.btn, [data-slot="button"]):focus-visible {
-    /* Clear of the 1px overlap on either side. */
-    outline-offset: -3px;
-  }
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn-destructive, [data-slot="button"][data-variant="destructive"]):focus-visible {
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width)
+    color-mix(in oklch, var(--ak-color-danger) 20%, transparent);
 }
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
