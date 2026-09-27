@@ -23,7 +23,7 @@
 
 :where(.nav-item:hover, .navbar-item:hover, [data-slot="nav-item"]:hover) {
   color: var(--ak-color-text);
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: transparent;
   box-shadow: none;
 }
@@ -40,7 +40,7 @@
 
 :where([data-slot="navbar"] [data-slot="nav-item"]:hover) {
   color: var(--ak-color-text);
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 82%, transparent);
+  background: var(--ak-color-hover);
   border-color: transparent;
   box-shadow: none;
 }
@@ -106,7 +106,7 @@
 
 :where(.tab:hover, [data-slot="tab"]:hover) {
   color: var(--ak-color-text);
-  background: var(--ak-color-surface-muted);
+  background: var(--ak-color-hover);
 }
 
 :where(
@@ -116,7 +116,8 @@
   [data-slot="tab"][data-active="true"]
 ) {
   color: var(--ak-color-text);
-  background: var(--ak-color-bg);
+  /* Segmented selection lifts onto the surface, like the toggle group. */
+  background: var(--ak-color-surface);
   border-color: transparent;
   box-shadow: var(--ak-shadow-xs);
 }
@@ -159,7 +160,7 @@
 
 :where(.pill:hover, [data-slot="pill"]:hover) {
   color: var(--ak-color-text);
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: transparent;
 }
 

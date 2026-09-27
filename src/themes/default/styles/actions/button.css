@@ -122,7 +122,7 @@
 }
 
 :where(.btn-secondary:hover, [data-slot="button"][data-variant="secondary"]:hover) {
-  background: color-mix(in oklch, var(--ak-color-surface-muted) 80%, transparent);
+  background: var(--ak-color-hover);
 }
 
 :where(.btn-secondary:active, [data-slot="button"][data-variant="secondary"]:active) {
@@ -137,8 +137,8 @@
 }
 
 :where(.btn-outline:hover, [data-slot="button"][data-variant="outline"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where(.btn-outline:active, [data-slot="button"][data-variant="outline"]:active) {
@@ -152,8 +152,8 @@
 }
 
 :where(.btn-ghost:hover, [data-slot="button"][data-variant="ghost"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where(.btn-ghost:active, [data-slot="button"][data-variant="ghost"]:active) {
@@ -218,7 +218,7 @@
 }
 
 :where(.btn-close:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: transparent;
   color: var(--ak-color-text);
   opacity: 1;

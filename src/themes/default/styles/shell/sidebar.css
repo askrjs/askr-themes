@@ -109,11 +109,7 @@
 
 :where([data-slot="sidebar-menu-button"]) {
   --_sidebar-menu-button-hover-bg: color-mix(in oklch, var(--ak-color-text) 5%, transparent);
-  --_sidebar-menu-button-active-bg: color-mix(
-    in oklch,
-    var(--ak-color-text) 7%,
-    var(--ak-color-bg)
-  );
+  --_sidebar-menu-button-active-bg: var(--ak-color-selected);
 
   display: flex;
   align-items: center;
@@ -159,10 +155,6 @@
   font-weight: var(--ak-font-weight-medium);
 }
 
-:where([data-slot="sidebar-menu-button"][data-active="true"]:hover) {
-  background: color-mix(in oklch, var(--ak-color-text) 9%, var(--ak-color-bg));
-}
-
 :where([data-slot="sidebar-menu-button"][data-variant="outline"]) {
   border-color: var(--ak-color-border);
   background: var(--ak-color-bg);
@@ -204,8 +196,8 @@
 }
 
 :where([data-slot="sidebar-menu-action"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="sidebar-menu-badge"]) {

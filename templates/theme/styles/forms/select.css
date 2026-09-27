@@ -143,17 +143,17 @@
 }
 
 :where(.select-item[data-state="checked"], [data-slot="select-item"][data-state="checked"]) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-selected);
+  color: var(--ak-color-text);
 }
 
 :where(.select-item:hover, [data-slot="select-item"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
 }
 
 :where(.select-item:focus-visible, [data-slot="select-item"]:focus-visible) {
   outline: none;
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   box-shadow: none;
 }
 

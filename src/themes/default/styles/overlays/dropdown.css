@@ -26,7 +26,7 @@
 }
 
 :where(.dropdown-trigger:hover, [data-slot="dropdown-trigger"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: var(--ak-color-input);
 }
 
@@ -37,7 +37,7 @@
 
 :where(.dropdown-trigger[data-state="open"], [data-slot="dropdown-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
 }
 
 :where([data-slot="dropdown-trigger"][data-variant="ghost"]) {
@@ -48,15 +48,15 @@
 }
 
 :where([data-slot="dropdown-trigger"][data-variant="ghost"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: transparent;
-  color: var(--ak-color-accent-ink);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="dropdown-trigger"][data-variant="ghost"][data-state="open"]) {
   border-color: transparent;
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="dropdown-trigger"][data-size="icon"]) {
