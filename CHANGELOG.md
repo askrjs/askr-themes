@@ -14,7 +14,8 @@
   their own inline padding anywhere inside a card; outside a card they keep it.
   Direct children such as separators, tables, and images are now inset; add
   `data-bleed` to a direct child to run it edge to edge (`menu-content` placed
-  directly in a card does so by default and drops its own frame). Change the
+  directly in a card does so by default and drops its own frame;
+  `data-bleed="false"` keeps either inset). Change the
   inset with the optional `--ak-card-inset` hook (default
   `var(--ak-space-2xl)`, resolved on each card), not `padding`.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
@@ -23,8 +24,8 @@
   buttons, and detached groups, keep their row. Raw markup opts in with both
   `data-attached="true"` and `data-responsive="true"`.
 - Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
-  require `data-attached="true"`; the class alias needs both `.btn-group` and
-  `.btn-group-vertical`, matching the horizontal join rules.
+  require `data-attached="true"`. The `.btn-group-vertical` class alias works on
+  its own or with `.btn-group`.
 
 ### Changed
 
@@ -34,12 +35,10 @@
   the -1px overlap never covers its focus ring; hover does not lift.
 - `--ak-card-inset` inherits like any token, so it also applies to nested
   cards unless they set their own.
-- Disabled switches, including natively disabled ones, use the disabled track
-  and draw their thumb in the disabled ink so on and off stay distinguishable.
 - Card sections inside floating, navigation, menu, or toast surfaces within a
   card keep their own inline padding.
-- Light `--ak-color-surface-muted` is lighter so hover stays visible on muted
-  tracks such as pills and toggle groups.
+- Hover stays visible on muted tracks such as pills and toggle groups, tested
+  as a contrast pair.
 - Raw radio items and select triggers with the native `disabled` attribute
   block pointer input like their `data-disabled` forms.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
@@ -54,15 +53,17 @@
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
   markup (raw disabled buttons also stop reacting to the pointer, like the
   `.btn` alias), and changes only `background-color` so the checkbox mark keeps
-  its image. Disabled checked and mixed checkboxes, including natively disabled
-  ones, draw their mark in the disabled ink on the disabled fill.
+  its image. Disabled checked and mixed checkboxes and disabled switch thumbs,
+  including natively disabled ones, draw in `--ak-color-text-muted`, which stays
+  readable on the disabled fill in the default theme and every preset.
 - Disabled textareas use the disabled tokens instead of half opacity.
   Natively disabled textareas (including the `Textarea` component) stay
   scrollable and selectable but cannot be resized; `data-disabled` without the
   native attribute blocks pointer input.
 - Hover fills stay perceptible on popover surfaces in light and dark mode, and
-  selected and primary-soft fills stay clearly stronger than hover (light
-  primary-soft and selected are now `#ebe2f0`).
+  selected and primary-soft fills stay clearly stronger than hover.
+  `--ak-color-selected` now references `--ak-color-primary-soft` (and the dark
+  token its dark counterpart), so rebrands carry through to selection fills.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
 

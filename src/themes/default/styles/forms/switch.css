@@ -61,7 +61,7 @@
 }
 
 :where([data-slot="switch"]:where([data-disabled], :disabled))::after {
-  /* Disabled ink keeps the thumb position readable on the disabled track. */
-  background: var(--ak-color-disabled-text);
+  /* Muted ink keeps the thumb position readable on the shared disabled fill in every theme. */
+  background: var(--ak-color-text-muted);
   box-shadow: none;
 }

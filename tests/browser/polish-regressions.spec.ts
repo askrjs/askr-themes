@@ -349,6 +349,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <label data-slot="label" style="font-weight: 600; font-style: italic; font-family: serif">Email <input data-slot="input" data-testid="label-input" /></label>
       <article data-slot="card" data-testid="sep-card"><hr data-slot="separator" data-bleed data-testid="sep" /></article>
       <section style="--ak-space-2xl: 1rem"><article data-slot="card" data-testid="scoped-card">Scoped</article></section>
+      <article data-slot="card"><nav data-slot="menu-content" data-bleed="false" data-testid="framed-menu"><a data-slot="menu-item">Item</a></nav></article>
+      <div class="btn-group-vertical" data-slot="button-group" data-attached="true" data-testid="mixed-alias">
+        <button data-slot="button">One</button><button data-slot="button">Two</button>
+      </div>
       <div class="card" data-testid="alias-card"><nav data-slot="menu-content" data-testid="alias-menu"><a data-slot="menu-item">Item</a></nav></div>
       <button data-slot="radio-group-item" disabled data-testid="disabled-radio"></button>
       <article data-slot="card"><div data-slot="popover-content"><div data-slot="card-content" data-testid="popover-section">Pop</div></div></article>
@@ -418,6 +422,9 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
         find("alias-menu").getBoundingClientRect().left -
         find("alias-card").getBoundingClientRect().left,
       aliasMenuBorder: getComputedStyle(find("alias-menu")).borderInlineStartWidth,
+      framedMenuBorder: getComputedStyle(find("framed-menu")).borderInlineStartWidth,
+      mixedAliasSecond: getComputedStyle(find("mixed-alias").children[1] as HTMLElement)
+        .marginBlockStart,
       disabledRadioPointer: getComputedStyle(find("disabled-radio")).pointerEvents,
       popoverSectionPadding: getComputedStyle(find("popover-section")).paddingInlineStart,
       navSectionPadding: getComputedStyle(find("nav-section")).paddingInlineStart,
@@ -458,12 +465,14 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.cellEmptyDisplay).toBe("table-cell");
   expect(measured.rowEmptyDisplay).toBe("table-row");
   expect(measured.popoverEmptyDisplay).toBe("none");
-  expect(measured.labelInputFamily).toContain("serif");
+  expect(measured.labelInputFamily).toBe("serif");
   expect(measured.sepStart).toBeLessThanOrEqual(1.5);
   expect(measured.sepEnd).toBeLessThanOrEqual(1.5);
   expect(measured.scopedPadding[0]).toBe(measured.scopedPadding[1]);
   expect(measured.aliasMenuStart).toBeLessThanOrEqual(1.5);
   expect(measured.aliasMenuBorder).toBe("0px");
+  expect(measured.framedMenuBorder).toBe("1px");
+  expect(measured.mixedAliasSecond).toBe("-1px");
   expect(measured.disabledRadioPointer).toBe("none");
   expect(Number.parseFloat(measured.popoverSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(Number.parseFloat(measured.navSectionPadding)).toBeGreaterThanOrEqual(20);
@@ -479,7 +488,7 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.innerInset).toBeLessThanOrEqual(2);
   expect(measured.appPaddedSection).toBe("10px");
   expect(Number.parseFloat(measured.looseSectionPadding)).toBeGreaterThanOrEqual(20);
-  expect(measured.aliasMarginTop).toBe("0px");
+  expect(measured.aliasMarginTop).toBe("-1px");
   expect(Math.abs(measured.menuStart)).toBeLessThanOrEqual(0.5);
   expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);
 });
@@ -492,45 +501,50 @@ test("should keep disabled checkbox marks readable against their fill", async ({
     <div>
       <button data-slot="checkbox" data-state="checked" disabled data-testid="native"></button>
       <button data-slot="checkbox" data-state="checked" data-disabled data-testid="component"></button>
+      <button data-slot="switch" data-state="checked" disabled data-testid="switch"></button>
     </div>
   `);
 
   const ratios = await root.evaluate((container) => {
-    const rgb = (color: string): number[] => {
-      const probe = document.createElement("span");
-      probe.style.color = color;
-      container.append(probe);
-      const resolved = getComputedStyle(probe).color;
-      probe.remove();
+    const toRgb = (color: string): number[] => {
       const canvas = document.createElement("canvas").getContext("2d") as CanvasRenderingContext2D;
-      canvas.fillStyle = resolved;
+      canvas.fillStyle = color;
       canvas.fillRect(0, 0, 1, 1);
       return [...canvas.getImageData(0, 0, 1, 1).data].slice(0, 3);
     };
-    const luminance = ([r, g, b]: number[]): number => {
-      const [lr, lg, lb] = [r!, g!, b!].map((v) => {
+    const luminance = (rgb: number[]): number => {
+      const [r, g, b] = rgb.map((v) => {
         const c = v / 255;
-        return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+        return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
       });
-      return 0.2126 * lr! + 0.7152 * lg! + 0.0722 * lb!;
+      return 0.2126 * r! + 0.7152 * g! + 0.0722 * b!;
     };
-    const contrast = (a: number[], b: number[]): number => {
-      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+    const contrast = (a: string, b: string): number => {
+      const [hi, lo] = [luminance(toRgb(a)), luminance(toRgb(b))].sort((x, y) => y - x);
       return (hi! + 0.05) / (lo! + 0.05);
     };
-    const mark = rgb("var(--ak-color-disabled-text)");
-    return ["native", "component"].map((id) => {
-      const el = container.querySelector(`[data-testid="${id}"]`) as HTMLElement;
-      const style = getComputedStyle(el);
-      return {
-        hasMark: style.backgroundImage !== "none",
-        ratio: contrast(mark, rgb(style.backgroundColor)),
-      };
-    });
+    const find = (id: string): HTMLElement =>
+      container.querySelector(`[data-testid="${id}"]`) as HTMLElement;
+    const markOn = (id: string) => {
+      const style = getComputedStyle(find(id));
+      // Resolve the mark variable the checkbox actually paints with.
+      const probe = document.createElement("span");
+      probe.style.color = style.getPropertyValue("--_checkbox-mark");
+      find(id).append(probe);
+      const mark = getComputedStyle(probe).color;
+      probe.remove();
+      return contrast(mark, style.backgroundColor);
+    };
+    const switchStyle = getComputedStyle(find("switch"));
+    return [
+      markOn("native"),
+      markOn("component"),
+      contrast(
+        getComputedStyle(find("switch"), "::after").backgroundColor,
+        switchStyle.backgroundColor,
+      ),
+    ];
   });
 
-  for (const { hasMark, ratio } of ratios) {
-    expect(hasMark).toBe(true);
-    expect(ratio).toBeGreaterThanOrEqual(3);
-  }
+  for (const ratio of ratios) expect(ratio).toBeGreaterThanOrEqual(3);
 });

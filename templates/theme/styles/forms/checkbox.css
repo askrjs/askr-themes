@@ -57,8 +57,8 @@
 }
 
 :where([data-slot="checkbox"]:where([data-disabled], :disabled)) {
-  /* Disabled marks switch to the disabled ink so checked and mixed states stay readable. */
-  --_checkbox-mark: var(--ak-color-disabled-text);
+  /* Disabled marks switch to muted ink, which stays readable on the disabled fill in every theme. */
+  --_checkbox-mark: var(--ak-color-text-muted);
   background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-input);
   box-shadow: none;
