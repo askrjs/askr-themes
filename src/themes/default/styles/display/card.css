@@ -25,30 +25,37 @@
   [data-slot="dropdown-content"],
   [data-slot="menubar-content"],
   [data-slot="navigation-menu-content"],
+  [data-slot="navigation-menu-viewport"],
   [data-slot="nav-dropdown-content"],
   [data-slot="popover-content"],
   [data-slot="hover-card-content"],
   [data-slot="dialog-content"],
+  [data-slot="command-dialog"],
   [data-slot="sheet-content"],
   [data-slot="select-content"],
+  [data-slot="combobox-list"],
   [data-slot="tooltip-content"],
-  [data-slot="toast"]
+  [data-slot="toast"],
+  [data-command-palette-content]
 ):where(:not(.card, [data-slot="card"])) {
   --_card-section-inset: initial;
 }
 
 /* data-bleed opts a direct child out of the card inset, for media, tables, and separators; a menu
    placed directly in a card bleeds by default, and data-bleed="false" opts either back in. The
-   explicit width beats the child's own inline-size: 100%, so the selector carries (0,1,0). */
+   bled child stretches to the grid area plus the negative margins; auto width (rather than a
+   percentage) keeps tables correct in Firefox. The selector carries (0,1,0) so it beats the
+   child's own inline-size: 100%. */
 :where(.card, [data-slot="card"])
-  > :is([data-bleed], [data-slot="menu-content"]):not([data-bleed="false"]) {
-  inline-size: calc(100% + 2 * var(--_card-inset));
+  > :is([data-bleed], [data-slot="menu-content"]):where(:not([data-bleed="false"])) {
+  inline-size: auto;
   max-inline-size: none;
+  justify-self: stretch;
   margin-inline: calc(-1 * var(--_card-inset));
 }
 
 /* A bled menu becomes card navigation: the card supplies the frame. */
-:where(.card, [data-slot="card"]) > [data-slot="menu-content"]:not([data-bleed="false"]) {
+:where(.card, [data-slot="card"]) > [data-slot="menu-content"]:where(:not([data-bleed="false"])) {
   border-inline: 0;
   border-radius: 0;
   box-shadow: none;

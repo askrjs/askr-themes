@@ -11,13 +11,15 @@
 - `Card` owns its inline inset. The root pads its inline sides with
   `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
   `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
-  their own inline padding anywhere inside a card; outside a card they keep it.
+  their own inline padding inside a card (outside a card, or inside a floating
+  surface within one, they keep it).
   Direct children such as separators, tables, and images are now inset; add
   `data-bleed` to a direct child to run it edge to edge (`menu-content` placed
   directly in a card does so by default and drops its own frame;
-  `data-bleed="false"` keeps either inset). Change the
-  inset with the optional `--ak-card-inset` hook (default
-  `var(--ak-space-2xl)`, resolved on each card), not `padding`.
+  `data-bleed="false"` keeps either inset). Change the inset with the optional
+  `--ak-card-inset` hook (default `var(--ak-space-2xl)`, resolved on each
+  card); overriding the card's `padding` instead also removes section padding,
+  because sections rely on the card's inset.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
@@ -39,8 +41,8 @@
   card keep their own inline padding.
 - Hover stays visible on muted tracks such as pills and toggle groups, tested
   as a contrast pair.
-- Raw radio items and select triggers with the native `disabled` attribute
-  block pointer input like their `data-disabled` forms.
+- Raw inputs, radio items, and select triggers with the native `disabled`
+  attribute block pointer input like their `data-disabled` forms.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Raw `[data-slot="empty-state"]` and `.empty-state` markup on plain block containers (`div`,
   `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
@@ -63,7 +65,8 @@
 - Hover fills stay perceptible on popover surfaces in light and dark mode, and
   selected and primary-soft fills stay clearly stronger than hover.
   `--ak-color-selected` now references `--ak-color-primary-soft` (and the dark
-  token its dark counterpart), so rebrands carry through to selection fills.
+  token its dark counterpart), so rebrands at the theme scope (`:root` or a
+  `[data-theme]` block) carry through to selection fills.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
 

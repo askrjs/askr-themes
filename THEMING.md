@@ -193,7 +193,9 @@ Responsive rules:
 - `ButtonGroup` emits `data-responsive="true"` when it is attached and has no
   explicit `orientation`; responsive attached groups without icon buttons stack
   at phone width. Raw markup opts in with both `data-attached="true"` and
-  `data-responsive="true"`.
+  `data-responsive="true"`. A stacked group keeps `data-orientation="horizontal"`,
+  so style phone-width stacking with the same media query rather than that
+  attribute.
 
 ## Token Contract
 

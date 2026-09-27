@@ -359,7 +359,7 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <article data-slot="card"><div data-slot="nav-dropdown-content"><div data-slot="card-content" data-testid="nav-section">Nav</div></div></article>
       <div class="card" data-slot="popover-content" data-testid="card-popover"><div data-slot="card-header" data-testid="card-popover-header">Head</div></div>
       <article data-slot="card" data-testid="bleed-card"><div data-bleed data-testid="bleed-child">Media</div></article>
-      <div data-slot="toggle-group" data-testid="toggle-track"><button data-slot="toggle-group-item" data-testid="toggle-item">A</button></div>
+      <article data-slot="card" data-testid="table-card"><table data-slot="table" data-bleed data-testid="bleed-table"><tbody><tr><td>Cell</td></tr></tbody></table></article>
       <table><tbody><tr data-slot="empty-state" data-testid="row-empty"><td colspan="2">No rows</td></tr></tbody></table>
       <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
       <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
@@ -432,6 +432,12 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
         find("card-popover-header").getBoundingClientRect().left -
         find("card-popover").getBoundingClientRect().left +
         Number.parseFloat(getComputedStyle(find("card-popover-header")).paddingInlineStart),
+      tableStart:
+        find("bleed-table").getBoundingClientRect().left -
+        find("table-card").getBoundingClientRect().left,
+      tableEnd:
+        find("table-card").getBoundingClientRect().right -
+        find("bleed-table").getBoundingClientRect().right,
       bleedStart:
         find("bleed-child").getBoundingClientRect().left -
         find("bleed-card").getBoundingClientRect().left,
@@ -477,6 +483,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(Number.parseFloat(measured.popoverSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(Number.parseFloat(measured.navSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.cardPopoverHeaderStart).toBeLessThan(50);
+  expect(measured.tableStart).toBeGreaterThanOrEqual(0);
+  expect(measured.tableStart).toBeLessThanOrEqual(1.5);
+  expect(measured.tableEnd).toBeGreaterThanOrEqual(0);
+  expect(measured.tableEnd).toBeLessThanOrEqual(1.5);
   expect(measured.bleedStart).toBeLessThanOrEqual(1.5);
   expect(measured.bleedEnd).toBeLessThanOrEqual(1.5);
   expect(measured.disabledCheckboxImage).not.toBe("none");
@@ -547,4 +557,34 @@ test("should keep disabled checkbox marks readable against their fill", async ({
   });
 
   for (const ratio of ratios) expect(ratio).toBeGreaterThanOrEqual(3);
+});
+
+test("should show hover on muted pill and toggle tracks", async ({ page, markup }) => {
+  await markup(`
+    <div>
+      <div data-slot="toggle-group" data-testid="toggle-track">
+        <button data-slot="toggle-group-item" data-testid="toggle-item">Day</button>
+      </div>
+      <div data-slot="pills" data-testid="pill-track">
+        <button data-slot="pill" data-testid="pill-item">All</button>
+      </div>
+    </div>
+  `);
+  for (const [track, item] of [
+    ["toggle-track", "toggle-item"],
+    ["pill-track", "pill-item"],
+  ] as const) {
+    await page.getByTestId(item).hover();
+    // Poll so the background transition settles before comparing fills.
+    await expect
+      .poll(() =>
+        Promise.all([
+          page.getByTestId(track).evaluate((el) => getComputedStyle(el).backgroundColor),
+          page.getByTestId(item).evaluate((el) => getComputedStyle(el).backgroundColor),
+        ]).then(
+          ([trackFill, itemFill]) => itemFill !== trackFill && itemFill !== "rgba(0, 0, 0, 0)",
+        ),
+      )
+      .toBe(true);
+  }
 });
