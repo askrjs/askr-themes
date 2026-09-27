@@ -43,7 +43,7 @@
 }
 
 :where([data-slot="switch"]:hover) {
-  /* Mix toward the text color so the hover deepens the track in light and dark mode alike. */
+  /* Mix toward the text color so the hover shifts toward the foreground in either mode. */
   background: color-mix(in oklch, var(--ak-color-input) 85%, var(--ak-color-text));
 }
 

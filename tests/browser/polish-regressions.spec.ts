@@ -616,19 +616,26 @@ test("should keep selected fills distinct from hover across lists, rows, and nav
       probe.remove();
       return value;
     }, name);
-  const [selected, hover] = await Promise.all([
-    token("--ak-color-selected"),
-    token("--ak-color-hover"),
-  ]);
-  expect(selected).not.toBe(hover);
+  for (const theme of ["light", "dark"] as const) {
+    await page.locator("html").evaluate((element, value) => {
+      element.setAttribute("data-theme", value);
+    }, theme);
 
-  expect(await fill("checked-option")).toBe(selected);
-  expect(await fill("selected-row")).toBe(selected);
-  expect(await fill("active-sidebar")).toBe(selected);
+    const [selected, hover] = await Promise.all([
+      token("--ak-color-selected"),
+      token("--ak-color-hover"),
+    ]);
+    expect(selected, `${theme} selection should differ from hover`).not.toBe(hover);
 
-  for (const id of ["plain-option", "plain-row"]) {
-    await page.getByTestId(id).hover();
-    // Poll so background transitions settle before comparing with the hover token.
-    await expect.poll(() => fill(id)).toBe(hover);
+    for (const id of ["checked-option", "selected-row", "active-sidebar"]) {
+      // Poll so theme transitions settle before comparing with the selected token.
+      await expect.poll(() => fill(id)).toBe(selected);
+    }
+
+    for (const id of ["plain-option", "plain-row"]) {
+      await page.getByTestId(id).hover();
+      // Poll so background transitions settle before comparing with the hover token.
+      await expect.poll(() => fill(id)).toBe(hover);
+    }
   }
 });

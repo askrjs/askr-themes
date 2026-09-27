@@ -41,7 +41,7 @@
   rows, and radio cards hover with `--ak-color-hover` instead of muted-surface
   mixes; selected tabs lift onto `--ak-color-surface` like toggle groups; the
   slider thumb no longer changes fill on hover; and the switch hover mixes
-  toward the text color so it deepens in dark mode too.
+  toward the text color, shifting toward the foreground in either mode.
 
 - Attached vertical `ButtonGroup`s round only their outer top and bottom
   corners at every width, and a lone button keeps all four corners.
