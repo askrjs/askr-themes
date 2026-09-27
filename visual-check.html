@@ -166,12 +166,14 @@
 
       .component-grid {
         display: grid;
+        align-items: start;
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
       }
 
       .component-card {
         display: grid;
+        align-content: start;
         gap: 1rem;
         padding: 1rem;
         border: 1px solid var(--ak-color-border-subtle);
@@ -221,6 +223,7 @@
 
       .preview {
         display: grid;
+        align-content: start;
         gap: 0.75rem;
         padding: 0.75rem;
         border: 1px solid var(--ak-color-border-subtle);
@@ -258,6 +261,7 @@
 
       .preview-surface {
         display: grid;
+        align-content: start;
         gap: 0.9rem;
         overflow: hidden;
         padding: var(--ak-layout-panel-padding);
@@ -296,6 +300,7 @@
 
       .stack {
         display: grid;
+        align-content: start;
         gap: 0.75rem;
         min-inline-size: 0;
         max-inline-size: 100%;
@@ -777,13 +782,13 @@
 
       const shellContent = `
         <div class="stack">
-          <nav aria-label="Path trail">
-            <ol class="inline-list">
-              <li><a href="#">Home</a></li>
-              <li aria-hidden="true">/</li>
-              <li><a href="#">Admin</a></li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page">Components</li>
+          <nav data-slot="breadcrumb" aria-label="Path trail">
+            <ol data-slot="breadcrumb-list">
+              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Home</a></li>
+              <li data-slot="breadcrumb-separator" aria-hidden="true">/</li>
+              <li data-slot="breadcrumb-item"><a data-slot="breadcrumb-link" href="#">Admin</a></li>
+              <li data-slot="breadcrumb-separator" aria-hidden="true">/</li>
+              <li data-slot="breadcrumb-item"><span data-slot="breadcrumb-page" aria-current="page">Components</span></li>
             </ol>
           </nav>
           <header class="header" data-slot="header">
@@ -1420,10 +1425,10 @@
           <div data-slot="virtual-list" data-viewport="lg" aria-label="Virtual deployment history" style="block-size: 9rem;">
             <div data-slot="virtual-list-spacer" data-position="before" style="block-size: 6rem;"></div>
             <div data-slot="virtual-list-row" data-key="audit-row-17" data-visible="true">
-              <span style="padding:0.75rem);">Deployment 17 · production control plane</span>
+              <span style="padding:0.75rem;">Deployment 17 · production control plane</span>
             </div>
             <div data-slot="virtual-list-row" data-key="audit-row-18" data-visible="true">
-              <span style="padding:0.75rem);">Deployment 18 · a long operational label that must remain readable</span>
+              <span style="padding:0.75rem;">Deployment 18 · a long operational label that must remain readable</span>
             </div>
             <div data-slot="virtual-list-spacer" data-position="after" style="block-size: 18rem;"></div>
           </div>

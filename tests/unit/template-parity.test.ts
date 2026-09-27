@@ -80,6 +80,10 @@ describe("template parity", () => {
     expect(templateTokens).toEqual(defaultTokens);
   });
 
+  it("should generate the same default palette in new themes", () => {
+    expect(readFileSync(TEMPLATE_TOKENS, "utf-8")).toEqual(readFileSync(DEFAULT_TOKENS, "utf-8"));
+  });
+
   it("should template entrypoint imports the same component CSS as the default theme", () => {
     expect(readFileSync(TEMPLATE_INDEX, "utf-8")).toEqual(readFileSync(DEFAULT_INDEX, "utf-8"));
   });

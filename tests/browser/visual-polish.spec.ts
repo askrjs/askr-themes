@@ -739,7 +739,9 @@ test.describe("visual polish contracts", () => {
         skeletonBackgroundImage: getComputedStyle(skeleton).backgroundImage,
         separatorHeight: px(getComputedStyle(separator).height),
         buttonGroupFlexWrap: getComputedStyle(buttonGroup).flexWrap,
+        buttonGroupClientWidth: buttonGroup.clientWidth,
         buttonGroupScrollWidth: buttonGroup.scrollWidth,
+        buttonGroupOverflowX: getComputedStyle(buttonGroup).overflowX,
         labelOverflowWrap: getComputedStyle(label).overflowWrap,
         themePickerScrollWidth: themePicker.scrollWidth,
         themePickerRenderedHeight: themePicker.getBoundingClientRect().height,
@@ -764,7 +766,9 @@ test.describe("visual polish contracts", () => {
     expect(measured.separatorHeight).toBe(1);
 
     expect(measured.buttonGroupFlexWrap).toBe("nowrap");
-    expect(measured.buttonGroupScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
+    expect(measured.buttonGroupClientWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
+    expect(measured.buttonGroupOverflowX).toBe("auto");
+    expect(measured.buttonGroupScrollWidth).toBeGreaterThan(measured.buttonGroupClientWidth);
     expect(measured.labelOverflowWrap).toBe("anywhere");
     expect(measured.themePickerScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
     // WebKit reports the native select's intrinsic min-height rather than the
@@ -883,6 +887,7 @@ test.describe("visual polish contracts", () => {
           .filter((el) => {
             const htmlEl = el as HTMLElement;
             if (htmlEl.closest(".compact-table-wrap")) return false;
+            if (htmlEl.closest('[data-slot="button-group"][data-attached="true"]')) return false;
             const bounds = htmlEl.getBoundingClientRect();
             return bounds.left < -2 || bounds.right > root.clientWidth + 2;
           })

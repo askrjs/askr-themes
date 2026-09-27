@@ -8,6 +8,7 @@
 
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]) {
   flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"]) {
@@ -25,7 +26,15 @@
 :where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]) {
   position: relative;
   min-inline-size: 0;
+  --_button-padding-x: var(--ak-density-control-padding-x-xs);
   box-shadow: none;
+}
+
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]) {
+  flex: 0 0 auto;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
@@ -71,4 +80,44 @@
   > :where(.btn, [data-slot="button"]) {
   inline-size: 100%;
   justify-content: center;
+}
+
+@media (max-width: 30rem) {
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
+      [data-orientation="horizontal"]
+    ) {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
+      [data-orientation="horizontal"]
+    )
+    > :where(.btn, [data-slot="button"]) {
+    inline-size: 100%;
+    justify-content: center;
+  }
+
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
+      [data-orientation="horizontal"]
+    )
+    > :where(.btn, [data-slot="button"]):first-child {
+    border-radius: var(--ak-radius-lg) var(--ak-radius-lg) 0 0;
+  }
+
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
+      [data-orientation="horizontal"]
+    )
+    > :where(.btn, [data-slot="button"]):last-child {
+    border-radius: 0 0 var(--ak-radius-lg) var(--ak-radius-lg);
+  }
+
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
+      [data-orientation="horizontal"]
+    )
+    > :where(.btn, [data-slot="button"])
+    + :where(.btn, [data-slot="button"]) {
+    margin-inline-start: 0;
+    margin-block-start: -1px;
+  }
 }

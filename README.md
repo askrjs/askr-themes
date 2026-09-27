@@ -121,9 +121,8 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
-The default theme is intentionally neutral and uses a grayscale primary scale.
-Choose a preset or override the primary tokens before shipping when the product
-needs a branded accent:
+The default theme pairs an ink plum accent with warm neutral surfaces in
+light and dark mode. Override the semantic tokens to match your product:
 
 ```css
 :root {

@@ -1,4 +1,8 @@
 :where(.empty-state, [data-slot="empty-state"]) {
+  display: grid;
+  justify-items: center;
+  gap: var(--ak-space-sm);
+  padding: var(--ak-space-xl) var(--ak-space-md);
   text-align: center;
 }
 

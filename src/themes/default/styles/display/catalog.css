@@ -112,6 +112,10 @@
   text-decoration: none;
 }
 
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"]) {
+  padding-inline: var(--ak-space-xs);
+}
+
 :where(
   [data-slot="breadcrumb-link"]:hover,
   [data-slot="pagination-link"]:hover,

@@ -16,6 +16,16 @@
   box-shadow: var(--ak-shadow-md);
 }
 
+:where(.card, [data-slot="card"])
+  > :not(
+    [data-slot="card-header"],
+    [data-slot="card-content"],
+    [data-slot="card-footer"],
+    [data-slot="menu-content"]
+  ) {
+  padding-inline: var(--ak-space-2xl);
+}
+
 :where(.card, [data-slot="card"]) :where(h2, h3, h4, h5, h6) {
   margin: 0;
   font-size: var(--ak-font-size-lg);

@@ -218,6 +218,7 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-text", "--ak-color-surface", 4.5, "text on surface"],
   ["--ak-color-text-muted", "--ak-color-bg", 3, "muted text on bg"],
   ["--ak-color-text-muted", "--ak-color-surface", 3, "muted text on surface"],
+  ["--ak-color-disabled-text", "--ak-color-disabled-bg", 3, "disabled text on disabled control"],
 
   // Inverse text on primary
   ["--ak-color-text-inverse", "--ak-color-primary", 4.5, "inverse text on primary"],
