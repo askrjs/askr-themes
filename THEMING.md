@@ -681,11 +681,20 @@ The surface color for overlay UI such as popovers, menus, and dialog panels when
 
 ### Hover / Active
 
-Generic interaction overlays for neutral interactive surfaces.
+Generic interaction overlays for neutral interactive surfaces. `--ak-color-hover`
+also marks the keyboard-highlighted item in menus, selects, and command lists, and
+a trigger whose menu is open. `--ak-color-accent` is a compatibility alias of
+`--ak-color-hover`; theme styles use `--ak-color-hover` directly.
 
 ### Selected
 
-Selection state for nav items, rows, or toggles.
+Selection state for nav items, rows, list options, and cards such as radio items:
+the fill is `--ak-color-selected`, with `--ak-color-selected-border` for borders or
+indicators. Selected must stay distinct from hover.
+
+Segmented controls are the one exception: tabs and toggle groups sit on a
+`--ak-color-surface-muted` track, and the selected segment lifts onto
+`--ak-color-surface` with `--ak-shadow-xs` instead of taking the selected fill.
 
 ### Disabled
 

@@ -31,6 +31,18 @@
 
 ### Changed
 
+- Palette states use one vocabulary (audited with TypeSafe Jev against the
+  THEMING.md token meanings): neutral hover and keyboard highlight use
+  `--ak-color-hover` everywhere (theme styles no longer use its
+  `--ak-color-accent` alias, which stays defined); checked select options,
+  active items, selected table rows, active sidebar buttons, and checked radio
+  cards use `--ak-color-selected`, so selection no longer looks like hover.
+  Tabs, pagination, breadcrumbs, the navbar toggle, secondary buttons, table
+  rows, and radio cards hover with `--ak-color-hover` instead of muted-surface
+  mixes; selected tabs lift onto `--ak-color-surface` like toggle groups; the
+  slider thumb no longer changes fill on hover; and the switch hover mixes
+  toward the text color, shifting toward the foreground in either mode.
+
 - Attached vertical `ButtonGroup`s round only their outer top and bottom
   corners at every width, and a lone button keeps all four corners.
 - The focused button in an attached `ButtonGroup` lifts above its neighbors so

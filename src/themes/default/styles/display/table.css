@@ -46,12 +46,12 @@
   transition: background var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
-:where(
-  [data-slot="table-row"]:hover,
-  [data-slot="table-row"][aria-expanded="true"],
-  [data-slot="table-row"][data-state="selected"]
-) {
-  background: color-mix(in srgb, var(--ak-color-surface-muted) 50%, transparent);
+:where([data-slot="table-row"]:hover, [data-slot="table-row"][aria-expanded="true"]) {
+  background: var(--ak-color-hover);
+}
+
+:where([data-slot="table-row"][data-state="selected"]) {
+  background: var(--ak-color-selected);
 }
 
 :where([data-slot="table-header-cell"]),

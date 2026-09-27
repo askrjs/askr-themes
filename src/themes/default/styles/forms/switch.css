@@ -43,7 +43,8 @@
 }
 
 :where([data-slot="switch"]:hover) {
-  background: color-mix(in oklch, var(--ak-color-input) 85%, black);
+  /* Mix toward the text color so the hover shifts toward the foreground in either mode. */
+  background: color-mix(in oklch, var(--ak-color-input) 85%, var(--ak-color-text));
 }
 
 :where([data-slot="switch"]:focus-visible) {

@@ -183,7 +183,7 @@
 }
 
 :where([data-slot="toast-close"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: transparent;
   box-shadow: none;
 }

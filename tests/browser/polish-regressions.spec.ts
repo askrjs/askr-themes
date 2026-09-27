@@ -588,3 +588,54 @@ test("should show hover on muted pill and toggle tracks", async ({ page, markup 
       .toBe(true);
   }
 });
+
+test("should keep selected fills distinct from hover across lists, rows, and navigation", async ({
+  page,
+  markup,
+}) => {
+  await markup(`
+    <div>
+      <div data-slot="select-item" data-state="checked" data-testid="checked-option">Chosen</div>
+      <div data-slot="select-item" data-testid="plain-option">Other</div>
+      <table><tbody>
+        <tr data-slot="table-row" data-state="selected" data-testid="selected-row"><td>A</td></tr>
+        <tr data-slot="table-row" data-testid="plain-row"><td>B</td></tr>
+      </tbody></table>
+      <button data-slot="sidebar-menu-button" data-active="true" data-testid="active-sidebar">Home</button>
+    </div>
+  `);
+
+  const fill = (id: string) =>
+    page.getByTestId(id).evaluate((el) => getComputedStyle(el).backgroundColor);
+  const token = (name: string) =>
+    page.evaluate((variable) => {
+      const probe = document.createElement("div");
+      probe.style.backgroundColor = `var(${variable})`;
+      document.body.append(probe);
+      const value = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      return value;
+    }, name);
+  for (const theme of ["light", "dark"] as const) {
+    await page.locator("html").evaluate((element, value) => {
+      element.setAttribute("data-theme", value);
+    }, theme);
+
+    const [selected, hover] = await Promise.all([
+      token("--ak-color-selected"),
+      token("--ak-color-hover"),
+    ]);
+    expect(selected, `${theme} selection should differ from hover`).not.toBe(hover);
+
+    for (const id of ["checked-option", "selected-row", "active-sidebar"]) {
+      // Poll so theme transitions settle before comparing with the selected token.
+      await expect.poll(() => fill(id)).toBe(selected);
+    }
+
+    for (const id of ["plain-option", "plain-row"]) {
+      await page.getByTestId(id).hover();
+      // Poll so background transitions settle before comparing with the hover token.
+      await expect.poll(() => fill(id)).toBe(hover);
+    }
+  }
+});
