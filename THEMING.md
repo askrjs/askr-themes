@@ -152,11 +152,6 @@ wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
 be styled consistently across themes. If you use icon children, the direct child
 icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
-`Card` owns its inline inset: set `--ak-card-inset` (a single length, default
-`var(--ak-space-2xl)`) on a card instead of overriding its `padding`, so
-`CardHeader`, `CardContent`, `CardFooter`, and edge-to-edge `menu-content`
-children stay aligned. Card sections used outside a `Card` keep their own
-inline padding.
 `ThemeName` accepts application-defined strings intentionally. Register custom
 names in the scope's theme options and provide a matching `[data-theme="..."]`
 token block; misspelled names otherwise remain valid custom identifiers.
@@ -184,6 +179,18 @@ Responsive rules:
 - Product SaaS scaffolds should compose broad visual primitives first. Keep first-class pattern exports general; put narrow dashboard, auth, or table-page recipes in docs/examples unless they prove reusable across apps. Product-style or marketing-style page layouts belong in userland composition, not the shipped theme package.
 - Comfortable density is tokenized through `--ak-density-control-height-*` and `--ak-density-control-padding-x-*`; apps should tune those before overriding component CSS.
 - Future class aliases must be added selectively with contract tests; do not mirror every internal slot as a class by default.
+
+## Component Layout Hooks
+
+- `Card` owns its inline inset. Set `--ak-card-inset` (a single length, default
+  `var(--ak-space-2xl)`) on a card instead of overriding its `padding`, so
+  `CardHeader`, `CardContent`, `CardFooter` (at any depth), and edge-to-edge
+  `menu-content` children stay aligned. Card sections used outside a `Card`
+  keep their own inline padding.
+- `ButtonGroup` emits `data-responsive="true"` when it is attached and has no
+  explicit `orientation`; responsive attached groups without icon buttons stack
+  at phone width. Raw markup opts in with both `data-attached="true"` and
+  `data-responsive="true"`.
 
 ## Token Contract
 

@@ -17,13 +17,10 @@
   box-shadow: var(--ak-shadow-md);
 }
 
-/* Card sections carry their own inset outside a Card; inside one, the root owns it. */
-:where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
-  padding-inline: var(--ak-space-2xl);
-}
-
+/* Inside a Card, at any depth, the root owns the inline inset. This beats the standalone section
+   padding in the catalog styles, which load later. */
 :where(.card, [data-slot="card"])
-  > :where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
+  :is([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
   padding-inline: 0;
 }
 

@@ -37,6 +37,10 @@
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+:where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
+  padding-inline: var(--ak-space-2xl);
+}
+
 :where([data-slot="card-footer"]) {
   display: flex;
   align-items: center;

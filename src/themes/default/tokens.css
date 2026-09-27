@@ -257,7 +257,7 @@
   --ak-color-disabled-surface: #fffefd;
   --ak-color-disabled-border: #8d818e;
   --ak-color-disabled-text: #77717c;
-  --ak-color-selected: #f1ebf4;
+  --ak-color-selected: #ebe2f0;
   --ak-color-selected-border: #c7b6d0;
   --ak-color-hover: #f2edf3;
   --ak-color-active: color-mix(in oklch, var(--ak-color-hover) 82%, black);

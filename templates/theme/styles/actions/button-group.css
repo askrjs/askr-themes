@@ -28,18 +28,11 @@
   box-shadow: none;
 }
 
-/* Lift the interacting button over the -1px overlap; keyboard focus outranks hover. The group
-   isolates the lift so it never paints over surrounding content. */
-:where(.btn-group, [data-slot="button-group"]) {
-  isolation: isolate;
-}
-
-:where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]):hover {
-  z-index: 1;
-}
-
-:where(.btn-group, [data-slot="button-group"]) > :where(.btn, [data-slot="button"]):focus-visible {
-  z-index: 2;
+/* Attached buttons overlap by 1px, so their focus ring is drawn inside the button where no
+   neighbor can cover it and no stacking context is needed. */
+:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
+  > :where(.btn, [data-slot="button"]):focus-visible {
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])

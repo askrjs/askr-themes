@@ -4,43 +4,45 @@
 
 ### Breaking
 
-- `Card` owns its inset: the root pads all four sides with the new
-  card-scoped `--_card-inset`, and `CardHeader`, `CardContent`, and
-  `CardFooter` no longer add inline padding. Direct children no longer receive
-  per-child padding or margins, so `Block` layout props work inside cards.
-  `menu-content` placed directly in a card still runs edge to edge. Change the
-  inline inset with `--ak-card-inset` (a single length) rather than `padding`
-  so sections and edge-to-edge menus stay aligned. Card sections used outside a
-  `Card` keep their own inline padding.
+- The default palette moves from grayscale to an ink plum accent with warm
+  neutral surfaces. Beyond the primary scale, the neutrals, hover, selected,
+  focus-ring, and every `--ak-dark-color-*` token are plum-tinted, so rebrands
+  that overrode only the light primary tokens should also override those.
+- `Card` owns its inline inset. The root pads its inline sides with
+  `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
+  `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
+  their own inline padding anywhere inside a card; outside a card they keep it.
+  Direct children such as separators, tables, and images are now inset rather
+  than running to the card edges; `menu-content` placed directly in a card
+  still runs edge to edge. Change the inset with `--ak-card-inset`, not
+  `padding`.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
-  buttons, and detached groups, keep their row. Raw markup opts in with
-  `data-responsive="true"`.
+  buttons, and detached groups, keep their row. Raw markup opts in with both
+  `data-attached="true"` and `data-responsive="true"`.
 - Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
   require `data-attached="true"`; the class alias needs both `.btn-group` and
   `.btn-group-vertical`, matching the horizontal join rules.
 
 ### Changed
 
-- The default palette moves from grayscale to an ink plum accent with warm
-  neutral surfaces in light and dark mode.
 - Attached vertical `ButtonGroup`s round only their outer top and bottom
   corners at every width, and a lone button keeps all four corners.
-- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm; the
-  `EmptyState` component keeps its `Block` props (`hide`, `padding`, `gap`).
+- Buttons in an attached `ButtonGroup` draw their focus ring inside the button
+  so the -1px overlap never covers it.
+- `ButtonGroup` keeps a caller-supplied `data-responsive`.
+- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm (except
+  `hidden`, table-cell, and list-item empty states); the `EmptyState` component
+  keeps its `Block` props (`hide`, `padding`, `gap`).
 - Native `button`, `input`, `select`, and `textarea` elements with a
   `data-slot` inherit the surrounding font.
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
-  markup; disabled textareas use the disabled tokens instead of half opacity.
+  markup. Disabled textareas use the disabled tokens instead of half opacity
+  and stay scrollable.
 - Hover fills stay perceptible on popover surfaces in light and dark mode, and
-  the dark selected and primary-soft fills stay stronger than hover.
-- Raw empty-state markup keeps `hidden`, table-cell, and list-item display.
-- Hovered and focused buttons in a `ButtonGroup` paint above their neighbors
-  (focus above hover) inside an isolated stacking context, so the -1px overlap
-  never covers a focus ring.
-- `ButtonGroup` keeps a caller-supplied `data-responsive`.
+  selected and primary-soft fills stay clearly stronger than hover.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
 

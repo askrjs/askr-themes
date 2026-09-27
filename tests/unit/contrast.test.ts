@@ -334,7 +334,10 @@ describe("WCAG AA contrast", () => {
             };
 
             const hover = ratioOnSurface("--ak-color-hover");
-            expect(ratioOnSurface("--ak-color-selected")).toBeGreaterThan(hover);
+            const selected = ratioOnSurface("--ak-color-selected");
+            expect(selected).toBeGreaterThan(hover);
+            // THEMING invariant: selected must be visibly distinct from hover, not one step apart.
+            expect(selected / hover).toBeGreaterThanOrEqual(1.08);
             expect(ratioOnSurface("--ak-color-primary-soft")).toBeGreaterThan(hover);
           });
 

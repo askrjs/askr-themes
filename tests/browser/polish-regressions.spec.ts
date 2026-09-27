@@ -347,6 +347,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <section data-slot="empty-state" hidden data-testid="hidden-raw-empty">Hidden</section>
       <table><tbody><tr><td data-slot="empty-state" colspan="2" data-testid="cell-empty">No rows</td></tr></tbody></table>
       <div data-slot="dialog-content"><div data-slot="card-content" data-testid="loose-section">Loose</div></div>
+      <article data-slot="card" data-testid="nested-card">
+        <div data-slot="card-content" data-testid="direct-section">Direct</div>
+        <form><div data-slot="card-content" data-testid="nested-section">Nested</div></form>
+      </article>
       <article data-slot="card" style="--ak-card-inset: 12px" data-testid="custom-inset">
         <nav data-slot="menu-content" data-testid="card-menu"><a data-slot="menu-item">Item</a></nav>
       </article>
@@ -366,6 +370,14 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       enabledColor: getComputedStyle(find("enabled-input")).color,
       disabledColor: getComputedStyle(find("disabled-input")).color,
       focusZ: getComputedStyle(find("focus-first")).zIndex,
+      focusShadow: getComputedStyle(find("focus-first")).boxShadow,
+      disabledButtonCursor: getComputedStyle(find("disabled-button")).cursor,
+      nestedSectionStart:
+        find("nested-section").getBoundingClientRect().left -
+        find("nested-card").getBoundingClientRect().left,
+      directSectionStart:
+        find("direct-section").getBoundingClientRect().left -
+        find("nested-card").getBoundingClientRect().left,
       disabledButtonColor: getComputedStyle(find("disabled-button")).color,
       enabledButtonColor: getComputedStyle(find("enabled-button")).color,
       buttonFont: getComputedStyle(find("enabled-button")).fontFamily,
@@ -381,7 +393,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   });
 
   expect(measured.disabledColor).not.toBe(measured.enabledColor);
-  expect(measured.focusZ).toBe("2");
+  expect(measured.focusZ).toBe("auto");
+  expect(measured.focusShadow).toContain("inset");
+  expect(measured.disabledButtonCursor).toBe("not-allowed");
+  expect(measured.nestedSectionStart).toBe(measured.directSectionStart);
   expect(measured.disabledButtonColor).not.toBe(measured.enabledButtonColor);
   expect(measured.buttonFont).toBe(measured.bodyFont);
   expect(measured.hiddenEmptyDisplay).toBe("none");
