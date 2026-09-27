@@ -73,13 +73,6 @@ describe("template parity", () => {
     ).toEqual([]);
   });
 
-  it("should template tokens expose the same canonical token names as the default theme", () => {
-    const defaultTokens = extractTokenNames(readFileSync(DEFAULT_TOKENS, "utf-8"));
-    const templateTokens = extractTokenNames(readFileSync(TEMPLATE_TOKENS, "utf-8"));
-
-    expect(templateTokens).toEqual(defaultTokens);
-  });
-
   it("should generate the same default palette in new themes", () => {
     expect(readFileSync(TEMPLATE_TOKENS, "utf-8")).toEqual(readFileSync(DEFAULT_TOKENS, "utf-8"));
   });

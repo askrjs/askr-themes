@@ -28,6 +28,12 @@
   box-shadow: none;
 }
 
+/* Lift the interacting button so overlapping neighbors never cover its focus ring. */
+:where(.btn-group, [data-slot="button-group"])
+  > :where(.btn, [data-slot="button"]):where(:hover, :focus-visible) {
+  z-index: 1;
+}
+
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])
   > :where(.btn, [data-slot="button"]) {
   border-radius: var(--ak-radius-lg);
@@ -65,7 +71,7 @@
 
 /* Attached columns join buttons on the block axis. */
 :where(
-    .btn-group-vertical[data-attached="true"],
+    .btn-group.btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"]):first-child {
@@ -73,7 +79,7 @@
 }
 
 :where(
-    .btn-group-vertical[data-attached="true"],
+    .btn-group.btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"]):last-child:not(:first-child) {
@@ -81,7 +87,7 @@
 }
 
 :where(
-    .btn-group-vertical[data-attached="true"],
+    .btn-group.btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"]):only-child {
@@ -89,7 +95,7 @@
 }
 
 :where(
-    .btn-group-vertical[data-attached="true"],
+    .btn-group.btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"])

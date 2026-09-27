@@ -112,6 +112,14 @@ export function componentProps(root: HTMLElement): void {
         <ButtonGroup aria-label="Detached" attached={false} data-testid="detached-group">
           <Button>One</Button>
         </ButtonGroup>
+        <ButtonGroup
+          aria-label="Opted in"
+          orientation="horizontal"
+          data-responsive="true"
+          data-testid="opted-in-group"
+        >
+          <Button>One</Button>
+        </ButtonGroup>
         <ButtonGroup aria-label="Mixed" orientation="vertical" data-testid="mixed-vertical">
           <Button>Edit document</Button>
           <Button size="icon" aria-label="More">

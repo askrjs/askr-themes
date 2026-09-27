@@ -1,7 +1,7 @@
 :where(.card, [data-slot="card"]) {
   display: grid;
   gap: var(--ak-space-2xl);
-  --_card-inset: var(--ak-space-2xl);
+  --_card-inset: var(--ak-card-inset, var(--ak-space-2xl));
   padding: var(--_card-inset);
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-xl);

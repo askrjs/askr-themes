@@ -132,8 +132,11 @@ light and dark mode. Override the semantic tokens to match your product:
 }
 ```
 
-See [THEMING.md](./THEMING.md#required-tokens) for the complete primary,
-hover, active, focus, and contrast contract.
+The neutrals, hover, selected, and focus-ring tokens are tinted to match the
+plum accent, and dark mode reads from the `--ak-dark-color-*` tokens. When you
+rebrand, override those alongside the primary scale. See
+[THEMING.md](./THEMING.md#required-tokens) for the complete primary, hover,
+active, focus, and contrast contract.
 
 ### Styling-only catalog anatomy
 

@@ -8,15 +8,17 @@
   card-scoped `--_card-inset`, and `CardHeader`, `CardContent`, and
   `CardFooter` no longer add inline padding. Direct children no longer receive
   per-child padding or margins, so `Block` layout props work inside cards.
-  `menu-content` placed directly in a card still runs edge to edge.
+  `menu-content` placed directly in a card still runs edge to edge. Change the
+  inset with `--ak-card-inset` rather than `padding` so edge-to-edge menus stay
+  aligned.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
   buttons, and detached groups, keep their row. Raw markup opts in with
   `data-responsive="true"`.
 - Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
-  require `data-attached="true"`, including for the `.btn-group-vertical`
-  class alias.
+  require `data-attached="true"`; the class alias needs both `.btn-group` and
+  `.btn-group-vertical`, matching the horizontal join rules.
 
 ### Changed
 
@@ -26,10 +28,14 @@
   corners at every width, and a lone button keeps all four corners.
 - Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm; the
   `EmptyState` component keeps its `Block` props (`hide`, `padding`, `gap`).
-- Textareas use the body font, and disabled textareas (including the native
-  `disabled` attribute on raw markup) use the disabled color tokens instead of
-  half opacity.
-- Breadcrumb links and pages get a small inline padding.
+- Inputs and textareas inherit their surrounding font, and disabled inputs and
+  textareas (including the native `disabled` attribute on raw markup) use the
+  disabled color tokens instead of half opacity.
+- The dark hover fill is lighter so hovered and keyboard-focused menu, select,
+  and command items stay visible on popovers.
+- Hovered and focused buttons in a `ButtonGroup` paint above their neighbors so
+  the -1px overlap never covers a focus ring.
+- `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
 

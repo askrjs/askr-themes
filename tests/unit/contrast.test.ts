@@ -251,6 +251,10 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
   ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
   ["--ak-color-focus-ring", "--ak-color-primary", 3, "focus ring on primary surface"],
+
+  // Menu, select, and command items show hover and keyboard focus only through
+  // the hover fill, so it must stay perceptible on the popover surface.
+  ["--ak-color-hover", "--ak-color-surface-overlay", 1.07, "hover fill on overlay surface"],
 ];
 
 const ELEVATION_LAYERS = [

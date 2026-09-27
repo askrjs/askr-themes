@@ -204,7 +204,7 @@
   --ak-dark-color-disabled-text: #a79eaa;
   --ak-dark-color-selected: #382b43;
   --ak-dark-color-selected-border: #6c567b;
-  --ak-dark-color-hover: #312a37;
+  --ak-dark-color-hover: #413849;
   --ak-dark-color-active: color-mix(in oklch, var(--ak-dark-color-hover) 82%, white);
   --ak-dark-color-backdrop: rgb(0 0 0 / 0.5);
 

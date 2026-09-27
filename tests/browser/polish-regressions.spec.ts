@@ -203,8 +203,9 @@ test("should compose default ButtonGroups and direct Card children at phone widt
 
   expect(measured.longGroup.direction).toBe("column");
   for (const button of measured.longGroup.buttons) {
-    expect(button.left).toBeGreaterThanOrEqual(0);
-    expect(button.right).toBeGreaterThanOrEqual(0);
+    // WebKit lays out the -1px attached overlap on a 1/64px grid.
+    expect(button.left).toBeGreaterThanOrEqual(-0.5);
+    expect(button.right).toBeGreaterThanOrEqual(-0.5);
     expect(button.scrollWidth).toBeLessThanOrEqual(button.clientWidth);
   }
 
@@ -297,6 +298,8 @@ test("should keep component props and every action visible inside narrow desktop
       narrowResponsive: narrow.dataset.responsive,
       explicitResponsive: find("explicit-row").dataset.responsive,
       detachedResponsive: find("detached-group").dataset.responsive,
+      optedInDirection: getComputedStyle(find("opted-in-group")).flexDirection,
+      optedInResponsive: find("opted-in-group").dataset.responsive,
       verticalWidths: vertical.map((button) => button.getBoundingClientRect().width),
     };
   });
@@ -308,11 +311,66 @@ test("should keep component props and every action visible inside narrow desktop
   expect(measured.groupedLargePadding).toBe(measured.referenceLargePadding);
   expect(measured.narrowOverflow).toBe("visible");
   for (const button of measured.narrowButtons) {
-    expect(button.left).toBeGreaterThanOrEqual(0);
-    expect(button.right).toBeGreaterThanOrEqual(0);
+    // WebKit lays out the -1px attached overlap on a 1/64px grid.
+    expect(button.left).toBeGreaterThanOrEqual(-0.5);
+    expect(button.right).toBeGreaterThanOrEqual(-0.5);
   }
   expect(measured.narrowResponsive).toBe("true");
   expect(measured.explicitResponsive).toBeUndefined();
   expect(measured.detachedResponsive).toBeUndefined();
+  expect(measured.optedInResponsive).toBe("true");
+  expect(measured.optedInDirection).toBe("row");
   expect(new Set(measured.verticalWidths).size).toBe(1);
+});
+
+test("should keep focus, disabled, and inset contracts across raw markup", async ({
+  page,
+  markup,
+  root,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await markup(`
+    <div style="width: 320px">
+      <input data-slot="input" data-testid="enabled-input" />
+      <input data-slot="input" disabled data-testid="disabled-input" />
+      <div data-slot="button-group" data-attached="true" data-orientation="vertical">
+        <button data-slot="button" data-testid="focus-first">First</button>
+        <button data-slot="button">Second</button>
+      </div>
+      <div class="btn-group-vertical" data-attached="true" data-testid="alias-only">
+        <button class="btn">One</button>
+        <button class="btn">Two</button>
+        <button class="btn">Three</button>
+      </div>
+      <article data-slot="card" style="--ak-card-inset: 12px" data-testid="custom-inset">
+        <nav data-slot="menu-content" data-testid="card-menu"><a data-slot="menu-item">Item</a></nav>
+      </article>
+    </div>
+  `);
+  // A key press first makes the programmatic focus count as keyboard focus.
+  await page.keyboard.press("Shift");
+  await page.getByTestId("focus-first").focus();
+
+  const measured = await root.evaluate((container) => {
+    const find = (testId: string): HTMLElement =>
+      container.querySelector(`[data-testid="${testId}"]`) as HTMLElement;
+    const card = find("custom-inset").getBoundingClientRect();
+    const menu = find("card-menu").getBoundingClientRect();
+    const border = Number.parseFloat(getComputedStyle(find("custom-inset")).borderInlineStartWidth);
+    return {
+      enabledColor: getComputedStyle(find("enabled-input")).color,
+      disabledColor: getComputedStyle(find("disabled-input")).color,
+      focusZ: getComputedStyle(find("focus-first")).zIndex,
+      aliasMarginTop: getComputedStyle(find("alias-only").children[1] as HTMLElement)
+        .marginBlockStart,
+      menuStart: menu.left - card.left - border,
+      menuEnd: card.right - menu.right - border,
+    };
+  });
+
+  expect(measured.disabledColor).not.toBe(measured.enabledColor);
+  expect(measured.focusZ).toBe("1");
+  expect(measured.aliasMarginTop).toBe("0px");
+  expect(Math.abs(measured.menuStart)).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);
 });
