@@ -28,18 +28,11 @@
   box-shadow: none;
 }
 
-/* Attached buttons overlap by 1px, so their focus ring is drawn inside the button where no
-   neighbor can cover it and no stacking context is needed. Like every theme rule this relies on
-   the index cascade order, loading after the button focus contract. */
+/* Attached buttons overlap by 1px; lift the focused one so its neighbor cannot cover the ring.
+   Only focus lifts, so tooltips on hovered buttons keep the group's stacking order. */
 :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
   > :where(.btn, [data-slot="button"]):focus-visible {
-  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
-:where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"])
-  > :where(.btn-destructive, [data-slot="button"][data-variant="destructive"]):focus-visible {
-  box-shadow: inset 0 0 0 var(--ak-focus-ring-width)
-    color-mix(in oklch, var(--ak-color-danger) 20%, transparent);
+  z-index: 1;
 }
 
 :where(.btn-group[data-attached="false"], [data-slot="button-group"][data-attached="false"])

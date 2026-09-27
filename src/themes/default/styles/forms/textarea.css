@@ -54,6 +54,7 @@
   box-shadow: none;
   cursor: not-allowed;
   opacity: 1;
+  resize: none;
 }
 
 /* Natively disabled textareas stay scrollable and selectable; the browser already blocks edits.

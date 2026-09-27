@@ -60,7 +60,8 @@
   cursor: not-allowed;
 }
 
-:where([data-slot="switch"][data-disabled])::after {
-  background: var(--ak-color-surface);
+:where([data-slot="switch"]:where([data-disabled], :disabled))::after {
+  /* Disabled ink keeps the thumb position readable on the disabled track. */
+  background: var(--ak-color-disabled-text);
   box-shadow: none;
 }

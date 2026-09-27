@@ -185,8 +185,9 @@ Responsive rules:
 - `Card` owns its inline inset. Set `--ak-card-inset` (a single length, default
   `var(--ak-space-2xl)`) on a card instead of overriding its `padding`, so
   `CardHeader`, `CardContent`, `CardFooter` (at any depth), and edge-to-edge
-  `menu-content` children stay aligned. Card sections used outside a `Card`
-  keep their own inline padding.
+  `menu-content` children stay aligned. Like any token it inherits, so it also
+  applies to nested cards unless they set their own. Card sections used outside
+  a `Card` keep their own inline padding.
 - `ButtonGroup` emits `data-responsive="true"` when it is attached and has no
   explicit `orientation`; responsive attached groups without icon buttons stack
   at phone width. Raw markup opts in with both `data-attached="true"` and

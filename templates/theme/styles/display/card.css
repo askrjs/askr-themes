@@ -19,11 +19,6 @@
   box-shadow: var(--ak-shadow-md);
 }
 
-/* --ak-card-inset is set per card; nested cards fall back to the default unless they set their own. */
-:where(.card, [data-slot="card"]) :where(.card, [data-slot="card"]) {
-  --ak-card-inset: initial;
-}
-
 /* Card menus run edge to edge as card navigation; menu styles load later, so this needs (0,1,0). */
 :where(.card, [data-slot="card"]) > [data-slot="menu-content"] {
   max-inline-size: none;

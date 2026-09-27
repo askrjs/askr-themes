@@ -349,9 +349,7 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
       <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
       <textarea data-slot="textarea" data-disabled disabled data-testid="native-disabled-textarea"></textarea>
-      <div data-slot="button-group" data-attached="true">
-        <button data-slot="button" data-variant="destructive" data-testid="focus-destructive">Delete</button>
-      </div>
+      <button data-slot="switch" data-state="checked" disabled data-testid="disabled-switch"></button>
       <article data-slot="card" style="--ak-card-inset: 0px" data-testid="flush-card">
         <article data-slot="card" data-testid="inner-card"><div data-slot="card-content" data-testid="inner-content">Inner</div></article>
       </article>
@@ -382,7 +380,6 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       enabledColor: getComputedStyle(find("enabled-input")).color,
       disabledColor: getComputedStyle(find("disabled-input")).color,
       focusZ: getComputedStyle(find("focus-first")).zIndex,
-      focusShadow: getComputedStyle(find("focus-first")).boxShadow,
       disabledButtonCursor: getComputedStyle(find("disabled-button")).cursor,
       nestedSectionStart:
         find("nested-section").getBoundingClientRect().left -
@@ -400,6 +397,9 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       disabledCheckboxImage: getComputedStyle(find("disabled-checkbox")).backgroundImage,
       softDisabledPointer: getComputedStyle(find("soft-disabled-textarea")).pointerEvents,
       nativeDisabledPointer: getComputedStyle(find("native-disabled-textarea")).pointerEvents,
+      nativeDisabledResize: getComputedStyle(find("native-disabled-textarea")).resize,
+      switchThumb: getComputedStyle(find("disabled-switch"), "::after").backgroundColor,
+      switchTrack: getComputedStyle(find("disabled-switch")).backgroundColor,
       innerInset:
         find("inner-content").getBoundingClientRect().left -
         find("inner-card").getBoundingClientRect().left,
@@ -413,8 +413,7 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   });
 
   expect(measured.disabledColor).not.toBe(measured.enabledColor);
-  expect(measured.focusZ).toBe("auto");
-  expect(measured.focusShadow).toContain("inset");
+  expect(measured.focusZ).toBe("1");
   expect(measured.disabledButtonCursor).toBe("not-allowed");
   expect(measured.nestedSectionStart).toBe(measured.directSectionStart);
   expect(measured.disabledButtonColor).not.toBe(measured.enabledButtonColor);
@@ -425,7 +424,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.disabledCheckboxImage).not.toBe("none");
   expect(measured.softDisabledPointer).toBe("none");
   expect(measured.nativeDisabledPointer).toBe("auto");
-  expect(measured.innerInset).toBeGreaterThanOrEqual(20);
+  expect(measured.nativeDisabledResize).toBe("none");
+  expect(measured.switchThumb).not.toBe(measured.switchTrack);
+  // --ak-card-inset inherits like any token, so the nested card is flush too.
+  expect(measured.innerInset).toBeLessThanOrEqual(2);
   expect(measured.appPaddedSection).toBe("10px");
   expect(Number.parseFloat(measured.looseSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.aliasMarginTop).toBe("0px");
@@ -433,29 +435,12 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);
 });
 
-test("should keep destructive rings and disabled checkbox marks readable", async ({
-  page,
-  markup,
-  root,
-}) => {
+test("should keep disabled checkbox marks readable", async ({ markup, root }) => {
   await markup(`
     <div>
-      <div data-slot="button-group" data-attached="true">
-        <button data-slot="button" data-variant="destructive" data-testid="destructive">Delete</button>
-      </div>
-      <button data-slot="button" data-variant="destructive" data-testid="lone-destructive">Delete</button>
       <button data-slot="checkbox" data-state="checked" data-disabled disabled data-testid="checked"></button>
     </div>
   `);
-  await page.keyboard.press("Shift");
-  await page.getByTestId("destructive").focus();
-  const grouped = await page
-    .getByTestId("destructive")
-    .evaluate((el) => getComputedStyle(el).boxShadow);
-  await page.getByTestId("lone-destructive").focus();
-  const lone = await page
-    .getByTestId("lone-destructive")
-    .evaluate((el) => getComputedStyle(el).boxShadow);
 
   const checkbox = await root.evaluate((container) => {
     const el = container.querySelector('[data-testid="checked"]') as HTMLElement;
@@ -467,8 +452,5 @@ test("should keep destructive rings and disabled checkbox marks readable", async
     return { image: getComputedStyle(el).backgroundImage, disabledText };
   });
 
-  expect(grouped).toContain("inset");
-  // The grouped ring keeps the destructive tint rather than the generic focus color.
-  expect(grouped.replace(" inset", "").split(")")[0]).toBe(lone.split(")")[0]);
   expect(checkbox.image).toContain(checkbox.disabledText);
 });

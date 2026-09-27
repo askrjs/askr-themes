@@ -38,13 +38,6 @@
     box-shadow: none;
   }
 
-  /* Attached group buttons overlap by 1px; keep their outline inside, clear of the overlap. */
-  :where([data-slot="button-group"][data-attached="true"] > [data-slot="button"]):focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: -3px;
-    box-shadow: none;
-  }
-
   :where(
     [data-slot="button"],
     [data-slot="input"],
