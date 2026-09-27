@@ -254,7 +254,7 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
 
   // Menu, select, and command items show hover and keyboard focus only through
   // the hover fill, so it must stay perceptible on the popover surface.
-  ["--ak-color-hover", "--ak-color-surface-overlay", 1.07, "hover fill on overlay surface"],
+  ["--ak-color-hover", "--ak-color-surface-overlay", 1.1, "hover fill on overlay surface"],
 ];
 
 const ELEVATION_LAYERS = [
@@ -319,6 +319,24 @@ describe("WCAG AA contrast", () => {
               ).toBeGreaterThanOrEqual(minRatio);
             });
           }
+
+          it("should keep selected and current fills stronger than hover", () => {
+            const surface = parseColor(
+              resolveTokenValue(tokens.get("--ak-color-surface") ?? "", tokenValues),
+            );
+            const ratioOnSurface = (token: string): number => {
+              const parsed = parseColor(resolveTokenValue(tokens.get(token) ?? "", tokenValues));
+              if (!parsed || !surface) throw new Error(`Unsupported fill color: ${token}`);
+              return contrastRatio(
+                resolveToOpaque(parsed, [...resolveToOpaque(surface, [255, 255, 255, 1]), 1]),
+                resolveToOpaque(surface, [255, 255, 255, 1]),
+              );
+            };
+
+            const hover = ratioOnSurface("--ak-color-hover");
+            expect(ratioOnSurface("--ak-color-selected")).toBeGreaterThan(hover);
+            expect(ratioOnSurface("--ak-color-primary-soft")).toBeGreaterThan(hover);
+          });
 
           it("should keep the documented elevation layers visually distinct", () => {
             const resolvedLayers = ELEVATION_LAYERS.map((token) => {

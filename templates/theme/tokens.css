@@ -164,7 +164,7 @@
   --ak-dark-color-primary: #e6d5ee;
   --ak-dark-color-primary-hover: color-mix(in oklch, var(--ak-dark-color-primary) 90%, transparent);
   --ak-dark-color-primary-active: color-mix(in oklch, var(--ak-dark-color-primary) 84%, black);
-  --ak-dark-color-primary-soft: #35283f;
+  --ak-dark-color-primary-soft: #45334f;
   --ak-dark-color-primary-ink: #f0def6;
 
   --ak-dark-color-text: #f1ecf2;
@@ -202,9 +202,9 @@
   --ak-dark-color-disabled-surface: #1e1a22;
   --ak-dark-color-disabled-border: #827786;
   --ak-dark-color-disabled-text: #a79eaa;
-  --ak-dark-color-selected: #382b43;
+  --ak-dark-color-selected: #45334f;
   --ak-dark-color-selected-border: #6c567b;
-  --ak-dark-color-hover: #413849;
+  --ak-dark-color-hover: #393140;
   --ak-dark-color-active: color-mix(in oklch, var(--ak-dark-color-hover) 82%, white);
   --ak-dark-color-backdrop: rgb(0 0 0 / 0.5);
 
@@ -259,7 +259,7 @@
   --ak-color-disabled-text: #77717c;
   --ak-color-selected: #f1ebf4;
   --ak-color-selected-border: #c7b6d0;
-  --ak-color-hover: #f5f1f6;
+  --ak-color-hover: #f2edf3;
   --ak-color-active: color-mix(in oklch, var(--ak-color-hover) 82%, black);
   --ak-color-backdrop: rgb(0 0 0 / 0.1);
 

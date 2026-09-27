@@ -342,6 +342,11 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
         <button class="btn">Two</button>
         <button class="btn">Three</button>
       </div>
+      <button data-slot="button" disabled data-testid="disabled-button">Disabled</button>
+      <button data-slot="button" data-testid="enabled-button">Enabled</button>
+      <section data-slot="empty-state" hidden data-testid="hidden-raw-empty">Hidden</section>
+      <table><tbody><tr><td data-slot="empty-state" colspan="2" data-testid="cell-empty">No rows</td></tr></tbody></table>
+      <div data-slot="dialog-content"><div data-slot="card-content" data-testid="loose-section">Loose</div></div>
       <article data-slot="card" style="--ak-card-inset: 12px" data-testid="custom-inset">
         <nav data-slot="menu-content" data-testid="card-menu"><a data-slot="menu-item">Item</a></nav>
       </article>
@@ -361,6 +366,13 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       enabledColor: getComputedStyle(find("enabled-input")).color,
       disabledColor: getComputedStyle(find("disabled-input")).color,
       focusZ: getComputedStyle(find("focus-first")).zIndex,
+      disabledButtonColor: getComputedStyle(find("disabled-button")).color,
+      enabledButtonColor: getComputedStyle(find("enabled-button")).color,
+      buttonFont: getComputedStyle(find("enabled-button")).fontFamily,
+      bodyFont: getComputedStyle(container).fontFamily,
+      hiddenEmptyDisplay: getComputedStyle(find("hidden-raw-empty")).display,
+      cellEmptyDisplay: getComputedStyle(find("cell-empty")).display,
+      looseSectionPadding: getComputedStyle(find("loose-section")).paddingInlineStart,
       aliasMarginTop: getComputedStyle(find("alias-only").children[1] as HTMLElement)
         .marginBlockStart,
       menuStart: menu.left - card.left - border,
@@ -369,7 +381,12 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   });
 
   expect(measured.disabledColor).not.toBe(measured.enabledColor);
-  expect(measured.focusZ).toBe("1");
+  expect(measured.focusZ).toBe("2");
+  expect(measured.disabledButtonColor).not.toBe(measured.enabledButtonColor);
+  expect(measured.buttonFont).toBe(measured.bodyFont);
+  expect(measured.hiddenEmptyDisplay).toBe("none");
+  expect(measured.cellEmptyDisplay).toBe("table-cell");
+  expect(Number.parseFloat(measured.looseSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.aliasMarginTop).toBe("0px");
   expect(Math.abs(measured.menuStart)).toBeLessThanOrEqual(0.5);
   expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);

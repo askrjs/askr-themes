@@ -2,7 +2,7 @@
   display: grid;
   gap: var(--ak-space-2xl);
   --_card-inset: var(--ak-card-inset, var(--ak-space-2xl));
-  padding: var(--_card-inset);
+  padding: var(--ak-space-2xl) var(--_card-inset);
   border: 1px solid var(--ak-color-border);
   border-radius: var(--ak-radius-xl);
   background: var(--ak-color-surface);
@@ -15,6 +15,16 @@
   background: var(--ak-color-surface-raised);
   border-color: var(--ak-color-border);
   box-shadow: var(--ak-shadow-md);
+}
+
+/* Card sections carry their own inset outside a Card; inside one, the root owns it. */
+:where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
+  padding-inline: var(--ak-space-2xl);
+}
+
+:where(.card, [data-slot="card"])
+  > :where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
+  padding-inline: 0;
 }
 
 /* Card menus run edge to edge as card navigation; menu styles load later, so this needs (0,1,0). */

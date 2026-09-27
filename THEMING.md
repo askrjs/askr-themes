@@ -150,8 +150,13 @@ Theme state helpers also live there: `ThemeScope`, `ThemePicker`,
 icons; applications pass their own icon/content props. The rendered content is
 wrapped in `data-slot="theme-toggle-content"` so icon and text compositions can
 be styled consistently across themes. If you use icon children, the direct child
-icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-icon-size, 1em))`,
+icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
+`Card` owns its inline inset: set `--ak-card-inset` (a single length, default
+`var(--ak-space-2xl)`) on a card instead of overriding its `padding`, so
+`CardHeader`, `CardContent`, `CardFooter`, and edge-to-edge `menu-content`
+children stay aligned. Card sections used outside a `Card` keep their own
+inline padding.
 `ThemeName` accepts application-defined strings intentionally. Register custom
 names in the scope's theme options and provide a matching `[data-theme="..."]`
 token block; misspelled names otherwise remain valid custom identifiers.

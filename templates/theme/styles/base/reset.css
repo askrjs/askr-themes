@@ -22,7 +22,8 @@
   display: block;
 }
 
-:where([data-askr-native-control="true"]) {
+:where([data-askr-native-control="true"]),
+:where(button, input, select, textarea):where([data-slot]) {
   font: inherit;
 }
 
