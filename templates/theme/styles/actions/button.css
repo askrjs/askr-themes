@@ -90,7 +90,12 @@
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where(.btn[data-disabled], .btn:disabled, [data-slot="button"][data-disabled]) {
+:where(
+  .btn[data-disabled],
+  .btn:disabled,
+  [data-slot="button"][data-disabled],
+  [data-slot="button"]:disabled
+) {
   pointer-events: none;
   cursor: not-allowed;
   opacity: 0.5;

@@ -56,7 +56,7 @@
   box-shadow: none;
 }
 
-:where([data-slot="checkbox"][data-disabled]) {
+:where([data-slot="checkbox"]:where([data-disabled], :disabled)) {
   background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-input);
   box-shadow: none;

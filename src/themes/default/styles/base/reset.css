@@ -22,9 +22,16 @@
   display: block;
 }
 
-:where([data-askr-native-control="true"]),
+:where([data-askr-native-control="true"]) {
+  font: inherit;
+}
+
+/* Slotted native controls take the surrounding family and size, but not a container's bold or
+   italic text; components that want a weight set their own. */
 :where(button, input, select, textarea):where([data-slot]) {
   font: inherit;
+  font-weight: var(--ak-font-weight-regular);
+  font-style: normal;
 }
 
 ::selection {

@@ -33,20 +33,24 @@
   the -1px overlap never covers its focus ring; hover does not lift.
 - `--ak-card-inset` inherits like any token, so it also applies to nested
   cards unless they set their own.
-- Disabled switches draw their thumb in the disabled ink so on and off stay
-  distinguishable.
+- Disabled switches, including natively disabled ones, use the disabled track
+  and draw their thumb in the disabled ink so on and off stay distinguishable.
+- Card sections inside floating or menu surfaces within a card keep their own
+  inline padding.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
-- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm, except
-  `hidden` empty states and table, list, and disclosure parts, which keep their
-  native display; the `EmptyState` component keeps its `Block` props (`hide`,
-  `padding`, `gap`).
+- Raw `[data-slot="empty-state"]` markup on plain block containers (`div`,
+  `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
+  gets a centered grid rhythm; the `EmptyState` component keeps its `Block`
+  props (`hide`, `padding`, `gap`).
 - Native `button`, `input`, `select`, and `textarea` elements with a
-  `data-slot` inherit the surrounding font.
+  `data-slot` inherit the surrounding font family and size, at regular weight
+  and normal style.
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
-  markup, sets `cursor: not-allowed`, and changes only `background-color` so
-  checkbox and select indicators keep their images. Disabled checked and mixed
-  checkboxes draw their mark in the disabled ink so it stays readable.
+  markup (raw disabled buttons also stop reacting to the pointer, like the
+  `.btn` alias) and changes only `background-color` so the checkbox mark keeps
+  its image. Disabled checked and mixed checkboxes, including natively disabled
+  ones, draw their mark in the disabled ink on the disabled fill.
 - Disabled textareas use the disabled tokens instead of half opacity.
   Natively disabled textareas (including the `Textarea` component) stay
   scrollable and selectable but cannot be resized; `data-disabled` without the

@@ -345,6 +345,9 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <button data-slot="button" disabled data-testid="disabled-button">Disabled</button>
       <button data-slot="button" data-testid="enabled-button">Enabled</button>
       <section data-slot="empty-state" hidden data-testid="hidden-raw-empty">Hidden</section>
+      <div data-slot="empty-state" popover data-testid="popover-empty">Popover</div>
+      <label data-slot="label" style="font-weight: 600; font-style: italic">Email <input data-slot="input" data-testid="label-input" /></label>
+      <article data-slot="card"><div data-slot="popover-content"><div data-slot="card-content" data-testid="popover-section">Pop</div></div></article>
       <table><tbody><tr data-slot="empty-state" data-testid="row-empty"><td colspan="2">No rows</td></tr></tbody></table>
       <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
       <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
@@ -394,6 +397,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       hiddenEmptyDisplay: getComputedStyle(find("hidden-raw-empty")).display,
       cellEmptyDisplay: getComputedStyle(find("cell-empty")).display,
       rowEmptyDisplay: getComputedStyle(find("row-empty")).display,
+      popoverEmptyDisplay: getComputedStyle(find("popover-empty")).display,
+      labelInputWeight: getComputedStyle(find("label-input")).fontWeight,
+      labelInputStyle: getComputedStyle(find("label-input")).fontStyle,
+      popoverSectionPadding: getComputedStyle(find("popover-section")).paddingInlineStart,
       disabledCheckboxImage: getComputedStyle(find("disabled-checkbox")).backgroundImage,
       softDisabledPointer: getComputedStyle(find("soft-disabled-textarea")).pointerEvents,
       nativeDisabledPointer: getComputedStyle(find("native-disabled-textarea")).pointerEvents,
@@ -421,6 +428,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.hiddenEmptyDisplay).toBe("none");
   expect(measured.cellEmptyDisplay).toBe("table-cell");
   expect(measured.rowEmptyDisplay).toBe("table-row");
+  expect(measured.popoverEmptyDisplay).toBe("none");
+  expect(measured.labelInputWeight).toBe("400");
+  expect(measured.labelInputStyle).toBe("normal");
+  expect(Number.parseFloat(measured.popoverSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.disabledCheckboxImage).not.toBe("none");
   expect(measured.softDisabledPointer).toBe("none");
   expect(measured.nativeDisabledPointer).toBe("auto");
@@ -435,22 +446,53 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(Math.abs(measured.menuEnd)).toBeLessThanOrEqual(0.5);
 });
 
-test("should keep disabled checkbox marks readable", async ({ markup, root }) => {
+test("should keep disabled checkbox marks readable against their fill", async ({
+  markup,
+  root,
+}) => {
   await markup(`
     <div>
-      <button data-slot="checkbox" data-state="checked" data-disabled disabled data-testid="checked"></button>
+      <button data-slot="checkbox" data-state="checked" disabled data-testid="native"></button>
+      <button data-slot="checkbox" data-state="checked" data-disabled data-testid="component"></button>
     </div>
   `);
 
-  const checkbox = await root.evaluate((container) => {
-    const el = container.querySelector('[data-testid="checked"]') as HTMLElement;
-    const probe = document.createElement("span");
-    probe.style.color = "var(--ak-color-disabled-text)";
-    container.append(probe);
-    const disabledText = getComputedStyle(probe).color;
-    probe.remove();
-    return { image: getComputedStyle(el).backgroundImage, disabledText };
+  const ratios = await root.evaluate((container) => {
+    const rgb = (color: string): number[] => {
+      const probe = document.createElement("span");
+      probe.style.color = color;
+      container.append(probe);
+      const resolved = getComputedStyle(probe).color;
+      probe.remove();
+      const canvas = document.createElement("canvas").getContext("2d") as CanvasRenderingContext2D;
+      canvas.fillStyle = resolved;
+      canvas.fillRect(0, 0, 1, 1);
+      return [...canvas.getImageData(0, 0, 1, 1).data].slice(0, 3);
+    };
+    const luminance = ([r, g, b]: number[]): number => {
+      const [lr, lg, lb] = [r!, g!, b!].map((v) => {
+        const c = v / 255;
+        return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * lr! + 0.7152 * lg! + 0.0722 * lb!;
+    };
+    const contrast = (a: number[], b: number[]): number => {
+      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+      return (hi! + 0.05) / (lo! + 0.05);
+    };
+    const mark = rgb("var(--ak-color-disabled-text)");
+    return ["native", "component"].map((id) => {
+      const el = container.querySelector(`[data-testid="${id}"]`) as HTMLElement;
+      const style = getComputedStyle(el);
+      return {
+        hasMark: style.backgroundImage !== "none",
+        ratio: contrast(mark, rgb(style.backgroundColor)),
+      };
+    });
   });
 
-  expect(checkbox.image).toContain(checkbox.disabledText);
+  for (const { hasMark, ratio } of ratios) {
+    expect(hasMark).toBe(true);
+    expect(ratio).toBeGreaterThanOrEqual(3);
+  }
 });

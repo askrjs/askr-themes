@@ -11,7 +11,7 @@
   [data-slot="radio-group-item"]:where([data-disabled], :disabled),
   [data-slot="switch"]:where([data-disabled], :disabled)
 ) {
-  /* background-color only: checkbox and select indicators are background images. */
+  /* background-color only: the checkbox mark is a background image. */
   background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);

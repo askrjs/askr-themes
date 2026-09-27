@@ -118,7 +118,6 @@
     )
     > :where(.btn, [data-slot="button"]) {
     inline-size: 100%;
-    justify-content: center;
   }
 
   :where(.btn-group, [data-slot="button-group"]):where(

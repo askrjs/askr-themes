@@ -3,10 +3,11 @@
 }
 
 /* The EmptyState component lays out through Block props; raw block markup gets a compact
-   centered rhythm here. Hidden empty states and table, list, and disclosure parts keep their native display. */
-:where(.empty-state, [data-slot="empty-state"]):where(
-  :not([data-ak-layout], [hidden], caption, thead, tbody, tfoot, tr, td, th, li, dt, dd, summary)
-) {
+   centered rhythm here. Only plain block containers are restyled, so hidden, popover, dialog,
+   table, list, and form-control hosts keep their native display. */
+:where(.empty-state, [data-slot="empty-state"]):where(div, section, article, aside, figure):where(
+    :not([data-ak-layout], [hidden], [popover])
+  ) {
   display: grid;
   justify-items: center;
   gap: var(--ak-space-sm);
