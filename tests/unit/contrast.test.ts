@@ -255,6 +255,8 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   // Menu, select, and command items show hover and keyboard focus only through
   // the hover fill, so it must stay perceptible on the popover surface.
   ["--ak-color-hover", "--ak-color-surface-overlay", 1.1, "hover fill on overlay surface"],
+  // Pills and toggle groups hover on a muted track.
+  ["--ak-color-hover", "--ak-color-surface-muted", 1.05, "hover fill on muted track"],
 ];
 
 const ELEVATION_LAYERS = [

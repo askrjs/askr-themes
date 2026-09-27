@@ -9,12 +9,6 @@
   box-shadow: var(--ak-shadow-sm);
 }
 
-/* A menu placed directly in a card runs edge to edge as card navigation. */
-:where([data-slot="card"]) > :where([data-slot="menu-content"]) {
-  max-inline-size: none;
-  margin-inline: calc(-1 * var(--_card-inset, 0px));
-}
-
 :where([data-slot="menu-item"]) {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

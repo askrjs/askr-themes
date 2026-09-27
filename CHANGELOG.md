@@ -14,8 +14,9 @@
   their own inline padding anywhere inside a card; outside a card they keep it.
   Direct children such as separators, tables, and images are now inset; add
   `data-bleed` to a direct child to run it edge to edge (`menu-content` placed
-  directly in a card does so by default). `--ak-card-inset` is declared in the
-  default tokens; change the inset with it, not `padding`.
+  directly in a card does so by default and drops its own frame). Change the
+  inset with the optional `--ak-card-inset` hook (default
+  `var(--ak-space-2xl)`, resolved on each card), not `padding`.
 - Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
@@ -37,16 +38,18 @@
   and draw their thumb in the disabled ink so on and off stay distinguishable.
 - Card sections inside floating, navigation, menu, or toast surfaces within a
   card keep their own inline padding.
-- Toggle-group item hover lifts toward the selected surface so it stays
-  visible on the muted track.
+- Light `--ak-color-surface-muted` is lighter so hover stays visible on muted
+  tracks such as pills and toggle groups.
+- Raw radio items and select triggers with the native `disabled` attribute
+  block pointer input like their `data-disabled` forms.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
-- Raw `[data-slot="empty-state"]` markup on plain block containers (`div`,
+- Raw `[data-slot="empty-state"]` and `.empty-state` markup on plain block containers (`div`,
   `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
   gets a centered grid rhythm; the `EmptyState` component keeps its `Block`
   props (`hide`, `padding`, `gap`).
 - Native `button`, `input`, `select`, and `textarea` elements with a
-  `data-slot` inherit the surrounding font family and size, at regular weight
-  and normal style.
+  `data-slot` use the surrounding font family instead of the browser's control
+  font.
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
   markup (raw disabled buttons also stop reacting to the pointer, like the

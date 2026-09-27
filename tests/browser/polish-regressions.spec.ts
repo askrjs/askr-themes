@@ -346,7 +346,11 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <button data-slot="button" data-testid="enabled-button">Enabled</button>
       <section data-slot="empty-state" hidden data-testid="hidden-raw-empty">Hidden</section>
       <div data-slot="empty-state" popover data-testid="popover-empty">Popover</div>
-      <label data-slot="label" style="font-weight: 600; font-style: italic">Email <input data-slot="input" data-testid="label-input" /></label>
+      <label data-slot="label" style="font-weight: 600; font-style: italic; font-family: serif">Email <input data-slot="input" data-testid="label-input" /></label>
+      <article data-slot="card" data-testid="sep-card"><hr data-slot="separator" data-bleed data-testid="sep" /></article>
+      <section style="--ak-space-2xl: 1rem"><article data-slot="card" data-testid="scoped-card">Scoped</article></section>
+      <div class="card" data-testid="alias-card"><nav data-slot="menu-content" data-testid="alias-menu"><a data-slot="menu-item">Item</a></nav></div>
+      <button data-slot="radio-group-item" disabled data-testid="disabled-radio"></button>
       <article data-slot="card"><div data-slot="popover-content"><div data-slot="card-content" data-testid="popover-section">Pop</div></div></article>
       <article data-slot="card"><div data-slot="nav-dropdown-content"><div data-slot="card-content" data-testid="nav-section">Nav</div></div></article>
       <div class="card" data-slot="popover-content" data-testid="card-popover"><div data-slot="card-header" data-testid="card-popover-header">Head</div></div>
@@ -401,8 +405,20 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       cellEmptyDisplay: getComputedStyle(find("cell-empty")).display,
       rowEmptyDisplay: getComputedStyle(find("row-empty")).display,
       popoverEmptyDisplay: getComputedStyle(find("popover-empty")).display,
-      labelInputWeight: getComputedStyle(find("label-input")).fontWeight,
-      labelInputStyle: getComputedStyle(find("label-input")).fontStyle,
+      labelInputFamily: getComputedStyle(find("label-input")).fontFamily,
+      sepStart:
+        find("sep").getBoundingClientRect().left - find("sep-card").getBoundingClientRect().left,
+      sepEnd:
+        find("sep-card").getBoundingClientRect().right - find("sep").getBoundingClientRect().right,
+      scopedPadding: [
+        getComputedStyle(find("scoped-card")).paddingInlineStart,
+        getComputedStyle(find("scoped-card")).paddingBlockStart,
+      ],
+      aliasMenuStart:
+        find("alias-menu").getBoundingClientRect().left -
+        find("alias-card").getBoundingClientRect().left,
+      aliasMenuBorder: getComputedStyle(find("alias-menu")).borderInlineStartWidth,
+      disabledRadioPointer: getComputedStyle(find("disabled-radio")).pointerEvents,
       popoverSectionPadding: getComputedStyle(find("popover-section")).paddingInlineStart,
       navSectionPadding: getComputedStyle(find("nav-section")).paddingInlineStart,
       cardPopoverHeaderStart:
@@ -442,8 +458,13 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.cellEmptyDisplay).toBe("table-cell");
   expect(measured.rowEmptyDisplay).toBe("table-row");
   expect(measured.popoverEmptyDisplay).toBe("none");
-  expect(measured.labelInputWeight).toBe("400");
-  expect(measured.labelInputStyle).toBe("normal");
+  expect(measured.labelInputFamily).toContain("serif");
+  expect(measured.sepStart).toBeLessThanOrEqual(1.5);
+  expect(measured.sepEnd).toBeLessThanOrEqual(1.5);
+  expect(measured.scopedPadding[0]).toBe(measured.scopedPadding[1]);
+  expect(measured.aliasMenuStart).toBeLessThanOrEqual(1.5);
+  expect(measured.aliasMenuBorder).toBe("0px");
+  expect(measured.disabledRadioPointer).toBe("none");
   expect(Number.parseFloat(measured.popoverSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(Number.parseFloat(measured.navSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.cardPopoverHeaderStart).toBeLessThan(50);
@@ -512,23 +533,4 @@ test("should keep disabled checkbox marks readable against their fill", async ({
     expect(hasMark).toBe(true);
     expect(ratio).toBeGreaterThanOrEqual(3);
   }
-});
-
-test("should keep toggle-group hover visible on its muted track", async ({ page, markup }) => {
-  await markup(`
-    <div data-slot="toggle-group" data-testid="track">
-      <button data-slot="toggle-group-item" data-testid="item">Day</button>
-    </div>
-  `);
-  await page.getByTestId("item").hover();
-  // Wait for the background transition to settle before reading the fill.
-  await expect
-    .poll(async () => {
-      const [track, item] = await Promise.all([
-        page.getByTestId("track").evaluate((el) => getComputedStyle(el).backgroundColor),
-        page.getByTestId("item").evaluate((el) => getComputedStyle(el).backgroundColor),
-      ]);
-      return item !== track && !item.endsWith(", 0)") && item !== "rgba(0, 0, 0, 0)";
-    })
-    .toBe(true);
 });

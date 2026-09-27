@@ -68,7 +68,6 @@
   --ak-space-lg: 1.125rem;
   --ak-space-xl: 1.5rem;
   --ak-space-2xl: 2.25rem;
-  --ak-card-inset: var(--ak-space-2xl);
   --ak-space-3xl: 3.5rem;
 
   --ak-radius-sm: 6px;
@@ -230,7 +229,7 @@
 
   --ak-color-bg: #faf9f7;
   --ak-color-surface: #fffefd;
-  --ak-color-surface-muted: #f2f0f3;
+  --ak-color-surface-muted: #f7f5f7;
   --ak-color-surface-raised: #ffffff;
   --ak-color-surface-overlay: #fcfafc;
 

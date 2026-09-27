@@ -1,7 +1,7 @@
 :where(.card, [data-slot="card"]) {
   display: grid;
   gap: var(--ak-space-2xl);
-  --_card-inset: var(--ak-card-inset);
+  --_card-inset: var(--ak-card-inset, var(--ak-space-2xl));
   padding: var(--ak-space-2xl) var(--_card-inset);
   /* Card sections at any depth read this; the root owns their inline inset. */
   --_card-section-inset: 0;
@@ -37,10 +37,20 @@
   --_card-section-inset: initial;
 }
 
-/* data-bleed opts a direct child out of the card inset, for media, tables, and separators. */
-:where(.card, [data-slot="card"]) > :where([data-bleed]) {
-  margin-inline: calc(-1 * var(--_card-inset));
+/* data-bleed opts a direct child out of the card inset, for media, tables, and separators; a menu
+   placed directly in a card bleeds by default. The explicit width beats the child's own
+   inline-size: 100%, so the attribute selector carries (0,1,0) on purpose. */
+:where(.card, [data-slot="card"]) > :is([data-bleed], [data-slot="menu-content"]) {
+  inline-size: calc(100% + 2 * var(--_card-inset));
   max-inline-size: none;
+  margin-inline: calc(-1 * var(--_card-inset));
+}
+
+/* A bled menu becomes card navigation: the card supplies the frame. */
+:where(.card, [data-slot="card"]) > [data-slot="menu-content"] {
+  border-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 :where(.card, [data-slot="card"]) :where(h2, h3, h4, h5, h6) {
