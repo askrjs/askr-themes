@@ -16,14 +16,22 @@
   box-shadow: var(--ak-shadow-md);
 }
 
+/* Raw content owns no inset, so the card pads it. */
+:where(.card, [data-slot="card"]) > :not([data-slot]) {
+  padding-inline: var(--ak-space-2xl);
+}
+
+/* Slotted parts keep their own padding; the card insets them from the edge instead.
+   Card sections and menus already carry the card inset themselves. */
 :where(.card, [data-slot="card"])
-  > :not(
+  > :where([data-slot]):not(
     [data-slot="card-header"],
     [data-slot="card-content"],
     [data-slot="card-footer"],
     [data-slot="menu-content"]
   ) {
-  padding-inline: var(--ak-space-2xl);
+  margin-inline: var(--ak-space-2xl);
+  max-inline-size: calc(100% - 2 * var(--ak-space-2xl));
 }
 
 :where(.card, [data-slot="card"]) :where(h2, h3, h4, h5, h6) {

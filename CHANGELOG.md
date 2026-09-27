@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+### Changed
+
+- Attached `ButtonGroup`s without an explicit `orientation` now stack at phone
+  width (`max-width: 30rem`) and emit `data-responsive="true"`. Pass
+  `orientation="horizontal"` to keep the row; groups containing icon buttons
+  also keep the row. Stacked labels wrap instead of overflowing.
+- Attached vertical `ButtonGroup`s round only their outer top and bottom
+  corners at every width, and a lone button keeps all four corners.
+- Direct `Card` children: raw elements keep the card's inline padding, while
+  slotted components (`Button`, `Block`, `Text`, `CardTitle`, `Input`, …) are
+  inset with `margin-inline` so their own padding is preserved.
+- Synced `templates/theme` with the default theme's button, block, coverage,
+  and virtual-list fixes; template parity now covers every shared file.
+
 ## 0.3.0 - 2026-09-11
 
 ### Removed

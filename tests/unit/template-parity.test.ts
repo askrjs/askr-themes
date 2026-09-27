@@ -88,13 +88,13 @@ describe("template parity", () => {
     expect(readFileSync(TEMPLATE_INDEX, "utf-8")).toEqual(readFileSync(DEFAULT_INDEX, "utf-8"));
   });
 
-  it("should template keeps tabs, pills, and Navbar styles aligned with the default theme", () => {
-    const navFiles = ["navigation/nav.css", "shell/navbar.css"];
+  it("should keep every shared component style identical to the theme template", () => {
+    const sharedFiles = defaultFiles.filter((file) => templateFiles.includes(file));
 
-    for (const file of navFiles) {
+    for (const file of sharedFiles) {
       expect(
         readFileSync(join(TEMPLATE_COMPONENTS, file), "utf-8"),
-        `${file} drifted from the default theme`,
+        `${file} drifted from the default theme; copy the change into templates/theme/styles`,
       ).toEqual(readFileSync(join(DEFAULT_COMPONENTS, file), "utf-8"));
     }
   });

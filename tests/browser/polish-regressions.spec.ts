@@ -45,7 +45,11 @@ for (const mode of ["light", "dark"] as const) {
 
       return {
         emptyDisplay: getComputedStyle(empty).display,
-        emptyGaps: [top(title) - bottom(icon), top(description) - bottom(title), top(actions) - bottom(description)],
+        emptyGaps: [
+          top(title) - bottom(icon),
+          top(description) - bottom(title),
+          top(actions) - bottom(description),
+        ],
         textareaFont: getComputedStyle(textarea).fontFamily,
         disabledTextareaOpacity: getComputedStyle(disabledTextarea).opacity,
         bodyFont: getComputedStyle(scope).fontFamily,
@@ -98,4 +102,153 @@ test("should show every attached action at phone width", async ({ page, markup, 
     expect(button.width).toBeLessThanOrEqual(measured.groupWidth);
     expect(button.height).toBe(36);
   }
+});
+
+test("should compose default ButtonGroups and direct Card children at phone width", async ({
+  page,
+  render,
+  root,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await render();
+
+  const measured = await root.evaluate((container) => {
+    const find = (selector: string): HTMLElement =>
+      container.querySelector(selector) as HTMLElement;
+    const buttonsOf = (testId: string): HTMLElement[] => [
+      ...find(`[data-testid="${testId}"]`).querySelectorAll<HTMLElement>('[data-slot="button"]'),
+    ];
+    const group = (testId: string) => {
+      const element = find(`[data-testid="${testId}"]`);
+      const box = element.getBoundingClientRect();
+      return {
+        direction: getComputedStyle(element).flexDirection,
+        width: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        buttons: buttonsOf(testId).map((button) => {
+          const rect = button.getBoundingClientRect();
+          const style = getComputedStyle(button);
+          return {
+            top: rect.top,
+            left: rect.left - box.left,
+            right: box.right - rect.right,
+            width: rect.width,
+            scrollWidth: button.scrollWidth,
+            clientWidth: button.clientWidth,
+            radii: [
+              style.borderTopLeftRadius,
+              style.borderTopRightRadius,
+              style.borderBottomRightRadius,
+              style.borderBottomLeftRadius,
+            ],
+          };
+        }),
+      };
+    };
+    const card = find('[data-slot="card"]');
+    const cardBox = card.getBoundingClientRect();
+    const inset = (testId: string) => {
+      const element = find(`[data-testid="${testId}"]`);
+      const box = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        start: box.left - cardBox.left + Number.parseFloat(style.paddingInlineStart),
+        end: cardBox.right - box.right + Number.parseFloat(style.paddingInlineEnd),
+      };
+    };
+
+    return {
+      orientation: find('[data-testid="default-group"]').dataset.orientation,
+      defaultGroup: group("default-group"),
+      rowGroup: group("row-group"),
+      iconGroup: group("icon-group"),
+      longGroup: group("long-group"),
+      loneGroup: group("lone-group"),
+      insets: Object.fromEntries(
+        [
+          "raw-card-content",
+          "role-card-content",
+          "form-card-content",
+          "block-card-content",
+          "text-card-content",
+          "title-card-content",
+          "direct-card-input",
+          "card-button",
+        ].map((testId) => [testId, inset(testId)]),
+      ),
+      cardButtonPadding: getComputedStyle(find('[data-testid="card-button"]')).paddingInlineStart,
+      referenceButtonPadding: getComputedStyle(find('[data-testid="reference-button"]'))
+        .paddingInlineStart,
+      inputFitsCard:
+        find('[data-testid="direct-card-input"]').getBoundingClientRect().right <= cardBox.right,
+    };
+  });
+
+  expect(measured.orientation).toBe("horizontal");
+  expect(measured.defaultGroup.direction).toBe("column");
+  expect(measured.defaultGroup.scrollWidth).toBeLessThanOrEqual(measured.defaultGroup.width);
+  const tops = measured.defaultGroup.buttons.map((button) => button.top);
+  expect(tops[0]).toBeLessThan(tops[1]!);
+  expect(tops[1]).toBeLessThan(tops[2]!);
+
+  expect(measured.rowGroup.direction).toBe("row");
+  expect(measured.iconGroup.direction).toBe("row");
+  for (const button of measured.iconGroup.buttons) expect(button.width).toBe(36);
+
+  expect(measured.longGroup.direction).toBe("column");
+  for (const button of measured.longGroup.buttons) {
+    expect(button.left).toBeGreaterThanOrEqual(0);
+    expect(button.right).toBeGreaterThanOrEqual(0);
+    expect(button.scrollWidth).toBeLessThanOrEqual(button.clientWidth);
+  }
+
+  const [lone] = measured.loneGroup.buttons;
+  expect(new Set(lone!.radii).size).toBe(1);
+  expect(lone!.radii[0]).not.toBe("0px");
+
+  for (const [testId, inset] of Object.entries(measured.insets)) {
+    expect(inset.start, `${testId} start inset`).toBeGreaterThanOrEqual(20);
+    expect(inset.end, `${testId} end inset`).toBeGreaterThanOrEqual(20);
+  }
+  expect(measured.cardButtonPadding).toBe(measured.referenceButtonPadding);
+  expect(measured.inputFitsCard).toBe(true);
+});
+
+test("should join vertical ButtonGroups on the block axis at desktop width", async ({
+  page,
+  render,
+  root,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await render("verticalGroups");
+
+  const radii = await root.evaluate((container) => {
+    const radiiOf = (selector: string): string[][] =>
+      [...container.querySelectorAll<HTMLElement>(`${selector} [data-slot="button"]`)].map(
+        (button) => {
+          const style = getComputedStyle(button);
+          return [
+            style.borderTopLeftRadius,
+            style.borderTopRightRadius,
+            style.borderBottomRightRadius,
+            style.borderBottomLeftRadius,
+          ];
+        },
+      );
+    return {
+      group: radiiOf('[data-testid="vertical-group"]'),
+      lone: radiiOf('[data-testid="vertical-lone"]'),
+    };
+  });
+
+  const [first, middle, last] = radii.group;
+  expect(first![0]).toBe(first![1]);
+  expect(first![0]).not.toBe("0px");
+  expect(first!.slice(2)).toEqual(["0px", "0px"]);
+  expect(middle).toEqual(["0px", "0px", "0px", "0px"]);
+  expect(last!.slice(0, 2)).toEqual(["0px", "0px"]);
+  expect(last![2]).toBe(last![3]);
+  expect(last![2]).not.toBe("0px");
+  expect(new Set(radii.lone[0]).size).toBe(1);
+  expect(radii.lone[0]![0]).not.toBe("0px");
 });

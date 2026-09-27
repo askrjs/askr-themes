@@ -66,8 +66,40 @@
   margin-inline-start: -1px;
 }
 
+:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"])
+  > :where(.btn, [data-slot="button"]):not(.btn-icon, [data-size^="icon"]) {
+  inline-size: 100%;
+  justify-content: center;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
 :where(
-    .btn-group-vertical,
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):first-child {
+  border-radius: var(--ak-radius-lg) var(--ak-radius-lg) 0 0;
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):last-child:not(:first-child) {
+  border-radius: 0 0 var(--ak-radius-lg) var(--ak-radius-lg);
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
+    [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
+  )
+  > :where(.btn, [data-slot="button"]):only-child {
+  border-radius: var(--ak-radius-lg);
+}
+
+:where(
+    .btn-group-vertical[data-attached="true"],
     [data-slot="button-group"][data-orientation="vertical"][data-attached="true"]
   )
   > :where(.btn, [data-slot="button"])
@@ -76,45 +108,55 @@
   margin-block-start: -1px;
 }
 
-:where(.btn-group-vertical, [data-slot="button-group"][data-orientation="vertical"])
-  > :where(.btn, [data-slot="button"]) {
-  inline-size: 100%;
-  justify-content: center;
-}
-
+/* Default groups stack at phone width; explicit orientation or icon buttons keep the row. */
 @media (max-width: 30rem) {
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
-      [data-orientation="horizontal"]
-    ) {
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"]))) {
     flex-direction: column;
     overflow: visible;
   }
 
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
-      [data-orientation="horizontal"]
-    )
-    > :where(.btn, [data-slot="button"]) {
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"])))
+    > :where(.btn, [data-slot="button"]):not(.btn-icon, [data-size^="icon"]) {
     inline-size: 100%;
     justify-content: center;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
-      [data-orientation="horizontal"]
-    )
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"])))
     > :where(.btn, [data-slot="button"]):first-child {
     border-radius: var(--ak-radius-lg) var(--ak-radius-lg) 0 0;
   }
 
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
-      [data-orientation="horizontal"]
-    )
-    > :where(.btn, [data-slot="button"]):last-child {
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"])))
+    > :where(.btn, [data-slot="button"]):last-child:not(:first-child) {
     border-radius: 0 0 var(--ak-radius-lg) var(--ak-radius-lg);
   }
 
-  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):not(
-      [data-orientation="horizontal"]
-    )
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"])))
+    > :where(.btn, [data-slot="button"]):only-child {
+    border-radius: var(--ak-radius-lg);
+  }
+
+  :where(.btn-group[data-attached="true"], [data-slot="button-group"][data-attached="true"]):where(
+      :not([data-orientation]),
+      [data-responsive="true"]
+    ):where(:not(:has(> .btn-icon, > [data-size^="icon"])))
     > :where(.btn, [data-slot="button"])
     + :where(.btn, [data-slot="button"]) {
     margin-inline-start: 0;
