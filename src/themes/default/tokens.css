@@ -219,7 +219,7 @@
   --ak-color-primary: #47345c;
   --ak-color-primary-hover: color-mix(in oklch, var(--ak-color-primary) 90%, transparent);
   --ak-color-primary-active: color-mix(in oklch, var(--ak-color-primary) 88%, black);
-  --ak-color-primary-soft: #f1ebf4;
+  --ak-color-primary-soft: #ebe2f0;
   --ak-color-primary-ink: #47345c;
 
   --ak-color-text: #29242d;

@@ -122,19 +122,29 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
   from `@askrjs/themes`.
 
 The default theme pairs an ink plum accent with warm neutral surfaces in
-light and dark mode. Override the semantic tokens to match your product:
+light and dark mode. Override the semantic tokens for each mode to match your
+product. Light values sit on `[data-theme="light"]`, and dark mode (both
+`[data-theme="dark"]` and the system preference) reads the `--ak-dark-color-*`
+tokens, so a single `:root` override would leak light values into dark mode:
 
 ```css
-:root {
+[data-theme="light"] {
   --ak-color-primary: oklch(0.55 0.18 255);
   --ak-color-primary-soft: oklch(0.95 0.04 255);
   --ak-color-primary-ink: oklch(0.3 0.12 255);
+  --ak-color-focus-ring: oklch(0.6 0.12 255);
+}
+
+:root {
+  --ak-dark-color-primary: oklch(0.8 0.1 255);
+  --ak-dark-color-primary-soft: oklch(0.3 0.06 255);
+  --ak-dark-color-primary-ink: oklch(0.92 0.04 255);
+  --ak-dark-color-focus-ring: oklch(0.65 0.1 255);
 }
 ```
 
-The neutrals, hover, selected, and focus-ring tokens are tinted to match the
-plum accent, and dark mode reads from the `--ak-dark-color-*` tokens. When you
-rebrand, override those alongside the primary scale. See
+The neutrals, hover, and selected tokens are also tinted to match the plum
+accent; override them alongside the primary scale for a full rebrand. See
 [THEMING.md](./THEMING.md#required-tokens) for the complete primary, hover,
 active, focus, and contrast contract.
 

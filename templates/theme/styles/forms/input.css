@@ -42,12 +42,7 @@
     color-mix(in srgb, var(--ak-color-danger-soft) 82%, transparent);
 }
 
-:where(
-  .input[data-disabled],
-  .input:disabled,
-  [data-slot="input"][data-disabled],
-  [data-slot="input"]:disabled
-) {
+:where(.input[data-disabled], .input:disabled, [data-slot="input"][data-disabled]) {
   background: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);

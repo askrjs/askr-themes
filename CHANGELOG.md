@@ -32,17 +32,21 @@
 - Buttons in an attached `ButtonGroup` draw their focus ring inside the button
   so the -1px overlap never covers it.
 - `ButtonGroup` keeps a caller-supplied `data-responsive`.
-- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm (except
-  `hidden`, table-cell, and list-item empty states); the `EmptyState` component
-  keeps its `Block` props (`hide`, `padding`, `gap`).
+- Raw `[data-slot="empty-state"]` markup gets a centered grid rhythm, except
+  `hidden` empty states and table, list, and disclosure parts, which keep their
+  native display; the `EmptyState` component keeps its `Block` props (`hide`,
+  `padding`, `gap`).
 - Native `button`, `input`, `select`, and `textarea` elements with a
   `data-slot` inherit the surrounding font.
 - The shared disabled style also matches the native `disabled` attribute on
   raw button, input, textarea, select-trigger, checkbox, radio, and switch
-  markup. Disabled textareas use the disabled tokens instead of half opacity
-  and stay scrollable.
+  markup, sets `cursor: not-allowed`, and changes only `background-color` so
+  checkbox and select indicators stay visible. Disabled textareas use the
+  disabled tokens instead of half opacity; raw natively disabled ones stay
+  scrollable.
 - Hover fills stay perceptible on popover surfaces in light and dark mode, and
-  selected and primary-soft fills stay clearly stronger than hover.
+  selected and primary-soft fills stay clearly stronger than hover (light
+  primary-soft and selected are now `#ebe2f0`).
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
 

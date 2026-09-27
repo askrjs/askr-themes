@@ -3,9 +3,9 @@
 }
 
 /* The EmptyState component lays out through Block props; raw block markup gets the same rhythm
-   here. Hidden, table-cell, and list-item empty states keep their native display. */
+   here. Hidden empty states and table, list, and disclosure parts keep their native display. */
 :where(.empty-state, [data-slot="empty-state"]):where(
-  :not([data-ak-layout], [hidden], td, th, li)
+  :not([data-ak-layout], [hidden], caption, thead, tbody, tfoot, tr, td, th, li, dt, dd, summary)
 ) {
   display: grid;
   justify-items: center;

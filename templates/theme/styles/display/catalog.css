@@ -24,6 +24,7 @@
   display: grid;
   gap: var(--ak-space-sm);
   min-inline-size: 0;
+  padding-inline: var(--_card-section-inset, var(--ak-space-2xl));
 }
 
 :where([data-slot="card-header"]) {
@@ -35,10 +36,6 @@
 
 :where([data-slot="card-header"]:has(> [data-slot="card-action"])) {
   grid-template-columns: minmax(0, 1fr) auto;
-}
-
-:where([data-slot="card-header"], [data-slot="card-content"], [data-slot="card-footer"]) {
-  padding-inline: var(--ak-space-2xl);
 }
 
 :where([data-slot="card-footer"]) {

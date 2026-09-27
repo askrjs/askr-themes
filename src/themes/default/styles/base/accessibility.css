@@ -11,10 +11,12 @@
   [data-slot="radio-group-item"]:where([data-disabled], :disabled),
   [data-slot="switch"]:where([data-disabled], :disabled)
 ) {
-  background: var(--ak-color-disabled-bg);
+  /* background-color only: checkbox and select indicators are background images. */
+  background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);
   box-shadow: none;
+  cursor: not-allowed;
   opacity: 1;
 }
 

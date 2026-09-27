@@ -338,7 +338,7 @@ describe("WCAG AA contrast", () => {
             expect(selected).toBeGreaterThan(hover);
             // THEMING invariant: selected must be visibly distinct from hover, not one step apart.
             expect(selected / hover).toBeGreaterThanOrEqual(1.08);
-            expect(ratioOnSurface("--ak-color-primary-soft")).toBeGreaterThan(hover);
+            expect(ratioOnSurface("--ak-color-primary-soft") / hover).toBeGreaterThanOrEqual(1.08);
           });
 
           it("should keep the documented elevation layers visually distinct", () => {

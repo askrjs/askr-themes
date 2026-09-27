@@ -345,6 +345,11 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       <button data-slot="button" disabled data-testid="disabled-button">Disabled</button>
       <button data-slot="button" data-testid="enabled-button">Enabled</button>
       <section data-slot="empty-state" hidden data-testid="hidden-raw-empty">Hidden</section>
+      <table><tbody><tr data-slot="empty-state" data-testid="row-empty"><td colspan="2">No rows</td></tr></tbody></table>
+      <button data-slot="checkbox" data-state="checked" disabled data-testid="disabled-checkbox"></button>
+      <textarea data-slot="textarea" data-disabled data-testid="soft-disabled-textarea"></textarea>
+      <style>:where(.app-pad [data-slot="card-content"]) { padding-inline: 10px; }</style>
+      <div class="app-pad"><article data-slot="card"><div data-slot="card-content" data-testid="app-padded-section">App</div></article></div>
       <table><tbody><tr><td data-slot="empty-state" colspan="2" data-testid="cell-empty">No rows</td></tr></tbody></table>
       <div data-slot="dialog-content"><div data-slot="card-content" data-testid="loose-section">Loose</div></div>
       <article data-slot="card" data-testid="nested-card">
@@ -384,6 +389,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
       bodyFont: getComputedStyle(container).fontFamily,
       hiddenEmptyDisplay: getComputedStyle(find("hidden-raw-empty")).display,
       cellEmptyDisplay: getComputedStyle(find("cell-empty")).display,
+      rowEmptyDisplay: getComputedStyle(find("row-empty")).display,
+      disabledCheckboxImage: getComputedStyle(find("disabled-checkbox")).backgroundImage,
+      softDisabledPointer: getComputedStyle(find("soft-disabled-textarea")).pointerEvents,
+      appPaddedSection: getComputedStyle(find("app-padded-section")).paddingInlineStart,
       looseSectionPadding: getComputedStyle(find("loose-section")).paddingInlineStart,
       aliasMarginTop: getComputedStyle(find("alias-only").children[1] as HTMLElement)
         .marginBlockStart,
@@ -401,6 +410,10 @@ test("should keep focus, disabled, and inset contracts across raw markup", async
   expect(measured.buttonFont).toBe(measured.bodyFont);
   expect(measured.hiddenEmptyDisplay).toBe("none");
   expect(measured.cellEmptyDisplay).toBe("table-cell");
+  expect(measured.rowEmptyDisplay).toBe("table-row");
+  expect(measured.disabledCheckboxImage).not.toBe("none");
+  expect(measured.softDisabledPointer).toBe("none");
+  expect(measured.appPaddedSection).toBe("10px");
   expect(Number.parseFloat(measured.looseSectionPadding)).toBeGreaterThanOrEqual(20);
   expect(measured.aliasMarginTop).toBe("0px");
   expect(Math.abs(measured.menuStart)).toBeLessThanOrEqual(0.5);
