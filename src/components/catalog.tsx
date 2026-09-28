@@ -2,8 +2,6 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import type { Ref } from "@askrjs/askr/foundations/utilities";
 import { DialogContent, DialogDescription, DialogTitle } from "@askrjs/ui";
-import { Block } from "./block";
-import type { BlockElement } from "./block";
 import { classes } from "./_internal/classes";
 import { mergeProps } from "./_internal/merge-props";
 
@@ -19,12 +17,15 @@ type CatalogElement = keyof JSX.IntrinsicElements;
  * Shared prop shape for the shadcn-compatible catalog primitives below: a
  * polymorphic `as`/`asChild` element plus passthrough attributes.
  */
-export type CatalogComponentProps = Record<string, unknown> & {
+export type CatalogComponentProps<TElement extends HTMLElement = HTMLElement> = Record<
+  string,
+  unknown
+> & {
   as?: CatalogElement;
   asChild?: boolean;
   children?: unknown;
   class?: string;
-  ref?: Ref<HTMLElement>;
+  ref?: Ref<TElement>;
 };
 
 type CatalogDefaults = {
@@ -36,7 +37,8 @@ type CatalogDefaults = {
 
 function catalogPart(props: CatalogComponentProps, defaults: CatalogDefaults): JSX.Element {
   const { as, asChild, children, class: className, ref, ...rest } = props;
-  const Element = (as ?? defaults.element ?? "div") as "div";
+  const Element = (as ?? defaults.element ?? "div") as CatalogElement;
+  const CatalogTag = Element as unknown as (props: Record<string, unknown>) => JSX.Element;
   const finalProps = mergeProps(rest, {
     ref,
     class: classes(defaults.className, className),
@@ -48,10 +50,14 @@ function catalogPart(props: CatalogComponentProps, defaults: CatalogDefaults): J
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
   }
 
-  return <Element {...finalProps}>{children}</Element>;
+  return <CatalogTag {...finalProps}>{children}</CatalogTag>;
 }
 
-function buttonPart(props: CatalogComponentProps, slot: string, className?: string): JSX.Element {
+function buttonPart(
+  props: CatalogComponentProps<HTMLButtonElement>,
+  slot: string,
+  className?: string,
+): JSX.Element {
   const { as, asChild, children, ref, class: classProp, type = "button", ...rest } = props;
   void as;
   const finalProps = mergeProps(rest, {
@@ -171,7 +177,9 @@ export function CalendarNav(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Button that navigates the calendar to the previous month. */
-export function CalendarPreviousButton(props: CatalogComponentProps): JSX.Element {
+export function CalendarPreviousButton(
+  props: CatalogComponentProps<HTMLButtonElement>,
+): JSX.Element {
   const { children = "Previous month", ...rest } = props;
   return buttonPart(
     { "aria-label": "Previous month", children, ...rest },
@@ -181,7 +189,7 @@ export function CalendarPreviousButton(props: CatalogComponentProps): JSX.Elemen
 }
 
 /** Button that navigates the calendar to the next month. */
-export function CalendarNextButton(props: CatalogComponentProps): JSX.Element {
+export function CalendarNextButton(props: CatalogComponentProps<HTMLButtonElement>): JSX.Element {
   const { children = "Next month", ...rest } = props;
   return buttonPart(
     { "aria-label": "Next month", children, ...rest },
@@ -217,7 +225,7 @@ export function CalendarCell(props: CatalogComponentProps): JSX.Element {
 
 /** Renders a single selectable day cell in the calendar grid, with selection/range/today state exposed as data attributes. */
 export function CalendarDay(
-  props: CatalogComponentProps & {
+  props: CatalogComponentProps<HTMLButtonElement> & {
     disabled?: boolean;
     outside?: boolean;
     rangeEnd?: boolean;
@@ -261,13 +269,13 @@ export function CarouselItem(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Button that navigates the carousel to the previous item. */
-export function CarouselPrevious(props: CatalogComponentProps): JSX.Element {
+export function CarouselPrevious(props: CatalogComponentProps<HTMLButtonElement>): JSX.Element {
   const { children = "Previous", ...rest } = props;
   return buttonPart({ children, ...rest }, "carousel-previous", "btn btn-icon");
 }
 
 /** Button that navigates the carousel to the next item. */
-export function CarouselNext(props: CatalogComponentProps): JSX.Element {
+export function CarouselNext(props: CatalogComponentProps<HTMLButtonElement>): JSX.Element {
   const { children = "Next", ...rest } = props;
   return buttonPart({ children, ...rest }, "carousel-next", "btn btn-icon");
 }
@@ -278,7 +286,7 @@ export function Combobox(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Styling-only combobox input; consumers supplying behavior also own its complete ARIA contract. */
-export function ComboboxInput(props: CatalogComponentProps): JSX.Element {
+export function ComboboxInput(props: CatalogComponentProps<HTMLInputElement>): JSX.Element {
   const { ref, class: className, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
@@ -310,7 +318,7 @@ export function CommandDialog(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Renders the command palette's search `<input>`. */
-export function CommandInput(props: CatalogComponentProps): JSX.Element {
+export function CommandInput(props: CatalogComponentProps<HTMLInputElement>): JSX.Element {
   const { ref, class: className, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
@@ -389,7 +397,7 @@ export function DatePicker(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Native `<input type="date">` styling slot; browser behavior and localization remain native. */
-export function DatePickerInput(props: CatalogComponentProps): JSX.Element {
+export function DatePickerInput(props: CatalogComponentProps<HTMLInputElement>): JSX.Element {
   const { ref, class: className, type = "date", ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
@@ -569,7 +577,7 @@ export function Kbd(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Renders a styled native `<select>` element. */
-export function NativeSelect(props: CatalogComponentProps): JSX.Element {
+export function NativeSelect(props: CatalogComponentProps<HTMLSelectElement>): JSX.Element {
   const { children, ref, class: className, ...rest } = props;
   const finalProps = mergeProps(rest, {
     ref,
@@ -596,7 +604,9 @@ export function NavigationMenuItem(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Renders the `navigation-menu-content` part of the shadcn-compatible catalog primitives. */
-export function NavigationMenuTrigger(props: CatalogComponentProps): JSX.Element {
+export function NavigationMenuTrigger(
+  props: CatalogComponentProps<HTMLButtonElement>,
+): JSX.Element {
   return buttonPart(props, "navigation-menu-trigger", "nav-item");
 }
 
@@ -703,7 +713,7 @@ export function TabsList(props: CatalogComponentProps): JSX.Element {
 }
 
 /** Styling-only trigger button; it does not select or associate a tab panel. */
-export function TabsTrigger(props: CatalogComponentProps): JSX.Element {
+export function TabsTrigger(props: CatalogComponentProps<HTMLButtonElement>): JSX.Element {
   return buttonPart(props, "tabs-trigger", "tab");
 }
 
