@@ -147,6 +147,7 @@ describe("components entrypoint", () => {
 
   it("should render new catalog-only anatomy with stable slots", () => {
     expect(asElement(AlertTitle({ children: "Heads up" })).props["data-slot"]).toBe("alert-title");
+    expect(AlertTitle({ as: "h2", children: "Section" }).type).toBe("h2");
     expect(asElement(AlertDescription({ children: "Details" })).props["data-slot"]).toBe(
       "alert-description",
     );
