@@ -1,4 +1,4 @@
-import { jsx, jsxs } from "@askrjs/askr/jsx-runtime";
+import { jsx, jsxs, type JSX } from "@askrjs/askr/jsx-runtime";
 import { describe, expect, it } from "vite-plus/test";
 
 import { serializeForId } from "../../src/components/_internal/jsx";

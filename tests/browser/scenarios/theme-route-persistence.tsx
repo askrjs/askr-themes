@@ -1,6 +1,7 @@
 import { createSPA } from "@askrjs/askr/boot";
 import { createQuery } from "@askrjs/askr/data";
 import { navigate } from "@askrjs/askr/router";
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 
 import { Block, Container, Header, Main, NavGroup, Navbar } from "../../../src/core";
 import {
