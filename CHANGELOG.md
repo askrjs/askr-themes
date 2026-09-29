@@ -37,7 +37,9 @@
 - Focus rings are drawn once, as an `outline` of `--ak-focus-ring-width` in
   `--ak-color-focus-ring` set `--ak-focus-ring-offset` (2px) away from the
   control, from a single `:where(:focus-visible)` rule in
-  `styles/base/reset.css`. Components no longer draw their own zero-offset
+  `styles/base/reset.css`. Because the rule has zero specificity, it also
+  replaces the browser's default ring on plain links, native controls, and
+  `tabindex` elements, and any app `outline` rule overrides it. Components no longer draw their own zero-offset
   `box-shadow` ring, so the ring no longer touches a primary fill (primary
   buttons, checked checkboxes, on switches) and only needs 3:1 against the
   surfaces a control sits on. Rows inside clipping containers (menu, dropdown,
