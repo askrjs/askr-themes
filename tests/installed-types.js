@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -46,6 +46,31 @@ try {
     stdio: "pipe",
     shell: process.platform === "win32",
   });
+  // Askr 0.4 scopes JSX types to `@askrjs/askr/jsx-runtime`. Published
+  // declarations must never reintroduce a global `JSX` namespace, because that
+  // leaks into every consumer compilation that loads `@askrjs/themes`.
+  const installedPackageRoot = join(consumerRoot, "node_modules/@askrjs/themes");
+  const globalJsxLeaks = [];
+  const scanDeclarations = (directory) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const entryPath = join(directory, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name !== "node_modules") scanDeclarations(entryPath);
+      } else if (/\.d\.[cm]?ts$/.test(entry.name)) {
+        const source = readFileSync(entryPath, "utf8");
+        if (/\bdeclare\s+global\b/.test(source) || /\bnamespace\s+JSX\b/.test(source)) {
+          globalJsxLeaks.push(entryPath.slice(installedPackageRoot.length + 1));
+        }
+      }
+    }
+  };
+  scanDeclarations(installedPackageRoot);
+  if (globalJsxLeaks.length > 0) {
+    throw new Error(
+      `Published declarations must not augment the global JSX namespace:\n  ${globalJsxLeaks.join("\n  ")}`,
+    );
+  }
+
   writeFileSync(
     join(consumerRoot, "index.tsx"),
     [
@@ -75,6 +100,12 @@ try {
       'import "@askrjs/themes/templates/theme/index.css";',
       'import { Block, Heading, PageHeader, Stack, Toolbar, type BlockProps, type DialogProps, type GridProps, type HeadingProps, type SidebarRailProps, type TextProps } from "@askrjs/themes/components";',
       'import { withThemeStyles } from "@askrjs/themes/ssr";',
+      'import type { JSX as AskrJSX } from "@askrjs/askr/jsx-runtime";',
+      "const scopedElement: AskrJSX.Element = <Block><Heading level={2}>Scoped</Heading></Block>;",
+      'const scopedComponentResult: AskrJSX.Element = Block({ children: "scoped" });',
+      "// @ts-expect-error @askrjs/themes must not declare a global JSX namespace.",
+      "type LeakedGlobalJsxElement = JSX.Element;",
+      "void scopedElement; void scopedComponentResult; void (null as LeakedGlobalJsxElement | null);",
       "const fixture = <Block><span>strict consumer</span></Block>;",
       'const granular = <GranularPage><GranularPageHeader title="Status" /><GranularContainer><GranularSection><GranularStack gap="sm"><GranularCenter minHeight="sm"><GranularText>one</GranularText></GranularCenter><GranularCluster gap="xs"><GranularText>two</GranularText></GranularCluster><GranularGrid columns={2}><GranularBlock /><GranularBlock /></GranularGrid></GranularStack></GranularSection></GranularContainer></GranularPage>;',
       'const palette = <CommandPalette><CommandPaletteTrigger>Search</CommandPaletteTrigger><CommandPaletteContent title="Search docs"><CommandPaletteList><CommandPaletteLink href="/docs">Docs</CommandPaletteLink></CommandPaletteList></CommandPaletteContent></CommandPalette>;',
