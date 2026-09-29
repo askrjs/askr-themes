@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vite-plus/test";
 
 import { cleanupApp, createSPA, hydrateSPA } from "@askrjs/askr/boot";
 import { renderToStringSync } from "@askrjs/askr/ssr";
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 
 import {
   CAT_THEME_NAMES,
