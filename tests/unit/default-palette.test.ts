@@ -142,7 +142,10 @@ describe("default palette", () => {
         const { c, h } = toOklch(color("--ak-color-primary"));
         expect(h, `primary hue ${h.toFixed(1)}`).toBeGreaterThanOrEqual(BLUE_HUE[0]);
         expect(h, `primary hue ${h.toFixed(1)}`).toBeLessThanOrEqual(BLUE_HUE[1]);
-        expect(c, "primary should be a confident, saturated blue").toBeGreaterThanOrEqual(0.1);
+        // Dark mode needs a pale primary: the focus ring must reach 3:1 against both it and the
+        // darkest surfaces, which leaves little sRGB gamut for chroma at that lightness.
+        const minChroma = mode === "light" ? 0.15 : 0.06;
+        expect(c, "primary should be a saturated blue").toBeGreaterThanOrEqual(minChroma);
       });
 
       it("should keep every palette color free of purple hues", () => {

@@ -113,7 +113,7 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
 restrained enough for application chrome, and polished enough that downstream apps should not
 need to fix basic spacing or type rhythm.
-Ink plum actions, warm neutral surfaces, and subtle borders carry through its light
+Saturated blue actions, cool slate surfaces, and subtle borders carry through its light
 and dark palettes.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
