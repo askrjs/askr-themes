@@ -71,6 +71,13 @@ try {
     );
   }
 
+  const granularEntries = readdirSync(join(installedPackageRoot, "dist/entries"))
+    .filter((name) => name.endsWith(".d.ts"))
+    .map((name) => name.slice(0, -".d.ts".length));
+  if (granularEntries.length === 0) {
+    throw new Error("Expected granular entry declarations in the installed package.");
+  }
+
   writeFileSync(
     join(consumerRoot, "index.tsx"),
     [
@@ -140,6 +147,11 @@ try {
       "const invalidHeadingLevel = <Heading level={7}>Invalid</Heading>;",
       'const rail: SidebarRailProps = { type: "button" };',
       "void fixture; void granular; void palette; void paletteContent; void inputWithRef; void selectWithRef; void buttonWithRef; void commandWithWrongRef; void selectWithWrongRef; void block; void wrapped; void invalidWrap; void invalidDirectionContract; void invalidToolbarDirection; void invalidPageHeaderRowFrom; void grid; void text; void heading; void headingProps; void missingHeadingLevel; void invalidHeadingLevel; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
+      // Load every granular entry declaration so strict lib checking catches
+      // any emitted reference to a JSX namespace that is not imported.
+      ...granularEntries.map(
+        (entry, index) => `import type * as GranularEntry${index} from "@askrjs/themes/${entry}";`,
+      ),
     ].join("\n"),
   );
   writeFileSync(
