@@ -161,16 +161,16 @@ describe("package surface", () => {
       packages?: Record<string, { version?: string }>;
     };
 
-    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.3.0 <0.4.0");
-    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.3.0 <0.4.0");
-    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.3.0 <0.4.0");
-    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.3.0 <0.4.0");
+    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.4.0 <0.5.0");
+    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.4.0 <0.5.0");
+    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.4.0 <0.5.0");
+    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.4.0 <0.5.0");
 
     // Guards against a half-updated lockfile: the declared ranges above can be
-    // bumped to 0.3.x while the resolved tree still pins 0.2.x, which fails
+    // bumped to 0.4.x while the resolved tree still pins 0.3.x, which fails
     // `npm ci` long after the ranges look correct.
-    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toMatch(/^0\.3\./);
-    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toMatch(/^0\.3\./);
+    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toMatch(/^0\.4\./);
+    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toMatch(/^0\.4\./);
   });
 
   it("should expose the styled component catalog from the aggregate entrypoint", () => {
