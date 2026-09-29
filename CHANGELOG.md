@@ -26,7 +26,7 @@
   Token names are unchanged. Apps that override only the primary scale now
   get slate neutrals instead of plum ones; the cat presets are unchanged.
 
-## 0.4.0 - 2026-09-29
+## 0.4.0 - 2026-09-28
 
 Upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 at the same time. The default
 theme's palette, `Card` inset, and attached `ButtonGroup` layout change
@@ -40,12 +40,29 @@ visibly; review the breaking entries below before upgrading.
   package, following their 0.4.0 changelogs (for example, `For`/`Show` now
   import from `@askrjs/askr/control`, and data APIs from `@askrjs/askr/data`).
 - **Breaking:** the default palette moves from grayscale to an ink plum accent with warm
-  neutral surfaces. Beyond the primary scale, the neutrals, hover, selected,
-  focus-ring, and every `--ak-dark-color-*` token are plum-tinted, so rebrands
-  that overrode only the light primary tokens should also override those.
-  Migration: to keep the 0.3 look, pin the `--ak-color-*` and
-  `--ak-dark-color-*` tokens you rely on in your theme scope; a rebrand that
-  already sets every palette token is unaffected.
+  neutral surfaces. Beyond the primary scale, the backgrounds, surfaces
+  (light `--ak-color-surface-raised` is now white instead of a step darker than
+  the surface), borders, disabled tokens, hover, selected, and focus ring are
+  plum-tinted in light and dark mode, and `--ak-color-danger`/`-soft` move to a
+  warmer red (`#b3404b`; dark `#f18c92`). The success, warning, and info
+  tokens are unchanged. Dark-mode links now use `--ak-dark-color-primary`
+  instead of the text color, so they render plum rather than white.
+  Migration: rebrands that overrode only the light primary tokens should also
+  override the neutral, border, disabled, danger, and `--ak-dark-color-*`
+  tokens. Copying the values from the 0.3.0 `src/themes/default/tokens.css`
+  into your theme scope restores the 0.3 colors, but component state styling
+  still differs (see the palette-state entry under Changed), so it does not
+  restore the 0.3 appearance exactly.
+- **Breaking:** theme styles no longer read `--ak-color-accent` or
+  `--ak-color-accent-ink`. In 0.3 outline and ghost button hover, close
+  buttons, command, combobox, select, and nav items, pills, dropdown and
+  popover triggers, calendar today and range-middle days, and sidebar menu
+  actions used them; they now use `--ak-color-hover` and `--ak-color-text`.
+  Both tokens stay defined (`--ak-color-accent` as an alias of
+  `--ak-color-hover`), so nothing fails, but overriding them no longer changes
+  any component.
+  Migration: override `--ak-color-hover` (and `--ak-color-text` for the ink)
+  instead.
 - **Breaking:** `Card` owns its inline inset. The root pads its inline sides with
   `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
   `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
@@ -56,16 +73,21 @@ visibly; review the breaking entries below before upgrading.
   directly in a card does so by default and drops its own frame;
   `data-bleed="false"` keeps either inset). Change the inset with the optional
   `--ak-card-inset` hook (default `var(--ak-space-2xl)`, resolved on each
-  card); overriding the card's `padding` instead also removes section padding,
+  card; it inherits, so it also applies to nested cards unless they set their
+  own). Card sections inside floating, navigation, menu, or toast surfaces
+  within a card keep their own inline padding. Overriding the card's `padding` instead also removes section padding,
   because sections rely on the card's inset.
 - **Breaking:** attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
-  Pass `orientation="horizontal"` to keep the row. Groups that contain icon
-  buttons, and detached groups, keep their row. Raw markup opts in with both
+  Pass `orientation="horizontal"` (or `data-responsive="false"`) to keep the
+  row; a caller-supplied `data-responsive` always wins. Groups that contain
+  icon buttons, and detached groups, keep their row. Raw markup opts in with both
   `data-attached="true"` and `data-responsive="true"`.
-- **Breaking:** attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
-  require `data-attached="true"`. The `.btn-group-vertical` class alias works on
-  its own or with `.btn-group`.
+- **Breaking:** the vertical -1px overlap between buttons now requires
+  `data-attached="true"`; in 0.3 a raw `.btn-group-vertical` got it without
+  that attribute (the joined radii already required it). A raw
+  `.btn-group-vertical` without `.btn-group` is now laid out as an
+  `inline-flex` column instead of a block.
   Migration: raw vertical groups that should stay joined add
   `data-attached="true"`; the `ButtonGroup` component already emits it.
 - **Breaking (types):** `CatalogComponentProps` takes an element type parameter
@@ -80,11 +102,17 @@ visibly; review the breaking entries below before upgrading.
   Migration: callback refs typed for `HTMLElement` still work; a ref object or
   state typed `HTMLElement` passed to one of these parts must use the specific
   element type (for example `Ref<HTMLButtonElement>`).
+- **Breaking (types):** `ButtonGroupProps` declares
+  `"data-responsive"?: "true" | "false"`, which narrows the generic `data-*`
+  attribute type, so `data-responsive={true}` or a reactive function value no
+  longer typechecks.
+  Migration: pass the string `"true"` or `"false"`.
 
 ### Deprecated
 
-- None. `--ak-color-accent` stays defined as an alias of `--ak-color-hover`,
-  though theme styles no longer read it.
+- `--ak-color-accent` and `--ak-color-accent-ink` are compatibility aliases
+  (THEMING.md). They stay defined, but no theme style reads them; use
+  `--ak-color-hover` and `--ak-color-text`.
 
 ### Changed
 
@@ -93,7 +121,9 @@ visibly; review the breaking entries below before upgrading.
   `--ak-color-hover` everywhere (theme styles no longer use its
   `--ak-color-accent` alias, which stays defined); checked select options,
   active items, selected table rows, active sidebar buttons, and checked radio
-  cards use `--ak-color-selected`, so selection no longer looks like hover.
+  cards use `--ak-color-selected`, so selection no longer looks like hover
+  (calendar today and range-middle days are the exception and use
+  `--ak-color-hover`).
   Tabs, pagination, breadcrumbs, the navbar toggle, secondary buttons, table
   rows, and radio cards hover with `--ak-color-hover` instead of muted-surface
   mixes; selected tabs lift onto `--ak-color-surface` like toggle groups; the
@@ -104,15 +134,10 @@ visibly; review the breaking entries below before upgrading.
   corners at every width, and a lone button keeps all four corners.
 - The focused button in an attached `ButtonGroup` lifts above its neighbors so
   the -1px overlap never covers its focus ring; hover does not lift.
-- `--ak-card-inset` inherits like any token, so it also applies to nested
-  cards unless they set their own.
-- Card sections inside floating, navigation, menu, or toast surfaces within a
-  card keep their own inline padding.
 - Hover stays visible on muted tracks such as pills and toggle groups, tested
   as a contrast pair.
 - Raw inputs, radio items, and select triggers with the native `disabled`
   attribute block pointer input like their `data-disabled` forms.
-- `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Raw `[data-slot="empty-state"]` and `.empty-state` markup on plain block containers (`div`,
   `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
   gets a centered grid rhythm; the `EmptyState` component keeps its `Block`
