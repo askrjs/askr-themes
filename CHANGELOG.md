@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Changed
+
+- The default palette moves from plum to blue: `--ak-color-primary` is now
+  `#062fac` (dark `#bfd2fe`), and the soft, ink, selected, focus-ring, and
+  inverse-text tokens follow it. The plum-tinted neutrals (text, surfaces,
+  borders, hover, and disabled tokens) shift to a cool slate in both modes. The
+  primary is deeper in light mode, and paler in dark mode, than a mid blue so
+  the focus ring keeps 3:1 against both the primary fill and every surface.
+  Token names are unchanged. Apps that override only the primary scale now
+  get slate neutrals instead of plum ones; the cat presets are unchanged.
+
 ### Breaking
 
 - The default palette moves from grayscale to an ink plum accent with warm
