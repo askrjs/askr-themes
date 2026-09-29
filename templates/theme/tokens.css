@@ -197,7 +197,7 @@
 
   --ak-dark-color-link: var(--ak-dark-color-primary);
   --ak-dark-color-link-hover: color-mix(in oklch, var(--ak-dark-color-link) 88%, transparent);
-  --ak-dark-color-focus-ring: oklch(0.565 0.09 262);
+  --ak-dark-color-focus-ring: oklch(0.5675 0.15 262);
   --ak-dark-color-disabled-bg: #292e34;
   --ak-dark-color-disabled-surface: #181c22;
   --ak-dark-color-disabled-border: #747c88;
