@@ -121,3 +121,35 @@ test("should keep every public theme family perceptible in emulated forced color
     slots.map(({ slot }) => ({ slot, transparentColor: false, outlineless: false })),
   );
 });
+
+test("should keep a gapped system-colour ring on primary-filled and attached controls", async ({
+  markup,
+  page,
+  root,
+}) => {
+  await markup(`
+    <button data-slot="button" data-testid="primary">Save</button>
+    <button data-slot="checkbox" role="checkbox" aria-checked="true" data-state="checked" aria-label="Checked" data-testid="checkbox"></button>
+    <button data-slot="switch" role="switch" aria-checked="true" data-state="checked" aria-label="On" data-testid="switch"></button>
+    <div data-slot="button-group" data-attached="true">
+      <button data-slot="button">One</button>
+      <button data-slot="button" data-testid="group-button">Two</button>
+    </div>
+  `);
+  expect(await page.evaluate(() => matchMedia("(forced-colors: active)").matches)).toBe(true);
+
+  for (const testId of ["primary", "checkbox", "switch", "group-button"]) {
+    await page.keyboard.press("Shift");
+    await root.getByTestId(testId).focus();
+    const measured = await root.getByTestId(testId).evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        testId: element.getAttribute("data-testid"),
+        outlineStyle: styles.outlineStyle,
+        gapped: Number.parseFloat(styles.outlineOffset) >= 1,
+        boxShadow: styles.boxShadow,
+      };
+    });
+    expect(measured).toEqual({ testId, outlineStyle: "solid", gapped: true, boxShadow: "none" });
+  }
+});

@@ -30,9 +30,7 @@
 }
 
 :where(.textarea:focus-visible, [data-slot="textarea"]:focus-visible) {
-  outline: none;
   border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.textarea[aria-invalid="true"], [data-slot="textarea"][aria-invalid="true"]) {

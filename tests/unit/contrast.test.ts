@@ -230,11 +230,15 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-info-ink", "--ak-color-info-soft", 3, "info ink on soft"],
 
   // Primary ink on primary soft (badge default)
-  ["--ak-color-primary-ink", "--ak-color-primary-soft", 3, "primary ink on soft"],
+  ["--ak-color-primary-ink", "--ak-color-primary-soft", 4.5, "primary ink on soft"],
+
+  // Primary used as text (ghost/link buttons, active tabs)
+  ["--ak-color-primary", "--ak-color-bg", 4.5, "primary text on bg"],
+  ["--ak-color-primary", "--ak-color-surface", 4.5, "primary text on surface"],
 
   // Link on backgrounds
-  ["--ak-color-link", "--ak-color-bg", 3, "link on bg"],
-  ["--ak-color-link", "--ak-color-surface", 3, "link on surface"],
+  ["--ak-color-link", "--ak-color-bg", 4.5, "link on bg"],
+  ["--ak-color-link", "--ak-color-surface", 4.5, "link on surface"],
 
   // Canonical semantic pairings. These are public token contracts, not
   // component-specific approximations.
@@ -243,14 +247,17 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-warning", "--ak-color-surface", 3, "warning UI on surface"],
   ["--ak-color-info", "--ak-color-surface", 3, "info UI on surface"],
 
-  // The one shared focus-ring token must remain visible on every documented
-  // surface where a default-theme control can appear.
+  // The focus ring is drawn with a gap (outline-offset) between the control and
+  // the ring, so the colours adjacent to the ring are the surface the control
+  // sits on, never the control's own fill. WCAG 1.4.11 / 2.4.13 therefore asks
+  // for 3:1 against every documented surface (including the selected fill a
+  // focused row or checkbox can sit on), not against the primary fill.
   ["--ak-color-focus-ring", "--ak-color-bg", 3, "focus ring on page"],
   ["--ak-color-focus-ring", "--ak-color-surface", 3, "focus ring on surface"],
   ["--ak-color-focus-ring", "--ak-color-surface-muted", 3, "focus ring on muted surface"],
   ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
   ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
-  ["--ak-color-focus-ring", "--ak-color-primary", 3, "focus ring on primary surface"],
+  ["--ak-color-focus-ring", "--ak-color-primary-soft", 3, "focus ring on selected fill"],
 
   // Menu, select, and command items show hover and keyboard focus only through
   // the hover fill, so it must stay perceptible on the popover surface.

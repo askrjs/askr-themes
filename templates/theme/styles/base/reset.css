@@ -36,3 +36,16 @@
   background: color-mix(in srgb, var(--ak-color-primary-soft) 84%, transparent);
   color: var(--ak-color-text);
 }
+
+/*
+ * The one focus ring. An outline sits `--ak-focus-ring-offset` away from the control, so the
+ * colours next to the ring are always the surface the control sits on, never its own fill:
+ * a primary button, checked checkbox, or on switch cannot swallow it. Outlines follow
+ * border-radius, never shift layout, paint above in-flow neighbours, and switch to
+ * system colours in forced-colors mode. Components only change the offset (inset rows in
+ * clipping containers) or opt out when a wrapper draws the ring.
+ */
+:where(:focus-visible) {
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: var(--ak-focus-ring-offset);
+}

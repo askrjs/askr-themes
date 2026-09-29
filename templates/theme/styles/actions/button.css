@@ -84,12 +84,6 @@
   background: var(--ak-color-primary-active);
 }
 
-:where(.btn:focus-visible, [data-slot="button"]:focus-visible) {
-  outline: none;
-  border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where(
   .btn[data-disabled],
   .btn:disabled,
@@ -175,8 +169,6 @@
   [data-slot="button"][data-variant="destructive"]:focus-visible
 ) {
   border-color: var(--ak-color-danger);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width)
-    color-mix(in oklch, var(--ak-color-danger) 20%, transparent);
 }
 
 :where(.btn-link, [data-slot="button"][data-variant="link"]) {
@@ -227,11 +219,6 @@
 :where(.btn-close:active) {
   background: var(--ak-color-active);
   border-color: transparent;
-}
-
-:where(.btn-close:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.btn-close[data-disabled], .btn-close:disabled) {
@@ -292,11 +279,4 @@
   inline-size: var(--_button-height);
   min-inline-size: var(--_button-height);
   padding-inline: 0;
-}
-
-/* Keep the focus contract last so variant box-shadow resets cannot hide it. */
-:where(.btn, .btn-close, [data-slot="button"]):focus-visible {
-  outline: none;
-  border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }

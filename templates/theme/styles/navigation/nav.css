@@ -69,11 +69,6 @@
   box-shadow: none;
 }
 
-:where(.nav-item:focus-visible, .navbar-item:focus-visible, [data-slot="nav-item"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where(.tabs, [data-slot="tabs"]) {
   display: flex;
   flex-wrap: wrap;
@@ -120,11 +115,6 @@
   background: var(--ak-color-surface);
   border-color: transparent;
   box-shadow: var(--ak-shadow-xs);
-}
-
-:where(.tab:focus-visible, [data-slot="tab"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.pills, [data-slot="pills"]) {
@@ -174,9 +164,4 @@
   background: var(--ak-color-selected);
   border-color: var(--ak-color-selected-border);
   box-shadow: none;
-}
-
-:where(.pill:focus-visible, [data-slot="pill"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }

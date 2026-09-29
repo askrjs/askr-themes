@@ -608,7 +608,8 @@ Button:
 - background uses `--ak-color-primary`
 - hover uses `--ak-color-primary-hover`
 - active uses `--ak-color-primary-active`
-- focus uses `--ak-color-focus-ring`
+- focus uses the shared ring: an `outline` of `--ak-focus-ring-width` in
+  `--ak-color-focus-ring`, drawn `--ak-focus-ring-offset` away from the control
 - disabled styles use disabled tokens
 
 Card:
@@ -747,7 +748,9 @@ The default theme and any future reintroduced themes must satisfy these invarian
 5. `--ak-color-primary-ink` must be readable on `--ak-color-primary-soft`
 6. each status `*-ink` must be readable on its corresponding `*-soft`
 7. borders must remain visible against adjacent surfaces
-8. focus ring must remain visible on both bg and surface contexts
+8. focus ring must reach 3:1 against every surface a control can sit on; it is
+   drawn behind a `--ak-focus-ring-offset` gap, so it never needs contrast
+   against the control's own fill (primary buttons, checked checkboxes, switches)
 9. disabled text must appear visually disabled without becoming unreadable
 10. backdrop must provide sufficient separation for modal surfaces
 11. hover and active states must remain perceptible but restrained
@@ -1098,13 +1101,35 @@ The default light and dark modes additionally publish this canonical semantic
 pairing matrix. Ratios apply to browser-resolved colors after alpha and element
 opacity are composited:
 
-| Semantic pairing                                                                        | Minimum |
-| --------------------------------------------------------------------------------------- | ------: |
-| Ordinary or subtle text on its documented surface                                       |   4.5:1 |
-| Strong boundaries, warning UI, and info UI on a surface                                 |     3:1 |
-| The shared focus indicator on page, surface, muted, raised, overlay, and primary layers |     3:1 |
-| Disabled control fill against the page                                                  |   1.5:1 |
-| Disabled control boundary against the page when the fill is below 1.5:1                 |     3:1 |
+| Semantic pairing                                                                         | Minimum |
+| ---------------------------------------------------------------------------------------- | ------: |
+| Ordinary or subtle text on its documented surface                                        |   4.5:1 |
+| Strong boundaries, warning UI, and info UI on a surface                                  |     3:1 |
+| The shared focus indicator on page, surface, muted, raised, overlay, and selected layers |     3:1 |
+| Disabled control fill against the page                                                   |   1.5:1 |
+| Disabled control boundary against the page when the fill is below 1.5:1                  |     3:1 |
+
+### Focus Ring
+
+Every focusable element gets one ring from `styles/base/reset.css`:
+
+```css
+:where(:focus-visible) {
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: var(--ak-focus-ring-offset);
+}
+```
+
+The offset leaves a gap between the control and the ring, so the ring's
+neighbours are always the surface behind the control. That is why the primary
+can be any brightness: the ring is measured against surfaces, not against the
+primary fill. Components do not redraw the ring. Rows that run edge to edge
+inside a clipping or scrolling container (menu, dropdown, menubar, select, and
+command items, sidebar rows, the navbar toggle) set
+`outline-offset: calc(-1 * var(--ak-focus-ring-width))` to draw it inside the
+row, and focused members of attached button and input groups are lifted with
+`z-index: 1` so a neighbour cannot cover it. Retheme the ring with
+`--ak-color-focus-ring`, `--ak-focus-ring-width`, and `--ak-focus-ring-offset`.
 
 ### Forced Colors
 

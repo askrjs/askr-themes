@@ -170,12 +170,13 @@
   min-block-size: var(--ak-density-control-height-md);
 }
 
+/* Menu rows run edge to edge inside the scrolling `sidebar-content`, which would clip an outer
+   ring; draw it inside the row instead. The trigger keeps the shared outer ring. */
 :where(
   [data-slot="sidebar-menu-button"]:focus-visible,
-  [data-slot="sidebar-trigger"]:focus-visible
+  [data-slot="sidebar"] [data-slot="nav-item"]:focus-visible
 ) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  outline-offset: calc(-1 * var(--ak-focus-ring-width));
 }
 
 :where([data-slot="sidebar-menu-action"]) {

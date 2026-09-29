@@ -26,11 +26,6 @@
   border-color: var(--ak-color-primary);
 }
 
-:where([data-slot="checkbox"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="checkbox"][data-state="checked"]),
 :where([data-slot="checkbox"][aria-checked="true"]) {
   border-color: var(--ak-color-primary);

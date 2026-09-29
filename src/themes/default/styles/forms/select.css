@@ -31,15 +31,14 @@
 }
 
 :where(.select-trigger:focus-visible, [data-slot="select-trigger"]:focus-visible) {
-  outline: none;
   border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.select-trigger[data-state="open"], [data-slot="select-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
   background: transparent;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: var(--ak-focus-ring-offset);
 }
 
 :where(
@@ -152,7 +151,7 @@
 }
 
 :where(.select-item:focus-visible, [data-slot="select-item"]:focus-visible) {
-  outline: none;
+  outline-offset: calc(-1 * var(--ak-focus-ring-width));
   background: var(--ak-color-hover);
   box-shadow: none;
 }

@@ -61,11 +61,6 @@
   color: var(--ak-color-text);
 }
 
-:where([data-slot="toggle"]:focus-visible, [data-slot="toggle-group-item"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="toggle"][data-state="on"], [data-slot="toggle-group-item"][data-state="on"]) {
   border-color: var(--ak-color-selected-border);
   background: var(--ak-color-surface);

@@ -32,8 +32,12 @@
 }
 
 :where([data-slot="menu-item"]:hover, [data-slot="menu-item"]:focus-visible) {
-  outline: none;
   background: var(--ak-color-hover);
+}
+
+/* `menu-content` clips its rows, so the ring draws inside the focused row. */
+:where([data-slot="menu-item"]:focus-visible) {
+  outline-offset: calc(-1 * var(--ak-focus-ring-width));
 }
 
 :where([data-slot="menu-item"][data-disabled="true"]) {

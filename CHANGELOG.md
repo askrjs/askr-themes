@@ -24,14 +24,29 @@
 
 ### Changed
 
-- The default palette moves from plum to blue: `--ak-color-primary` is now
-  `#062fac` (dark `#bfd2fe`), and the soft, ink, selected, focus-ring, and
-  inverse-text tokens follow it. The plum-tinted neutrals (text, surfaces,
-  borders, hover, and disabled tokens) shift to a cool slate in both modes. The
-  primary is deeper in light mode, and paler in dark mode, than a mid blue so
-  the focus ring keeps 3:1 against both the primary fill and every surface.
-  Token names are unchanged. Apps that override only the primary scale now
-  get slate neutrals instead of plum ones; the cat presets are unchanged.
+- The default palette moves from plum to a bright blue: `--ak-color-primary`
+  is now `#2d5dd6` (dark `#9db8ff`), with `--ak-color-primary-soft` `#d4e0fa`
+  (dark `#283b66`), `--ak-color-primary-ink` `#1f47a8` (dark `#c9d8ff`), dark
+  `--ak-color-text-inverse` `#0f1b38`, and `--ak-color-focus-ring`
+  `oklch(0.56 0.16 263)` (dark `oklch(0.72 0.13 262)`). The plum-tinted
+  neutrals (text, surfaces, borders, hover, and disabled tokens) shift to a cool
+  slate in both modes. Primary text, links, inverse text on the primary, and
+  primary ink on primary soft all keep 4.5:1. Token names are unchanged. Apps
+  that override only the primary scale now get slate neutrals instead of plum
+  ones; the cat presets are unchanged.
+- Focus rings are drawn once, as an `outline` of `--ak-focus-ring-width` in
+  `--ak-color-focus-ring` set `--ak-focus-ring-offset` (2px) away from the
+  control, from a single `:where(:focus-visible)` rule in
+  `styles/base/reset.css`. Components no longer draw their own zero-offset
+  `box-shadow` ring, so the ring no longer touches a primary fill (primary
+  buttons, checked checkboxes, on switches) and only needs 3:1 against the
+  surfaces a control sits on. Rows inside clipping containers (menu, dropdown,
+  menubar, select, and command items, sidebar rows, the navbar toggle) draw
+  the ring inset, and focused members of attached button and input groups are
+  lifted above their neighbours. Focused buttons no longer switch their border
+  to `--ak-color-ring`. Apps that styled focus by overriding a component's
+  focus `box-shadow` should override `outline`/`outline-offset` or the
+  `--ak-focus-ring-*` tokens instead.
 
 ## 0.4.0 - 2026-09-28
 
