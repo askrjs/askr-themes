@@ -28,15 +28,16 @@
 - Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
   require `data-attached="true"`. The `.btn-group-vertical` class alias works on
   its own or with `.btn-group`.
-- A `:root` color-token override, the pattern THEMING.md documents, now
-  restyles light mode only (#155). The dark block and the cat presets select
+- A `:root` token override, the pattern THEMING.md documents, no longer
+  replaces the tokens that dark mode or a cat preset sets itself (#155). The
+  dark block and the presets now also select
   `:root[data-theme="…"], [data-theme="…"]`, so explicit `data-theme="dark"`
   and preset themes keep their own values instead of taking the light
-  override. System dark already behaved this way. To restyle dark mode, set the
-  `--ak-dark-color-*` hooks on `:root`; a bare `[data-theme="dark"]` override
-  now loses on `<html>` and must use `:root[data-theme="dark"],
-[data-theme="dark"]`. Custom theme blocks should adopt the same paired
-  selector. THEMING.md adds light-only and dark-only override recipes.
+  override, as system dark already did. To restyle dark mode, set the
+  `--ak-dark-color-*` hooks on `:root`. A bare `[data-theme="dark"] { … }`
+  override now loses on `<html>`; move it to the hooks or to the paired
+  selector, and give custom theme blocks the same paired selector. THEMING.md
+  adds light-only and dark-only override recipes.
 
 ### Changed
 

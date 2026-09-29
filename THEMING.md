@@ -29,12 +29,13 @@ Token override (place it after the theme import):
 }
 ```
 
-A plain `:root` override of a color token restyles light mode only. The dark
-block and the cat presets select `:root[data-theme="…"], [data-theme="…"]`, so
-they outrank `:root` under an explicit `data-theme`, and the system-dark rule
-`:root:not([data-theme])` outranks it when the OS prefers dark. Non-color
-tokens such as `--ak-radius-md` are not redefined by a mode, so they apply
-everywhere.
+A plain `:root` override restyles light mode. Under dark mode or a cat preset
+it reaches only the tokens that theme does not set itself: the dark block and
+the presets select `:root[data-theme="…"], [data-theme="…"]`, which outranks
+`:root` under an explicit `data-theme`, and the system-dark rule
+`:root:not([data-theme])` outranks it when the OS prefers dark. Dark mode sets
+every `--ak-color-*` token, the `--ak-shadow-*` scale, and `color-scheme`;
+tokens no theme sets, such as `--ak-radius-md`, apply everywhere.
 
 Light-only override, including nested light scopes such as a
 `data-theme="light"` panel inside a dark page:

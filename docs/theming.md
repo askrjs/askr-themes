@@ -126,8 +126,8 @@ Override tokens after importing the default theme:
 Use tokens first. Add component-level CSS only when a semantic token is not
 specific enough for the app surface.
 
-A `:root` override of a color token restyles light mode only: dark mode and the
-cat presets keep their own values. See the light-only and dark-only recipes in
+A `:root` override restyles light mode; dark mode and the cat presets keep the
+token values they set themselves. See the light-only and dark-only recipes in
 [THEMING.md](../THEMING.md).
 
 ## Dark Mode

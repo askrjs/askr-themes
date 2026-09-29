@@ -154,6 +154,9 @@ test.describe("documented mode-specific override recipes", () => {
     await expectThemeValues(page, { html: "dark" }, "explicit dark");
     await expectThemeValues(page, { html: "light", nested: "dark" }, "dark inside light");
     await expectThemeValues(page, { html: "tabby" }, "tabby preset");
+
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expectThemeValues(page, { html: null }, "system dark");
   });
 
   test("dark-only recipe reaches explicit, system, and nested dark", async ({ render, page }) => {
