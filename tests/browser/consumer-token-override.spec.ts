@@ -160,10 +160,7 @@ test.describe("documented mode-specific override recipes", () => {
     await page.emulateMedia({ colorScheme: "light" });
     await render("default", { css: `:root {\n  --ak-dark-color-primary: rgb(10, 20, 30);\n}` });
 
-    for (const setup of [
-      { html: "dark" },
-      { html: "light", nested: "dark" },
-    ] satisfies Setup[]) {
+    for (const setup of [{ html: "dark" }, { html: "light", nested: "dark" }] satisfies Setup[]) {
       const { on } = await sample(page, setup);
       expect(on["--ak-color-primary"], JSON.stringify(setup)).toBe("rgb(10, 20, 30)");
     }

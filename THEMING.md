@@ -20,7 +20,7 @@ Pick a mode on an ancestor:
 <html data-theme="dark"></html>
 ```
 
-Token override:
+Token override (place it after the theme import):
 
 ```css
 :root {
@@ -28,6 +28,38 @@ Token override:
   --ak-radius-md: 12px;
 }
 ```
+
+A plain `:root` override of a color token restyles light mode only. The dark
+block and the cat presets select `:root[data-theme="…"], [data-theme="…"]`, so
+they outrank `:root` under an explicit `data-theme`, and the system-dark rule
+`:root:not([data-theme])` outranks it when the OS prefers dark. Non-color
+tokens such as `--ak-radius-md` are not redefined by a mode, so they apply
+everywhere.
+
+Light-only override, including nested light scopes such as a
+`data-theme="light"` panel inside a dark page:
+
+```css
+:root,
+[data-theme="light"] {
+  --ak-color-primary: #5b3d8f;
+  --ak-color-primary-soft: #ece4f5;
+}
+```
+
+Dark-only override: set the `--ak-dark-color-*` hooks on `:root`. Explicit
+dark, system dark, and nested dark scopes all read them:
+
+```css
+:root {
+  --ak-dark-color-primary: #c9b6f2;
+  --ak-dark-color-primary-soft: #3a2d52;
+}
+```
+
+To target explicit dark mode only, repeat the theme's selector:
+`:root[data-theme="dark"], [data-theme="dark"]`. A bare `[data-theme="dark"]`
+override loses to it on `<html>`, where `ThemeScope` sets the attribute.
 
 The shipped light and dark token sets are contrast-tested. Consumer token
 overrides are ordinary CSS and cannot be validated by the runtime, so recheck
@@ -153,8 +185,9 @@ be styled consistently across themes. If you use icon children, the direct child
 icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
 `ThemeName` accepts application-defined strings intentionally. Register custom
-names in the scope's theme options and provide a matching `[data-theme="..."]`
-token block; misspelled names otherwise remain valid custom identifiers.
+names in the scope's theme options and provide a matching
+`:root[data-theme="..."], [data-theme="..."]` token block (the `:root` form keeps
+an app's `:root` token override from replacing it); misspelled names otherwise remain valid custom identifiers.
 The common wrapper components also emit familiar alias classes such as
 `alert`, `btn-group`, `btn-close`, `input-group`, `tabs`, and `pills` so
 app-level CSS can stay close to familiar HTML authoring without
@@ -887,6 +920,7 @@ These are recommended implementation defaults for component authors:
   color-scheme: light;
 }
 
+:root[data-theme="dark"],
 [data-theme="dark"] {
   --ak-color-primary: #9bd45f;
   --ak-color-primary-hover: #7eb448;
