@@ -3,15 +3,16 @@
  * cascade so new controls inherit the same perceivability contract.
  */
 :where(
-  [data-slot="button"][data-disabled],
-  [data-slot="input"][data-disabled],
-  [data-slot="textarea"][data-disabled],
-  [data-slot="select-trigger"][data-disabled],
-  [data-slot="checkbox"][data-disabled],
-  [data-slot="radio-group-item"][data-disabled],
-  [data-slot="switch"][data-disabled]
+  [data-slot="button"]:where([data-disabled], :disabled),
+  [data-slot="input"]:where([data-disabled], :disabled),
+  [data-slot="textarea"]:where([data-disabled], :disabled),
+  [data-slot="select-trigger"]:where([data-disabled], :disabled),
+  [data-slot="checkbox"]:where([data-disabled], :disabled),
+  [data-slot="radio-group-item"]:where([data-disabled], :disabled),
+  [data-slot="switch"]:where([data-disabled], :disabled)
 ) {
-  background: var(--ak-color-disabled-bg);
+  /* background-color only: the checkbox mark is a background image. */
+  background-color: var(--ak-color-disabled-bg);
   border-color: var(--ak-color-disabled-border);
   color: var(--ak-color-disabled-text);
   box-shadow: none;
@@ -50,7 +51,7 @@
     border-color: ButtonText;
   }
 
-  :where([data-disabled]) {
+  :where([data-disabled], [data-slot]:disabled) {
     border-color: GrayText;
     color: GrayText;
     opacity: 1;

@@ -36,20 +36,6 @@ function withSlot(props: object, slot: string): Record<string, unknown> {
   return { ...values, "data-slot": values["data-slot"] ?? slot };
 }
 
-function normalizeResponsiveValue<
-  TInput extends string | boolean,
-  TOutput extends string | boolean,
->(
-  value: BlockResponsiveValue<TInput> | undefined,
-  normalize: (value: TInput) => TOutput,
-): BlockResponsiveValue<TOutput> | undefined {
-  if (value === undefined) return undefined;
-  if (typeof value !== "object") return normalize(value);
-  return Object.fromEntries(
-    Object.entries(value).map(([breakpoint, entry]) => [breakpoint, normalize(entry as TInput)]),
-  ) as BlockResponsiveValue<TOutput>;
-}
-
 /** Vertical content flow with responsive, token-backed spacing. */
 export function Stack(props: StackProps): JSX.Element {
   const { gap, p, padding, wrap, ...rest } = props;

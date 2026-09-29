@@ -79,7 +79,6 @@
 }
 
 :where([data-slot="slider-thumb"]:hover) {
-  background: var(--ak-color-surface-raised);
   box-shadow: var(--ak-shadow-sm);
 }
 

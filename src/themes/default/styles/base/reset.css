@@ -26,6 +26,12 @@
   font: inherit;
 }
 
+/* Slotted native controls use the surrounding font family instead of the browser's control font;
+   size, weight, and style stay with each component. */
+:where(button, input, select, textarea):where([data-slot]) {
+  font-family: inherit;
+}
+
 ::selection {
   background: color-mix(in srgb, var(--ak-color-primary-soft) 84%, transparent);
   color: var(--ak-color-text);

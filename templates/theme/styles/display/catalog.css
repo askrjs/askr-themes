@@ -24,6 +24,7 @@
   display: grid;
   gap: var(--ak-space-sm);
   min-inline-size: 0;
+  padding-inline: var(--_card-section-inset, var(--ak-space-2xl));
 }
 
 :where([data-slot="card-header"]) {
@@ -31,21 +32,15 @@
   column-gap: var(--ak-space-md);
   row-gap: var(--ak-space-sm);
   align-items: start;
-  padding-inline: var(--ak-space-2xl);
 }
 
 :where([data-slot="card-header"]:has(> [data-slot="card-action"])) {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
-:where([data-slot="card-content"]) {
-  padding-inline: var(--ak-space-2xl);
-}
-
 :where([data-slot="card-footer"]) {
   display: flex;
   align-items: center;
-  padding-inline: var(--ak-space-2xl);
 }
 
 :where([data-slot="card-title"]) {
@@ -118,7 +113,7 @@
   [data-slot="pagination-previous"]:hover,
   [data-slot="pagination-next"]:hover
 ) {
-  background: var(--ak-color-surface-muted);
+  background: var(--ak-color-hover);
   color: var(--ak-color-text);
 }
 
@@ -259,8 +254,8 @@
 }
 
 :where([data-slot="combobox-option"]:hover, [data-slot="command-item"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="command-empty"]) {
@@ -510,7 +505,7 @@
 }
 
 :where([data-slot="tabs-trigger"]:hover) {
-  background: color-mix(in oklch, var(--ak-color-surface-muted) 80%, transparent);
+  background: var(--ak-color-hover);
   color: var(--ak-color-text);
 }
 
@@ -518,7 +513,8 @@
   [data-slot="tabs-trigger"][data-state="active"],
   [data-slot="tabs-trigger"][data-active="true"]
 ) {
-  background: var(--ak-color-bg);
+  /* Segmented selection lifts onto the surface, like the toggle group. */
+  background: var(--ak-color-surface);
   color: var(--ak-color-text);
   box-shadow: var(--ak-shadow-xs);
 }
@@ -602,8 +598,8 @@
 }
 
 :where([data-slot="calendar-day"][data-today="true"]) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="calendar-day"][data-selected="true"]) {
@@ -622,9 +618,9 @@
 }
 
 :where([data-slot="calendar-day"][data-range-middle="true"]) {
-  background: var(--ak-color-accent);
-  border-color: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  border-color: var(--ak-color-hover);
+  color: var(--ak-color-text);
   border-radius: 0;
 }
 
@@ -650,6 +646,44 @@
   background: var(--ak-color-popover);
   color: var(--ak-color-popover-ink);
   box-shadow: var(--ak-shadow-lg);
+}
+
+:where([data-command-palette-content]) {
+  inline-size: min(42rem, calc(100vw - 1rem));
+  max-block-size: min(36rem, calc(100dvh - 1rem));
+  overflow: hidden;
+  padding: 0;
+}
+
+:where([data-command-palette-content] [data-slot="command"]) {
+  min-block-size: 0;
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]) {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--ak-density-control-height-md);
+  padding: var(--ak-space-sm) var(--ak-space-md);
+  border-radius: var(--ak-radius-md);
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+:where([data-command-palette-content] [data-slot="command-list"]) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]:hover) {
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
+}
+
+:where([data-command-palette-result] > [data-slot="command-item"]:focus-visible) {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="command-header"]) {
@@ -686,8 +720,8 @@
   [data-slot="command-item"][data-selected="true"],
   [data-slot="command-item"][aria-selected="true"]
 ) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="command-item"][data-disabled]) {
@@ -718,8 +752,8 @@
 }
 
 :where([data-slot="item"][data-active="true"]) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-selected);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="item"][data-size="sm"]) {

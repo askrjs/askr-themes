@@ -105,7 +105,7 @@ export const staticConfig = {
 
 The wrapper also applies `context.cspNonce` to the emitted style registry and
 requires the request-local style registrations provided by `@askrjs/askr`
-`>=0.3.0 <0.4.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
+`>=0.4.0 <0.5.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
 diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 `document` callback.
 
@@ -121,9 +121,8 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
-The default theme is intentionally neutral and uses a grayscale primary scale.
-Choose a preset or override the primary tokens before shipping when the product
-needs a branded accent:
+The default theme pairs an ink plum accent with warm neutral surfaces in
+light and dark mode. Override the semantic tokens to match your product:
 
 ```css
 :root {
@@ -133,8 +132,11 @@ needs a branded accent:
 }
 ```
 
-See [THEMING.md](./THEMING.md#required-tokens) for the complete primary,
-hover, active, focus, and contrast contract.
+The neutrals, hover, selected, and focus-ring tokens are also tinted to match
+the plum accent, and dark mode reads the `--ak-dark-color-*` tokens; override
+those alongside the primary scale for a full rebrand. See
+[THEMING.md](./THEMING.md#required-tokens) for the complete primary, hover,
+active, focus, and contrast contract.
 
 ### Styling-only catalog anatomy
 

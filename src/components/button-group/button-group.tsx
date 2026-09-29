@@ -2,17 +2,25 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { classes } from "../_internal/classes";
 import { ButtonGroupProps } from "./button-group.types";
 
-/** Groups related buttons together, optionally visually attached, with a horizontal or vertical orientation and `role="group"` by default. */
+/**
+ * Groups related buttons together, optionally visually attached, with a horizontal or vertical
+ * orientation and `role="group"` by default. Attached groups without an explicit `orientation`
+ * stack at phone width unless they contain icon buttons; pass `orientation="horizontal"` to
+ * keep the row.
+ */
 export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
   const {
     attached = true,
     children,
     class: className,
-    orientation = "horizontal",
+    orientation,
     ref,
     role,
+    "data-responsive": dataResponsive,
     ...rest
   } = props;
+  // A caller-supplied data-responsive wins; otherwise attached groups without an orientation opt in.
+  const responsive = dataResponsive ?? (attached && orientation == null ? "true" : undefined);
 
   return (
     <div
@@ -24,7 +32,8 @@ export function ButtonGroup(props: ButtonGroupProps): JSX.Element {
         className,
       )}
       data-attached={attached ? "true" : "false"}
-      data-orientation={orientation}
+      data-orientation={orientation ?? "horizontal"}
+      data-responsive={responsive}
       data-slot="button-group"
       role={(role ?? "group") as string}
     >

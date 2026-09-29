@@ -81,8 +81,8 @@
 }
 
 :where([data-slot="popover-trigger"][data-variant="ghost"]:hover) {
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="popover-trigger"][data-size="icon"]) {
@@ -113,8 +113,8 @@
 
 :where([data-slot="popover-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
-  background: var(--ak-color-accent);
-  color: var(--ak-color-accent-ink);
+  background: var(--ak-color-hover);
+  color: var(--ak-color-text);
 }
 
 :where([data-slot="popover-close"]) {
@@ -139,7 +139,7 @@
 }
 
 :where([data-slot="popover-close"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: var(--ak-color-input);
   box-shadow: var(--ak-shadow-xs);
 }

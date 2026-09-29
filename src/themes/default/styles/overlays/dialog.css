@@ -179,7 +179,7 @@
 }
 
 :where([data-slot="dialog-close"]:hover) {
-  background: var(--ak-color-accent);
+  background: var(--ak-color-hover);
   border-color: var(--ak-color-input);
   box-shadow: var(--ak-shadow-xs);
 }

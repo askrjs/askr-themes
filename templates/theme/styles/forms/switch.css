@@ -43,7 +43,8 @@
 }
 
 :where([data-slot="switch"]:hover) {
-  background: color-mix(in oklch, var(--ak-color-input) 85%, black);
+  /* Mix toward the text color so the hover shifts toward the foreground in either mode. */
+  background: color-mix(in oklch, var(--ak-color-input) 85%, var(--ak-color-text));
 }
 
 :where([data-slot="switch"]:focus-visible) {
@@ -51,7 +52,7 @@
   box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
-:where([data-slot="switch"][data-disabled]) {
+:where([data-slot="switch"]:where([data-disabled], :disabled)) {
   background: var(--ak-color-input);
   border-color: transparent;
   box-shadow: none;
@@ -60,7 +61,8 @@
   cursor: not-allowed;
 }
 
-:where([data-slot="switch"][data-disabled])::after {
-  background: var(--ak-color-surface);
+:where([data-slot="switch"]:where([data-disabled], :disabled))::after {
+  /* Muted ink keeps the thumb position readable on the shared disabled fill in every theme. */
+  background: var(--ak-color-text-muted);
   box-shadow: none;
 }

@@ -111,7 +111,7 @@
 }
 
 :where([data-slot="navbar-toggle"]:hover) {
-  background: var(--ak-color-surface-muted);
+  background: var(--ak-color-hover);
   border-color: var(--ak-color-border-strong);
   color: var(--ak-color-text);
 }
