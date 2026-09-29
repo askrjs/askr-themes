@@ -1,11 +1,18 @@
 import { describe, it, expect } from "vite-plus/test";
 import { readFileSync, readdirSync, type Dirent } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 
-import { DEFAULT_THEME_STYLES_DIR, DEFAULT_THEME_TOKENS_FILE } from "./test-paths";
+import {
+  DEFAULT_THEME_STYLES_DIR,
+  DEFAULT_THEME_TOKENS_FILE,
+  ROOT_DIR,
+  TEMPLATE_THEME_TOKENS_FILE,
+  THEMES_DIR,
+} from "./test-paths";
 
 const COMPONENTS_DIR = DEFAULT_THEME_STYLES_DIR;
 const TOKENS_FILE = DEFAULT_THEME_TOKENS_FILE;
+const PRESETS_DIR = join(THEMES_DIR, "presets");
 const CLASS_UTILITY_FILES = new Set([
   "alert.css",
   "badge.css",
@@ -476,11 +483,43 @@ describe("tokens.css selector contract", () => {
     for (const sel of selectors) {
       const isRoot = sel === ":root";
       const isRootNot = sel === ":root:not([data-theme])";
-      const isDataTheme = sel.startsWith("[data-theme=");
+      const isDataTheme = /^(:root)?\[data-theme="[a-z-]+"\]$/.test(sel);
       expect(
         isRoot || isRootNot || isDataTheme,
         `Unexpected selector in tokens.css: "${sel}"`,
       ).toBe(true);
     }
   });
+
+  // A consumer's plain `:root` token override loads after the theme, so every
+  // non-light theme block must also match `:root[data-theme]` to outrank it
+  // (#155). Light keeps plain `:root` so that override still applies there.
+  const themeFiles = [
+    TOKENS_FILE,
+    TEMPLATE_THEME_TOKENS_FILE,
+    ...readdirSync(PRESETS_DIR)
+      .filter((name) => name.endsWith(".css") && name !== "index.css")
+      .map((name) => join(PRESETS_DIR, name)),
+  ];
+  for (const file of themeFiles) {
+    const label = relative(ROOT_DIR, file);
+    it(`should outrank a consumer :root override in ${label}`, () => {
+      const selectors = extractSelectors(readFileSync(file, "utf-8"));
+      const themes = selectors
+        .map((sel) => /^\[data-theme="([a-z-]+)"\]$/.exec(sel)?.[1])
+        .filter((theme): theme is string => theme !== undefined && theme !== "light");
+
+      expect(themes.length, `${label} declares no theme block`).toBeGreaterThan(0);
+      for (const theme of themes) {
+        expect(
+          selectors,
+          `${label}: select [data-theme="${theme}"] as \`:root[data-theme="${theme}"], [data-theme="${theme}"]\` so an app's :root token override cannot replace it`,
+        ).toContain(`:root[data-theme="${theme}"]`);
+      }
+      expect(
+        selectors,
+        `${label}: keep light at plain :root specificity so an app's :root override applies`,
+      ).not.toContain(':root[data-theme="light"]');
+    });
+  }
 });
