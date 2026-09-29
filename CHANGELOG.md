@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Breaking
+
+- A `:root` token override, the pattern THEMING.md documents, no longer
+  replaces the tokens that dark mode or a cat preset sets itself (#155). The
+  dark block and the presets now also select
+  `:root[data-theme="…"], [data-theme="…"]`, so explicit `data-theme="dark"`
+  and preset themes keep their own values instead of taking the light
+  override, as system dark already did. To restyle dark mode, set the
+  `--ak-dark-color-*` hooks on `:root`. A bare `[data-theme="dark"] { … }`
+  override now loses on `<html>`; move it to the hooks or to the paired
+  selector, and give custom theme blocks the same paired selector. THEMING.md
+  adds light-only and dark-only override recipes.
+
 ### Changed
 
 - The default palette moves from plum to blue: `--ak-color-primary` is now
@@ -13,13 +26,27 @@
   Token names are unchanged. Apps that override only the primary scale now
   get slate neutrals instead of plum ones; the cat presets are unchanged.
 
+## 0.4.0 - 2026-09-29
+
+Upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 at the same time. The default
+theme's palette, `Card` inset, and attached `ButtonGroup` layout change
+visibly; review the breaking entries below before upgrading.
+
 ### Breaking
 
-- The default palette moves from grayscale to an ink plum accent with warm
+- **Breaking:** the `@askrjs/askr` and `@askrjs/ui` peer ranges move to
+  `>=0.4.0 <0.5.0`.
+  Migration: upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 together with this
+  package, following their 0.4.0 changelogs (for example, `For`/`Show` now
+  import from `@askrjs/askr/control`, and data APIs from `@askrjs/askr/data`).
+- **Breaking:** the default palette moves from grayscale to an ink plum accent with warm
   neutral surfaces. Beyond the primary scale, the neutrals, hover, selected,
   focus-ring, and every `--ak-dark-color-*` token are plum-tinted, so rebrands
   that overrode only the light primary tokens should also override those.
-- `Card` owns its inline inset. The root pads its inline sides with
+  Migration: to keep the 0.3 look, pin the `--ak-color-*` and
+  `--ak-dark-color-*` tokens you rely on in your theme scope; a rebrand that
+  already sets every palette token is unaffected.
+- **Breaking:** `Card` owns its inline inset. The root pads its inline sides with
   `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
   `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
   their own inline padding inside a card (outside a card, or inside a floating
@@ -31,24 +58,33 @@
   `--ak-card-inset` hook (default `var(--ak-space-2xl)`, resolved on each
   card); overriding the card's `padding` instead also removes section padding,
   because sections rely on the card's inset.
-- Attached `ButtonGroup`s without an explicit `orientation` now emit
+- **Breaking:** attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
   Pass `orientation="horizontal"` to keep the row. Groups that contain icon
   buttons, and detached groups, keep their row. Raw markup opts in with both
   `data-attached="true"` and `data-responsive="true"`.
-- Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
+- **Breaking:** attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
   require `data-attached="true"`. The `.btn-group-vertical` class alias works on
   its own or with `.btn-group`.
-- A `:root` token override, the pattern THEMING.md documents, no longer
-  replaces the tokens that dark mode or a cat preset sets itself (#155). The
-  dark block and the presets now also select
-  `:root[data-theme="…"], [data-theme="…"]`, so explicit `data-theme="dark"`
-  and preset themes keep their own values instead of taking the light
-  override, as system dark already did. To restyle dark mode, set the
-  `--ak-dark-color-*` hooks on `:root`. A bare `[data-theme="dark"] { … }`
-  override now loses on `<html>`; move it to the hooks or to the paired
-  selector, and give custom theme blocks the same paired selector. THEMING.md
-  adds light-only and dark-only override recipes.
+  Migration: raw vertical groups that should stay joined add
+  `data-attached="true"`; the `ButtonGroup` component already emits it.
+- **Breaking (types):** `CatalogComponentProps` takes an element type parameter
+  (`CatalogComponentProps<TElement extends HTMLElement = HTMLElement>`), and the
+  catalog parts that render native controls type `ref` by element:
+  `CalendarPreviousButton`, `CalendarNextButton`, `CalendarDay`,
+  `CarouselPrevious`, `CarouselNext`, `NavigationMenuTrigger`, and
+  `TabsTrigger` take `Ref<HTMLButtonElement>`; `ComboboxInput`, `CommandInput`,
+  and `DatePickerInput` take `Ref<HTMLInputElement>`; `NativeSelect` takes
+  `Ref<HTMLSelectElement>` (#152). The default keeps other parts at
+  `Ref<HTMLElement>`.
+  Migration: callback refs typed for `HTMLElement` still work; a ref object or
+  state typed `HTMLElement` passed to one of these parts must use the specific
+  element type (for example `Ref<HTMLButtonElement>`).
+
+### Deprecated
+
+- None. `--ak-color-accent` stays defined as an alias of `--ak-color-hover`,
+  though theme styles no longer read it.
 
 ### Changed
 
@@ -102,6 +138,12 @@
   `[data-theme]` block) carry through to selection fills.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
+
+### Removed
+
+- The unexported `src/jsx.d.ts` global JSX shim is no longer published.
+  Component types come from `@askrjs/askr/jsx-runtime`; no package entry point
+  referenced the shim.
 
 ## 0.3.0 - 2026-09-11
 

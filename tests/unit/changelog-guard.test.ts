@@ -10,6 +10,8 @@ const GUARD = join(ROOT_DIR, "scripts", "check-changelog.mjs");
 const npm = process.platform === "win32" ? "npm.cmd" : "npm";
 const fixtures: string[] = [];
 
+type PackRecord = { files: Array<{ path: string }> };
+
 function runGuard(version: string, changelog: string) {
   const dir = mkdtempSync(join(tmpdir(), "askr-changelog-guard-"));
   fixtures.push(dir);
@@ -120,13 +122,15 @@ describe("changelog release guard", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as { files: string[] };
     expect(pkg.files).toContain("CHANGELOG.md");
 
-    const packed = JSON.parse(
-      spawnSync(npm, ["pack", "--dry-run", "--json", "--ignore-scripts"], {
-        cwd: ROOT_DIR,
-        encoding: "utf8",
-        shell: process.platform === "win32",
-      }).stdout,
-    ) as Array<{ files: Array<{ path: string }> }>;
-    expect(packed[0].files.map(({ path }) => path)).toContain("CHANGELOG.md");
+    const output = spawnSync(npm, ["pack", "--dry-run", "--json", "--ignore-scripts"], {
+      cwd: ROOT_DIR,
+      encoding: "utf8",
+      shell: process.platform === "win32",
+    }).stdout;
+    // npm 11 prints an array of pack records; npm 12 keys them by package name.
+    const parsed = JSON.parse(output) as PackRecord[] | Record<string, PackRecord>;
+    const records = Array.isArray(parsed) ? parsed : Object.values(parsed);
+    expect(records).toHaveLength(1);
+    expect(records[0].files.map(({ path }) => path)).toContain("CHANGELOG.md");
   }, 60_000);
 });
