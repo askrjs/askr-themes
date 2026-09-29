@@ -1,5 +1,4 @@
 import "./themes/default/index.css";
-import "./components/jsx-types";
 
 // Keep the UI type surface explicit. A wildcard type re-export makes the
 // generated declaration bundle claim ownership of UI-only catalog values

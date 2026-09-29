@@ -14,6 +14,13 @@
   override now loses on `<html>`; move it to the hooks or to the paired
   selector, and give custom theme blocks the same paired selector. THEMING.md
   adds light-only and dark-only override recipes.
+- `@askrjs/themes/components` no longer declares a global `JSX` namespace
+  (#161). The leftover `components/jsx-types` augmentation is removed, so the
+  package now relies only on the scoped JSX types from
+  `@askrjs/askr/jsx-runtime`, matching Askr 0.4, `@askrjs/ui`, and
+  `@askrjs/lucide`. Code that wrote a bare `JSX.Element` and compiled only
+  because importing the themes components injected the global must now import
+  it: `import type { JSX } from "@askrjs/askr/jsx-runtime";`.
 
 ### Changed
 
