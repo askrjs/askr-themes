@@ -34,25 +34,74 @@ const FOCUS_SURFACES = [
   "surface-muted",
   "surface-raised",
   "surface-overlay",
-  "primary",
+  "primary-soft",
 ];
 
 interface ModeOptions {
   mode: string;
 }
 
-export async function focusRing(root: HTMLElement, options: ModeOptions): Promise<void> {
+/**
+ * One row per surface, each holding the controls whose focus ring used to touch
+ * a primary fill (primary button, checked checkbox, checked switch) plus an
+ * input and the attached groups whose neighbours can cover or clip the ring.
+ * Every focus target carries `data-focus-case`.
+ */
+export async function focusGap(root: HTMLElement, options: ModeOptions): Promise<void> {
   const { mode } = options;
   document.documentElement.setAttribute("data-theme", mode);
 
-  await mountRoute(root, `/focus-${mode}`, () => (
+  await mountRoute(root, `/focus-gap-${mode}`, () => (
     <main style="background:var(--ak-color-bg);padding:1rem">
       {FOCUS_SURFACES.map((surface) => (
         <div
           data-focus-surface={surface}
-          style={`background:var(--ak-color-${surface});overflow:visible;padding:0.75rem`}
+          style={`background:var(--ak-color-${surface});padding:0.75rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center`}
         >
-          <Button variant="outline">Focus {surface}</Button>
+          <button type="button" data-slot="button" data-focus-case="primary-button">
+            Save
+          </button>
+          <button
+            type="button"
+            role="checkbox"
+            aria-checked="true"
+            aria-label="Checked"
+            data-slot="checkbox"
+            data-state="checked"
+            data-focus-case="checkbox"
+          />
+          <button
+            type="button"
+            role="switch"
+            aria-checked="true"
+            aria-label="On"
+            data-slot="switch"
+            data-state="checked"
+            data-focus-case="switch"
+          />
+          <input data-slot="input" aria-label="Name" data-focus-case="input" />
+          <div data-slot="button-group" data-attached="true" role="group">
+            <button type="button" data-slot="button" data-variant="outline">
+              Day
+            </button>
+            <button
+              type="button"
+              data-slot="button"
+              data-variant="outline"
+              data-focus-case="group-button"
+            >
+              Week
+            </button>
+            <button type="button" data-slot="button">
+              Month
+            </button>
+          </div>
+          <div data-slot="input-group" data-attached="true" style="inline-size:16rem">
+            <input data-slot="input" aria-label="Search" data-focus-case="group-input" />
+            <button type="button" data-slot="button">
+              Go
+            </button>
+          </div>
         </div>
       ))}
     </main>

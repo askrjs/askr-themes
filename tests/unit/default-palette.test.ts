@@ -114,8 +114,16 @@ function paletteFor(mode: keyof typeof MODES): Map<string, Rgb> {
 }
 
 // OKLCH hue bands. Blue sits around 250-275; plum/violet/purple/magenta sit above it.
-const BLUE_HUE = [245, 275] as const;
 const PURPLE_HUE = [285, 345] as const;
+/**
+ * The approved bright-blue palette: light #2d5dd6 (OKLCH ~0.52 0.19 264), dark #9db8ff
+ * (~0.79 0.11 268). The bands leave room for contrast tuning but reject the deep navy
+ * (#062fac, L ~0.39) and the washed-out pale blue (#bfd2fe, L ~0.86) it replaces.
+ */
+const PRIMARY_BAND = {
+  light: { hue: [258, 270], lightness: [0.48, 0.56], minChroma: 0.16, soft: [0.9, 0.95] },
+  dark: { hue: [260, 272], lightness: [0.75, 0.83], minChroma: 0.09, soft: [0.3, 0.38] },
+} as const;
 // Below this chroma a color reads as a true grey and its hue angle is noise.
 const NEUTRAL_CHROMA = 0.004;
 
@@ -124,6 +132,7 @@ const TEXT_PAIRS = [
   ["--ak-color-primary", "--ak-color-bg", "primary text on bg"],
   ["--ak-color-primary", "--ak-color-surface", "primary text on surface"],
   ["--ak-color-link", "--ak-color-bg", "link on bg"],
+  ["--ak-color-link", "--ak-color-surface", "link on surface"],
   ["--ak-color-primary-ink", "--ak-color-primary-soft", "primary ink on primary soft"],
   ["--ak-color-text-inverse", "--ak-color-primary", "text on a filled primary button"],
 ] as const;
@@ -138,14 +147,27 @@ describe("default palette", () => {
         return value;
       };
 
-      it("should use a blue primary", () => {
-        const { c, h } = toOklch(color("--ak-color-primary"));
-        expect(h, `primary hue ${h.toFixed(1)}`).toBeGreaterThanOrEqual(BLUE_HUE[0]);
-        expect(h, `primary hue ${h.toFixed(1)}`).toBeLessThanOrEqual(BLUE_HUE[1]);
-        // Dark mode needs a pale primary: the focus ring must reach 3:1 against both it and the
-        // darkest surfaces, which leaves little sRGB gamut for chroma at that lightness.
-        const minChroma = mode === "light" ? 0.15 : 0.06;
-        expect(c, "primary should be a saturated blue").toBeGreaterThanOrEqual(minChroma);
+      it("should use a bright, saturated blue primary", () => {
+        const { l, c, h } = toOklch(color("--ak-color-primary"));
+        const band = PRIMARY_BAND[mode];
+        expect(h, `primary hue ${h.toFixed(1)}`).toBeGreaterThanOrEqual(band.hue[0]);
+        expect(h, `primary hue ${h.toFixed(1)}`).toBeLessThanOrEqual(band.hue[1]);
+        // The focus ring no longer touches the primary fill (it sits behind a gap), so the
+        // primary is free to be a bright blue instead of the deep navy it was forced into.
+        expect(l, `primary lightness ${l.toFixed(3)}`).toBeGreaterThanOrEqual(band.lightness[0]);
+        expect(l, `primary lightness ${l.toFixed(3)}`).toBeLessThanOrEqual(band.lightness[1]);
+        expect(c, "primary should be a saturated blue").toBeGreaterThanOrEqual(band.minChroma);
+      });
+
+      it("should keep the primary soft and ink tones on the primary hue", () => {
+        const primary = toOklch(color("--ak-color-primary"));
+        for (const token of ["--ak-color-primary-soft", "--ak-color-primary-ink"]) {
+          const { h } = toOklch(color(token));
+          expect(Math.abs(h - primary.h), `${token} hue ${h.toFixed(1)}`).toBeLessThanOrEqual(8);
+        }
+        const soft = toOklch(color("--ak-color-primary-soft"));
+        expect(soft.l, "primary soft lightness").toBeGreaterThanOrEqual(PRIMARY_BAND[mode].soft[0]);
+        expect(soft.l, "primary soft lightness").toBeLessThanOrEqual(PRIMARY_BAND[mode].soft[1]);
       });
 
       it("should keep every palette color free of purple hues", () => {

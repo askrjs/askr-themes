@@ -54,11 +54,6 @@
   background: var(--ak-color-hover);
 }
 
-:where([data-slot="accordion-trigger"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="accordion-trigger"][data-state="open"]::after) {
   transform: rotate(225deg);
 }

@@ -47,11 +47,6 @@
   background: color-mix(in oklch, var(--ak-color-input) 85%, var(--ak-color-text));
 }
 
-:where([data-slot="switch"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="switch"]:where([data-disabled], :disabled)) {
   background: var(--ak-color-input);
   border-color: transparent;

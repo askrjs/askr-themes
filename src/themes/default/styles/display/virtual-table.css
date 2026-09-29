@@ -177,7 +177,8 @@
   [data-slot="virtual-table"]:has([data-slot="virtual-table-table"]:focus-visible)
 ) {
   border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: var(--ak-focus-ring-offset);
 }
 
 @media (forced-colors: active) {

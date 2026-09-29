@@ -668,7 +668,7 @@ test.describe("visual polish contracts", () => {
 
     // The original read this after tabbing: the focus ring is part of the
     // contract, so keep the post-focus reading.
-    await expect(root.locator('[data-slot="virtual-table"]')).not.toHaveCSS("box-shadow", "none");
+    await expect(root.locator('[data-slot="virtual-table"]')).toHaveCSS("outline-style", "solid");
 
     expect(measured.monoFontVariantNumeric).toContain("tabular-nums");
     expect(measured.monoTextOverflow).toBe("ellipsis");

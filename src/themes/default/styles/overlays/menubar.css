@@ -77,11 +77,6 @@
   color: var(--ak-color-text);
 }
 
-:where([data-slot="menubar-trigger"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="menubar-trigger"][data-disabled]) {
   opacity: 0.5;
   pointer-events: none;

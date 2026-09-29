@@ -66,61 +66,166 @@ function opaque(color: RGBA, background: RGB): RGB {
 }
 
 /** Mirrors the surface list `scenarios/accessibility-visual-states.tsx` renders. */
-const surfaces = ["bg", "surface", "surface-muted", "surface-raised", "surface-overlay", "primary"];
+const surfaces = [
+  "bg",
+  "surface",
+  "surface-muted",
+  "surface-raised",
+  "surface-overlay",
+  "primary-soft",
+];
+
+/** Controls whose own fill is the primary colour; the gap must keep the ring off that fill. */
+const PRIMARY_FILLED = new Set(["primary-button", "checkbox", "switch"]);
+const FOCUS_CASES = [
+  "primary-button",
+  "checkbox",
+  "switch",
+  "input",
+  "group-button",
+  "group-input",
+];
+
+interface FocusMeasure {
+  outlineStyle: string;
+  outlineWidth: number;
+  outlineOffset: number;
+  outlineColor: string;
+  background: string;
+  primary: string;
+  surface: string;
+  width: number;
+  height: number;
+  clippedBy: string[];
+  zIndex: string;
+  position: string;
+  neighbourZ: string[];
+}
 
 test.describe("default-theme accessibility visual states", () => {
   for (const mode of ["light", "dark"] as const) {
-    test(`should render a stable 3:1 keyboard focus ring on every ${mode} surface`, async ({
+    test(`should separate the ${mode} focus ring from the control with a 3:1 gap ring`, async ({
       render,
       page,
       root,
     }) => {
-      await render("focusRing", { mode });
-
-      const buttons = root.locator('[data-slot="button"]');
-      await expect(buttons).toHaveCount(surfaces.length);
+      await render("focusGap", { mode });
+      await expect(root.locator("[data-focus-surface]")).toHaveCount(surfaces.length);
 
       for (const [index, surface] of surfaces.entries()) {
-        // `${mode}: ${surface}` — the diagnostic the original passed as
-        // vitest's second `expect` argument, kept as the step label.
-        await test.step(`${mode}: ${surface}`, async () => {
-          const button = buttons.nth(index);
-          const before = await button.evaluate((element) => {
-            const rect = element.getBoundingClientRect();
-            return { width: rect.width, height: rect.height };
+        for (const focusCase of FOCUS_CASES) {
+          await test.step(`${mode}: ${focusCase} on ${surface}`, async () => {
+            const target = root
+              .locator("[data-focus-surface]")
+              .nth(index)
+              .locator(`[data-focus-case="${focusCase}"]`);
+            const before = await target.evaluate((element) => {
+              const rect = element.getBoundingClientRect();
+              return { width: rect.width, height: rect.height };
+            });
+
+            // A key press first makes the programmatic focus count as keyboard focus.
+            await page.keyboard.press("Shift");
+            await target.focus();
+            await expect(target).toBeFocused();
+
+            const measured = await target.evaluate((element): FocusMeasure => {
+              const styles = getComputedStyle(element);
+              const width = Number.parseFloat(styles.outlineWidth);
+              const offset = Number.parseFloat(styles.outlineOffset);
+              const rect = element.getBoundingClientRect();
+              const reach = Math.max(0, width + offset);
+              const ring = {
+                left: rect.left - reach,
+                top: rect.top - reach,
+                right: rect.right + reach,
+                bottom: rect.bottom + reach,
+              };
+
+              let surfaceColor = "rgba(0, 0, 0, 0)";
+              const clippedBy: string[] = [];
+              for (
+                let ancestor = element.parentElement;
+                ancestor && ancestor !== document.documentElement;
+                ancestor = ancestor.parentElement
+              ) {
+                const ancestorStyles = getComputedStyle(ancestor);
+                if (
+                  surfaceColor === "rgba(0, 0, 0, 0)" &&
+                  ancestorStyles.backgroundColor !== "rgba(0, 0, 0, 0)"
+                ) {
+                  surfaceColor = ancestorStyles.backgroundColor;
+                }
+                const clips = [ancestorStyles.overflowX, ancestorStyles.overflowY].some(
+                  (value) => value !== "visible",
+                );
+                if (!clips) continue;
+                const box = ancestor.getBoundingClientRect();
+                if (
+                  ring.left < box.left ||
+                  ring.top < box.top ||
+                  ring.right > box.right ||
+                  ring.bottom > box.bottom
+                ) {
+                  clippedBy.push(ancestor.dataset.slot ?? ancestor.tagName.toLowerCase());
+                }
+              }
+
+              const probe = document.createElement("span");
+              probe.style.color = "var(--ak-color-primary)";
+              element.parentElement!.append(probe);
+              const primary = getComputedStyle(probe).color;
+              probe.remove();
+
+              const neighbours = [...(element.parentElement?.children ?? [])].filter(
+                (child) => child !== element,
+              );
+              return {
+                outlineStyle: styles.outlineStyle,
+                outlineWidth: width,
+                outlineOffset: offset,
+                outlineColor: styles.outlineColor,
+                background: styles.backgroundColor,
+                primary,
+                surface: surfaceColor,
+                width: rect.width,
+                height: rect.height,
+                clippedBy,
+                zIndex: styles.zIndex,
+                position: styles.position,
+                neighbourZ: neighbours.map((child) => getComputedStyle(child).zIndex),
+              };
+            });
+
+            // A visible outline ring, not a touching box-shadow.
+            expect(measured.outlineStyle).toBe("solid");
+            expect(measured.outlineWidth).toBeGreaterThanOrEqual(2);
+            // The gap: the ring never touches the control's own fill.
+            expect(measured.outlineOffset).toBeGreaterThanOrEqual(1);
+            if (PRIMARY_FILLED.has(focusCase)) {
+              expect(measured.background).toBe(measured.primary);
+            }
+
+            // With the gap, the ring's neighbours are the surface on both sides.
+            const surfaceRgb = opaque(parseColor(measured.surface), [255, 255, 255]);
+            const ringRgb = opaque(parseColor(measured.outlineColor), surfaceRgb);
+            expect(ratio(ringRgb, surfaceRgb)).toBeGreaterThanOrEqual(3);
+
+            // Focus must not shift layout, and no ancestor may clip the ring.
+            expect(measured.width).toBe(before.width);
+            expect(measured.height).toBe(before.height);
+            expect(measured.clippedBy).toEqual([]);
+
+            // Attached neighbours overlap by 1px; the focused member must paint above them.
+            if (focusCase.startsWith("group-")) {
+              expect(measured.position).not.toBe("static");
+              expect(measured.zIndex).toBe("1");
+              for (const neighbourZ of measured.neighbourZ) {
+                expect(neighbourZ === "auto" || Number(neighbourZ) < 1).toBe(true);
+              }
+            }
           });
-
-          await page.keyboard.press("Tab");
-          // WebKit on macOS follows the host's Full Keyboard Access setting and
-          // may skip buttons. The real keyboard action is still exercised; the
-          // fallback keeps the cross-engine computed-style matrix deterministic.
-          if (!(await button.evaluate((element) => document.activeElement === element))) {
-            await button.evaluate((element) => (element as HTMLElement).focus());
-          }
-          await expect(button).toBeFocused();
-
-          const measured = await button.evaluate((element) => {
-            const styles = getComputedStyle(element);
-            const parentStyles = getComputedStyle(element.parentElement!);
-            const rect = element.getBoundingClientRect();
-            return {
-              boxShadow: styles.boxShadow,
-              ring: styles.getPropertyValue("--ak-color-focus-ring"),
-              parentBackground: parentStyles.backgroundColor,
-              width: rect.width,
-              height: rect.height,
-            };
-          });
-
-          const parent = parseColor(measured.parentBackground);
-          const ring = parseColor(measured.ring);
-          const parentRgb = opaque(parent, [255, 255, 255]);
-
-          expect(ratio(opaque(ring, parentRgb), parentRgb)).toBeGreaterThanOrEqual(3);
-          expect(measured.boxShadow).not.toBe("none");
-          expect(measured.width).toBe(before.width);
-          expect(measured.height).toBe(before.height);
-        });
+        }
       }
     });
 

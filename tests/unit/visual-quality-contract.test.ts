@@ -197,7 +197,8 @@ describe("visual quality contract", () => {
     expect(buttonCss).toContain("--_button-height: var(--ak-density-control-height-md);");
     expect(buttonCss).toContain("background: var(--ak-color-primary);");
     expect(buttonCss).toContain("font-weight: var(--ak-font-weight-medium);");
-    expect(buttonCss).toContain("box-shadow: 0 0 0 var(--ak-focus-ring-width)");
+    // Focus comes from the shared offset outline in base/reset.css, not a per-button box-shadow.
+    expect(buttonCss).not.toContain("0 0 0 var(--ak-focus-ring-width)");
     expect(buttonCss).toContain("opacity: 0.5;");
     expect(buttonCss).toContain(
       "--_ak-theme-toggle-icon-size: var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm));",

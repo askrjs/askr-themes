@@ -30,9 +30,7 @@
 }
 
 :where(.input:focus-visible, [data-slot="input"]:focus-visible) {
-  outline: none;
   border-color: var(--ak-color-ring);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where(.input[aria-invalid="true"], [data-slot="input"][aria-invalid="true"]) {

@@ -581,8 +581,8 @@ describe("token completeness", () => {
     }
 
     expect(tokensCss).toContain("--ak-color-bg: #f8f9fb;");
-    expect(tokensCss).toContain("--ak-color-primary: #062fac;");
-    expect(tokensCss).toContain("--ak-dark-color-primary: #bfd2fe;");
+    expect(tokensCss).toContain("--ak-color-primary: #2d5dd6;");
+    expect(tokensCss).toContain("--ak-dark-color-primary: #9db8ff;");
     expect(tokensCss).toContain("--ak-color-ring: var(--ak-color-border-strong);");
     expect(tokensCss).toContain("--ak-color-popover: var(--ak-color-surface-overlay);");
   });

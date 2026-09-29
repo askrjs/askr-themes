@@ -98,6 +98,36 @@
   margin-inline-start: -1px;
 }
 
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"]
+  ) {
+  position: relative;
+}
+
+/* Attached members overlap by 1px; lift the focused one so its neighbour cannot paint over the
+   ring. Matches the button-group rule. */
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"]
+  ):focus-visible {
+  z-index: 1;
+}
+
 :where(
     .input-group-vertical[data-attached="true"],
     [data-slot="input-group"][data-attached="true"][data-orientation="vertical"]

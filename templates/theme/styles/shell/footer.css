@@ -59,9 +59,7 @@
 }
 
 :where([data-slot="footer-link"]:focus-visible) {
-  outline: none;
   border-radius: var(--ak-radius-sm);
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 @media (max-width: 48rem) {

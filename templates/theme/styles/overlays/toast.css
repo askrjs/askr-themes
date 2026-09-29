@@ -151,12 +151,6 @@
   box-shadow: none;
 }
 
-:where([data-slot="toast-action"]:focus-visible),
-:where([data-slot="toast-close"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="toast-close"]) {
   grid-column: 2;
   grid-row: 1 / span 2;

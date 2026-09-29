@@ -161,16 +161,16 @@
   --ak-z-toast: 1550;
   --ak-z-tooltip: 1600;
 
-  --ak-dark-color-primary: #bfd2fe;
+  --ak-dark-color-primary: #9db8ff;
   --ak-dark-color-primary-hover: color-mix(in oklch, var(--ak-dark-color-primary) 90%, transparent);
   --ak-dark-color-primary-active: color-mix(in oklch, var(--ak-dark-color-primary) 84%, black);
-  --ak-dark-color-primary-soft: #2a3e6a;
-  --ak-dark-color-primary-ink: #d4e2fd;
+  --ak-dark-color-primary-soft: #283b66;
+  --ak-dark-color-primary-ink: #c9d8ff;
 
   --ak-dark-color-text: #ebeef3;
   --ak-dark-color-text-muted: #a8b0ba;
   --ak-dark-color-text-subtle: #b0b8c3;
-  --ak-dark-color-text-inverse: #122246;
+  --ak-dark-color-text-inverse: #0f1b38;
 
   --ak-dark-color-bg: #101419;
   --ak-dark-color-surface: #181c22;
@@ -197,7 +197,7 @@
 
   --ak-dark-color-link: var(--ak-dark-color-primary);
   --ak-dark-color-link-hover: color-mix(in oklch, var(--ak-dark-color-link) 88%, transparent);
-  --ak-dark-color-focus-ring: oklch(0.5675 0.15 262);
+  --ak-dark-color-focus-ring: oklch(0.72 0.13 262);
   --ak-dark-color-disabled-bg: #292e34;
   --ak-dark-color-disabled-surface: #181c22;
   --ak-dark-color-disabled-border: #747c88;
@@ -216,11 +216,11 @@
 
 :root,
 [data-theme="light"] {
-  --ak-color-primary: #062fac;
+  --ak-color-primary: #2d5dd6;
   --ak-color-primary-hover: color-mix(in oklch, var(--ak-color-primary) 90%, transparent);
   --ak-color-primary-active: color-mix(in oklch, var(--ak-color-primary) 88%, black);
-  --ak-color-primary-soft: #d5e0f8;
-  --ak-color-primary-ink: #062fac;
+  --ak-color-primary-soft: #d4e0fa;
+  --ak-color-primary-ink: #1f47a8;
 
   --ak-color-text: #22272d;
   --ak-color-text-muted: #636a74;
@@ -252,7 +252,7 @@
 
   --ak-color-link: var(--ak-color-primary);
   --ak-color-link-hover: color-mix(in oklch, var(--ak-color-link) 88%, transparent);
-  --ak-color-focus-ring: oklch(0.635 0.12 262);
+  --ak-color-focus-ring: oklch(0.56 0.16 263);
   --ak-color-disabled-bg: #eceff2;
   --ak-color-disabled-surface: #fdfeff;
   --ak-color-disabled-border: #7e8691;
