@@ -99,6 +99,22 @@ describe("generated theme styles during SSR", () => {
     expect(html).toContain("<\\/style");
   });
 
+  it("should include more than 512 request-local style rules in the rendered document", () => {
+    const styles = Array.from({ length: 513 }, (_, index) => {
+      const id = `ak-style-${index.toString(36)}`;
+      return { id, cssText: `.${id}{--value:${index}}` };
+    });
+    const classes = styles.map(({ id }) => id).join(" ");
+    const html = withThemeStyles(
+      ({ appHtml }) => `<html><head></head><body>${appHtml}</body></html>`,
+    )({
+      appHtml: `<div class="${classes}"></div>`,
+      context: { styles },
+    });
+
+    expect(html.match(/\.ak-style-[a-z0-9]+\{/g)).toHaveLength(513);
+  });
+
   it("should serialize Container layout rules into the initial document head", () => {
     const html = renderContainer();
     const className = html.match(/\b(ak-style-[a-z0-9]+)\b/)?.[1];

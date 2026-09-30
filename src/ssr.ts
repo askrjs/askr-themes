@@ -1,7 +1,6 @@
 const STYLE_REGISTRY_ATTR = "data-askr-style-registry";
 const STYLE_CLASS_PREFIX = "ak-style-";
 const CLASS_ATTRIBUTE_PATTERN = /\sclass=(?:"([^"]*)"|'([^']*)')/g;
-const MAX_STYLE_RULES = 512;
 
 type DocumentRenderArgsLike = {
   appHtml: string;
@@ -103,9 +102,6 @@ export function withThemeStyles<TArgs extends DocumentRenderArgsLike>(
         throw new RangeError(`SSR style registration collision for ${JSON.stringify(style.id)}.`);
       }
       styles.set(style.id, style.cssText);
-      if (styles.size > MAX_STYLE_RULES) {
-        throw new RangeError("Theme style registry capacity exceeded.");
-      }
     }
     for (const className of generatedClasses) {
       if (!styles.has(className)) {
