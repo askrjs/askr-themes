@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.4.1 - 2026-09-30
+
+### Fixed
+
+- Reclaim generated style rules when components stop using them so dynamic
+  inline style values do not exhaust the stylesheet rule limit during an SPA
+  session.
+
 ### Breaking
 
 - The default palette moves from grayscale to an ink plum accent with warm
