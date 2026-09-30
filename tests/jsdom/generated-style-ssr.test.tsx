@@ -93,19 +93,38 @@ describe("generated theme style hydration", () => {
     );
   });
 
-  it("should reject a new rule before exceeding the registry capacity", () => {
+  it("should evict unused rules across repeated style updates at the registry capacity", () => {
     removeStyleRegistries();
 
     for (let index = 0; index < 512; index += 1) {
       expect(styleDeclarationsToClass(`--ak-capacity-${index}:${index}`)).toMatch(/^ak-style-/);
     }
 
-    expect(() => styleDeclarationsToClass("--ak-capacity-overflow:513")).toThrow(
-      "Theme style registry capacity exceeded.",
+    for (let index = 512; index < 576; index += 1) {
+      expect(styleDeclarationsToClass(`--ak-capacity-${index}:${index}`)).toMatch(/^ak-style-/);
+    }
+    const cssText = document.querySelector("style[data-askr-style-registry]")?.textContent ?? "";
+    expect(cssText).toContain("--ak-capacity-575:575");
+    expect(cssText).not.toContain("--ak-capacity-0:0");
+    expect(cssText.match(/\.ak-style-[a-z0-9]+\{/g)).toHaveLength(512);
+  }, 15_000);
+
+  it("should keep generated rules used by mounted elements when over capacity", () => {
+    removeStyleRegistries();
+    const root = document.createElement("div");
+    roots.push(root);
+    document.body.append(root);
+    const liveClass = styleDeclarationsToClass("color:red")!;
+    root.className = liveClass;
+
+    for (let index = 0; index < 512; index += 1) {
+      styleDeclarationsToClass(`--ak-live-capacity-${index}:${index}`);
+    }
+
+    expect(document.querySelector("style[data-askr-style-registry]")?.textContent).toContain(
+      `.${liveClass}{color:red}`,
     );
-    expect(document.querySelector("style[data-askr-style-registry]")?.textContent).not.toContain(
-      "--ak-capacity-overflow:513",
-    );
+    expect(root.classList.contains(liveClass)).toBe(true);
   });
 
   it("should adopt the server registry and append client-only rules without duplication", async () => {

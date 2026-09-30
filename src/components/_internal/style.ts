@@ -254,6 +254,25 @@ function rememberStyleRule(entry: StyleRule): void {
   }
 }
 
+function evictUnusedStyleRule(registry: StyleRegistry): boolean {
+  const doc = registry.element.ownerDocument;
+  for (const [declarations, entry] of registry.rules) {
+    if (doc.querySelector(`.${entry.className}`)) continue;
+
+    const cssText = registry.element.textContent ?? "";
+    const index = cssText.indexOf(entry.rule);
+    if (index >= 0) {
+      const end = index + entry.rule.length;
+      const suffix = cssText[end] === "\n" ? end + 1 : end;
+      registry.element.textContent = cssText.slice(0, index) + cssText.slice(suffix);
+      registry.ruleCount = countRegisteredRules(registry.element.textContent);
+    }
+    registry.rules.delete(declarations);
+    return true;
+  }
+  return false;
+}
+
 function registerSSRStyle(entry: StyleRule): void {
   const register = (
     Askr as typeof Askr & {
@@ -311,16 +330,17 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   const nonce = Askr.cspNonce();
   const registry = ensureStyleRegistry(nonce);
   const registered = registry?.rules.get(normalized);
-  if (registered) {
+  if (registry && registered) {
+    registry.rules.delete(normalized);
+    registry.rules.set(normalized, registered);
     registerSSRStyle(registered);
     return registered.className;
   }
 
   if (registry) {
     if (!registry.rules.has(normalized) && !registry.element.textContent?.includes(entry.rule)) {
-      if (registry.ruleCount >= MAX_STYLE_RULES) {
-        throw new RangeError("Theme style registry capacity exceeded.");
-      }
+      // Keep rules still used by mounted elements; a later insertion can reclaim stale ones.
+      if (registry.ruleCount >= MAX_STYLE_RULES) evictUnusedStyleRule(registry);
     }
     if (!registry.element.textContent?.includes(entry.rule)) {
       registry.element.append(entry.rule, "\n");
