@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/themes",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Default theme tokens, styles, and component presets for Askr apps.",
   "keywords": [
     "askr",
