@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.4.1 - 2026-09-30
+
+### Fixed
+
+- Reclaim generated style rules when components stop using them so dynamic
+  inline style values do not exhaust the stylesheet rule limit during an SPA
+  session.
+
 ### Breaking
 
 - A `:root` token override, the pattern THEMING.md documents, no longer
