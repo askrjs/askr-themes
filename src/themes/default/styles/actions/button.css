@@ -3,6 +3,10 @@
   --_button-padding-x: var(--ak-density-control-padding-x-md);
   --_button-radius: var(--ak-radius-lg);
   --_button-border: transparent;
+  /* Ring colour for the inset ring attached groups draw inside a member. A
+     filled button uses its own text colour, which already contrasts with the
+     fill; surface-filled variants unset it and fall back to the focus ring. */
+  --_button-inset-ring: currentColor;
 
   display: inline-flex;
   align-items: center;
@@ -110,6 +114,7 @@
 }
 
 :where(.btn-secondary, [data-slot="button"][data-variant="secondary"]) {
+  --_button-inset-ring: initial;
   background: var(--ak-color-surface-muted);
   border-color: transparent;
   color: var(--ak-color-text);
@@ -124,6 +129,7 @@
 }
 
 :where(.btn-outline, [data-slot="button"][data-variant="outline"]) {
+  --_button-inset-ring: initial;
   background: var(--ak-color-bg);
   border-color: var(--ak-color-input);
   color: var(--ak-color-text);
@@ -140,6 +146,7 @@
 }
 
 :where(.btn-ghost, [data-slot="button"][data-variant="ghost"]) {
+  --_button-inset-ring: initial;
   background: transparent;
   border-color: transparent;
   color: var(--ak-color-text);
@@ -172,6 +179,7 @@
 }
 
 :where(.btn-link, [data-slot="button"][data-variant="link"]) {
+  --_button-inset-ring: initial;
   min-height: auto;
   padding-inline: 0;
   border-color: transparent;

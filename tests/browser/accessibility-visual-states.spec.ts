@@ -76,7 +76,13 @@ const surfaces = [
 ];
 
 /** Controls whose own fill is the primary colour; the gap must keep the ring off that fill. */
-const PRIMARY_FILLED = new Set(["primary-button", "checkbox", "switch"]);
+const PRIMARY_FILLED = new Set([
+  "primary-button",
+  "checkbox",
+  "switch",
+  "group-input-button",
+  "group-split-button",
+]);
 const FOCUS_CASES = [
   "primary-button",
   "checkbox",
@@ -84,6 +90,8 @@ const FOCUS_CASES = [
   "input",
   "group-button",
   "group-input",
+  "group-input-button",
+  "group-split-button",
 ];
 
 interface FocusMeasure {
@@ -100,6 +108,8 @@ interface FocusMeasure {
   zIndex: string;
   position: string;
   neighbourZ: string[];
+  /** How deep the ring and its gap reach into each attached neighbour, with its fill. */
+  neighbours: { fill: string; depth: number }[];
 }
 
 test.describe("default-theme accessibility visual states", () => {
@@ -180,6 +190,11 @@ test.describe("default-theme accessibility visual states", () => {
               const neighbours = [...(element.parentElement?.children ?? [])].filter(
                 (child) => child !== element,
               );
+              const overlap = (box: DOMRect) => {
+                const x = Math.min(ring.right, box.right) - Math.max(ring.left, box.left);
+                const y = Math.min(ring.bottom, box.bottom) - Math.max(ring.top, box.top);
+                return x > 0 && y > 0 ? Math.min(x, y) : 0;
+              };
               return {
                 outlineStyle: styles.outlineStyle,
                 outlineWidth: width,
@@ -194,22 +209,51 @@ test.describe("default-theme accessibility visual states", () => {
                 zIndex: styles.zIndex,
                 position: styles.position,
                 neighbourZ: neighbours.map((child) => getComputedStyle(child).zIndex),
+                neighbours: element.parentElement!.matches('[data-attached="true"]')
+                  ? neighbours.map((child) => ({
+                      fill: getComputedStyle(child).backgroundColor,
+                      depth: overlap(child.getBoundingClientRect()),
+                    }))
+                  : [],
               };
             });
 
             // A visible outline ring, not a touching box-shadow.
             expect(measured.outlineStyle).toBe("solid");
             expect(measured.outlineWidth).toBeGreaterThanOrEqual(2);
-            // The gap: the ring never touches the control's own fill.
-            expect(measured.outlineOffset).toBeGreaterThanOrEqual(1);
             if (PRIMARY_FILLED.has(focusCase)) {
               expect(measured.background).toBe(measured.primary);
             }
 
-            // With the gap, the ring's neighbours are the surface on both sides.
             const surfaceRgb = opaque(parseColor(measured.surface), [255, 255, 255]);
             const ringRgb = opaque(parseColor(measured.outlineColor), surfaceRgb);
-            expect(ratio(ringRgb, surfaceRgb)).toBeGreaterThanOrEqual(3);
+            const inset = measured.outlineOffset < 0;
+            if (inset) {
+              // Attached members sit flush against their neighbours, so the ring
+              // moves inside the member, still gapped from its edge: the colour
+              // on both sides of the ring is the member's own fill.
+              expect(focusCase.startsWith("group-")).toBe(true);
+              expect(-measured.outlineOffset - measured.outlineWidth).toBeGreaterThanOrEqual(1);
+              const fillRgb = opaque(parseColor(measured.background), surfaceRgb);
+              expect(ratio(ringRgb, fillRgb)).toBeGreaterThanOrEqual(3);
+            } else {
+              // The gap: the ring never touches the control's own fill, so its
+              // neighbours are the surface on both sides.
+              expect(measured.outlineOffset).toBeGreaterThanOrEqual(1);
+              expect(ratio(ringRgb, surfaceRgb)).toBeGreaterThanOrEqual(3);
+            }
+
+            // Past the shared 1px border, a ring (or its gap) that lands on an
+            // attached neighbour must stand out from that neighbour's fill, so
+            // an input's ring cannot vanish into an adjacent primary button.
+            for (const neighbour of measured.neighbours) {
+              if (neighbour.depth <= 1) continue;
+              const neighbourRgb = opaque(parseColor(neighbour.fill), surfaceRgb);
+              expect(
+                ratio(ringRgb, neighbourRgb),
+                `${focusCase} ring reaches ${neighbour.depth}px into a ${neighbour.fill} neighbour`,
+              ).toBeGreaterThanOrEqual(3);
+            }
 
             // Focus must not shift layout, and no ancestor may clip the ring.
             expect(measured.width).toBe(before.width);

@@ -44,7 +44,9 @@ interface ModeOptions {
 /**
  * One row per surface, each holding the controls whose focus ring used to touch
  * a primary fill (primary button, checked checkbox, checked switch) plus an
- * input and the attached groups whose neighbours can cover or clip the ring.
+ * input and the attached groups whose neighbours can cover or clip the ring, or
+ * whose primary fill sits right next to the ring (an input or outline button
+ * beside a primary button, and a primary split button).
  * Every focus target carries `data-focus-case`.
  */
 export async function focusGap(root: HTMLElement, options: ModeOptions): Promise<void> {
@@ -98,8 +100,16 @@ export async function focusGap(root: HTMLElement, options: ModeOptions): Promise
           </div>
           <div data-slot="input-group" data-attached="true" style="inline-size:16rem">
             <input data-slot="input" aria-label="Search" data-focus-case="group-input" />
-            <button type="button" data-slot="button">
+            <button type="button" data-slot="button" data-focus-case="group-input-button">
               Go
+            </button>
+          </div>
+          <div data-slot="button-group" data-attached="true" role="group">
+            <button type="button" data-slot="button" data-focus-case="group-split-button">
+              Save
+            </button>
+            <button type="button" data-slot="button" aria-label="More save options">
+              ▾
             </button>
           </div>
         </div>

@@ -73,6 +73,19 @@ const INSET_RING_SLOTS = [
   "nav-item",
 ];
 
+/** Attached groups whose flush members draw the ring inside themselves. */
+const ATTACHED_GROUPS = [
+  ["actions/button-group.css", '[data-slot="button-group"]'],
+  ["forms/input-group.css", '[data-slot="input-group"]'],
+] as const;
+
+function isAttachedMember(selector: string): boolean {
+  return (
+    selector.includes('[data-attached="true"]') &&
+    ATTACHED_GROUPS.some(([, group]) => selector.includes(group))
+  );
+}
+
 /** Focus targets whose ring is drawn by a wrapper element instead of themselves. */
 const RING_DELEGATED_SLOTS = ["virtual-table-table"];
 
@@ -126,15 +139,41 @@ describe("focus-ring treatment", () => {
     expect(removed, "focused controls must keep the shared ring").toEqual([]);
   });
 
-  it("should reserve inset rings for rows inside clipping containers", () => {
+  it("should reserve inset rings for clipped rows and attached group members", () => {
     const inset = ALL_RULES.filter(({ body }) => /outline-offset\s*:\s*calc\(\s*-/.test(body))
       .filter(({ selector }) => !/forced-colors/.test(selector))
+      .filter(({ selector }) => !isAttachedMember(selector))
       .filter(
         ({ selector }) =>
           !INSET_RING_SLOTS.some((slot) => new RegExp(`data-slot="${slot}"`).test(selector)),
       )
       .map(({ file, selector }) => `${file}: ${selector}`);
     expect(inset).toEqual([]);
+  });
+
+  it("should draw attached members' ring inside them, gapped from their edge", () => {
+    for (const [file, group] of ATTACHED_GROUPS) {
+      const css = readFileSync(join(DEFAULT_THEME_STYLES_DIR, ...file.split("/")), "utf-8");
+      const inset = rules(join(DEFAULT_THEME_STYLES_DIR, ...file.split("/"))).find(
+        ({ selector, body }) =>
+          selector.includes(group) &&
+          isAttachedMember(selector) &&
+          selector.includes(":focus-visible") &&
+          /outline-offset\s*:/.test(body),
+      );
+      expect(inset, `${file} needs an inset ring for attached members`).toBeDefined();
+      // Inside the member by the ring width plus the same gap as everywhere else,
+      // so the ring never lands on a neighbour's fill.
+      expect(inset!.body).toContain(
+        "outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));",
+      );
+      // Filled buttons draw it in their own text colour; everything else in the ring colour.
+      expect(inset!.body).toContain(
+        "outline-color: var(--_button-inset-ring, var(--ak-color-focus-ring));",
+      );
+      // Forced colours keep the gapped system ring, so the inset is scoped out of them.
+      expect(css).toMatch(/@media \(forced-colors: none\) \{[^@]*outline-offset: calc\(-1/);
+    }
   });
 
   it("should lift focused members of attached groups above their neighbours", () => {
