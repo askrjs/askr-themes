@@ -48,6 +48,20 @@
   z-index: 1;
 }
 
+/* Attached buttons sit flush, so a ring drawn outside would land on the neighbour's fill (blue on
+   a primary button, as in a split button). Draw it inside with the same gap from the edge; filled
+   buttons use their text colour. Forced colours keep the gapped system ring. Matches input groups. */
+@media (forced-colors: none) {
+  :where(
+      :is(.btn-group, .btn-group-vertical)[data-attached="true"],
+      [data-slot="button-group"][data-attached="true"]
+    )
+    > :where(.btn, [data-slot="button"]):focus-visible {
+    outline-color: var(--_button-inset-ring, var(--ak-color-focus-ring));
+    outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));
+  }
+}
+
 :where(
     :is(.btn-group, .btn-group-vertical)[data-attached="false"],
     [data-slot="button-group"][data-attached="false"]
