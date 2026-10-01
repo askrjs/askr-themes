@@ -58,6 +58,16 @@
   focus `box-shadow` should override `outline`/`outline-offset` or the
   `--ak-focus-ring-*` tokens instead.
 
+### Fixed
+
+- The cat presets' focus rings are now solid colours that reach 3:1 against
+  every surface, primary-soft, and selected fill in their theme (#164). They
+  were 22–24% translucent fills left over from the old halo, which composite
+  to about 1.3–2.0:1 as the gapped outline. The new values are calico
+  `#3a6cc0`, ginger `#c2560f`, tabby `#a0683a`, torty `#e0a854`, and tuxedo
+  `#cbd5e1`. The unit and browser contrast suites now check preset rings the
+  same way they check the default theme.
+
 ## 0.4.0 - 2026-09-28
 
 Upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 at the same time. The default

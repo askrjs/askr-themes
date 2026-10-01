@@ -209,6 +209,26 @@ function resolveTokenValue(
 }
 
 /**
+ * The focus ring is drawn with a gap (outline-offset) between the control and
+ * the ring, so the colours adjacent to the ring are the surface the control
+ * sits on, never the control's own fill. WCAG 1.4.11 / 2.4.13 therefore asks
+ * for 3:1 against every documented surface (including the selected fills a
+ * focused row or checkbox can sit on), not against the primary fill. Every
+ * theme that sets its own ring, presets included, must meet it.
+ */
+const FOCUS_RING_PAIRS: [string, string, number, string][] = [
+  ["--ak-color-focus-ring", "--ak-color-bg", 3, "focus ring on page"],
+  ["--ak-color-focus-ring", "--ak-color-surface", 3, "focus ring on surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-muted", 3, "focus ring on muted surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
+  ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
+  ["--ak-color-focus-ring", "--ak-color-primary-soft", 3, "focus ring on selected fill"],
+  ["--ak-color-focus-ring", "--ak-color-selected", 3, "focus ring on selected row"],
+];
+
+const PRESET_THEMES = ["calico", "ginger", "tabby", "torty", "tuxedo"] as const;
+
+/**
  * WCAG AA contrast pairs: [foreground token, background token, min ratio, label].
  * 4.5:1 for normal text, 3:1 for large text / UI components.
  */
@@ -247,17 +267,7 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   ["--ak-color-warning", "--ak-color-surface", 3, "warning UI on surface"],
   ["--ak-color-info", "--ak-color-surface", 3, "info UI on surface"],
 
-  // The focus ring is drawn with a gap (outline-offset) between the control and
-  // the ring, so the colours adjacent to the ring are the surface the control
-  // sits on, never the control's own fill. WCAG 1.4.11 / 2.4.13 therefore asks
-  // for 3:1 against every documented surface (including the selected fill a
-  // focused row or checkbox can sit on), not against the primary fill.
-  ["--ak-color-focus-ring", "--ak-color-bg", 3, "focus ring on page"],
-  ["--ak-color-focus-ring", "--ak-color-surface", 3, "focus ring on surface"],
-  ["--ak-color-focus-ring", "--ak-color-surface-muted", 3, "focus ring on muted surface"],
-  ["--ak-color-focus-ring", "--ak-color-surface-raised", 3, "focus ring on raised surface"],
-  ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3, "focus ring on overlay surface"],
-  ["--ak-color-focus-ring", "--ak-color-primary-soft", 3, "focus ring on selected fill"],
+  ...FOCUS_RING_PAIRS,
 
   // Menu, select, and command items show hover and keyboard focus only through
   // the hover fill, so it must stay perceptible on the popover surface.
@@ -365,6 +375,39 @@ describe("WCAG AA contrast", () => {
               new Set(resolvedLayers.map((color) => color.map(Math.round).join(","))).size,
             ).toBe(ELEVATION_LAYERS.length);
           });
+        });
+      }
+    });
+  }
+});
+
+describe("preset focus-ring contrast", () => {
+  for (const preset of PRESET_THEMES) {
+    describe(`${preset} preset`, () => {
+      const css = readFileSync(join(THEMES_DIR, "presets", `${preset}.css`), "utf-8");
+      const tokens = extractColorTokens(css, (s) => s.includes(`[data-theme="${preset}"]`));
+      const resolve = (token: string): [number, number, number, number] => {
+        const value = tokens.get(token);
+        if (!value) throw new Error(`${preset} is missing ${token}`);
+        const parsed = parseColor(resolveTokenValue(value, tokens));
+        if (!parsed) throw new Error(`Unsupported ${preset} color: ${token} (${value})`);
+        return parsed;
+      };
+
+      it("should use a solid ring so the thin outline is not washed out", () => {
+        expect(resolve("--ak-color-focus-ring")[3]).toBe(1);
+      });
+
+      for (const [fgToken, bgToken, minRatio, label] of FOCUS_RING_PAIRS) {
+        it(`should ${label} (${minRatio}:1)`, () => {
+          const page = resolve("--ak-color-bg");
+          const bg = resolveToOpaque(resolve(bgToken), page);
+          const fg = resolveToOpaque(resolve(fgToken), [...bg, 1]);
+          const ratio = contrastRatio(fg, bg);
+          expect(
+            ratio,
+            `${preset} ${label}: ${tokens.get(fgToken)} on ${tokens.get(bgToken)} = ${ratio.toFixed(2)}:1, need ${minRatio}:1`,
+          ).toBeGreaterThanOrEqual(minRatio);
         });
       }
     });
