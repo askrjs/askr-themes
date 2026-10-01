@@ -69,6 +69,7 @@
   same way they check the default theme.
 
 ### Internal
+
 ### Internal
 
 - Local Playwright runs start the browser harness on a free port instead of a
