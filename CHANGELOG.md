@@ -16,6 +16,9 @@
 ### Fixed
 
 - Stop a wrapped breadcrumb stranding a separator at the end of a line.
+- Keep the spacing between an icon and its label in a breadcrumb link or page,
+  which the truncation layout had dropped, and cap only the item that holds the
+  current page rather than whichever item is last.
 
 ### Documentation
 
