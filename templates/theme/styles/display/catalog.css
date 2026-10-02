@@ -96,8 +96,9 @@
 }
 
 /* Only a current page longer than three quarters of the trail truncates; that cap also leaves
-   the ancestors room for their separators. */
-:where([data-slot="breadcrumb-item"]:last-child) {
+   the ancestors room for their separators. The item is found by the page it holds, so a trailing
+   ellipsis or link-type last crumb is not mistaken for it. */
+:where([data-slot="breadcrumb-item"]:has(> [data-slot="breadcrumb-page"])) {
   flex-shrink: 0;
   max-inline-size: 75%;
 }
@@ -138,6 +139,14 @@
   line-height: var(--ak-density-control-height-sm);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Block layout drops the flex gap, so an icon keeps its spacing from the label directly. */
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"])
+  > :where([data-slot="icon"], svg) {
+  display: inline-block;
+  margin-inline-end: var(--ak-space-xs);
+  vertical-align: middle;
 }
 
 :where(
