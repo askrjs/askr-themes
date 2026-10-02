@@ -768,10 +768,10 @@
 
       const actionGroupsContent = `
         <div class="stack">
-          <div class="btn-group" data-slot="button-group" data-attached="true">
+          <div class="btn-group" data-slot="button-group" data-attached="true" data-responsive="true">
             <button class="btn btn-outline" data-slot="button">Compact</button>
-            <button class="btn btn-outline" data-slot="button">Comfortable</button>
-            <button class="btn btn-outline" data-slot="button" data-disabled>Disabled</button>
+            <button class="btn btn-outline" data-slot="button">Cozy</button>
+            <button class="btn btn-outline" data-slot="button" data-disabled>Locked</button>
           </div>
           ${renderRow([
             '<button class="btn btn-secondary" data-slot="button">Secondary</button>',
@@ -796,7 +796,7 @@
               <div class="nav-brand" data-slot="nav-brand">
                 <a href="#">
                   <span data-slot="icon" aria-hidden="true">A</span>
-                  <strong>Askr Production Workspace</strong>
+                  <strong data-nav-brand-label>Askr Production Workspace</strong>
                 </a>
               </div>
               <details data-slot="navbar-collapse" open>
@@ -820,7 +820,7 @@
                   <div class="nav-group" data-slot="nav-group" data-visual-end-group="true">
                     <div data-slot="nav-group-body">
                       <button class="btn btn-ghost btn-icon" data-slot="button" data-size="icon" aria-label="Theme">
-                        Aa
+                        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.25"/><path d="M8 2.75v10.5" /><path d="M8 2.75a5.25 5.25 0 0 1 0 10.5z" fill="currentColor"/></svg>
                       </button>
                     </div>
                   </div>
@@ -893,8 +893,8 @@
             <h3 data-slot="toolbar-title">Deployment controls</h3>
             <div data-slot="toolbar-actions">
               <div data-slot="input-group">
-                <span data-slot="input-group-text">?</span>
-                <input class="input" data-slot="input" aria-label="Filter deployments" />
+                <span data-slot="input-group-text">Filter</span>
+                <input class="input" data-slot="input" aria-label="Filter deployments" placeholder="Region or service" />
               </div>
             </div>
           </div>
@@ -917,8 +917,9 @@
             </aside>
           </div>
           <section data-slot="dialog-content">
-            <button class="btn btn-close" data-slot="close" type="button" aria-label="Close command palette">x</button>
+            <button class="btn btn-close" data-slot="close" type="button" aria-label="Close command palette">&times;</button>
             <h3 data-slot="dialog-title">Command palette composition</h3>
+            <input class="input" data-slot="command-input" aria-label="Search commands" placeholder="Search commands" />
             <ul data-slot="command-list">
               <li data-slot="command-item">Open production dashboard</li>
               <li data-slot="command-item">Review deployment history</li>
@@ -942,7 +943,7 @@
                 <div data-slot="nav-brand">
                   <a href="#">
                     <span data-slot="icon" aria-hidden="true">A</span>
-                    <strong>Askr Production Workspace</strong>
+                    <strong data-nav-brand-label>Askr Production Workspace</strong>
                   </a>
                 </div>
                 <div data-slot="nav-group">
@@ -974,7 +975,7 @@
               </main>
             </div>
           </div>
-          <div data-slot="aspect-ratio" style="aspect-ratio: 16 / 9;">
+          <div data-slot="aspect-ratio" style="aspect-ratio: 21 / 9;">
             <div class="preview-surface">Aspect-ratio media frame</div>
           </div>
         </div>`;
@@ -1110,8 +1111,14 @@
               <input data-slot="checkbox" type="checkbox" data-disabled disabled />
               <span>Disabled checkbox</span>
             </label>
-            <button data-slot="switch" data-state="checked" aria-label="Enabled"></button>
-            <button data-slot="switch" data-disabled aria-label="Disabled"></button>
+            <div class="row">
+              <button data-slot="switch" data-state="checked" aria-label="Enabled"></button>
+              <span>Enabled switch</span>
+            </div>
+            <div class="row">
+              <button data-slot="switch" data-disabled aria-label="Disabled"></button>
+              <span>Disabled switch</span>
+            </div>
           </div>
         </div>`;
 
@@ -1475,7 +1482,7 @@
             <div class="skeleton" data-slot="skeleton" style="height: 0.875rem; width: 82%;"></div>
             <div class="skeleton" data-slot="skeleton" style="height: 0.875rem; width: 54%;"></div>
           </div>
-          <div class="btn-group" data-slot="button-group" data-attached="true">
+          <div class="btn-group" data-slot="button-group" data-attached="true" data-responsive="true">
             <button class="btn btn-outline" data-slot="button">Overview</button>
             <button class="btn btn-outline" data-slot="button">Detailed metrics</button>
             <button class="btn btn-outline" data-slot="button">Export history</button>

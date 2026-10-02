@@ -61,3 +61,17 @@
   pointer-events: none;
   cursor: not-allowed;
 }
+
+/* Touch and phone-width viewports need a 24px target (WCAG 2.5.8). Zoom scales the box, border and
+   mark together, so the control keeps its proportions and the layout makes room for it. */
+@media (pointer: coarse), (max-width: 30rem) {
+  :where([data-slot="checkbox"]) {
+    zoom: 1.5;
+  }
+
+  /* Zoom scales the ring too (and rounds it up), so divide it back to the shared 3px ring. */
+  :where([data-slot="checkbox"]):focus-visible {
+    outline-width: calc(var(--ak-focus-ring-width) / 1.5);
+    outline-offset: calc(var(--ak-focus-ring-offset) / 1.5);
+  }
+}

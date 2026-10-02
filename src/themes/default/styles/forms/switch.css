@@ -61,3 +61,16 @@
   background: var(--ak-color-text-muted);
   box-shadow: none;
 }
+
+/* Same 1.5x touch size as the checkbox, so selection controls stay a matched pair. */
+@media (pointer: coarse), (max-width: 30rem) {
+  :where([data-slot="switch"]) {
+    zoom: 1.5;
+  }
+
+  /* Zoom scales the ring too (and rounds it up), so divide it back to the shared 3px ring. */
+  :where([data-slot="switch"]):focus-visible {
+    outline-width: calc(var(--ak-focus-ring-width) / 1.5);
+    outline-offset: calc(var(--ak-focus-ring-offset) / 1.5);
+  }
+}

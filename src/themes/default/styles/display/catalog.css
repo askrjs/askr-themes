@@ -79,6 +79,29 @@
   list-style: none;
 }
 
+/* Keep separators on the same line. Items keep their natural width when the trail fits. When it
+   does not, ancestors truncate and the current page stays whole, so the page the reader is on is
+   always readable while the way back stays recognisable. */
+:where([data-slot="breadcrumb-list"]) {
+  flex-wrap: nowrap;
+  min-inline-size: 0;
+}
+
+:where([data-slot="breadcrumb-separator"]) {
+  flex: none;
+}
+
+:where([data-slot="breadcrumb-item"]) {
+  flex: 0 1 auto;
+}
+
+/* Only a current page longer than three quarters of the trail truncates; that cap also leaves
+   the ancestors room for their separators. */
+:where([data-slot="breadcrumb-item"]:last-child) {
+  flex-shrink: 0;
+  max-inline-size: 75%;
+}
+
 :where(
   [data-slot="breadcrumb-item"],
   [data-slot="breadcrumb-separator"],
@@ -105,6 +128,16 @@
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   text-decoration: none;
+}
+
+/* Block layout lets text-overflow apply to both ancestor and current-page labels. */
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"]) {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+  line-height: var(--ak-density-control-height-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 :where(
