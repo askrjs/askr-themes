@@ -38,6 +38,39 @@
   box-shadow: none;
 }
 
+/* A horizontal attached group keeps every label whole and sizes each button to its content. When
+   the container is too narrow the group scrolls inside its own box instead of breaking a word. */
+:where(
+  :is(.btn-group, .btn-group-vertical)[data-attached="true"]:not(
+      .btn-group-vertical,
+      [data-orientation="vertical"]
+    ),
+  [data-slot="button-group"][data-attached="true"]:not(
+      .btn-group-vertical,
+      [data-orientation="vertical"]
+    )
+) {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+:where(
+    :is(.btn-group, .btn-group-vertical)[data-attached="true"]:not(
+        .btn-group-vertical,
+        [data-orientation="vertical"]
+      ),
+    [data-slot="button-group"][data-attached="true"]:not(
+        .btn-group-vertical,
+        [data-orientation="vertical"]
+      )
+  )
+  > :where(.btn, [data-slot="button"]) {
+  flex: none;
+  min-inline-size: auto;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
 /* Attached buttons overlap by 1px; lift the focused one so its neighbor cannot cover the ring.
    Only focus lifts, so tooltips on hovered buttons keep the group's stacking order. */
 :where(
@@ -153,6 +186,8 @@
     [data-responsive="true"][data-attached="true"]:not(:has(> .btn-icon, > [data-size^="icon"]))
   ) {
     flex-direction: column;
+    /* A column of full-width buttons has no row to scroll; labels wrap inside their button. */
+    overflow: visible;
   }
 
   :where(.btn-group, [data-slot="button-group"]):where(
@@ -160,6 +195,9 @@
     )
     > :where(.btn, [data-slot="button"]) {
     inline-size: 100%;
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   :where(.btn-group, [data-slot="button-group"]):where(

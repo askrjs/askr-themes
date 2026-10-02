@@ -12,6 +12,12 @@
   the current page stays whole, up to three quarters of the trail.
 - Keep the focus ring on the zoomed checkbox and switch at the shared 3px width
   and 2px gap, instead of the 4px ring and 3px gap that zoom produced.
+- Keep attached button groups, tabs, pills, and the `Tabs` list on one row with
+  whole labels. When the container is too narrow they scroll horizontally inside
+  their own box instead of wrapping onto extra rows or breaking a word. The
+  phone-width stacked column keeps wrapping labels inside its full-width buttons.
+  The focus ring on a tab, pill, or tab trigger is drawn inside the item so the
+  scrolling row cannot clip it.
 
 ### Fixed
 
@@ -22,8 +28,8 @@
 
 ### Documentation
 
-- Document that tabs and pills wrap rather than scroll, that attached button
-  groups stack on phones by default and never overflow their container, the
+- Document that tabs, pills, and attached button groups scroll inside their own
+  box when too narrow, that attached groups stack on phones by default, the
   breadcrumb truncation behaviour, the `zoom` requirement for touch-sized
   controls, and the `data-nav-brand-label` hook for the navbar brand.
 
