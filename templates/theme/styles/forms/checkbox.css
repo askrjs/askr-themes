@@ -68,4 +68,10 @@
   :where([data-slot="checkbox"]) {
     zoom: 1.5;
   }
+
+  /* Zoom scales the ring too (and rounds it up), so divide it back to the shared 3px ring. */
+  :where([data-slot="checkbox"]):focus-visible {
+    outline-width: calc(var(--ak-focus-ring-width) / 1.5);
+    outline-offset: calc(var(--ak-focus-ring-offset) / 1.5);
+  }
 }

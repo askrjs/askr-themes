@@ -8,8 +8,10 @@
   `30rem`, so their targets reach the 24px WCAG 2.5.8 minimum. Link-style
   buttons keep a 24px minimum height there, and an icon-only navbar brand keeps
   a full-size target.
-- Keep breadcrumb trails on one line: ancestors keep their width and the
-  current page truncates with an ellipsis.
+- Keep breadcrumb trails on one line. Ancestors truncate with an ellipsis and
+  the current page stays whole, up to three quarters of the trail.
+- Keep the focus ring on the zoomed checkbox and switch at the shared 3px width
+  and 2px gap, instead of the 4px ring and 3px gap that zoom produced.
 
 ### Fixed
 
@@ -18,15 +20,19 @@
 ### Documentation
 
 - Document that tabs and pills wrap rather than scroll, that attached button
-  groups never overflow (use `data-responsive` or room for long labels), and
-  the `data-nav-brand-label` hook for the navbar brand.
+  groups stack on phones by default and never overflow their container, the
+  breadcrumb truncation behaviour, the `zoom` requirement for touch-sized
+  controls, and the `data-nav-brand-label` hook for the navbar brand.
 
 ### Tests
 
 - Add `audit-heuristics.spec.ts`, which measures the whole audit page at 320,
   375, 768, and 1440px for mid-word breaks, undersized hit areas, dangling
-  breadcrumb separators, text under 12px, and content overflowing the viewport
-  outside a scroll container.
+  breadcrumb separators, a truncated current page, text under 12px, and content
+  overflowing the viewport outside a scroll container. The same heuristics run
+  against the real components in `real-component-heuristics.spec.ts`, so a
+  green audit page cannot hide a gap between its hand-written markup and what
+  the components render.
 
 ### Audit page
 
@@ -34,7 +40,7 @@
   labelled addon and placeholder, and the selection controls sample consistent
   labelled rows. Replace the placeholder `Aa` theme button with an icon, mark
   the navbar brand label with `data-nav-brand-label` so it truncates and shares
-  a row with the menu toggle, stack the sample button groups on phones with
+  a row with the menu toggle, match the real `ButtonGroup`'s default
   `data-responsive`, and tighten the aspect-ratio frame.
 
 ## 0.4.2 - 2026-10-01

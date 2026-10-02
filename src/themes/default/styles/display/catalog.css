@@ -79,19 +79,27 @@
   list-style: none;
 }
 
-/* A breadcrumb trail stays on one line: wrapping strands a separator at a line end. Ancestors keep
-   their width and the current page truncates with an ellipsis instead. */
+/* Keep separators on the same line. Items keep their natural width when the trail fits. When it
+   does not, ancestors truncate and the current page stays whole, so the page the reader is on is
+   always readable while the way back stays recognisable. */
 :where([data-slot="breadcrumb-list"]) {
   flex-wrap: nowrap;
   min-inline-size: 0;
 }
 
-:where([data-slot="breadcrumb-item"], [data-slot="breadcrumb-separator"]) {
+:where([data-slot="breadcrumb-separator"]) {
   flex: none;
 }
 
-:where([data-slot="breadcrumb-item"]:last-child) {
+:where([data-slot="breadcrumb-item"]) {
   flex: 0 1 auto;
+}
+
+/* Only a current page longer than three quarters of the trail truncates; that cap also leaves
+   the ancestors room for their separators. */
+:where([data-slot="breadcrumb-item"]:last-child) {
+  flex-shrink: 0;
+  max-inline-size: 75%;
 }
 
 :where(
@@ -122,8 +130,8 @@
   text-decoration: none;
 }
 
-/* Only the current page truncates, so it is a block for `text-overflow` to apply to. */
-:where([data-slot="breadcrumb-page"]) {
+/* Block layout lets text-overflow apply to both ancestor and current-page labels. */
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"]) {
   display: block;
   min-inline-size: 0;
   overflow: hidden;

@@ -211,10 +211,14 @@ Responsive rules:
 - Tabs and pills wrap onto further rows when their labels outgrow the container; they do not
   scroll. Keep the labels short, or place a list that must stay on one row inside a
   `ScrollArea`.
-- Breadcrumbs stay on one line: ancestors keep their width and the current page truncates.
-- Attached button groups never overflow their container, so a label that cannot fit breaks
-  inside a word. Give a group that must hold long labels `data-responsive="true"` (it stacks on
-  phones) or enough room.
+- Breadcrumbs stay on one line. When the trail is too wide the ancestors truncate with an ellipsis
+  and the current page stays whole, up to three quarters of the trail. Set `title` on a crumb whose
+  full text a reader may need.
+- An attached `ButtonGroup` stacks into a column on phones by default (`data-responsive`), and it
+  never overflows its container. In a container too narrow for its labels on a wider viewport, a
+  label breaks inside a word, so give such a group more room or shorter labels.
+- On coarse pointers and viewports up to `30rem`, checkboxes and switches render at 1.5x so their
+  targets reach 24px. This uses CSS `zoom` (Firefox 126+); older browsers keep the 16px size.
 - Mark the brand text with `data-nav-brand-label` so it truncates with an
   ellipsis (and hides beside an icon on phones) instead of pushing the menu
   toggle onto a second row.
