@@ -104,6 +104,12 @@
     box-shadow var(--ak-duration-fast) var(--ak-ease-standard);
 }
 
+/* The tab and pill rows scroll, which clips anything painted outside their box, so the focus ring is
+   drawn inside the item with the same gap from its edge instead of outside it. */
+:where(.tab, [data-slot="tab"], .pill, [data-slot="pill"]):focus-visible {
+  outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));
+}
+
 :where(.tab:hover, [data-slot="tab"]:hover) {
   color: var(--ak-color-text);
   background: var(--ak-color-hover);

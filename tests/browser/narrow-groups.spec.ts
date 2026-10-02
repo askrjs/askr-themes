@@ -81,3 +81,54 @@ for (const width of [375, 320]) {
     }
   });
 }
+
+test("focus rings on scrolling tabs, pills, and tab triggers are not clipped by the scroller", async ({
+  page,
+  markup,
+}) => {
+  await page.setViewportSize({ width: 375, height: 700 });
+  await markup(`
+    <div style="width: 343px; margin: 16px">
+      <nav class="tabs" data-slot="tabs" aria-label="Sections">
+        <a class="tab" data-slot="tab" href="#">Profile</a>
+        <a class="tab" data-slot="tab" href="#">Billing</a>
+      </nav>
+      <nav class="pills" data-slot="pills" aria-label="Reports">
+        <a class="pill" data-slot="pill" href="#">Open</a>
+        <a class="pill" data-slot="pill" href="#">Queued review</a>
+      </nav>
+      <div data-slot="tabs-list" role="tablist">
+        <button data-slot="tabs-trigger" role="tab" data-state="active">Overview</button>
+        <button data-slot="tabs-trigger" role="tab">Activity</button>
+      </div>
+    </div>
+  `);
+  const links = page.locator('[data-slot="tab"], [data-slot="pill"], [data-slot="tabs-trigger"]');
+  const count = await links.count();
+  for (let index = 0; index < count; index += 1) {
+    // A keyboard event first, so a programmatic focus matches :focus-visible in every engine.
+    await page.keyboard.press("Shift");
+    await links.nth(index).focus();
+    const clipped = await page.evaluate(() => {
+      const target = document.activeElement as HTMLElement;
+      const scroller = target.closest<HTMLElement>(
+        '[data-slot="tabs"], [data-slot="pills"], [data-slot="tabs-list"]',
+      )!;
+      const style = getComputedStyle(target);
+      if (style.outlineStyle === "none") throw new Error("focused item has no focus ring");
+      const extent = Number.parseFloat(style.outlineWidth) + Number.parseFloat(style.outlineOffset);
+      const box = target.getBoundingClientRect();
+      const clip = scroller.getBoundingClientRect();
+      const border = (side: string) => Number.parseFloat(getComputedStyle(scroller)[side as never]);
+      return {
+        label: target.textContent,
+        start: box.left - Math.max(extent, 0) - (clip.left + border("borderLeftWidth")),
+        top: box.top - Math.max(extent, 0) - (clip.top + border("borderTopWidth")),
+        bottom: clip.bottom - border("borderBottomWidth") - (box.bottom + Math.max(extent, 0)),
+      };
+    });
+    expect(clipped.start, `${clipped.label} start`).toBeGreaterThanOrEqual(-0.5);
+    expect(clipped.top, `${clipped.label} top`).toBeGreaterThanOrEqual(-0.5);
+    expect(clipped.bottom, `${clipped.label} bottom`).toBeGreaterThanOrEqual(-0.5);
+  }
+});

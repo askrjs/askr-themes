@@ -71,6 +71,9 @@ const INSET_RING_SLOTS = [
   "navbar-toggle",
   "sidebar-menu-button",
   "nav-item",
+  "tab",
+  "pill",
+  "tabs-trigger",
 ];
 
 /** Attached groups whose flush members draw the ring inside themselves. */

@@ -553,6 +553,12 @@
   font-size: var(--ak-font-size-sm);
 }
 
+/* The trigger row scrolls, which clips anything painted outside its box, so the focus ring is drawn
+   inside the trigger with the same gap from its edge instead of outside it. */
+:where([data-slot="tabs-trigger"]):focus-visible {
+  outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));
+}
+
 :where([data-slot="tabs-trigger"]:hover) {
   background: var(--ak-color-hover);
   color: var(--ak-color-text);

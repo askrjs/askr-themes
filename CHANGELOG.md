@@ -16,6 +16,8 @@
   whole labels. When the container is too narrow they scroll horizontally inside
   their own box instead of wrapping onto extra rows or breaking a word. The
   phone-width stacked column keeps wrapping labels inside its full-width buttons.
+  The focus ring on a tab, pill, or tab trigger is drawn inside the item so the
+  scrolling row cannot clip it.
 
 ### Fixed
 
