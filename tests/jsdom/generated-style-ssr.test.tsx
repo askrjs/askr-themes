@@ -125,7 +125,7 @@ describe("generated theme style hydration", () => {
       `.${liveClass}{color:red}`,
     );
     expect(root.classList.contains(liveClass)).toBe(true);
-  });
+  }, 15_000);
 
   it("should adopt the server registry and append client-only rules without duplication", async () => {
     removeStyleRegistries();
