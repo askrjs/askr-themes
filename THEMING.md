@@ -20,7 +20,7 @@ Pick a mode on an ancestor:
 <html data-theme="dark"></html>
 ```
 
-Token override:
+Token override (place it after the theme import):
 
 ```css
 :root {
@@ -28,6 +28,44 @@ Token override:
   --ak-radius-md: 12px;
 }
 ```
+
+A later `:root` override restyles light mode and explicit document themes,
+including dark mode and the cat presets, at their published selector
+specificity. System dark keeps its more specific `:root:not([data-theme])`
+rule. Nested theme elements define their own tokens instead of inheriting
+overridden root values. Tokens no theme sets, such as `--ak-radius-md`,
+apply everywhere.
+
+Light-only override, including nested light scopes such as a
+`data-theme="light"` panel inside a dark page:
+
+```css
+[data-theme="light"] {
+  --ak-color-primary: #5b3d8f;
+  --ak-color-primary-soft: #ece4f5;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --ak-color-primary: #5b3d8f;
+    --ak-color-primary-soft: #ece4f5;
+  }
+}
+```
+
+Dark-only override: set the `--ak-dark-color-*` hooks on `:root`. Explicit
+dark, system dark, and nested dark scopes all read them:
+
+```css
+:root {
+  --ak-dark-color-primary: #c9b6f2;
+  --ak-dark-color-primary-soft: #3a2d52;
+}
+```
+
+To target explicit dark mode only, use a later `[data-theme="dark"]` rule
+with resolved `--ak-color-*` tokens. It also applies on `<html>`, where
+`ThemeScope` sets the attribute.
 
 The shipped light and dark token sets are contrast-tested. Consumer token
 overrides are ordinary CSS and cannot be validated by the runtime, so recheck
@@ -80,7 +118,7 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
 restrained enough for application chrome, and polished enough that downstream apps should not
 need to fix basic spacing or type rhythm.
-Ink plum actions, warm neutral surfaces, and subtle borders carry through its light
+Saturated blue actions, cool slate surfaces, and subtle borders carry through its light
 and dark palettes.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
@@ -574,7 +612,8 @@ Button:
 - background uses `--ak-color-primary`
 - hover uses `--ak-color-primary-hover`
 - active uses `--ak-color-primary-active`
-- focus uses `--ak-color-focus-ring`
+- focus uses the shared ring: an `outline` of `--ak-focus-ring-width` in
+  `--ak-color-focus-ring`, drawn `--ak-focus-ring-offset` away from the control
 - disabled styles use disabled tokens
 
 Card:
@@ -713,7 +752,9 @@ The default theme and any future reintroduced themes must satisfy these invarian
 5. `--ak-color-primary-ink` must be readable on `--ak-color-primary-soft`
 6. each status `*-ink` must be readable on its corresponding `*-soft`
 7. borders must remain visible against adjacent surfaces
-8. focus ring must remain visible on both bg and surface contexts
+8. an outset focus ring must reach 3:1 against every surface a control can sit
+   on; its `--ak-focus-ring-offset` gap separates it from the control's fill.
+   Attached members draw an inset ring that must contrast with their own fill.
 9. disabled text must appear visually disabled without becoming unreadable
 10. backdrop must provide sufficient separation for modal surfaces
 11. hover and active states must remain perceptible but restrained
@@ -1063,13 +1104,38 @@ The default light and dark modes additionally publish this canonical semantic
 pairing matrix. Ratios apply to browser-resolved colors after alpha and element
 opacity are composited:
 
-| Semantic pairing                                                                        | Minimum |
-| --------------------------------------------------------------------------------------- | ------: |
-| Ordinary or subtle text on its documented surface                                       |   4.5:1 |
-| Strong boundaries, warning UI, and info UI on a surface                                 |     3:1 |
-| The shared focus indicator on page, surface, muted, raised, overlay, and primary layers |     3:1 |
-| Disabled control fill against the page                                                  |   1.5:1 |
-| Disabled control boundary against the page when the fill is below 1.5:1                 |     3:1 |
+| Semantic pairing                                                                         | Minimum |
+| ---------------------------------------------------------------------------------------- | ------: |
+| Ordinary or subtle text on its documented surface                                        |   4.5:1 |
+| Strong boundaries, warning UI, and info UI on a surface                                  |     3:1 |
+| The shared focus indicator on page, surface, muted, raised, overlay, and selected layers |     3:1 |
+| Disabled control fill against the page                                                   |   1.5:1 |
+| Disabled control boundary against the page when the fill is below 1.5:1                  |     3:1 |
+
+### Focus Ring
+
+Every focusable element gets one ring from `styles/base/reset.css`:
+
+```css
+:where(:focus-visible) {
+  outline: var(--ak-focus-ring-width) solid var(--ak-color-focus-ring);
+  outline-offset: var(--ak-focus-ring-offset);
+}
+```
+
+For an outset ring, the offset leaves a gap between the control and the ring,
+so its neighbours are the surface behind the control. The primary fill does
+not touch that ring. Rows that run edge to edge
+inside a clipping or scrolling container (menu, dropdown, menubar, select, and
+command items, sidebar rows, the navbar toggle) set
+`outline-offset: calc(-1 * var(--ak-focus-ring-width))` to draw it inside the
+row. Attached button and input group members use
+`outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)))`
+to keep the ring inside the member, gapped from its edge. Its neighbours are
+the member's own fill, so filled buttons use their contrasting text color for
+the ring. Focused members are lifted with `z-index: 1` so a neighbour cannot
+cover it. Retheme the shared ring with
+`--ak-color-focus-ring`, `--ak-focus-ring-width`, and `--ak-focus-ring-offset`.
 
 ### Forced Colors
 

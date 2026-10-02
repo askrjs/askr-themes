@@ -82,11 +82,6 @@
   box-shadow: var(--ak-shadow-sm);
 }
 
-:where([data-slot="slider-thumb"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="slider-thumb"]:active) {
   cursor: grabbing;
 }

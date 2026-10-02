@@ -1,6 +1,6 @@
 {
   "name": "@askrjs/themes",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Default theme tokens, styles, and component presets for Askr apps.",
   "keywords": [
     "askr",
@@ -28,6 +28,7 @@
     "templates",
     "scripts/new-theme.js",
     "THEMING.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "type": "module",
@@ -113,7 +114,8 @@
     "build": "vp pack",
     "pack:check": "node tests/package-artifacts.js",
     "test:bundle": "node tests/granular-bundle.js",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:installed && npm run test:publint && npm run pack:check && npm run test:bundle",
+    "changelog:check": "node scripts/check-changelog.mjs",
+    "check": "npm run changelog:check && npm run lint && npm run typecheck && npm test && npm run build && npm run test:installed && npm run test:publint && npm run pack:check && npm run test:bundle",
     "prepack": "npm run build",
     "prepublishOnly": "npm run check",
     "test:checks": "vp test run -c vitest.test.checks.config.ts"
@@ -122,7 +124,7 @@
     "@askrjs/askr": ">=0.4.0 <0.5.0",
     "@askrjs/ui": ">=0.4.0 <0.5.0",
     "@askrjs/vite": ">=0.4.0 <0.5.0",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "1.63.0",
     "@tsdown/css": "0.22.14",
     "@types/node": "^26.3.0",
     "@typescript/native": "npm:typescript@^7.0.2",

@@ -30,6 +30,26 @@ application needs.
 
 Run `npm run check` before opening a pull request.
 
+`npm run test:browser` runs the Playwright suite against a Vite harness
+(`vite.harness.config.ts`). Locally each run starts its own harness on a free
+port, so runs in parallel worktrees stay isolated. `ASKR_TEST_PORT=<port>` pins
+the port. To reuse a harness you already started from this checkout
+(`npx vp dev --config vite.harness.config.ts`, port 4318), set
+`PW_REUSE_SERVER=1`; the run fails fast if the server on that port serves a
+different checkout. CI always starts a fresh harness on port 4318.
+
+## Changelog
+
+Any change to the `version` field in `package.json`, whether a release,
+prerelease, or patch bump, must include a matching `## <version>` section in
+`CHANGELOG.md` in the same commit or pull request. Date the section and list
+breaking changes (with migration notes), deprecations, additions, and fixes.
+Move entries from `Unreleased` into the new version section rather than leaving
+them there. Do not publish or tag a version whose changelog section is missing.
+Check with `npm run changelog:check` (the first step of `npm run check`, which
+`prepublishOnly` and the publish workflow run), which fails when `CHANGELOG.md`
+has no non-empty section for the current version.
+
 ## Optimization Gate
 
 A benchmark number is only half of an optimization's success criterion. The
@@ -49,3 +69,23 @@ Every benchmark-driven change must include:
 Prefer making the existing single path faster. New caches, inference,
 memoization, shortcuts, fast paths, or scheduler states require an explicit
 legibility decision; a speedup alone does not justify them.
+
+## Jev review
+
+Jev is TypeSafe's System One model: it returns typed choices, probabilities,
+and scores for focused questions through `POST https://api.typesafe.ai/v1/systemone`
+with model `jev-latest`. Use the `typesafe-ai` skill and current API documentation.
+Read credentials from the configured environment or local credential file silently;
+never print, commit, or preserve a key in request artifacts.
+
+Use Jev to prioritize contract gaps and predict observable event sequences. Supply
+the exact source, published contract, and relevant ordering. Define an
+`insufficient_source` choice when appropriate. For a blind prediction, withhold
+our diagnosis, patch explanation, and test results. Separate specificity, teardown,
+render adoption, and SSR registration questions. Code computes contrast ratios and
+compares declarations; Jev can prioritize semantic intent gaps.
+
+Preserve requests, responses, and contradictory test outcomes outside the source
+tree. A concentrated choice distribution is not proof of correctness. Reproduce
+findings with regression tests and independent review, and measure useful verified
+findings rather than call volume. Do not ask Jev to approve a patch or release.

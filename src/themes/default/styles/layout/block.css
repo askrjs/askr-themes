@@ -53,11 +53,6 @@
   color: var(--ak-color-text);
 }
 
-:where([data-slot="nav-item"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="page-header-actions"], [data-slot="toolbar-actions"]) {
   flex-wrap: wrap;
 }

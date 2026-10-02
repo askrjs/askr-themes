@@ -580,9 +580,9 @@ describe("token completeness", () => {
       expect(tokensCss).not.toContain(`${token}:`);
     }
 
-    expect(tokensCss).toContain("--ak-color-bg: #faf9f7;");
-    expect(tokensCss).toContain("--ak-color-primary: #47345c;");
-    expect(tokensCss).toContain("--ak-dark-color-primary: #e6d5ee;");
+    expect(tokensCss).toContain("--ak-color-bg: #f8f9fb;");
+    expect(tokensCss).toContain("--ak-color-primary: #2d5dd6;");
+    expect(tokensCss).toContain("--ak-dark-color-primary: #9db8ff;");
     expect(tokensCss).toContain("--ak-color-ring: var(--ak-color-border-strong);");
     expect(tokensCss).toContain("--ak-color-popover: var(--ak-color-surface-overlay);");
   });

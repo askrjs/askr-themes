@@ -106,11 +106,6 @@
   padding-inline: 0;
 }
 
-:where([data-slot="popover-trigger"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="popover-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
   background: var(--ak-color-hover);
@@ -142,11 +137,6 @@
   background: var(--ak-color-hover);
   border-color: var(--ak-color-input);
   box-shadow: var(--ak-shadow-xs);
-}
-
-:where([data-slot="popover-close"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
 }
 
 :where([data-slot="popover-close"][data-disabled]) {

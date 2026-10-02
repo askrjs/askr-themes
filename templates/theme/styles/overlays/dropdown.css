@@ -30,11 +30,6 @@
   border-color: var(--ak-color-input);
 }
 
-:where(.dropdown-trigger:focus-visible, [data-slot="dropdown-trigger"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where(.dropdown-trigger[data-state="open"], [data-slot="dropdown-trigger"][data-state="open"]) {
   border-color: var(--ak-color-ring);
   background: var(--ak-color-hover);

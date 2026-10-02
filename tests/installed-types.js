@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -46,6 +46,49 @@ try {
     stdio: "pipe",
     shell: process.platform === "win32",
   });
+  // Preserve the global JSX.Element compatibility shim shipped in 0.4.1,
+  // while component signatures continue to use the scoped Askr JSX types.
+  // No other declaration may introduce a global JSX namespace.
+  const installedPackageRoot = join(consumerRoot, "node_modules/@askrjs/themes");
+  const legacyGlobalJsxDeclaration = "dist/components/jsx-types.d.ts";
+  let legacyGlobalJsxSeen = false;
+  const globalJsxLeaks = [];
+  const scanDeclarations = (directory) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      const entryPath = join(directory, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name !== "node_modules") scanDeclarations(entryPath);
+      } else if (/\.d\.[cm]?ts$/.test(entry.name)) {
+        const source = readFileSync(entryPath, "utf8");
+        if (/\bdeclare\s+global\b/.test(source) || /\bnamespace\s+JSX\b/.test(source)) {
+          const packagePath = entryPath
+            .slice(installedPackageRoot.length + 1)
+            .replaceAll("\\", "/");
+          if (packagePath === legacyGlobalJsxDeclaration) legacyGlobalJsxSeen = true;
+          else globalJsxLeaks.push(packagePath);
+        }
+      }
+    }
+  };
+  scanDeclarations(installedPackageRoot);
+  if (globalJsxLeaks.length > 0) {
+    throw new Error(
+      `Unexpected global JSX declarations outside the published compatibility shim:\n  ${globalJsxLeaks.join("\n  ")}`,
+    );
+  }
+  if (!legacyGlobalJsxSeen) {
+    throw new Error(
+      `Missing published JSX.Element compatibility shim: ${legacyGlobalJsxDeclaration}.`,
+    );
+  }
+
+  const granularEntries = readdirSync(join(installedPackageRoot, "dist/entries"))
+    .filter((name) => name.endsWith(".d.ts"))
+    .map((name) => name.slice(0, -".d.ts".length));
+  if (granularEntries.length === 0) {
+    throw new Error("Expected granular entry declarations in the installed package.");
+  }
+
   writeFileSync(
     join(consumerRoot, "index.tsx"),
     [
@@ -75,6 +118,13 @@ try {
       'import "@askrjs/themes/templates/theme/index.css";',
       'import { Block, Heading, PageHeader, Stack, Toolbar, type BlockProps, type DialogProps, type GridProps, type HeadingProps, type SidebarRailProps, type TextProps } from "@askrjs/themes/components";',
       'import { withThemeStyles } from "@askrjs/themes/ssr";',
+      'import type { JSX as AskrJSX } from "@askrjs/askr/jsx-runtime";',
+      "const scopedElement: AskrJSX.Element = <Block><Heading level={2}>Scoped</Heading></Block>;",
+      'const scopedComponentResult: AskrJSX.Element = Block({ children: "scoped" });',
+      "const legacyElement: JSX.Element = scopedElement;",
+      'const legacyComponentResult: JSX.Element = Block({ children: "legacy" });',
+      "const scopedFromLegacy: AskrJSX.Element = legacyComponentResult;",
+      "void scopedElement; void scopedComponentResult; void legacyElement; void legacyComponentResult; void scopedFromLegacy;",
       "const fixture = <Block><span>strict consumer</span></Block>;",
       'const granular = <GranularPage><GranularPageHeader title="Status" /><GranularContainer><GranularSection><GranularStack gap="sm"><GranularCenter minHeight="sm"><GranularText>one</GranularText></GranularCenter><GranularCluster gap="xs"><GranularText>two</GranularText></GranularCluster><GranularGrid columns={2}><GranularBlock /><GranularBlock /></GranularGrid></GranularStack></GranularSection></GranularContainer></GranularPage>;',
       'const palette = <CommandPalette><CommandPaletteTrigger>Search</CommandPaletteTrigger><CommandPaletteContent title="Search docs"><CommandPaletteList><CommandPaletteLink href="/docs">Docs</CommandPaletteLink></CommandPaletteList></CommandPaletteContent></CommandPalette>;',
@@ -109,6 +159,11 @@ try {
       "const invalidHeadingLevel = <Heading level={7}>Invalid</Heading>;",
       'const rail: SidebarRailProps = { type: "button" };',
       "void fixture; void granular; void palette; void paletteContent; void inputWithRef; void selectWithRef; void buttonWithRef; void commandWithWrongRef; void selectWithWrongRef; void block; void wrapped; void invalidWrap; void invalidDirectionContract; void invalidToolbarDirection; void invalidPageHeaderRowFrom; void grid; void text; void heading; void headingProps; void missingHeadingLevel; void invalidHeadingLevel; void rail; void (null as DialogProps | InputProps | LabelProps | null); void Input; void Label; void withThemeStyles;",
+      // Load every granular entry declaration so strict lib checking catches
+      // any emitted reference to a JSX namespace that is not imported.
+      ...granularEntries.map(
+        (entry, index) => `import type * as GranularEntry${index} from "@askrjs/themes/${entry}";`,
+      ),
     ].join("\n"),
   );
   writeFileSync(
@@ -133,6 +188,28 @@ try {
     cwd: consumerRoot,
     stdio: "inherit",
   });
+
+  // Compile the components entry alone so another granular entry cannot
+  // accidentally supply its published global JSX.Element compatibility.
+  writeFileSync(
+    join(consumerRoot, "jsx-compatibility.tsx"),
+    [
+      'import { Block } from "@askrjs/themes/components";',
+      'import type { JSX as AskrJSX } from "@askrjs/askr/jsx-runtime";',
+      'const legacyResult: JSX.Element = Block({ children: "legacy" });',
+      "const scopedResult: AskrJSX.Element = legacyResult;",
+      "void legacyResult; void scopedResult;",
+    ].join("\n"),
+  );
+  writeFileSync(
+    join(consumerRoot, "jsx-compatibility.tsconfig.json"),
+    JSON.stringify({ extends: "./tsconfig.json", include: ["jsx-compatibility.tsx"] }),
+  );
+  execFileSync(
+    process.execPath,
+    [typescriptCli, "-p", join(consumerRoot, "jsx-compatibility.tsconfig.json")],
+    { cwd: consumerRoot, stdio: "inherit" },
+  );
 
   writeFileSync(
     join(consumerRoot, "runtime.mjs"),

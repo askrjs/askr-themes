@@ -121,19 +121,19 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
-The default theme pairs an ink plum accent with warm neutral surfaces in
+The default theme pairs a saturated blue accent with cool slate surfaces in
 light and dark mode. Override the semantic tokens to match your product:
 
 ```css
 :root {
-  --ak-color-primary: oklch(0.55 0.18 255);
-  --ak-color-primary-soft: oklch(0.95 0.04 255);
-  --ak-color-primary-ink: oklch(0.3 0.12 255);
+  --ak-color-primary: oklch(0.5 0.12 170);
+  --ak-color-primary-soft: oklch(0.95 0.04 170);
+  --ak-color-primary-ink: oklch(0.3 0.08 170);
 }
 ```
 
 The neutrals, hover, selected, and focus-ring tokens are also tinted to match
-the plum accent, and dark mode reads the `--ak-dark-color-*` tokens; override
+the blue accent, and dark mode reads the `--ak-dark-color-*` tokens; override
 those alongside the primary scale for a full rebrand. See
 [THEMING.md](./THEMING.md#required-tokens) for the complete primary, hover,
 active, focus, and contrast contract.

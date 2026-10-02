@@ -8,28 +8,38 @@ type RGB = [number, number, number];
 const PAIRS: readonly [string, string, number][] = [
   ["--ak-color-text", "--ak-color-bg", 4.5],
   ["--ak-color-text", "--ak-color-surface", 4.5],
-  ["--ak-color-text-muted", "--ak-color-bg", 3],
-  ["--ak-color-text-muted", "--ak-color-surface", 3],
+  ["--ak-color-text-muted", "--ak-color-bg", 4.5],
+  ["--ak-color-text-muted", "--ak-color-surface", 4.5],
   ["--ak-color-text-inverse", "--ak-color-primary", 4.5],
-  ["--ak-color-success-ink", "--ak-color-success-soft", 3],
-  ["--ak-color-warning-ink", "--ak-color-warning-soft", 3],
-  ["--ak-color-danger-ink", "--ak-color-danger-soft", 3],
-  ["--ak-color-info-ink", "--ak-color-info-soft", 3],
-  ["--ak-color-primary-ink", "--ak-color-primary-soft", 3],
-  ["--ak-color-link", "--ak-color-bg", 3],
-];
-
-const DEFAULT_THEME_PAIRS: readonly [string, string, number][] = [
-  ["--ak-color-text-subtle", "--ak-color-surface", 4.5],
-  ["--ak-color-border-strong", "--ak-color-surface", 3],
-  ["--ak-color-warning", "--ak-color-surface", 3],
-  ["--ak-color-info", "--ak-color-surface", 3],
+  ["--ak-color-success-ink", "--ak-color-success-soft", 4.5],
+  ["--ak-color-warning-ink", "--ak-color-warning-soft", 4.5],
+  ["--ak-color-danger-ink", "--ak-color-danger-soft", 4.5],
+  ["--ak-color-info-ink", "--ak-color-info-soft", 4.5],
+  ["--ak-color-primary-ink", "--ak-color-primary-soft", 4.5],
+  ["--ak-color-link", "--ak-color-bg", 4.5],
+  ["--ak-color-link", "--ak-color-surface", 4.5],
+  // The ring sits behind a gap, so it is measured against surfaces, not the
+  // primary fill. Presets set their own ring, so every theme must meet this.
   ["--ak-color-focus-ring", "--ak-color-bg", 3],
   ["--ak-color-focus-ring", "--ak-color-surface", 3],
   ["--ak-color-focus-ring", "--ak-color-surface-muted", 3],
   ["--ak-color-focus-ring", "--ak-color-surface-raised", 3],
   ["--ak-color-focus-ring", "--ak-color-surface-overlay", 3],
-  ["--ak-color-focus-ring", "--ak-color-primary", 3],
+  ["--ak-color-focus-ring", "--ak-color-primary-soft", 3],
+  ["--ak-color-focus-ring", "--ak-color-selected", 3],
+];
+
+const DEFAULT_THEME_PAIRS: readonly [string, string, number][] = [
+  ["--ak-color-text-muted", "--ak-color-bg", 4.5],
+  ["--ak-color-text-muted", "--ak-color-surface", 4.5],
+  ["--ak-color-text-subtle", "--ak-color-surface", 4.5],
+  ["--ak-color-border-strong", "--ak-color-surface", 3],
+  ["--ak-color-warning", "--ak-color-surface", 3],
+  ["--ak-color-info", "--ak-color-surface", 3],
+  ["--ak-color-primary", "--ak-color-bg", 4.5],
+  ["--ak-color-primary", "--ak-color-surface", 4.5],
+  ["--ak-color-primary-ink", "--ak-color-primary-soft", 4.5],
+  ["--ak-color-link", "--ak-color-bg", 4.5],
 ];
 
 const THEMES = ["light", "dark", "ginger", "tabby", "tuxedo", "calico", "torty"] as const;
@@ -118,5 +128,25 @@ test.describe("computed WCAG contrast", () => {
         });
       }
     });
+  }
+
+  for (const theme of THEMES) {
+    for (const backgroundToken of ["--ak-color-bg", "--ak-color-surface"]) {
+      test(`should keep ${theme} subtle metadata readable on ${backgroundToken}`, async ({
+        render,
+        run,
+      }) => {
+        await render();
+        const [measured] = await run<ResolvedPair[]>("resolve", theme, [
+          ["--ak-color-text-subtle", backgroundToken],
+        ]);
+        const foregroundColor = parseComputedColor(measured!.color);
+        const backgroundColor = parseComputedColor(measured!.backgroundColor);
+        const pageColor = parseComputedColor(measured!.pageColor);
+        expect(
+          contrast(foregroundColor, backgroundColor, [pageColor[0], pageColor[1], pageColor[2]]),
+        ).toBeGreaterThanOrEqual(4.5);
+      });
+    }
   }
 });

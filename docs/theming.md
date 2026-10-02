@@ -126,18 +126,29 @@ Override tokens after importing the default theme:
 Use tokens first. Add component-level CSS only when a semantic token is not
 specific enough for the app surface.
 
+A later `:root` override restyles light mode and explicit document themes,
+including dark mode and the cat presets. System dark keeps its more specific
+rule, and nested theme elements define their own tokens. See mode-specific recipes in
+[THEMING.md](../THEMING.md).
+
 ## Dark Mode
 
 Theme variants are ordinary CSS scopes. The default components read tokens from
-the active scope:
+the active scope. Override dark mode through the `--ak-dark-color-*` hooks, which
+explicit dark (`data-theme="dark"`), system dark, and nested dark scopes all
+read:
 
 ```css
-[data-theme="dark"] {
-  --ak-color-bg: #0f172a;
-  --ak-color-text: #f1f5f9;
-  --ak-color-surface: #111827;
+:root {
+  --ak-dark-color-bg: #0f172a;
+  --ak-dark-color-text: #f1f5f9;
+  --ak-dark-color-surface: #111827;
 }
 ```
+
+A later `[data-theme="dark"]` rule can also override resolved `--ak-color-*`
+tokens in explicit dark mode, including on `<html>`. Use the dark hooks above
+when the same override should reach system dark.
 
 ## Selector Contract
 

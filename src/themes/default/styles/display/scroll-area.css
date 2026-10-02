@@ -21,11 +21,6 @@
   overflow-y: auto;
 }
 
-:where([data-slot="scroll-area-viewport"]:focus-visible) {
-  outline: none;
-  box-shadow: 0 0 0 var(--ak-focus-ring-width) var(--ak-color-focus-ring);
-}
-
 :where([data-slot="scroll-area-scrollbar"]) {
   display: flex;
   user-select: none;

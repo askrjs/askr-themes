@@ -98,6 +98,57 @@
   margin-inline-start: -1px;
 }
 
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"]
+  ) {
+  position: relative;
+}
+
+/* Attached members overlap by 1px; lift the focused one so its neighbour cannot paint over the
+   ring where it covers the shared border. Matches the button-group rule. */
+:where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+  > :where(
+    .input,
+    .textarea,
+    .select-trigger,
+    .btn,
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="button"]
+  ):focus-visible {
+  z-index: 1;
+}
+
+/* Attached members sit flush, so a ring drawn outside would land on the neighbour's fill (blue on
+   a primary button). Draw it inside the member with the same gap from its edge, so the colour on
+   both sides of the ring is the member's own fill. Filled buttons use their text colour. Forced
+   colours keep the gapped system ring from the base accessibility layer. */
+@media (forced-colors: none) {
+  :where(.input-group[data-attached="true"], [data-slot="input-group"][data-attached="true"])
+    > :where(
+      .input,
+      .textarea,
+      .select-trigger,
+      .btn,
+      [data-slot="input"],
+      [data-slot="textarea"],
+      [data-slot="select-trigger"],
+      [data-slot="button"]
+    ):focus-visible {
+    outline-color: var(--_button-inset-ring, var(--ak-color-focus-ring));
+    outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));
+  }
+}
+
 :where(
     .input-group-vertical[data-attached="true"],
     [data-slot="input-group"][data-attached="true"][data-orientation="vertical"]

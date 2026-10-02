@@ -25,6 +25,12 @@ if (result.length !== 1) {
 
 const packedFiles = new Set(result[0].files.map(({ path }) => normalize(path)));
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+
+for (const file of ["CHANGELOG.md", "README.md", "LICENSE"]) {
+  if (!packedFiles.has(normalize(file))) {
+    throw new Error(`Packed artifact is missing ${file}.`);
+  }
+}
 const sourceMappingPattern = /[#@]\s*sourceMappingURL=([^\s*]+)/gu;
 
 const componentDeclarations = ["dist/components.d.ts", "dist/components/catalog.d.ts"]

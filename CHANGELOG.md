@@ -2,6 +2,70 @@
 
 ## Unreleased
 
+## 0.4.2 - 2026-10-01
+
+### Fixed
+
+- Preserve the published global `JSX.Element` compatibility declaration when
+  importing theme components, alongside scoped JSX types.
+- Preserve the published specificity of explicit dark and preset theme token
+  blocks, so existing theme overrides keep working on the document root.
+- Raise subtle metadata contrast to 4.5:1 on the page and main surface in
+  calico, ginger, and tabby, preserving the token names and relative emphasis.
+- Publish generated component styles with committed DOM attachments so
+  pending large subtrees keep their rules, rejected renders leave no new
+  rules, and server rendering does not modify an ambient browser document.
+- The cat presets' focus rings are now solid colours that reach 3:1 against
+  every surface, primary-soft, and selected fill in their theme (#164). They
+  were 22–24% translucent fills left over from the old halo, which composite
+  to about 1.3–2.0:1 as the gapped outline. The new values are calico
+  `#3a6cc0`, ginger `#c2560f`, tabby `#a0683a`, torty `#e0a854`, and tuxedo
+  `#cbd5e1`. The unit and browser contrast suites now check preset rings the
+  same way they check the default theme.
+
+### Changed
+
+- The default palette moves from plum to a bright blue: `--ak-color-primary`
+  is now `#2d5dd6` (dark `#9db8ff`), with `--ak-color-primary-soft` `#d4e0fa`
+  (dark `#283b66`), `--ak-color-primary-ink` `#1f47a8` (dark `#c9d8ff`), dark
+  `--ak-color-text-inverse` `#0f1b38`, and `--ak-color-focus-ring`
+  `oklch(0.56 0.16 263)` (dark `oklch(0.72 0.13 262)`). The plum-tinted
+  neutrals (text, surfaces, borders, hover, and disabled tokens) shift to a cool
+  slate in both modes. Primary text, links, inverse text on the primary, and
+  primary ink on primary soft all keep 4.5:1. Token names are unchanged. Apps
+  that override only the primary scale now get slate neutrals instead of plum
+  ones. The cat preset accents stay unchanged; their focus and metadata
+  contrast repairs are listed below.
+- Focus rings are drawn once, as an `outline` of `--ak-focus-ring-width` in
+  `--ak-color-focus-ring` set `--ak-focus-ring-offset` (2px) away from the
+  control for outset rings, from a single `:where(:focus-visible)` rule in
+  `styles/base/reset.css`. Because the rule has zero specificity, it also
+  replaces the browser's default ring on plain links, native controls, and
+  `tabindex` elements, and any app `outline` rule overrides it. Components no
+  longer draw their own zero-offset `box-shadow` ring. Outset rings need 3:1
+  against the surrounding surface; inset rings also need contrast against the
+  control or row fill. Rows inside clipping containers (menu, dropdown,
+  menubar, select, and command items, sidebar rows, the navbar toggle) draw
+  the ring inset, and focused members of attached button and input groups are
+  lifted above their neighbours. Attached filled buttons use their contrasting
+  text color for the inset ring. Focused buttons no longer switch their border
+  to `--ak-color-ring`. Apps that styled focus by overriding a component's
+  focus `box-shadow` should override `outline`/`outline-offset` or the
+  `--ak-focus-ring-*` tokens instead.
+
+### Internal
+
+- Local Playwright runs start the browser harness on a free port instead of a
+  fixed 4318, so parallel runs in different worktrees no longer reuse each
+  other's harness and test the wrong checkout. Reusing a running harness is
+  opt-in with `PW_REUSE_SERVER=1`, and a reused harness that serves another
+  checkout is refused before any test runs. `ASKR_TEST_PORT` pins the port.
+  CI still uses port 4318 and never reuses a server.
+
+- Pin the existing Playwright 1.63.0 lockfile resolution in the development
+  dependency declaration so the declared browser runner matches the qualified
+  lockfile. Browser test timeouts and local retry settings are unchanged.
+
 ## 0.4.1 - 2026-09-30
 
 ### Fixed
