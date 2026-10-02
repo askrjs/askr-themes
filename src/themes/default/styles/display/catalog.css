@@ -79,6 +79,21 @@
   list-style: none;
 }
 
+/* A breadcrumb trail stays on one line: wrapping strands a separator at a line end. Ancestors keep
+   their width and the current page truncates with an ellipsis instead. */
+:where([data-slot="breadcrumb-list"]) {
+  flex-wrap: nowrap;
+  min-inline-size: 0;
+}
+
+:where([data-slot="breadcrumb-item"], [data-slot="breadcrumb-separator"]) {
+  flex: none;
+}
+
+:where([data-slot="breadcrumb-item"]:last-child) {
+  flex: 0 1 auto;
+}
+
 :where(
   [data-slot="breadcrumb-item"],
   [data-slot="breadcrumb-separator"],
@@ -105,6 +120,16 @@
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   text-decoration: none;
+}
+
+/* Only the current page truncates, so it is a block for `text-overflow` to apply to. */
+:where([data-slot="breadcrumb-page"]) {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+  line-height: var(--ak-density-control-height-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 :where(

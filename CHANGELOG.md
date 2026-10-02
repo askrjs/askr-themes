@@ -2,6 +2,41 @@
 
 ## Unreleased
 
+### Changed
+
+- Render checkboxes and switches at 1.5x on coarse pointers and viewports up to
+  `30rem`, so their targets reach the 24px WCAG 2.5.8 minimum. Link-style
+  buttons keep a 24px minimum height there, and an icon-only navbar brand keeps
+  a full-size target.
+- Keep breadcrumb trails on one line: ancestors keep their width and the
+  current page truncates with an ellipsis.
+
+### Fixed
+
+- Stop a wrapped breadcrumb stranding a separator at the end of a line.
+
+### Documentation
+
+- Document that tabs and pills wrap rather than scroll, that attached button
+  groups never overflow (use `data-responsive` or room for long labels), and
+  the `data-nav-brand-label` hook for the navbar brand.
+
+### Tests
+
+- Add `audit-heuristics.spec.ts`, which measures the whole audit page at 320,
+  375, 768, and 1440px for mid-word breaks, undersized hit areas, dangling
+  breadcrumb separators, text under 12px, and content overflowing the viewport
+  outside a scroll container.
+
+### Audit page
+
+- Give the command palette sample a search input, the input group sample a
+  labelled addon and placeholder, and the selection controls sample consistent
+  labelled rows. Replace the placeholder `Aa` theme button with an icon, mark
+  the navbar brand label with `data-nav-brand-label` so it truncates and shares
+  a row with the menu toggle, stack the sample button groups on phones with
+  `data-responsive`, and tighten the aspect-ratio frame.
+
 ## 0.4.2 - 2026-10-01
 
 ### Fixed

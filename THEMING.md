@@ -208,6 +208,16 @@ Responsive rules:
 - Navbar collapse is a semantic preset: put `NavBrand` first, use `collapseAt`
   for the single responsive pattern, and use `NavDropdown` for simple
   single-level menus.
+- Tabs and pills wrap onto further rows when their labels outgrow the container; they do not
+  scroll. Keep the labels short, or place a list that must stay on one row inside a
+  `ScrollArea`.
+- Breadcrumbs stay on one line: ancestors keep their width and the current page truncates.
+- Attached button groups never overflow their container, so a label that cannot fit breaks
+  inside a word. Give a group that must hold long labels `data-responsive="true"` (it stacks on
+  phones) or enough room.
+- Mark the brand text with `data-nav-brand-label` so it truncates with an
+  ellipsis (and hides beside an icon on phones) instead of pushing the menu
+  toggle onto a second row.
 - Prefer token overrides first. Reach for component CSS overrides only when tokens are insufficient.
 - Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
 - Broad layout slots like `main`, `sidebar`, and `navbar` are semantic Block presets, not independent layout engines.
