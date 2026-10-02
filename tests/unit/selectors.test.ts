@@ -491,9 +491,8 @@ describe("tokens.css selector contract", () => {
     }
   });
 
-  // A consumer's plain `:root` token override loads after the theme, so every
-  // non-light theme block must also match `:root[data-theme]` to outrank it
-  // (#155). Light keeps plain `:root` so that override still applies there.
+  // Published themes use one attribute selector so later consumer :root and
+  // [data-theme] recipes keep their precedence on the document root.
   const themeFiles = [
     TOKENS_FILE,
     TEMPLATE_THEME_TOKENS_FILE,
@@ -503,7 +502,7 @@ describe("tokens.css selector contract", () => {
   ];
   for (const file of themeFiles) {
     const label = relative(ROOT_DIR, file);
-    it(`should outrank a consumer :root override in ${label}`, () => {
+    it(`should preserve published consumer override specificity in ${label}`, () => {
       const selectors = extractSelectors(readFileSync(file, "utf-8"));
       const themes = selectors
         .map((sel) => /^\[data-theme="([a-z-]+)"\]$/.exec(sel)?.[1])
@@ -513,8 +512,8 @@ describe("tokens.css selector contract", () => {
       for (const theme of themes) {
         expect(
           selectors,
-          `${label}: select [data-theme="${theme}"] as \`:root[data-theme="${theme}"], [data-theme="${theme}"]\` so an app's :root token override cannot replace it`,
-        ).toContain(`:root[data-theme="${theme}"]`);
+          `${label}: keep [data-theme="${theme}"] at the published specificity so later consumer overrides apply on html`,
+        ).not.toContain(`:root[data-theme="${theme}"]`);
       }
       expect(
         selectors,

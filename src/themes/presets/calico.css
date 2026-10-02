@@ -1,4 +1,3 @@
-:root[data-theme="calico"],
 [data-theme="calico"] {
   --ak-color-primary: #315f9f;
   --ak-color-primary-hover: #274f86;
@@ -7,7 +6,7 @@
   --ak-color-primary-ink: #1f416f;
   --ak-color-text: #252b35;
   --ak-color-text-muted: #626d7a;
-  --ak-color-text-subtle: #929ca8;
+  --ak-color-text-subtle: #67717d;
   --ak-color-text-inverse: #ffffff;
   --ak-color-bg: #f6f5f1;
   --ak-color-surface: #fffdf8;

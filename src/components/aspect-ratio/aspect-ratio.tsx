@@ -2,7 +2,7 @@ import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { Slot } from "@askrjs/askr/foundations";
 import { mergeProps } from "../_internal/merge-props";
 import { mergeLayoutStyles } from "../_internal/block-layout";
-import { styleDeclarationsToClass } from "../_internal/style";
+import { generatedStyleBinding } from "../_internal/style";
 import { intrinsicElement } from "../_internal/jsx";
 import type { AspectRatioAsChildProps, AspectRatioProps } from "./aspect-ratio.types";
 
@@ -15,7 +15,7 @@ export function AspectRatio(props: AspectRatioProps): JSX.Element;
 export function AspectRatio(props: AspectRatioAsChildProps): JSX.Element;
 export function AspectRatio(props: AspectRatioProps | AspectRatioAsChildProps) {
   const { asChild, children, ratio = 1, ref, style, ...rest } = props;
-  const layoutClass = styleDeclarationsToClass(
+  const layout = generatedStyleBinding(
     mergeLayoutStyles(
       {
         display: "block",
@@ -25,12 +25,13 @@ export function AspectRatio(props: AspectRatioProps | AspectRatioAsChildProps) {
       },
       style,
     ),
+    ref,
   );
 
   const finalProps = mergeProps(rest, {
-    ref,
+    ref: layout.ref,
     "data-slot": "aspect-ratio",
-    ...(layoutClass ? { class: layoutClass } : {}),
+    ...(layout.className ? { class: layout.className } : {}),
   });
 
   if (asChild) {

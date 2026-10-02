@@ -29,22 +29,27 @@ Token override (place it after the theme import):
 }
 ```
 
-A plain `:root` override restyles light mode. Under dark mode or a cat preset
-it reaches only the tokens that theme does not set itself: the dark block and
-the presets select `:root[data-theme="…"], [data-theme="…"]`, which outranks
-`:root` under an explicit `data-theme`, and the system-dark rule
-`:root:not([data-theme])` outranks it when the OS prefers dark. Dark mode sets
-every `--ak-color-*` token, the `--ak-shadow-*` scale, and `color-scheme`;
-tokens no theme sets, such as `--ak-radius-md`, apply everywhere.
+A later `:root` override restyles light mode and explicit document themes,
+including dark mode and the cat presets, at their published selector
+specificity. System dark keeps its more specific `:root:not([data-theme])`
+rule. Nested theme elements define their own tokens instead of inheriting
+overridden root values. Tokens no theme sets, such as `--ak-radius-md`,
+apply everywhere.
 
 Light-only override, including nested light scopes such as a
 `data-theme="light"` panel inside a dark page:
 
 ```css
-:root,
 [data-theme="light"] {
   --ak-color-primary: #5b3d8f;
   --ak-color-primary-soft: #ece4f5;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --ak-color-primary: #5b3d8f;
+    --ak-color-primary-soft: #ece4f5;
+  }
 }
 ```
 
@@ -58,9 +63,9 @@ dark, system dark, and nested dark scopes all read them:
 }
 ```
 
-To target explicit dark mode only, repeat the theme's selector:
-`:root[data-theme="dark"], [data-theme="dark"]`. A bare `[data-theme="dark"]`
-override loses to it on `<html>`, where `ThemeScope` sets the attribute.
+To target explicit dark mode only, use a later `[data-theme="dark"]` rule
+with resolved `--ak-color-*` tokens. It also applies on `<html>`, where
+`ThemeScope` sets the attribute.
 
 The shipped light and dark token sets are contrast-tested. Consumer token
 overrides are ordinary CSS and cannot be validated by the runtime, so recheck
@@ -186,9 +191,8 @@ be styled consistently across themes. If you use icon children, the direct child
 icon is sized from `var(--ak-theme-toggle-icon-size, var(--ak-font-size-sm))`,
 so apps can override `--ak-theme-toggle-icon-size` to fit custom icon dimensions.
 `ThemeName` accepts application-defined strings intentionally. Register custom
-names in the scope's theme options and provide a matching
-`:root[data-theme="..."], [data-theme="..."]` token block (the `:root` form keeps
-an app's `:root` token override from replacing it); misspelled names otherwise remain valid custom identifiers.
+names in the scope's theme options and provide a matching `[data-theme="..."]`
+token block; misspelled names otherwise remain valid custom identifiers.
 The common wrapper components also emit familiar alias classes such as
 `alert`, `btn-group`, `btn-close`, `input-group`, `tabs`, and `pills` so
 app-level CSS can stay close to familiar HTML authoring without
@@ -748,9 +752,9 @@ The default theme and any future reintroduced themes must satisfy these invarian
 5. `--ak-color-primary-ink` must be readable on `--ak-color-primary-soft`
 6. each status `*-ink` must be readable on its corresponding `*-soft`
 7. borders must remain visible against adjacent surfaces
-8. focus ring must reach 3:1 against every surface a control can sit on; it is
-   drawn behind a `--ak-focus-ring-offset` gap, so it never needs contrast
-   against the control's own fill (primary buttons, checked checkboxes, switches)
+8. an outset focus ring must reach 3:1 against every surface a control can sit
+   on; its `--ak-focus-ring-offset` gap separates it from the control's fill.
+   Attached members draw an inset ring that must contrast with their own fill.
 9. disabled text must appear visually disabled without becoming unreadable
 10. backdrop must provide sufficient separation for modal surfaces
 11. hover and active states must remain perceptible but restrained
@@ -924,7 +928,6 @@ These are recommended implementation defaults for component authors:
   color-scheme: light;
 }
 
-:root[data-theme="dark"],
 [data-theme="dark"] {
   --ak-color-primary: #9bd45f;
   --ak-color-primary-hover: #7eb448;
@@ -1120,15 +1123,18 @@ Every focusable element gets one ring from `styles/base/reset.css`:
 }
 ```
 
-The offset leaves a gap between the control and the ring, so the ring's
-neighbours are always the surface behind the control. That is why the primary
-can be any brightness: the ring is measured against surfaces, not against the
-primary fill. Components do not redraw the ring. Rows that run edge to edge
+For an outset ring, the offset leaves a gap between the control and the ring,
+so its neighbours are the surface behind the control. The primary fill does
+not touch that ring. Rows that run edge to edge
 inside a clipping or scrolling container (menu, dropdown, menubar, select, and
 command items, sidebar rows, the navbar toggle) set
 `outline-offset: calc(-1 * var(--ak-focus-ring-width))` to draw it inside the
-row, and focused members of attached button and input groups are lifted with
-`z-index: 1` so a neighbour cannot cover it. Retheme the ring with
+row. Attached button and input group members use
+`outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)))`
+to keep the ring inside the member, gapped from its edge. Its neighbours are
+the member's own fill, so filled buttons use their contrasting text color for
+the ring. Focused members are lifted with `z-index: 1` so a neighbour cannot
+cover it. Retheme the shared ring with
 `--ak-color-focus-ring`, `--ak-focus-ring-width`, and `--ak-focus-ring-offset`.
 
 ### Forced Colors

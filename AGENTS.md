@@ -69,3 +69,23 @@ Every benchmark-driven change must include:
 Prefer making the existing single path faster. New caches, inference,
 memoization, shortcuts, fast paths, or scheduler states require an explicit
 legibility decision; a speedup alone does not justify them.
+
+## Jev review
+
+Jev is TypeSafe's System One model: it returns typed choices, probabilities,
+and scores for focused questions through `POST https://api.typesafe.ai/v1/systemone`
+with model `jev-latest`. Use the `typesafe-ai` skill and current API documentation.
+Read credentials from the configured environment or local credential file silently;
+never print, commit, or preserve a key in request artifacts.
+
+Use Jev to prioritize contract gaps and predict observable event sequences. Supply
+the exact source, published contract, and relevant ordering. Define an
+`insufficient_source` choice when appropriate. For a blind prediction, withhold
+our diagnosis, patch explanation, and test results. Separate specificity, teardown,
+render adoption, and SSR registration questions. Code computes contrast ratios and
+compares declarations; Jev can prioritize semantic intent gaps.
+
+Preserve requests, responses, and contradictory test outcomes outside the source
+tree. A concentrated choice distribution is not proof of correctness. Reproduce
+findings with regression tests and independent review, and measure useful verified
+findings rather than call volume. Do not ask Jev to approve a patch or release.

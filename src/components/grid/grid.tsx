@@ -3,7 +3,7 @@ import { classes } from "../_internal/classes";
 import { mergeLayoutStyles, resolveSpaceValue, setResponsiveVar } from "../_internal/block-layout";
 import { mergeProps } from "../_internal/merge-props";
 import { intrinsicElement } from "../_internal/jsx";
-import { styleDeclarationsToClass } from "../_internal/style";
+import { generatedStyleBinding } from "../_internal/style";
 import type { BlockSpace } from "../_internal/block-layout";
 import type { GridAlign, GridColumns, GridElement, GridProps } from "./grid.types";
 
@@ -53,10 +53,10 @@ export function Grid<TElement extends GridElement = "div">(
   setResponsiveVar(styles, "grid-gap", gap, resolveGap);
   setResponsiveVar(styles, "grid-align", align, resolveAlign);
 
-  const generatedClass = styleDeclarationsToClass(mergeLayoutStyles(styles, userStyle));
+  const layout = generatedStyleBinding(mergeLayoutStyles(styles, userStyle), ref);
   const finalProps = mergeProps(rest, {
-    ref,
-    class: classes("grid", classProp, className, generatedClass),
+    ref: layout.ref,
+    class: classes("grid", classProp, className, layout.className),
     "data-slot": "grid",
   });
 

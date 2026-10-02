@@ -276,9 +276,6 @@
   color-scheme: light;
 }
 
-/* `:root[data-theme]` outranks an app's plain `:root` token override, which then
-   restyles light mode only; `[data-theme]` alone serves nested scopes. */
-:root[data-theme="dark"],
 [data-theme="dark"] {
   --ak-color-primary: var(--ak-dark-color-primary);
   --ak-color-primary-hover: var(--ak-dark-color-primary-hover);
