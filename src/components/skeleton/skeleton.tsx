@@ -4,7 +4,7 @@ import { mergeLayoutStyles } from "../_internal/block-layout";
 import { classes } from "../_internal/classes";
 import { mergeProps } from "../_internal/merge-props";
 import { intrinsicElement } from "../_internal/jsx";
-import { styleDeclarationsToClass } from "../_internal/style";
+import { generatedStyleBinding } from "../_internal/style";
 import type { SkeletonAsChildProps, SkeletonProps } from "./skeleton.types";
 
 function resolveSkeletonDimension(value: string | number | undefined): string | undefined {
@@ -36,10 +36,10 @@ export function Skeleton(props: SkeletonProps | SkeletonAsChildProps) {
   const inlineSize = resolveSkeletonDimension(width);
   if (blockSize !== undefined) dimensions.blockSize = blockSize;
   if (inlineSize !== undefined) dimensions.inlineSize = inlineSize;
-  const layoutClass = styleDeclarationsToClass(mergeLayoutStyles(dimensions, style));
+  const layout = generatedStyleBinding(mergeLayoutStyles(dimensions, style), ref);
   const finalProps = mergeProps(rest, {
-    ref,
-    class: classes(classProp, className, layoutClass),
+    ref: layout.ref,
+    class: classes(classProp, className, layout.className),
     "data-slot": "skeleton",
     "data-skeleton": "true",
     "aria-hidden": "true",

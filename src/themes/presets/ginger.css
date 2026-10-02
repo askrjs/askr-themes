@@ -1,4 +1,3 @@
-:root[data-theme="ginger"],
 [data-theme="ginger"] {
   --ak-color-primary: #a8440e;
   --ak-color-primary-hover: #8f3708;
@@ -7,7 +6,7 @@
   --ak-color-primary-ink: #74300c;
   --ak-color-text: #2e251f;
   --ak-color-text-muted: #6f5d51;
-  --ak-color-text-subtle: #9a887b;
+  --ak-color-text-subtle: #7e6c5f;
   --ak-color-text-inverse: #fff7ef;
   --ak-color-bg: #fbf2e8;
   --ak-color-surface: #fff8f1;

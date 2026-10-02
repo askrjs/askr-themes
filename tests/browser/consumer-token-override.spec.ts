@@ -1,12 +1,12 @@
 import { expect, test, type Page } from "./fixtures";
 
 /**
- * Consumer token overrides placed after the theme import (issue #155).
+ * Published consumer token overrides placed after the theme import.
  *
  * THEMING.md documents `:root { --ak-color-*: ... }` as the token override.
- * That override must restyle light mode only: explicit `data-theme="dark"`,
- * system dark, the cat presets, and nested theme scopes keep the theme's own
- * values. Each check compares a mode's tokens with the consumer sheet enabled
+ * A later :root override restyles explicit document modes and presets. System
+ * dark keeps its more specific rule; nested scopes define their own values.
+ * Each check compares a mode's tokens with the consumer sheet enabled
  * against the same mode with it disabled, so no expectation hardcodes a
  * palette value.
  */
@@ -23,7 +23,6 @@ const OVERRIDDEN = {
   "--ak-color-primary": "rgb(1, 2, 3)",
   "--ak-color-bg": "rgb(4, 5, 6)",
   "--ak-color-text": "rgb(7, 8, 9)",
-  "color-scheme": "light",
 };
 
 interface Setup {
@@ -80,20 +79,56 @@ async function expectThemeValues(page: Page, setup: Setup, label: string): Promi
 }
 
 async function expectOverride(page: Page, setup: Setup, label: string): Promise<void> {
-  const { on } = await sample(page, setup);
-  expect(on, `${label}: applies the consumer override`).toEqual(OVERRIDDEN);
+  const { on, off } = await sample(page, setup);
+  expect(on, `${label}: applies the consumer override`).toEqual({ ...off, ...OVERRIDDEN });
 }
 
+test.describe("published attribute token override recipes", () => {
+  for (const theme of ["dark", ...PRESETS]) {
+    test(`should preserve the published ${theme} override on the document root`, async ({
+      render,
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme: "light" });
+      await render("default", {
+        css: `[data-theme="${theme}"] {
+          --ak-color-bg: #0f172a;
+          --ak-color-text: #f1f5f9;
+          --ak-color-surface: #111827;
+        }`,
+      });
+      await page.locator("html").evaluate((element, name) => {
+        element.setAttribute("data-theme", name);
+      }, theme);
+
+      const tokens = await page.locator("html").evaluate((element) => {
+        const style = getComputedStyle(element);
+        return Object.fromEntries(
+          ["--ak-color-bg", "--ak-color-text", "--ak-color-surface"].map((token) => [
+            token,
+            style.getPropertyValue(token).trim(),
+          ]),
+        );
+      });
+      expect(tokens).toEqual({
+        "--ak-color-bg": "#0f172a",
+        "--ak-color-text": "#f1f5f9",
+        "--ak-color-surface": "#111827",
+      });
+    });
+  }
+});
+
 test.describe("consumer :root token override", () => {
-  test("should restyle light mode only", async ({ render, page }) => {
+  test("should preserve published root overrides in explicit modes", async ({ render, page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await render("default", { css: ROOT_OVERRIDE });
 
     await expectOverride(page, { html: null }, "system light");
     await expectOverride(page, { html: "light" }, "explicit light");
-    await expectThemeValues(page, { html: "dark" }, "explicit dark");
+    await expectOverride(page, { html: "dark" }, "explicit dark");
     for (const preset of PRESETS) {
-      await expectThemeValues(page, { html: preset }, `${preset} preset`);
+      await expectOverride(page, { html: preset }, `${preset} preset`);
     }
   });
 
@@ -115,10 +150,10 @@ test.describe("consumer :root token override", () => {
     await expectThemeValues(page, { html: "light", nested: "torty" }, "torty inside light");
   });
 
-  for (const [outer, inner, expected] of [
-    ["light", "dark", "theme"],
-    ["dark", "light", "override"],
-    ["light", "torty", "theme"],
+  for (const [outer, inner] of [
+    ["light", "dark"],
+    ["dark", "light"],
+    ["light", "torty"],
   ] as const) {
     test(`should resolve nested ThemeScope ${inner} inside ${outer}`, async ({ render, page }) => {
       await page.emulateMedia({ colorScheme: "light" });
@@ -127,8 +162,7 @@ test.describe("consumer :root token override", () => {
       await expect(page.locator("html")).toHaveAttribute("data-theme", inner);
       const setup = { html: inner };
       const label = `ThemeScope ${inner} inside ${outer}`;
-      if (expected === "theme") await expectThemeValues(page, setup, label);
-      else await expectOverride(page, setup, label);
+      await expectOverride(page, setup, label);
     });
   }
 });
@@ -140,7 +174,10 @@ test.describe("documented mode-specific override recipes", () => {
   }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await render("default", {
-      css: `:root,\n[data-theme="light"] {\n  --ak-color-primary: rgb(1, 2, 3);\n}`,
+      css: `[data-theme="light"] {\n  --ak-color-primary: rgb(1, 2, 3);\n}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {\n    --ak-color-primary: rgb(1, 2, 3);\n  }
+}`,
     });
 
     for (const setup of [

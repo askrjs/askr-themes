@@ -196,6 +196,7 @@ type StyleRegistry = {
   element: HTMLStyleElement;
   ruleCount: number;
   rules: Map<string, StyleRule>;
+  leases: Map<string, number>;
 };
 const registries = new WeakMap<Document, Map<string, StyleRegistry>>();
 function countRegisteredRules(value: string | null): number {
@@ -257,6 +258,7 @@ function rememberStyleRule(entry: StyleRule): void {
 function evictUnusedStyleRule(registry: StyleRegistry): boolean {
   const doc = registry.element.ownerDocument;
   for (const [declarations, entry] of registry.rules) {
+    if (registry.leases.has(declarations)) continue;
     if (doc.querySelector(`.${entry.className}`)) continue;
 
     const cssText = registry.element.textContent ?? "";
@@ -282,35 +284,39 @@ function registerSSRStyle(entry: StyleRule): void {
   register?.(entry.className, entry.rule);
 }
 
-function ensureStyleRegistry(nonce: string | undefined): StyleRegistry | null {
-  if (typeof document === "undefined") return null;
+function ensureStyleRegistry(
+  nonce: string | undefined,
+  doc: Document | undefined = typeof document === "undefined" ? undefined : document,
+): StyleRegistry | null {
+  if (!doc) return null;
   const key = nonce ?? "";
-  let documentRegistries = registries.get(document);
+  let documentRegistries = registries.get(doc);
   if (!documentRegistries) {
     documentRegistries = new Map();
-    registries.set(document, documentRegistries);
+    registries.set(doc, documentRegistries);
   }
   const current = documentRegistries.get(key);
   if (current?.element.isConnected) return current;
 
   const existingStyleElements = Array.from(
-    document.querySelectorAll<HTMLStyleElement>(`style[${STYLE_REGISTRY_ATTR}]`),
+    doc.querySelectorAll<HTMLStyleElement>(`style[${STYLE_REGISTRY_ATTR}]`),
   );
   const styleElement =
     existingStyleElements.find((element) => (element.nonce || undefined) === nonce) ??
     (nonce === undefined && existingStyleElements.length === 1
       ? existingStyleElements[0]
       : undefined) ??
-    document.createElement("style");
+    doc.createElement("style");
   if (!styleElement.isConnected) {
     styleElement.setAttribute(STYLE_REGISTRY_ATTR, "true");
     if (nonce !== undefined) styleElement.nonce = nonce;
-    (document.head ?? document.documentElement).append(styleElement);
+    (doc.head ?? doc.documentElement).append(styleElement);
   }
   const registry: StyleRegistry = {
     element: styleElement,
     ruleCount: countRegisteredRules(styleElement.textContent),
     rules: new Map(),
+    leases: new Map(),
   };
   documentRegistries.set(key, registry);
   return registry;
@@ -329,12 +335,18 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   const entry = styleRuleFor(normalized);
   const nonce = Askr.cspNonce();
   const registry = ensureStyleRegistry(nonce);
+  publishStyleRule(entry, registry);
+  registerSSRStyle(entry);
+  return entry.className;
+}
+
+function publishStyleRule(entry: StyleRule, registry: StyleRegistry | null): void {
+  const normalized = entry.declarations;
   const registered = registry?.rules.get(normalized);
   if (registry && registered) {
     registry.rules.delete(normalized);
     registry.rules.set(normalized, registered);
-    registerSSRStyle(registered);
-    return registered.className;
+    return;
   }
 
   if (registry) {
@@ -350,7 +362,182 @@ export function styleDeclarationsToClass(declarations: string | undefined): stri
   }
 
   rememberStyleRule(entry);
-  registerSSRStyle(entry);
+}
 
-  return entry.className;
+type GeneratedStyleAttachment = {
+  node: Element | null;
+  root: Node | null;
+  ref: unknown;
+  registry: StyleRegistry | null;
+  rule: StyleRule | undefined;
+  pendingDetach: number;
+  owner: AbortSignal | null;
+  binding: object | null;
+};
+const generatedStyleAttachments = new WeakMap<
+  Element,
+  Map<AbortSignal, GeneratedStyleAttachment>
+>();
+const generatedStyleOwners = new WeakMap<AbortSignal, Set<GeneratedStyleAttachment>>();
+
+function setGeneratedStyleRef(ref: unknown, node: Element | null): void {
+  if (typeof ref === "function") {
+    (ref as (node: Element | null) => void)(node);
+  } else if (ref && typeof ref === "object") {
+    try {
+      (ref as { current: Element | null }).current = node;
+    } catch {
+      // Like native refs, read-only object refs are ignored.
+    }
+  }
+}
+
+function releaseGeneratedStyle(attachment: GeneratedStyleAttachment): void {
+  const { registry, rule } = attachment;
+  attachment.registry = null;
+  attachment.rule = undefined;
+  if (!registry || !rule) return;
+  const count = registry.leases.get(rule.declarations) ?? 0;
+  if (count > 1) registry.leases.set(rule.declarations, count - 1);
+  else registry.leases.delete(rule.declarations);
+}
+
+function releaseGeneratedStyleAttachment(attachment: GeneratedStyleAttachment): void {
+  const ref = attachment.ref;
+  const hadNode = attachment.node !== null;
+  if (attachment.node && attachment.owner) {
+    const bindings = generatedStyleAttachments.get(attachment.node);
+    if (bindings?.get(attachment.owner) === attachment) {
+      bindings.delete(attachment.owner);
+      if (bindings.size === 0) generatedStyleAttachments.delete(attachment.node);
+    }
+  }
+  if (attachment.owner) generatedStyleOwners.get(attachment.owner)?.delete(attachment);
+  attachment.owner = null;
+  attachment.binding = null;
+  attachment.node = null;
+  attachment.root = null;
+  attachment.ref = undefined;
+  attachment.pendingDetach += 1;
+  releaseGeneratedStyle(attachment);
+  if (hadNode) setGeneratedStyleRef(ref, null);
+}
+
+function retainGeneratedStyleOwner(
+  attachment: GeneratedStyleAttachment,
+  signal: AbortSignal,
+): void {
+  if (attachment.owner === signal) return;
+  if (attachment.owner) generatedStyleOwners.get(attachment.owner)?.delete(attachment);
+  let owned = generatedStyleOwners.get(signal);
+  if (!owned) {
+    owned = new Set();
+    generatedStyleOwners.set(signal, owned);
+    const attachments = owned;
+    signal.addEventListener(
+      "abort",
+      () => {
+        for (const current of Array.from(attachments)) releaseGeneratedStyleAttachment(current);
+      },
+      { once: true },
+    );
+  }
+  attachment.owner = signal;
+  owned.add(attachment);
+}
+
+/** Prepare component styles now; publish and retain them only from a committed ref. */
+export function generatedStyleBinding(
+  declarations: string | undefined,
+  ref: unknown,
+): { className: string | undefined; ref: unknown } {
+  let signal: AbortSignal;
+  try {
+    signal = Askr.getSignal();
+  } catch {
+    // Direct component construction also supports callers without a render owner.
+    return { className: styleDeclarationsToClass(declarations), ref };
+  }
+
+  const normalized = typeof declarations === "string" ? normalizeDeclarations(declarations) : "";
+  const rule = normalized ? styleRuleFor(normalized) : undefined;
+  const nonce = Askr.cspNonce();
+  // The runtime ignores registrations outside SSR; an available document does
+  // not turn a request-local render into browser stylesheet publication.
+  if (rule) registerSSRStyle(rule);
+  // Direct component calls inside a parent render must remain hook-free.
+  // Attachment state is adopted only for native elements that actually commit.
+  const binding = {};
+  let committedAttachment: GeneratedStyleAttachment | undefined;
+  const commitRef = (node: Element | null) => {
+    if (!node) {
+      const attachment = committedAttachment;
+      if (!attachment?.node || attachment.binding !== binding) return;
+      if (signal.aborted || attachment.node.getRootNode() !== attachment.root) {
+        releaseGeneratedStyleAttachment(attachment);
+      } else {
+        // Replacing the private render callback leaves an unchanged caller ref
+        // attached. A missing replacement still releases the old attachment.
+        const pendingDetach = ++attachment.pendingDetach;
+        queueMicrotask(() => {
+          if (attachment.pendingDetach === pendingDetach)
+            releaseGeneratedStyleAttachment(attachment);
+        });
+      }
+      return;
+    }
+
+    if (signal.aborted) return;
+    let bindings = generatedStyleAttachments.get(node);
+    if (!bindings) {
+      bindings = new Map();
+      generatedStyleAttachments.set(node, bindings);
+    }
+    // asChild can compose several component owners onto the same native node.
+    const attachment = bindings.get(signal) ?? {
+      node: null,
+      root: null,
+      ref: undefined,
+      registry: null,
+      rule: undefined,
+      pendingDetach: 0,
+      owner: null,
+      binding: null,
+    };
+    bindings.set(signal, attachment);
+    committedAttachment = attachment;
+    retainGeneratedStyleOwner(attachment, signal);
+    attachment.binding = binding;
+    attachment.pendingDetach += 1;
+    const bindingChanged = attachment.node !== node || attachment.ref !== ref;
+    const registry = rule ? ensureStyleRegistry(nonce, node.ownerDocument) : null;
+    if (attachment.registry !== registry || attachment.rule?.declarations !== rule?.declarations) {
+      if (registry && rule) {
+        registry.leases.set(rule.declarations, (registry.leases.get(rule.declarations) ?? 0) + 1);
+        try {
+          publishStyleRule(rule, registry);
+        } catch (error) {
+          const count = registry.leases.get(rule.declarations)!;
+          if (count > 1) registry.leases.set(rule.declarations, count - 1);
+          else registry.leases.delete(rule.declarations);
+          throw error;
+        }
+      }
+      releaseGeneratedStyle(attachment);
+      attachment.registry = registry;
+      attachment.rule = rule;
+    }
+    if (bindingChanged) {
+      const previousRef = attachment.ref;
+      const hadNode = attachment.node !== null;
+      attachment.node = node;
+      attachment.ref = ref;
+      attachment.root = node.getRootNode();
+      if (hadNode) setGeneratedStyleRef(previousRef, null);
+      setGeneratedStyleRef(ref, node);
+    }
+    attachment.root = node.getRootNode();
+  };
+
+  return { className: rule?.className, ref: commitRef };
 }

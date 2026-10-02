@@ -211,10 +211,12 @@ function resolveTokenValue(
 /**
  * The focus ring is drawn with a gap (outline-offset) between the control and
  * the ring, so the colours adjacent to the ring are the surface the control
- * sits on, never the control's own fill. WCAG 1.4.11 / 2.4.13 therefore asks
+ * sits on. WCAG 1.4.11 / 2.4.13 therefore asks
  * for 3:1 against every documented surface (including the selected fills a
  * focused row or checkbox can sit on), not against the primary fill. Every
- * theme that sets its own ring, presets included, must meet it.
+ * theme that sets its own ring, presets included, must meet it. Attached filled
+ * buttons use their text color for an inset ring; the browser geometry test
+ * checks that ring against the member's own fill.
  */
 const FOCUS_RING_PAIRS: [string, string, number, string][] = [
   ["--ak-color-focus-ring", "--ak-color-bg", 3, "focus ring on page"],
@@ -236,8 +238,8 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
   // Text on backgrounds
   ["--ak-color-text", "--ak-color-bg", 4.5, "text on bg"],
   ["--ak-color-text", "--ak-color-surface", 4.5, "text on surface"],
-  ["--ak-color-text-muted", "--ak-color-bg", 3, "muted text on bg"],
-  ["--ak-color-text-muted", "--ak-color-surface", 3, "muted text on surface"],
+  ["--ak-color-text-muted", "--ak-color-bg", 4.5, "muted text on bg"],
+  ["--ak-color-text-muted", "--ak-color-surface", 4.5, "muted text on surface"],
   ["--ak-color-disabled-text", "--ak-color-disabled-bg", 3, "disabled text on disabled control"],
 
   // Inverse text on primary
@@ -262,6 +264,7 @@ const CONTRAST_PAIRS: [string, string, number, string][] = [
 
   // Canonical semantic pairings. These are public token contracts, not
   // component-specific approximations.
+  ["--ak-color-text-subtle", "--ak-color-bg", 4.5, "subtle text on bg"],
   ["--ak-color-text-subtle", "--ak-color-surface", 4.5, "subtle text on surface"],
   ["--ak-color-border-strong", "--ak-color-surface", 3, "strong border on surface"],
   ["--ak-color-warning", "--ak-color-surface", 3, "warning UI on surface"],
@@ -282,6 +285,21 @@ const ELEVATION_LAYERS = [
   "--ak-color-surface-raised",
   "--ak-color-surface-overlay",
 ] as const;
+
+const PRESET_TEXT_PAIRS: [string, string, number, string][] = [
+  ["--ak-color-text-muted", "--ak-color-bg", 4.5, "muted text on bg"],
+  ["--ak-color-text-muted", "--ak-color-surface", 4.5, "muted text on surface"],
+  ["--ak-color-text-subtle", "--ak-color-bg", 4.5, "subtle text on bg"],
+  ["--ak-color-text-subtle", "--ak-color-surface", 4.5, "subtle text on surface"],
+  ["--ak-color-link", "--ak-color-bg", 4.5, "link on bg"],
+  ["--ak-color-link", "--ak-color-surface", 4.5, "link on surface"],
+  ["--ak-color-primary-ink", "--ak-color-primary-soft", 4.5, "primary ink on soft"],
+  ["--ak-color-text-inverse", "--ak-color-primary", 4.5, "inverse text on primary"],
+  ["--ak-color-success-ink", "--ak-color-success-soft", 4.5, "success ink on soft"],
+  ["--ak-color-warning-ink", "--ak-color-warning-soft", 4.5, "warning ink on soft"],
+  ["--ak-color-danger-ink", "--ak-color-danger-soft", 4.5, "danger ink on soft"],
+  ["--ak-color-info-ink", "--ak-color-info-soft", 4.5, "info ink on soft"],
+];
 
 describe("WCAG AA contrast", () => {
   for (const theme of OFFICIAL_THEMES) {
@@ -381,7 +399,7 @@ describe("WCAG AA contrast", () => {
   }
 });
 
-describe("preset focus-ring contrast", () => {
+describe("preset text and focus-ring contrast", () => {
   for (const preset of PRESET_THEMES) {
     describe(`${preset} preset`, () => {
       const css = readFileSync(join(THEMES_DIR, "presets", `${preset}.css`), "utf-8");
@@ -398,7 +416,10 @@ describe("preset focus-ring contrast", () => {
         expect(resolve("--ak-color-focus-ring")[3]).toBe(1);
       });
 
-      for (const [fgToken, bgToken, minRatio, label] of FOCUS_RING_PAIRS) {
+      for (const [fgToken, bgToken, minRatio, label] of [
+        ...PRESET_TEXT_PAIRS,
+        ...FOCUS_RING_PAIRS,
+      ]) {
         it(`should ${label} (${minRatio}:1)`, () => {
           const page = resolve("--ak-color-bg");
           const bg = resolveToOpaque(resolve(bgToken), page);

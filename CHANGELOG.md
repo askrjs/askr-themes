@@ -2,33 +2,26 @@
 
 ## Unreleased
 
-## 0.4.1 - 2026-09-30
+## 0.4.2 - 2026-10-01
 
 ### Fixed
 
-- Reclaim generated style rules when components stop using them so dynamic
-  inline style values do not exhaust the stylesheet rule limit during an SPA
-  session.
-
-### Breaking
-
-- A `:root` token override, the pattern THEMING.md documents, no longer
-  replaces the tokens that dark mode or a cat preset sets itself (#155). The
-  dark block and the presets now also select
-  `:root[data-theme="…"], [data-theme="…"]`, so explicit `data-theme="dark"`
-  and preset themes keep their own values instead of taking the light
-  override, as system dark already did. To restyle dark mode, set the
-  `--ak-dark-color-*` hooks on `:root`. A bare `[data-theme="dark"] { … }`
-  override now loses on `<html>`; move it to the hooks or to the paired
-  selector, and give custom theme blocks the same paired selector. THEMING.md
-  adds light-only and dark-only override recipes.
-- `@askrjs/themes/components` no longer declares a global `JSX` namespace
-  (#161). The leftover `components/jsx-types` augmentation is removed, so the
-  package now relies only on the scoped JSX types from
-  `@askrjs/askr/jsx-runtime`, matching Askr 0.4, `@askrjs/ui`, and
-  `@askrjs/lucide`. Code that wrote a bare `JSX.Element` and compiled only
-  because importing the themes components injected the global must now import
-  it: `import type { JSX } from "@askrjs/askr/jsx-runtime";`.
+- Preserve the published global `JSX.Element` compatibility declaration when
+  importing theme components, alongside scoped JSX types.
+- Preserve the published specificity of explicit dark and preset theme token
+  blocks, so existing theme overrides keep working on the document root.
+- Raise subtle metadata contrast to 4.5:1 on the page and main surface in
+  calico, ginger, and tabby, preserving the token names and relative emphasis.
+- Publish generated component styles with committed DOM attachments so
+  pending large subtrees keep their rules, rejected renders leave no new
+  rules, and server rendering does not modify an ambient browser document.
+- The cat presets' focus rings are now solid colours that reach 3:1 against
+  every surface, primary-soft, and selected fill in their theme (#164). They
+  were 22–24% translucent fills left over from the old halo, which composite
+  to about 1.3–2.0:1 as the gapped outline. The new values are calico
+  `#3a6cc0`, ginger `#c2560f`, tabby `#a0683a`, torty `#e0a854`, and tuxedo
+  `#cbd5e1`. The unit and browser contrast suites now check preset rings the
+  same way they check the default theme.
 
 ### Changed
 
@@ -41,34 +34,24 @@
   slate in both modes. Primary text, links, inverse text on the primary, and
   primary ink on primary soft all keep 4.5:1. Token names are unchanged. Apps
   that override only the primary scale now get slate neutrals instead of plum
-  ones; the cat presets are unchanged.
+  ones. The cat preset accents stay unchanged; their focus and metadata
+  contrast repairs are listed below.
 - Focus rings are drawn once, as an `outline` of `--ak-focus-ring-width` in
   `--ak-color-focus-ring` set `--ak-focus-ring-offset` (2px) away from the
-  control, from a single `:where(:focus-visible)` rule in
+  control for outset rings, from a single `:where(:focus-visible)` rule in
   `styles/base/reset.css`. Because the rule has zero specificity, it also
   replaces the browser's default ring on plain links, native controls, and
-  `tabindex` elements, and any app `outline` rule overrides it. Components no longer draw their own zero-offset
-  `box-shadow` ring, so the ring no longer touches a primary fill (primary
-  buttons, checked checkboxes, on switches) and only needs 3:1 against the
-  surfaces a control sits on. Rows inside clipping containers (menu, dropdown,
+  `tabindex` elements, and any app `outline` rule overrides it. Components no
+  longer draw their own zero-offset `box-shadow` ring. Outset rings need 3:1
+  against the surrounding surface; inset rings also need contrast against the
+  control or row fill. Rows inside clipping containers (menu, dropdown,
   menubar, select, and command items, sidebar rows, the navbar toggle) draw
   the ring inset, and focused members of attached button and input groups are
-  lifted above their neighbours. Focused buttons no longer switch their border
+  lifted above their neighbours. Attached filled buttons use their contrasting
+  text color for the inset ring. Focused buttons no longer switch their border
   to `--ak-color-ring`. Apps that styled focus by overriding a component's
   focus `box-shadow` should override `outline`/`outline-offset` or the
   `--ak-focus-ring-*` tokens instead.
-
-### Fixed
-
-- The cat presets' focus rings are now solid colours that reach 3:1 against
-  every surface, primary-soft, and selected fill in their theme (#164). They
-  were 22–24% translucent fills left over from the old halo, which composite
-  to about 1.3–2.0:1 as the gapped outline. The new values are calico
-  `#3a6cc0`, ginger `#c2560f`, tabby `#a0683a`, torty `#e0a854`, and tuxedo
-  `#cbd5e1`. The unit and browser contrast suites now check preset rings the
-  same way they check the default theme.
-
-### Internal
 
 ### Internal
 
@@ -79,44 +62,25 @@
   checkout is refused before any test runs. `ASKR_TEST_PORT` pins the port.
   CI still uses port 4318 and never reuses a server.
 
-## 0.4.0 - 2026-09-28
+- Pin the existing Playwright 1.63.0 lockfile resolution in the development
+  dependency declaration so the declared browser runner matches the qualified
+  lockfile. Browser test timeouts and local retry settings are unchanged.
 
-Upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 at the same time. The default
-theme's palette, `Card` inset, and attached `ButtonGroup` layout change
-visibly; review the breaking entries below before upgrading.
+## 0.4.1 - 2026-09-30
+
+### Fixed
+
+- Reclaim generated style rules when components stop using them so dynamic
+  inline style values do not exhaust the stylesheet rule limit during an SPA
+  session.
 
 ### Breaking
 
-- **Breaking:** the `@askrjs/askr` and `@askrjs/ui` peer ranges move to
-  `>=0.4.0 <0.5.0`.
-  Migration: upgrade `@askrjs/askr` and `@askrjs/ui` to 0.4 together with this
-  package, following their 0.4.0 changelogs (for example, `For`/`Show` now
-  import from `@askrjs/askr/control`, and data APIs from `@askrjs/askr/data`).
-- **Breaking:** the default palette moves from grayscale to an ink plum accent with warm
-  neutral surfaces. Beyond the primary scale, the backgrounds, surfaces
-  (light `--ak-color-surface-raised` is now white instead of a step darker than
-  the surface), borders, disabled tokens, hover, selected, and focus ring are
-  plum-tinted in light and dark mode, and `--ak-color-danger`/`-soft` move to a
-  warmer red (`#b3404b`; dark `#f18c92`). The success, warning, and info
-  tokens are unchanged. Dark-mode links now use `--ak-dark-color-primary`
-  instead of the text color, so they render plum rather than white.
-  Migration: rebrands that overrode only the light primary tokens should also
-  override the neutral, border, disabled, danger, and `--ak-dark-color-*`
-  tokens. Copying the values from the 0.3.0 `src/themes/default/tokens.css`
-  into your theme scope restores the 0.3 colors, but component state styling
-  still differs (see the palette-state entry under Changed), so it does not
-  restore the 0.3 appearance exactly.
-- **Breaking:** theme styles no longer read `--ak-color-accent` or
-  `--ak-color-accent-ink`. In 0.3 outline and ghost button hover, close
-  buttons, command, combobox, select, and nav items, pills, dropdown and
-  popover triggers, calendar today and range-middle days, and sidebar menu
-  actions used them; they now use `--ak-color-hover` and `--ak-color-text`.
-  Both tokens stay defined (`--ak-color-accent` as an alias of
-  `--ak-color-hover`), so nothing fails, but overriding them no longer changes
-  any component.
-  Migration: override `--ak-color-hover` (and `--ak-color-text` for the ink)
-  instead.
-- **Breaking:** `Card` owns its inline inset. The root pads its inline sides with
+- The default palette moves from grayscale to an ink plum accent with warm
+  neutral surfaces. Beyond the primary scale, the neutrals, hover, selected,
+  focus-ring, and every `--ak-dark-color-*` token are plum-tinted, so rebrands
+  that overrode only the light primary tokens should also override those.
+- `Card` owns its inline inset. The root pads its inline sides with
   `--ak-card-inset` (a single length, default `var(--ak-space-2xl)`) instead of
   `padding: 2xl 0`, and `CardHeader`, `CardContent`, and `CardFooter` drop
   their own inline padding inside a card (outside a card, or inside a floating
@@ -126,46 +90,16 @@ visibly; review the breaking entries below before upgrading.
   directly in a card does so by default and drops its own frame;
   `data-bleed="false"` keeps either inset). Change the inset with the optional
   `--ak-card-inset` hook (default `var(--ak-space-2xl)`, resolved on each
-  card; it inherits, so it also applies to nested cards unless they set their
-  own). Card sections inside floating, navigation, menu, or toast surfaces
-  within a card keep their own inline padding. Overriding the card's `padding` instead also removes section padding,
+  card); overriding the card's `padding` instead also removes section padding,
   because sections rely on the card's inset.
-- **Breaking:** attached `ButtonGroup`s without an explicit `orientation` now emit
+- Attached `ButtonGroup`s without an explicit `orientation` now emit
   `data-responsive="true"` and stack at phone width (`max-width: 30rem`).
-  Pass `orientation="horizontal"` (or `data-responsive="false"`) to keep the
-  row; a caller-supplied `data-responsive` always wins. Groups that contain
-  icon buttons, and detached groups, keep their row. Raw markup opts in with both
+  Pass `orientation="horizontal"` to keep the row. Groups that contain icon
+  buttons, and detached groups, keep their row. Raw markup opts in with both
   `data-attached="true"` and `data-responsive="true"`.
-- **Breaking:** the vertical -1px overlap between buttons now requires
-  `data-attached="true"`; in 0.3 a raw `.btn-group-vertical` got it without
-  that attribute (the joined radii already required it). A raw
-  `.btn-group-vertical` without `.btn-group` is now laid out as an
-  `inline-flex` column instead of a block.
-  Migration: raw vertical groups that should stay joined add
-  `data-attached="true"`; the `ButtonGroup` component already emits it.
-- **Breaking (types):** `CatalogComponentProps` takes an element type parameter
-  (`CatalogComponentProps<TElement extends HTMLElement = HTMLElement>`), and the
-  catalog parts that render native controls type `ref` by element:
-  `CalendarPreviousButton`, `CalendarNextButton`, `CalendarDay`,
-  `CarouselPrevious`, `CarouselNext`, `NavigationMenuTrigger`, and
-  `TabsTrigger` take `Ref<HTMLButtonElement>`; `ComboboxInput`, `CommandInput`,
-  and `DatePickerInput` take `Ref<HTMLInputElement>`; `NativeSelect` takes
-  `Ref<HTMLSelectElement>` (#152). The default keeps other parts at
-  `Ref<HTMLElement>`.
-  Migration: callback refs typed for `HTMLElement` still work; a ref object or
-  state typed `HTMLElement` passed to one of these parts must use the specific
-  element type (for example `Ref<HTMLButtonElement>`).
-- **Breaking (types):** `ButtonGroupProps` declares
-  `"data-responsive"?: "true" | "false"`, which narrows the generic `data-*`
-  attribute type, so `data-responsive={true}` or a reactive function value no
-  longer typechecks.
-  Migration: pass the string `"true"` or `"false"`.
-
-### Deprecated
-
-- `--ak-color-accent` and `--ak-color-accent-ink` are compatibility aliases
-  (THEMING.md). They stay defined, but no theme style reads them; use
-  `--ak-color-hover` and `--ak-color-text`.
+- Attached vertical `ButtonGroup` join rules (radii and the -1px overlap) now
+  require `data-attached="true"`. The `.btn-group-vertical` class alias works on
+  its own or with `.btn-group`.
 
 ### Changed
 
@@ -174,9 +108,7 @@ visibly; review the breaking entries below before upgrading.
   `--ak-color-hover` everywhere (theme styles no longer use its
   `--ak-color-accent` alias, which stays defined); checked select options,
   active items, selected table rows, active sidebar buttons, and checked radio
-  cards use `--ak-color-selected`, so selection no longer looks like hover
-  (calendar today and range-middle days are the exception and use
-  `--ak-color-hover`).
+  cards use `--ak-color-selected`, so selection no longer looks like hover.
   Tabs, pagination, breadcrumbs, the navbar toggle, secondary buttons, table
   rows, and radio cards hover with `--ak-color-hover` instead of muted-surface
   mixes; selected tabs lift onto `--ak-color-surface` like toggle groups; the
@@ -187,10 +119,15 @@ visibly; review the breaking entries below before upgrading.
   corners at every width, and a lone button keeps all four corners.
 - The focused button in an attached `ButtonGroup` lifts above its neighbors so
   the -1px overlap never covers its focus ring; hover does not lift.
+- `--ak-card-inset` inherits like any token, so it also applies to nested
+  cards unless they set their own.
+- Card sections inside floating, navigation, menu, or toast surfaces within a
+  card keep their own inline padding.
 - Hover stays visible on muted tracks such as pills and toggle groups, tested
   as a contrast pair.
 - Raw inputs, radio items, and select triggers with the native `disabled`
   attribute block pointer input like their `data-disabled` forms.
+- `ButtonGroup` keeps a caller-supplied `data-responsive`.
 - Raw `[data-slot="empty-state"]` and `.empty-state` markup on plain block containers (`div`,
   `section`, `article`, `aside`, `figure`) that are not `hidden` or popovers
   gets a centered grid rhythm; the `EmptyState` component keeps its `Block`
@@ -216,12 +153,6 @@ visibly; review the breaking entries below before upgrading.
   `[data-theme]` block) carry through to selection fills.
 - Synced `templates/theme` with the default theme; template parity now covers
   every shared file.
-
-### Removed
-
-- The unexported `src/jsx.d.ts` global JSX shim is no longer published.
-  Component types come from `@askrjs/askr/jsx-runtime`; no package entry point
-  referenced the shim.
 
 ## 0.3.0 - 2026-09-11
 
