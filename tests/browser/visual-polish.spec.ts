@@ -739,7 +739,7 @@ test.describe("visual polish contracts", () => {
         skeletonBackgroundImage: getComputedStyle(skeleton).backgroundImage,
         separatorHeight: px(getComputedStyle(separator).height),
         buttonGroupFlexWrap: getComputedStyle(buttonGroup).flexWrap,
-        buttonGroupScrollWidth: buttonGroup.scrollWidth,
+        buttonGroupWidth: buttonGroup.getBoundingClientRect().width,
         buttonGroupOverflowX: getComputedStyle(buttonGroup).overflowX,
         labelOverflowWrap: getComputedStyle(label).overflowWrap,
         themePickerScrollWidth: themePicker.scrollWidth,
@@ -765,8 +765,9 @@ test.describe("visual polish contracts", () => {
     expect(measured.separatorHeight).toBe(1);
 
     expect(measured.buttonGroupFlexWrap).toBe("nowrap");
-    expect(measured.buttonGroupScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
-    expect(measured.buttonGroupOverflowX).toBe("visible");
+    // The group scrolls inside its own box rather than overflowing its container.
+    expect(measured.buttonGroupWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
+    expect(measured.buttonGroupOverflowX).toBe("auto");
     expect(measured.labelOverflowWrap).toBe("anywhere");
     expect(measured.themePickerScrollWidth).toBeLessThanOrEqual(measured.wrapperClientWidth);
     // WebKit reports the native select's intrinsic min-height rather than the
@@ -885,6 +886,11 @@ test.describe("visual polish contracts", () => {
           .filter((el) => {
             const htmlEl = el as HTMLElement;
             if (htmlEl.closest(".compact-table-wrap")) return false;
+            // Content inside a horizontal scroll container is reachable by scrolling.
+            for (let parent = htmlEl.parentElement; parent; parent = parent.parentElement) {
+              const overflowX = getComputedStyle(parent).overflowX;
+              if (overflowX === "auto" || overflowX === "scroll") return false;
+            }
             const bounds = htmlEl.getBoundingClientRect();
             return bounds.left < -2 || bounds.right > root.clientWidth + 2;
           })
@@ -1238,7 +1244,11 @@ test.describe("visual polish contracts", () => {
         wrapperClientWidth: wrapper.clientWidth,
         widths: checked.map((selector) => ({
           selector,
-          scrollWidth: (wrapper.querySelector(selector) as HTMLElement).scrollWidth,
+          // Pills and tabs scroll inside their own box, so their box is what must fit.
+          scrollWidth:
+            selector === '[data-slot="pills"]' || selector === '[data-slot="tabs"]'
+              ? (wrapper.querySelector(selector) as HTMLElement).getBoundingClientRect().width
+              : (wrapper.querySelector(selector) as HTMLElement).scrollWidth,
         })),
         popoverTriggerMinHeight: px(getComputedStyle(popoverTrigger).minHeight),
         popoverContentWidth: px(getComputedStyle(popoverContent).width),

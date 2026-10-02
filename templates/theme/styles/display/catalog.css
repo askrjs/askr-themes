@@ -530,14 +530,21 @@
 
 :where([data-slot="tabs-list"]) {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
   gap: var(--ak-space-2xs, 0.125rem);
   padding: var(--ak-space-2xs, 0.125rem);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-muted);
 }
 
+/* Triggers keep their label whole and size to it; the list scrolls when they do not fit. */
 :where([data-slot="tabs-trigger"]) {
+  flex: none;
+  overflow-wrap: normal;
+  white-space: nowrap;
   border: 1px solid transparent;
   border-radius: var(--ak-radius-sm);
   min-block-size: var(--ak-density-control-height-sm);
