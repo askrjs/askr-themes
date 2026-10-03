@@ -141,9 +141,7 @@ describe("style helpers", () => {
 
   it("should preserve safe variable references with long hyphenated names", () => {
     const value = `var(--${"-".repeat(50_000)}token)`;
-    expect(serializeCssDeclarations({ "--ak-long-value": value })).toBe(
-      `--ak-long-value:${value}`,
-    );
+    expect(serializeCssDeclarations({ "--ak-long-value": value })).toBe(`--ak-long-value:${value}`);
   });
 
   it("should preserve safe declarations adjacent to unsafe string declarations", () => {
