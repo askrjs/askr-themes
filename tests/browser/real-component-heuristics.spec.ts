@@ -87,7 +87,36 @@ for (const width of [320, 375, 1440]) {
       const actions = item.querySelector('[data-slot="item-actions"]')!.getBoundingClientRect();
       return { contentBottom: content.bottom, actionTop: actions.top };
     });
+    // At phone widths font metrics can put the actions on either row. The
+    // contract is whole labels without overflow; force both layout outcomes
+    // below using container widths that are well away from that boundary.
     if (width === 320) expect(layout.actionTop).toBeGreaterThan(layout.contentBottom);
-    else expect(layout.actionTop).toBeLessThan(layout.contentBottom);
+    else if (width === 1440) expect(layout.actionTop).toBeLessThan(layout.contentBottom);
   });
 }
+
+test("item actions follow the available container width inside a wide viewport", async ({
+  page,
+  render,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await render();
+  const item = page.getByTestId("program-item");
+  for (const [width, wrapped] of [
+    [240, true],
+    [800, false],
+  ] as const) {
+    await item.evaluate((element, containerWidth) => {
+      (element as HTMLElement).style.inlineSize = `${containerWidth}px`;
+    }, width);
+    const layout = await item.evaluate((element) => {
+      const content = element.querySelector('[data-slot="item-content"]')!.getBoundingClientRect();
+      const actions = element.querySelector('[data-slot="item-actions"]')!.getBoundingClientRect();
+      return { contentBottom: content.bottom, actionTop: actions.top };
+    });
+    if (wrapped) expect(layout.actionTop).toBeGreaterThan(layout.contentBottom);
+    else expect(layout.actionTop).toBeLessThan(layout.contentBottom);
+    expect(await measure(page, "mid-word-break", '[data-testid="program-item"]')).toEqual([]);
+    expect(await measure(page, "viewport-overflow", '[data-testid="program-item"]')).toEqual([]);
+  }
+});
