@@ -8,6 +8,13 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
+  FieldLegend,
+  FieldSet,
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
   NavBrand,
   NavGroup,
   NavLink,
@@ -97,6 +104,42 @@ export default async function realComponents(root: HTMLElement): Promise<void> {
         <Pill href="/queued">Queued review</Pill>
         <Pill href="/archived">Archived</Pill>
       </Pills>
+
+      <Item variant="outline" data-testid="program-item">
+        <ItemContent>
+          <ItemTitle>Introducing Premier to customers</ItemTitle>
+          <ItemDescription>
+            How and when to bring up the Premier Program on a sales call.
+          </ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Button variant="primary" size="sm">
+            Open
+          </Button>
+        </ItemActions>
+      </Item>
+
+      <Item variant="outline" data-testid="many-actions-item">
+        <ItemContent>
+          <ItemTitle>Program actions</ItemTitle>
+          <ItemDescription>Review the program before publishing it.</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+          <Button variant="outline">Preview program</Button>
+          <Button variant="outline">Edit program</Button>
+          <Button variant="primary">Publish program</Button>
+        </ItemActions>
+      </Item>
+
+      <FieldSet>
+        <FieldLegend>Programs</FieldLegend>
+        <label style="display:flex;gap:0.5rem;align-items:center">
+          <Checkbox /> Premier
+        </label>
+        <label style="display:flex;gap:0.5rem;align-items:center">
+          <Checkbox /> Loans
+        </label>
+      </FieldSet>
     </div>
   ));
 }
