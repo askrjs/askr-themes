@@ -200,6 +200,10 @@ giving up the canonical `data-slot` contract.
 
 Responsive rules:
 
+- Item actions retain their natural width. When an item is too narrow for its content and actions,
+  the actions wrap below the content; multiple actions wrap within the row without an inner scroller.
+- Keep `FieldLegend` as the first direct child of `FieldSet` to name the group. Its bottom margin
+  uses `--ak-space-md`, matching the default gap between the fieldset's remaining children.
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
 - `Block` is the only layout engine. Responsive layout props, including boolean `wrap`, use `base`, `sm`, `md`, `lg`, and `xl`; omitted `wrap` retains `nowrap`.
 - The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for layout variables.

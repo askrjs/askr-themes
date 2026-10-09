@@ -376,6 +376,10 @@
   font-weight: var(--ak-font-weight-semibold);
 }
 
+:where([data-slot="field-set"] > [data-slot="field-legend"]) {
+  margin-block-end: var(--ak-space-md);
+}
+
 :where([data-slot="field-label"]) {
   display: inline-flex;
   align-items: center;
@@ -412,6 +416,7 @@
 
 :where([data-slot="item"]) {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--ak-space-md);
   min-inline-size: 0;
@@ -438,6 +443,7 @@
 
 :where([data-slot="item-content"]) {
   display: grid;
+  flex: 1 1 16rem;
   gap: var(--ak-space-2xs, 0.125rem);
   min-inline-size: 0;
 }
@@ -454,9 +460,17 @@
 
 :where([data-slot="item-actions"]) {
   display: inline-flex;
+  flex: none;
+  flex-wrap: wrap;
+  max-inline-size: 100%;
   align-items: center;
   gap: var(--ak-space-xs);
   margin-inline-start: auto;
+}
+
+:where([data-slot="item-actions"] > [data-slot="button"]) {
+  flex: none;
+  max-inline-size: 100%;
 }
 
 :where([data-slot="kbd"]) {

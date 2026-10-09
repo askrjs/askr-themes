@@ -21,6 +21,10 @@
 
 ### Fixed
 
+- Keep item action labels whole on narrow screens by wrapping actions below the
+  content, including rows with multiple actions.
+- Space a fieldset legend from its first control using the default fieldset gap
+  token while preserving the legend's accessible group name.
 - Stop a wrapped breadcrumb stranding a separator at the end of a line.
 - Keep the spacing between an icon and its label in a breadcrumb link or page,
   which the truncation layout had dropped, and cap only the item that holds the
