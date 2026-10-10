@@ -752,13 +752,10 @@ export function SheetDescription(props: CatalogComponentProps): JSX.Element {
   return <CatalogDialogDescription {...props} data-slot="sheet-description" />;
 }
 
-/** Renders the `sonner` part of the shadcn-compatible catalog primitives. */
+/** Presentational Toaster host retaining the `sonner` styling slot. */
 export function Toaster(props: CatalogComponentProps): JSX.Element {
   return catalogPart(props, { slot: "sonner" });
 }
-
-/** Alias of {@link Toaster} kept for shadcn/sonner API compatibility. */
-export const Sonner = Toaster;
 
 /** Renders the `typography` part of the shadcn-compatible catalog primitives. */
 export function Typography(props: CatalogComponentProps): JSX.Element {

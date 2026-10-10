@@ -162,11 +162,15 @@ while component subpaths such as `@askrjs/themes/button`,
 `@askrjs/themes/card`, and `@askrjs/themes/dialog` resolve to independent,
 tree-shakeable JavaScript entries without importing theme CSS. Pair those with
 `@askrjs/themes/default/foundations.css` and only the component styles needed
-by the page. All individual styles are available below
-`@askrjs/themes/default/styles/*`. `@askrjs/ui`
-owns advanced behavior details; `@askrjs/themes` owns the visual shell around
-those primitives. `Dialog` is the canonical modal surface name; `Drawer` and
-`Sheet` are dialog-backed catalog aliases. Chart components stay
+by the page. The exact supported individual style paths are enumerated in
+`package.json`; arbitrary matching files are private. `@askrjs/ui` owns
+interaction behavior; `@askrjs/themes` owns the visual shell around those
+primitives. `Dialog` owns modal behavior. `Sheet` composes Dialog with
+side positioning and distinct content/text/layout slots. Replace retired
+Drawer names with their Dialog counterparts. The styling-only `Toaster`
+host is available at `@askrjs/themes/toaster` or the aggregate components
+entry; use the Toast family for notification lifecycle behavior.
+Chart components stay
 in `@askrjs/charts`.
 `Button` comes from `@askrjs/ui`; `@askrjs/themes` re-exports and styles it,
 while wrappers like `ButtonGroup`, `Close`, `Field`, and `InputGroup` stay

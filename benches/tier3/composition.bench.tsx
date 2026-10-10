@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { afterAll, afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
 
 import { group, route, navigate } from "@askrjs/askr/router";

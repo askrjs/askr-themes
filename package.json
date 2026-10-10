@@ -28,6 +28,8 @@
     "templates",
     "scripts/new-theme.js",
     "THEMING.md",
+    "docs/migration-0.5.0.md",
+    "docs/0.5.0-public-api.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
@@ -60,10 +62,6 @@
       "types": "./dist/ssr.d.ts",
       "import": "./dist/ssr.js"
     },
-    "./*": {
-      "types": "./dist/entries/*.d.ts",
-      "import": "./dist/entries/*.js"
-    },
     "./default/tokens.css": {
       "types": "./src/css.d.ts",
       "default": "./src/themes/default/tokens.css"
@@ -80,16 +78,756 @@
       "types": "./src/css.d.ts",
       "default": "./src/themes/default/styles/forms/label.css"
     },
-    "./default/styles/*": {
-      "types": "./src/css.d.ts",
-      "default": "./src/themes/default/styles/*"
-    },
-    "./templates/*": {
-      "types": "./src/css.d.ts",
-      "default": "./templates/*"
-    },
     "./package.json": "./package.json",
-    "./capabilities.json": "./capabilities.json"
+    "./capabilities.json": "./capabilities.json",
+    "./accordion": {
+      "types": "./dist/entries/accordion.d.ts",
+      "import": "./dist/entries/accordion.js"
+    },
+    "./alert-dialog": {
+      "types": "./dist/entries/alert-dialog.d.ts",
+      "import": "./dist/entries/alert-dialog.js"
+    },
+    "./alert": {
+      "types": "./dist/entries/alert.d.ts",
+      "import": "./dist/entries/alert.js"
+    },
+    "./aspect-ratio": {
+      "types": "./dist/entries/aspect-ratio.d.ts",
+      "import": "./dist/entries/aspect-ratio.js"
+    },
+    "./avatar": {
+      "types": "./dist/entries/avatar.d.ts",
+      "import": "./dist/entries/avatar.js"
+    },
+    "./badge": {
+      "types": "./dist/entries/badge.d.ts",
+      "import": "./dist/entries/badge.js"
+    },
+    "./block": {
+      "types": "./dist/entries/block.d.ts",
+      "import": "./dist/entries/block.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/entries/breadcrumb.d.ts",
+      "import": "./dist/entries/breadcrumb.js"
+    },
+    "./button-group": {
+      "types": "./dist/entries/button-group.d.ts",
+      "import": "./dist/entries/button-group.js"
+    },
+    "./button": {
+      "types": "./dist/entries/button.d.ts",
+      "import": "./dist/entries/button.js"
+    },
+    "./calendar": {
+      "types": "./dist/entries/calendar.d.ts",
+      "import": "./dist/entries/calendar.js"
+    },
+    "./card": {
+      "types": "./dist/entries/card.d.ts",
+      "import": "./dist/entries/card.js"
+    },
+    "./carousel": {
+      "types": "./dist/entries/carousel.d.ts",
+      "import": "./dist/entries/carousel.js"
+    },
+    "./center": {
+      "types": "./dist/entries/center.d.ts",
+      "import": "./dist/entries/center.js"
+    },
+    "./checkbox": {
+      "types": "./dist/entries/checkbox.d.ts",
+      "import": "./dist/entries/checkbox.js"
+    },
+    "./cluster": {
+      "types": "./dist/entries/cluster.d.ts",
+      "import": "./dist/entries/cluster.js"
+    },
+    "./collapsible": {
+      "types": "./dist/entries/collapsible.d.ts",
+      "import": "./dist/entries/collapsible.js"
+    },
+    "./combobox": {
+      "types": "./dist/entries/combobox.d.ts",
+      "import": "./dist/entries/combobox.js"
+    },
+    "./command": {
+      "types": "./dist/entries/command.d.ts",
+      "import": "./dist/entries/command.js"
+    },
+    "./container": {
+      "types": "./dist/entries/container.d.ts",
+      "import": "./dist/entries/container.js"
+    },
+    "./context-menu": {
+      "types": "./dist/entries/context-menu.d.ts",
+      "import": "./dist/entries/context-menu.js"
+    },
+    "./data-table": {
+      "types": "./dist/entries/data-table.d.ts",
+      "import": "./dist/entries/data-table.js"
+    },
+    "./date-picker": {
+      "types": "./dist/entries/date-picker.d.ts",
+      "import": "./dist/entries/date-picker.js"
+    },
+    "./dialog": {
+      "types": "./dist/entries/dialog.d.ts",
+      "import": "./dist/entries/dialog.js"
+    },
+    "./direction": {
+      "types": "./dist/entries/direction.d.ts",
+      "import": "./dist/entries/direction.js"
+    },
+    "./dropdown-menu": {
+      "types": "./dist/entries/dropdown-menu.d.ts",
+      "import": "./dist/entries/dropdown-menu.js"
+    },
+    "./empty": {
+      "types": "./dist/entries/empty.d.ts",
+      "import": "./dist/entries/empty.js"
+    },
+    "./field": {
+      "types": "./dist/entries/field.d.ts",
+      "import": "./dist/entries/field.js"
+    },
+    "./form": {
+      "types": "./dist/entries/form.d.ts",
+      "import": "./dist/entries/form.js"
+    },
+    "./grid": {
+      "types": "./dist/entries/grid.d.ts",
+      "import": "./dist/entries/grid.js"
+    },
+    "./heading": {
+      "types": "./dist/entries/heading.d.ts",
+      "import": "./dist/entries/heading.js"
+    },
+    "./hover-card": {
+      "types": "./dist/entries/hover-card.d.ts",
+      "import": "./dist/entries/hover-card.js"
+    },
+    "./input-group": {
+      "types": "./dist/entries/input-group.d.ts",
+      "import": "./dist/entries/input-group.js"
+    },
+    "./input-otp": {
+      "types": "./dist/entries/input-otp.d.ts",
+      "import": "./dist/entries/input-otp.js"
+    },
+    "./input": {
+      "types": "./dist/entries/input.d.ts",
+      "import": "./dist/entries/input.js"
+    },
+    "./item": {
+      "types": "./dist/entries/item.d.ts",
+      "import": "./dist/entries/item.js"
+    },
+    "./kbd": {
+      "types": "./dist/entries/kbd.d.ts",
+      "import": "./dist/entries/kbd.js"
+    },
+    "./label": {
+      "types": "./dist/entries/label.d.ts",
+      "import": "./dist/entries/label.js"
+    },
+    "./menubar": {
+      "types": "./dist/entries/menubar.d.ts",
+      "import": "./dist/entries/menubar.js"
+    },
+    "./native-select": {
+      "types": "./dist/entries/native-select.d.ts",
+      "import": "./dist/entries/native-select.js"
+    },
+    "./navigation-menu": {
+      "types": "./dist/entries/navigation-menu.d.ts",
+      "import": "./dist/entries/navigation-menu.js"
+    },
+    "./page-header": {
+      "types": "./dist/entries/page-header.d.ts",
+      "import": "./dist/entries/page-header.js"
+    },
+    "./page": {
+      "types": "./dist/entries/page.d.ts",
+      "import": "./dist/entries/page.js"
+    },
+    "./pagination": {
+      "types": "./dist/entries/pagination.d.ts",
+      "import": "./dist/entries/pagination.js"
+    },
+    "./popover": {
+      "types": "./dist/entries/popover.d.ts",
+      "import": "./dist/entries/popover.js"
+    },
+    "./progress": {
+      "types": "./dist/entries/progress.d.ts",
+      "import": "./dist/entries/progress.js"
+    },
+    "./radio-group": {
+      "types": "./dist/entries/radio-group.d.ts",
+      "import": "./dist/entries/radio-group.js"
+    },
+    "./resizable": {
+      "types": "./dist/entries/resizable.d.ts",
+      "import": "./dist/entries/resizable.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/entries/scroll-area.d.ts",
+      "import": "./dist/entries/scroll-area.js"
+    },
+    "./section": {
+      "types": "./dist/entries/section.d.ts",
+      "import": "./dist/entries/section.js"
+    },
+    "./select": {
+      "types": "./dist/entries/select.d.ts",
+      "import": "./dist/entries/select.js"
+    },
+    "./separator": {
+      "types": "./dist/entries/separator.d.ts",
+      "import": "./dist/entries/separator.js"
+    },
+    "./sheet": {
+      "types": "./dist/entries/sheet.d.ts",
+      "import": "./dist/entries/sheet.js"
+    },
+    "./sidebar": {
+      "types": "./dist/entries/sidebar.d.ts",
+      "import": "./dist/entries/sidebar.js"
+    },
+    "./skeleton": {
+      "types": "./dist/entries/skeleton.d.ts",
+      "import": "./dist/entries/skeleton.js"
+    },
+    "./slider": {
+      "types": "./dist/entries/slider.d.ts",
+      "import": "./dist/entries/slider.js"
+    },
+    "./spinner": {
+      "types": "./dist/entries/spinner.d.ts",
+      "import": "./dist/entries/spinner.js"
+    },
+    "./stack": {
+      "types": "./dist/entries/stack.d.ts",
+      "import": "./dist/entries/stack.js"
+    },
+    "./switch": {
+      "types": "./dist/entries/switch.d.ts",
+      "import": "./dist/entries/switch.js"
+    },
+    "./table": {
+      "types": "./dist/entries/table.d.ts",
+      "import": "./dist/entries/table.js"
+    },
+    "./tabs": {
+      "types": "./dist/entries/tabs.d.ts",
+      "import": "./dist/entries/tabs.js"
+    },
+    "./text": {
+      "types": "./dist/entries/text.d.ts",
+      "import": "./dist/entries/text.js"
+    },
+    "./textarea": {
+      "types": "./dist/entries/textarea.d.ts",
+      "import": "./dist/entries/textarea.js"
+    },
+    "./toast": {
+      "types": "./dist/entries/toast.d.ts",
+      "import": "./dist/entries/toast.js"
+    },
+    "./toggle-group": {
+      "types": "./dist/entries/toggle-group.d.ts",
+      "import": "./dist/entries/toggle-group.js"
+    },
+    "./toggle": {
+      "types": "./dist/entries/toggle.d.ts",
+      "import": "./dist/entries/toggle.js"
+    },
+    "./tooltip": {
+      "types": "./dist/entries/tooltip.d.ts",
+      "import": "./dist/entries/tooltip.js"
+    },
+    "./typography": {
+      "types": "./dist/entries/typography.d.ts",
+      "import": "./dist/entries/typography.js"
+    },
+    "./toaster": {
+      "types": "./dist/entries/toaster.d.ts",
+      "import": "./dist/entries/toaster.js"
+    },
+    "./default/styles/actions/button-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/actions/button-group.css"
+    },
+    "./default/styles/actions/button.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/actions/button.css"
+    },
+    "./default/styles/actions/copy-button.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/actions/copy-button.css"
+    },
+    "./default/styles/actions/toggle-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/actions/toggle-group.css"
+    },
+    "./default/styles/base/accessibility.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/accessibility.css"
+    },
+    "./default/styles/base/icon.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/icon.css"
+    },
+    "./default/styles/base/reset.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/reset.css"
+    },
+    "./default/styles/base/text.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/text.css"
+    },
+    "./default/styles/base/typography.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/typography.css"
+    },
+    "./default/styles/base/utilities.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/base/utilities.css"
+    },
+    "./default/styles/disclosure/accordion.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/disclosure/accordion.css"
+    },
+    "./default/styles/display/alert.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/alert.css"
+    },
+    "./default/styles/display/avatar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/avatar.css"
+    },
+    "./default/styles/display/badge.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/badge.css"
+    },
+    "./default/styles/display/card.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/card.css"
+    },
+    "./default/styles/display/catalog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/catalog.css"
+    },
+    "./default/styles/display/coverage.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/coverage.css"
+    },
+    "./default/styles/display/meta-strip.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/meta-strip.css"
+    },
+    "./default/styles/display/progress-circle.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/progress-circle.css"
+    },
+    "./default/styles/display/progress.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/progress.css"
+    },
+    "./default/styles/display/scroll-area.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/scroll-area.css"
+    },
+    "./default/styles/display/separator.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/separator.css"
+    },
+    "./default/styles/display/skeleton.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/skeleton.css"
+    },
+    "./default/styles/display/spinner.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/spinner.css"
+    },
+    "./default/styles/display/stat.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/stat.css"
+    },
+    "./default/styles/display/table.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/table.css"
+    },
+    "./default/styles/display/virtual-list.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/virtual-list.css"
+    },
+    "./default/styles/display/virtual-table.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/display/virtual-table.css"
+    },
+    "./default/styles/forms/checkbox.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/checkbox.css"
+    },
+    "./default/styles/forms/field.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/field.css"
+    },
+    "./default/styles/forms/input-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/input-group.css"
+    },
+    "./default/styles/forms/input.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/input.css"
+    },
+    "./default/styles/forms/label.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/label.css"
+    },
+    "./default/styles/forms/radio-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/radio-group.css"
+    },
+    "./default/styles/forms/select.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/select.css"
+    },
+    "./default/styles/forms/slider.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/slider.css"
+    },
+    "./default/styles/forms/switch.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/switch.css"
+    },
+    "./default/styles/forms/textarea.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/forms/textarea.css"
+    },
+    "./default/styles/layout/aspect-ratio.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/layout/aspect-ratio.css"
+    },
+    "./default/styles/layout/block.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/layout/block.css"
+    },
+    "./default/styles/layout/grid.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/layout/grid.css"
+    },
+    "./default/styles/layout/layout.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/layout/layout.css"
+    },
+    "./default/styles/layout/patterns.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/layout/patterns.css"
+    },
+    "./default/styles/navigation/menu.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/navigation/menu.css"
+    },
+    "./default/styles/navigation/nav.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/navigation/nav.css"
+    },
+    "./default/styles/overlays/alert-dialog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/alert-dialog.css"
+    },
+    "./default/styles/overlays/dialog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/dialog.css"
+    },
+    "./default/styles/overlays/dropdown.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/dropdown.css"
+    },
+    "./default/styles/overlays/hover-card.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/hover-card.css"
+    },
+    "./default/styles/overlays/menubar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/menubar.css"
+    },
+    "./default/styles/overlays/popover.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/popover.css"
+    },
+    "./default/styles/overlays/toast.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/toast.css"
+    },
+    "./default/styles/overlays/tooltip.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/overlays/tooltip.css"
+    },
+    "./default/styles/shell/brand.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/shell/brand.css"
+    },
+    "./default/styles/shell/footer.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/shell/footer.css"
+    },
+    "./default/styles/shell/header.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/shell/header.css"
+    },
+    "./default/styles/shell/navbar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/shell/navbar.css"
+    },
+    "./default/styles/shell/sidebar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./src/themes/default/styles/shell/sidebar.css"
+    },
+    "./templates/theme/index.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/index.css"
+    },
+    "./templates/theme/styles/actions/button-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/actions/button-group.css"
+    },
+    "./templates/theme/styles/actions/button.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/actions/button.css"
+    },
+    "./templates/theme/styles/actions/copy-button.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/actions/copy-button.css"
+    },
+    "./templates/theme/styles/actions/toggle-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/actions/toggle-group.css"
+    },
+    "./templates/theme/styles/base/accessibility.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/accessibility.css"
+    },
+    "./templates/theme/styles/base/icon.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/icon.css"
+    },
+    "./templates/theme/styles/base/reset.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/reset.css"
+    },
+    "./templates/theme/styles/base/text.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/text.css"
+    },
+    "./templates/theme/styles/base/typography.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/typography.css"
+    },
+    "./templates/theme/styles/base/utilities.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/base/utilities.css"
+    },
+    "./templates/theme/styles/disclosure/accordion.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/disclosure/accordion.css"
+    },
+    "./templates/theme/styles/display/alert.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/alert.css"
+    },
+    "./templates/theme/styles/display/avatar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/avatar.css"
+    },
+    "./templates/theme/styles/display/badge.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/badge.css"
+    },
+    "./templates/theme/styles/display/card.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/card.css"
+    },
+    "./templates/theme/styles/display/catalog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/catalog.css"
+    },
+    "./templates/theme/styles/display/coverage.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/coverage.css"
+    },
+    "./templates/theme/styles/display/meta-strip.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/meta-strip.css"
+    },
+    "./templates/theme/styles/display/progress-circle.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/progress-circle.css"
+    },
+    "./templates/theme/styles/display/progress.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/progress.css"
+    },
+    "./templates/theme/styles/display/scroll-area.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/scroll-area.css"
+    },
+    "./templates/theme/styles/display/separator.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/separator.css"
+    },
+    "./templates/theme/styles/display/skeleton.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/skeleton.css"
+    },
+    "./templates/theme/styles/display/spinner.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/spinner.css"
+    },
+    "./templates/theme/styles/display/stat.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/stat.css"
+    },
+    "./templates/theme/styles/display/table.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/table.css"
+    },
+    "./templates/theme/styles/display/virtual-list.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/virtual-list.css"
+    },
+    "./templates/theme/styles/display/virtual-table.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/display/virtual-table.css"
+    },
+    "./templates/theme/styles/forms/checkbox.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/checkbox.css"
+    },
+    "./templates/theme/styles/forms/field.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/field.css"
+    },
+    "./templates/theme/styles/forms/input-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/input-group.css"
+    },
+    "./templates/theme/styles/forms/input.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/input.css"
+    },
+    "./templates/theme/styles/forms/label.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/label.css"
+    },
+    "./templates/theme/styles/forms/radio-group.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/radio-group.css"
+    },
+    "./templates/theme/styles/forms/select.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/select.css"
+    },
+    "./templates/theme/styles/forms/slider.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/slider.css"
+    },
+    "./templates/theme/styles/forms/switch.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/switch.css"
+    },
+    "./templates/theme/styles/forms/textarea.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/forms/textarea.css"
+    },
+    "./templates/theme/styles/layout/aspect-ratio.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/layout/aspect-ratio.css"
+    },
+    "./templates/theme/styles/layout/block.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/layout/block.css"
+    },
+    "./templates/theme/styles/layout/grid.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/layout/grid.css"
+    },
+    "./templates/theme/styles/layout/layout.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/layout/layout.css"
+    },
+    "./templates/theme/styles/layout/patterns.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/layout/patterns.css"
+    },
+    "./templates/theme/styles/navigation/menu.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/navigation/menu.css"
+    },
+    "./templates/theme/styles/navigation/nav.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/navigation/nav.css"
+    },
+    "./templates/theme/styles/overlays/alert-dialog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/alert-dialog.css"
+    },
+    "./templates/theme/styles/overlays/dialog.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/dialog.css"
+    },
+    "./templates/theme/styles/overlays/dropdown.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/dropdown.css"
+    },
+    "./templates/theme/styles/overlays/hover-card.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/hover-card.css"
+    },
+    "./templates/theme/styles/overlays/menubar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/menubar.css"
+    },
+    "./templates/theme/styles/overlays/popover.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/popover.css"
+    },
+    "./templates/theme/styles/overlays/toast.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/toast.css"
+    },
+    "./templates/theme/styles/overlays/tooltip.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/overlays/tooltip.css"
+    },
+    "./templates/theme/styles/shell/brand.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/shell/brand.css"
+    },
+    "./templates/theme/styles/shell/footer.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/shell/footer.css"
+    },
+    "./templates/theme/styles/shell/header.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/shell/header.css"
+    },
+    "./templates/theme/styles/shell/navbar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/shell/navbar.css"
+    },
+    "./templates/theme/styles/shell/sidebar.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/styles/shell/sidebar.css"
+    },
+    "./templates/theme/tokens.css": {
+      "types": "./src/css.d.ts",
+      "default": "./templates/theme/tokens.css"
+    }
   },
   "publishConfig": {
     "access": "public"

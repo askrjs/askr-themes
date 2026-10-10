@@ -35,6 +35,45 @@ async function settle(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+function installMediaPreference(initialMatches: boolean) {
+  const originalMatchMedia = window.matchMedia;
+  let matches = initialMatches;
+  const listeners = new Set<(event: MediaQueryListEvent) => void>();
+  const media = {
+    get matches() {
+      return matches;
+    },
+    media: "(prefers-color-scheme: dark)",
+    onchange: null,
+    addEventListener(_type: string, listener: EventListenerOrEventListenerObject) {
+      listeners.add(listener as (event: MediaQueryListEvent) => void);
+    },
+    removeEventListener(_type: string, listener: EventListenerOrEventListenerObject) {
+      listeners.delete(listener as (event: MediaQueryListEvent) => void);
+    },
+    dispatchEvent() {
+      return true;
+    },
+  } as unknown as MediaQueryList;
+  Object.defineProperty(window, "matchMedia", { configurable: true, value: () => media });
+  return {
+    listeners,
+    setMatches(nextMatches: boolean) {
+      matches = nextMatches;
+    },
+    dispatch() {
+      for (const listener of listeners) listener({ matches } as MediaQueryListEvent);
+      return listeners.size;
+    },
+    restore() {
+      Object.defineProperty(window, "matchMedia", {
+        configurable: true,
+        value: originalMatchMedia,
+      });
+    },
+  };
+}
+
 function clearStoredThemes(): void {
   const storage = window.localStorage as
     | { removeItem?: (key: string) => void }
@@ -182,6 +221,49 @@ describe("theme contracts", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
   });
 
+  it("should preserve a custom theme name and its declared token values", async () => {
+    const styles = document.createElement("style");
+    styles.textContent = `
+      :root[data-theme="brand-fixture"] { --fixture-theme-token: royalblue; }
+      :root[data-theme="dark"] { --fixture-theme-token: midnightblue; }
+    `;
+    document.head.appendChild(styles);
+    testRoute("/theme", () => (
+      <ThemeScope defaultTheme="brand-fixture" storageKey="askr-theme-custom">
+        <ThemeProbe />
+        <ThemeToggle themes={["brand-fixture", "dark"]} />
+      </ThemeScope>
+    ));
+
+    try {
+      await createSPA({ root: container!, registry: createTestRegistry() });
+      await settle();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("brand-fixture");
+      expect(
+        container!.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme"),
+      ).toBe("brand-fixture");
+      expect(
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--fixture-theme-token")
+          .trim(),
+      ).toBe("royalblue");
+
+      (container!.querySelector('[data-theme-control="toggle"]') as HTMLButtonElement).click();
+      await settle();
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+      expect(window.localStorage.getItem("askr-theme-custom")).toBe("dark");
+      expect(
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--fixture-theme-token")
+          .trim(),
+      ).toBe("midnightblue");
+    } finally {
+      styles.remove();
+    }
+  });
+
   it("should hydrate deterministic markup given a persisted theme when adopting SSR", async () => {
     const App = () => (
       <ThemeScope defaultTheme="light" storageKey="askr-theme">
@@ -279,6 +361,120 @@ describe("theme contracts", () => {
         configurable: true,
         value: originalMatchMedia,
       });
+    }
+  });
+
+  it("should read a media preference changed before the committed hydration scope ref", async () => {
+    const media = installMediaPreference(false);
+    let committedBoundaries = 0;
+    let serverToggle: Element | null = null;
+    const beforeScopeRef = (element: HTMLElement | null) => {
+      if (!element) return;
+      committedBoundaries += 1;
+      expect(media.listeners.size).toBe(0);
+      expect(container!.querySelector('[data-theme-control="toggle"]')).toBe(serverToggle);
+      expect(serverToggle?.getAttribute("data-next-theme")).toBe("dark");
+      media.setMatches(true);
+    };
+    const App = () => (
+      <div>
+        <span ref={beforeScopeRef} />
+        <ThemeScope defaultTheme="system" storageKey="askr-theme">
+          <ThemeToggle themes={["light", "dark"]} />
+        </ThemeScope>
+      </div>
+    );
+
+    try {
+      container!.innerHTML = renderToStringSync(() => <App />);
+      serverToggle = container!.querySelector('[data-theme-control="toggle"]');
+      expect(committedBoundaries).toBe(0);
+      expect(serverToggle?.getAttribute("data-next-theme")).toBe("dark");
+      testRoute("/theme", App);
+      await hydrateSPA({
+        root: container!,
+        registry: createTestRegistry(),
+        hydrate: { verifyMarkup: true },
+      });
+      await settle();
+
+      expect(committedBoundaries).toBe(1);
+      expect(media.listeners.size).toBe(1);
+      expect(container!.querySelector('[data-theme-control="toggle"]')).toBe(serverToggle);
+      expect(serverToggle?.getAttribute("data-next-theme")).toBe("light");
+    } finally {
+      cleanupApp(container!);
+      expect(media.listeners.size).toBe(0);
+      media.restore();
+    }
+  });
+
+  it("should discard queued media work on unmount and preserve a surviving root", async () => {
+    const media = installMediaPreference(false);
+    const survivor = document.createElement("div");
+    document.body.appendChild(survivor);
+    const renderedNextThemes: string[] = [];
+    const Survivor = () => (
+      <ThemeScope defaultTheme="tuxedo" storageKey="askr-theme-cross-root-a">
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    const System = () => (
+      <ThemeScope defaultTheme="system" storageKey="askr-theme-cross-root-b">
+        <ThemeToggle themes={["light", "dark"]}>
+          {({ nextTheme }) => {
+            renderedNextThemes.push(nextTheme);
+            return nextTheme;
+          }}
+        </ThemeToggle>
+      </ThemeScope>
+    );
+
+    try {
+      testRoute("/theme", System);
+      await createSPA({ root: container!, registry: createTestRegistry() });
+      await settle();
+      resetTestRoutes();
+      testRoute("/theme", Survivor);
+      await createSPA({ root: survivor, registry: createTestRegistry() });
+      await settle();
+      expect(media.listeners.size).toBe(2);
+      expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
+
+      const detachedToggle = container!.querySelector('[data-theme-control="toggle"]')!;
+      const toggleMarkup = detachedToggle.outerHTML;
+      const renderCount = renderedNextThemes.length;
+      media.setMatches(true);
+      media.dispatch();
+      expect(renderedNextThemes).toHaveLength(renderCount);
+      let lateDeliveries = 0;
+      queueMicrotask(() => {
+        lateDeliveries = media.dispatch();
+      });
+      cleanupApp(container!);
+      container!.remove();
+      const detachedHtml = container!.innerHTML;
+      expect(media.listeners.size).toBe(1);
+      media.setMatches(false);
+      await settle();
+
+      expect(lateDeliveries).toBe(1);
+      expect(renderedNextThemes).toHaveLength(renderCount);
+      expect(detachedToggle.isConnected).toBe(false);
+      expect(detachedToggle.outerHTML).toBe(toggleMarkup);
+      expect(container!.innerHTML).toBe(detachedHtml);
+      expect(document.documentElement.getAttribute("data-theme-choice")).toBe("tuxedo");
+      expect(document.documentElement.getAttribute("data-theme")).toBe("tuxedo");
+      expect(survivor.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+        "tuxedo",
+      );
+      expect(media.listeners.size).toBe(1);
+    } finally {
+      cleanupApp(container!);
+      cleanupApp(survivor);
+      survivor.remove();
+      expect(media.listeners.size).toBe(0);
+      media.restore();
     }
   });
 
