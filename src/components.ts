@@ -1,5 +1,4 @@
 import "./themes/default/index.css";
-import "./components/jsx-types";
 
 // Keep the UI type surface explicit. A wildcard type re-export makes the
 // generated declaration bundle claim ownership of UI-only catalog values
@@ -53,14 +52,6 @@ export {
   DropdownPortal as ContextMenuPortal,
   DropdownSeparator as ContextMenuSeparator,
   DropdownTrigger as ContextMenuTrigger,
-  Dialog as Drawer,
-  DialogClose as DrawerClose,
-  DialogContent as DrawerContent,
-  DialogDescription as DrawerDescription,
-  DialogOverlay as DrawerOverlay,
-  DialogPortal as DrawerPortal,
-  DialogTitle as DrawerTitle,
-  DialogTrigger as DrawerTrigger,
   Dropdown,
   Dropdown as DropdownMenu,
   DropdownGroup,

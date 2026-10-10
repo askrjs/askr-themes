@@ -1,1 +1,18 @@
-export * from "@askrjs/ui/popover";
+export {
+  Popover,
+  PopoverClose,
+  type PopoverCloseAsChildProps,
+  type PopoverCloseProps,
+  PopoverContent,
+  type PopoverContentAsChildProps,
+  type PopoverContentOwnProps,
+  type PopoverContentProps,
+  type PopoverContentWidth,
+  type PopoverOwnProps,
+  PopoverPortal,
+  type PopoverPortalProps,
+  type PopoverProps,
+  PopoverTrigger,
+  type PopoverTriggerAsChildProps,
+  type PopoverTriggerProps,
+} from "@askrjs/ui/popover";

@@ -222,19 +222,20 @@ describe("package surface", () => {
       types: CSS_TYPE_TARGET,
       default: "./src/themes/default/styles/forms/label.css",
     });
-    expect(pkg.exports?.["./templates/*"]).toEqual({
+    expect(pkg.exports?.["./templates/theme/index.css"]).toEqual({
       types: CSS_TYPE_TARGET,
-      default: "./templates/*",
+      default: "./templates/theme/index.css",
     });
-    expect(pkg.exports?.["./*"]).toEqual({
-      types: "./dist/entries/*.d.ts",
-      import: "./dist/entries/*.js",
-    });
+    expect(Object.keys(pkg.exports ?? {})).toHaveLength(199);
+    expect(Object.keys(pkg.exports ?? {}).some((key) => key.includes("*"))).toBe(false);
     expect(pkg.exports?.["./chart"]).toBeUndefined();
     expect(pkg.exports?.["./charts"]).toBeUndefined();
 
     for (const subpath of THEME_COMPONENT_SUBPATHS) {
-      expect(pkg.exports?.[`./${subpath}`], subpath).toBeUndefined();
+      expect(pkg.exports?.[`./${subpath}`], subpath).toEqual({
+        types: `./dist/entries/${subpath}.d.ts`,
+        import: `./dist/entries/${subpath}.js`,
+      });
     }
 
     expect(

@@ -9,6 +9,10 @@ CSS tokens and a styled component catalog for Askr apps.
 `@askrjs/charts`. It owns the default theme and styled component catalog while
 behavior stays in `@askrjs/ui` and chart components stay in `@askrjs/charts`.
 
+The forthcoming 0.5.0 release narrows component aliases and package paths. See
+the [migration guide](./docs/migration-0.5.0.md) and the complete
+[public API decisions](./docs/0.5.0-public-api.md).
+
 ## Install
 
 ```bash

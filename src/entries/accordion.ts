@@ -1,1 +1,20 @@
-export * from "@askrjs/ui/accordion";
+export {
+  Accordion,
+  AccordionContent,
+  type AccordionContentAsChildProps,
+  type AccordionContentOwnProps,
+  type AccordionContentProps,
+  AccordionHeader,
+  type AccordionHeaderAsChildProps,
+  type AccordionHeaderProps,
+  AccordionItem,
+  type AccordionItemOwnProps,
+  type AccordionItemProps,
+  type AccordionMultipleProps,
+  type AccordionOrientation,
+  type AccordionProps,
+  type AccordionSingleProps,
+  AccordionTrigger,
+  type AccordionTriggerAsChildProps,
+  type AccordionTriggerProps,
+} from "@askrjs/ui/accordion";

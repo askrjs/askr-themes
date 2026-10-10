@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { jsx, jsxs } from "@askrjs/askr/jsx-runtime";
 import { bench, describe } from "vite-plus/test";
 

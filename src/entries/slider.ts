@@ -1,1 +1,15 @@
-export * from "@askrjs/ui/slider";
+export {
+  Slider,
+  type SliderOrientation,
+  type SliderOwnProps,
+  type SliderProps,
+  SliderRange,
+  type SliderRangeAsChildProps,
+  type SliderRangeProps,
+  SliderThumb,
+  type SliderThumbAsChildProps,
+  type SliderThumbProps,
+  SliderTrack,
+  type SliderTrackAsChildProps,
+  type SliderTrackProps,
+} from "@askrjs/ui/slider";
