@@ -109,7 +109,7 @@ export const staticConfig = {
 
 The wrapper also applies `context.cspNonce` to the emitted style registry and
 requires the request-local style registrations provided by `@askrjs/askr`
-`>=0.4.0 <0.5.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
+`>=0.5.0 <0.6.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
 diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 `document` callback.
 

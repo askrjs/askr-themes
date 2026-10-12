@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 - 2026-10-10
+
 ### Changed
 
 - Prepare the 0.5.0 public contract (2026-10-10): replace wildcard exports
@@ -70,6 +72,11 @@
   the navbar brand label with `data-nav-brand-label` so it truncates and shares
   a row with the menu toggle, match the real `ButtonGroup`'s default
   `data-responsive`, and tighten the aspect-ratio frame.
+
+### Development
+
+- First-party development workflows use Vite+; specialized compiler, runtime,
+  browser, and package checks remain part of validation.
 
 ## 0.4.2 - 2026-10-01
 

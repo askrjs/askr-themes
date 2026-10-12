@@ -1,4 +1,4 @@
-import { build } from "vite";
+import { build } from "vite-plus";
 
 const fixtureId = "\0granular-consumer";
 const result = await build({

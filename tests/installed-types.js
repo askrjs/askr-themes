@@ -41,7 +41,7 @@ try {
       },
     }),
   );
-  execFileSync(npm, ["install", "--ignore-scripts", "--no-package-lock", tarball], {
+  execFileSync(npm, ["install", "--no-package-lock", tarball], {
     cwd: consumerRoot,
     stdio: "pipe",
     shell: process.platform === "win32",
