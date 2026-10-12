@@ -947,6 +947,63 @@ describe("theme contracts", () => {
     expect(window.localStorage.getItem("askr-theme")).toBe("dark");
   });
 
+  it("should default an omitted theme choice to system when no stored choice exists", async () => {
+    const App = () => (
+      <ThemeScope>
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    expect(container?.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+      "system",
+    );
+    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("system");
+  });
+
+  it("should ignore an empty persisted theme and keep the configured default", async () => {
+    window.localStorage.setItem("askr-theme-empty", "");
+    const App = () => (
+      <ThemeScope defaultTheme="dark" storageKey="askr-theme-empty">
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    expect(container?.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+      "dark",
+    );
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("dark");
+    expect(window.localStorage.getItem("askr-theme-empty")).toBe("");
+  });
+
+  it("should preserve a persisted custom theme name outside the built-in options", async () => {
+    window.localStorage.setItem("askr-theme", "brand-fixture");
+    const App = () => (
+      <ThemeScope defaultTheme="light">
+        <ThemeProbe />
+      </ThemeScope>
+    );
+    testRoute("/theme", App);
+
+    await createSPA({ root: container!, registry: createTestRegistry() });
+    await settle();
+
+    expect(container?.querySelector('[data-slot="theme-probe"]')?.getAttribute("data-theme")).toBe(
+      "brand-fixture",
+    );
+    expect(document.documentElement.getAttribute("data-theme")).toBe("brand-fixture");
+    expect(document.documentElement.getAttribute("data-theme-choice")).toBe("brand-fixture");
+  });
+
   it("should isolate custom storage keys from the default theme key", async () => {
     window.localStorage.setItem("askr-theme", "dark");
 
