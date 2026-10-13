@@ -113,18 +113,33 @@ function paletteFor(mode: keyof typeof MODES): Map<string, Rgb> {
   return palette;
 }
 
-// OKLCH hue bands. Blue sits around 250-275; plum/violet/purple/magenta sit above it.
-const PURPLE_HUE = [285, 345] as const;
-/**
- * The approved bright-blue palette: light #2d5dd6 (OKLCH ~0.52 0.19 264), dark #9db8ff
- * (~0.79 0.11 268). The bands leave room for contrast tuning but reject the deep navy
- * (#062fac, L ~0.39) and the washed-out pale blue (#bfd2fe, L ~0.86) it replaces.
- */
-const PRIMARY_BAND = {
-  light: { hue: [258, 270], lightness: [0.48, 0.56], minChroma: 0.16, soft: [0.9, 0.95] },
-  dark: { hue: [260, 272], lightness: [0.75, 0.83], minChroma: 0.09, soft: [0.3, 0.38] },
-} as const;
-// Below this chroma a color reads as a true grey and its hue angle is noise.
+// New York uses neutral actions and chrome; status colors keep their semantic hues.
+const NEUTRAL_TOKENS = [
+  "primary",
+  "primary-soft",
+  "primary-ink",
+  "text",
+  "text-muted",
+  "text-subtle",
+  "text-inverse",
+  "bg",
+  "surface",
+  "surface-muted",
+  "surface-raised",
+  "surface-overlay",
+  "border",
+  "border-subtle",
+  "border-strong",
+  "link",
+  "focus-ring",
+  "disabled-bg",
+  "disabled-surface",
+  "disabled-border",
+  "disabled-text",
+  "selected",
+  "selected-border",
+  "hover",
+] as const;
 const NEUTRAL_CHROMA = 0.004;
 
 /** [foreground, background, label]; every pair is body text and must meet WCAG AA 4.5:1. */
@@ -147,37 +162,18 @@ describe("default palette", () => {
         return value;
       };
 
-      it("should use a bright, saturated blue primary", () => {
-        const { l, c, h } = toOklch(color("--ak-color-primary"));
-        const band = PRIMARY_BAND[mode];
-        expect(h, `primary hue ${h.toFixed(1)}`).toBeGreaterThanOrEqual(band.hue[0]);
-        expect(h, `primary hue ${h.toFixed(1)}`).toBeLessThanOrEqual(band.hue[1]);
-        // The focus ring no longer touches the primary fill (it sits behind a gap), so the
-        // primary is free to be a bright blue instead of the deep navy it was forced into.
-        expect(l, `primary lightness ${l.toFixed(3)}`).toBeGreaterThanOrEqual(band.lightness[0]);
-        expect(l, `primary lightness ${l.toFixed(3)}`).toBeLessThanOrEqual(band.lightness[1]);
-        expect(c, "primary should be a saturated blue").toBeGreaterThanOrEqual(band.minChroma);
+      it("should use an ink primary in light mode and a pale primary in dark mode", () => {
+        const { l } = toOklch(color("--ak-color-primary"));
+        if (mode === "light") expect(l).toBeLessThan(0.25);
+        else expect(l).toBeGreaterThan(0.9);
       });
 
-      it("should keep the primary soft and ink tones on the primary hue", () => {
-        const primary = toOklch(color("--ak-color-primary"));
-        for (const token of ["--ak-color-primary-soft", "--ak-color-primary-ink"]) {
-          const { h } = toOklch(color(token));
-          expect(Math.abs(h - primary.h), `${token} hue ${h.toFixed(1)}`).toBeLessThanOrEqual(8);
-        }
-        const soft = toOklch(color("--ak-color-primary-soft"));
-        expect(soft.l, "primary soft lightness").toBeGreaterThanOrEqual(PRIMARY_BAND[mode].soft[0]);
-        expect(soft.l, "primary soft lightness").toBeLessThanOrEqual(PRIMARY_BAND[mode].soft[1]);
-      });
-
-      it("should keep every palette color free of purple hues", () => {
-        expect(palette.size).toBeGreaterThan(20);
-        const purple = [...palette]
-          .map(([token, rgb]) => ({ token, ...toOklch(rgb) }))
-          .filter(({ c, h }) => c > NEUTRAL_CHROMA && h >= PURPLE_HUE[0] && h <= PURPLE_HUE[1])
-          .map(({ token, c, h }) => `${token} (C ${c.toFixed(3)}, H ${h.toFixed(1)})`);
-        expect(purple, "shift plum-tinted tokens to blue or a cool slate").toEqual([]);
-      });
+      for (const token of NEUTRAL_TOKENS) {
+        it(`should keep ${token} neutral`, () => {
+          const { c } = toOklch(color(`--ak-color-${token}`));
+          expect(c, `${token} should have no accent tint`).toBeLessThan(NEUTRAL_CHROMA);
+        });
+      }
 
       for (const [fg, bg, label] of TEXT_PAIRS) {
         it(`should meet WCAG AA 4.5:1 for ${label}`, () => {
@@ -199,6 +195,8 @@ describe("default palette", () => {
       a.c * Math.sin((a.h * Math.PI) / 180) - b.c * Math.sin((b.h * Math.PI) / 180),
     );
     expect(deltaE, `OKLab distance to calico ${deltaE.toFixed(3)}`).toBeGreaterThanOrEqual(0.08);
-    expect(a.c, "default blue should be more saturated than calico").toBeGreaterThan(b.c + 0.04);
+    expect(a.c, "default actions should stay neutral alongside the colored presets").toBeLessThan(
+      NEUTRAL_CHROMA,
+    );
   });
 });

@@ -227,8 +227,9 @@ When extending styles, group aliases with their canonical selectors:
 
 The default theme is optimized for quiet SaaS products: compact, readable,
 low-noise, and resilient across mobile, tablet, desktop, light mode, and dark
-mode. Theme work should improve that baseline without adding app-specific
-behavior or marketing-page assumptions.
+mode. Its New York palette uses neutral surfaces, ink actions in light mode,
+and pale actions on charcoal in dark mode. Theme work should improve that
+baseline without adding app-specific behavior or marketing-page assumptions.
 
 Use [../visual-check.html](../visual-check.html) as the manual audit surface
 before shipping theme changes. Inspect `320`, `390`, `768`, `1024`, and desktop widths in both light and dark mode.
