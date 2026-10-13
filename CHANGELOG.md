@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 0.5.0 - 2026-10-12
+
+### Breaking
+
+- Require Askr Core and UI `>=0.5.0 <0.6.0`. Upgrade the Askr packages together
+  and follow `docs/migration-0.5.0.md` for removed aliases and package paths.
+
 ### Changed
 
 - Prepare the 0.5.0 public contract (2026-10-10): replace wildcard exports
@@ -15,7 +22,7 @@
   `withThemeStyles` imports and the finite CSS contract.
 - Qualify compatible development dependency patches (2026-10-10), including
   the coupled Vite+ 0.3.3 toolchain, source-map-js 1.2.2 and tinypool 2.1.2.
-  Runtime dependencies and peer ranges remain unchanged.
+  Align Core, UI and Vite development dependencies with the 0.5 release line.
 - Render checkboxes and switches at 1.5x on coarse pointers and viewports up to
   `30rem`, so their targets reach the 24px WCAG 2.5.8 minimum. Link-style
   buttons keep a 24px minimum height there, and an icon-only navbar brand keeps
