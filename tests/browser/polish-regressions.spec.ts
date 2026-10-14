@@ -59,8 +59,7 @@ for (const mode of ["light", "dark"] as const) {
           cardContent.getBoundingClientRect().left -
           card.getBoundingClientRect().left -
           Number.parseFloat(getComputedStyle(card).borderInlineStartWidth),
-        groupWidth: group.clientWidth,
-        groupScrollWidth: group.scrollWidth,
+        groupLabelsWhole: buttons.every((button) => button.scrollWidth <= button.clientWidth),
         groupButtonHeights: buttons.map((button) => button.getBoundingClientRect().height),
         groupOverflow: getComputedStyle(group).overflow,
       };
@@ -72,9 +71,9 @@ for (const mode of ["light", "dark"] as const) {
     expect(measured.disabledTextareaOpacity).toBe("1");
     expect(measured.disabledTextareaColor).not.toBe(measured.textareaColor);
     expect(measured.cardInset).toBeGreaterThanOrEqual(20);
-    expect(measured.groupScrollWidth).toBeLessThanOrEqual(measured.groupWidth);
+    expect(measured.groupLabelsWhole).toBe(true);
     expect(measured.groupButtonHeights).toEqual([36, 36, 36]);
-    expect(measured.groupOverflow).toBe("visible");
+    expect(measured.groupOverflow).toBe("auto");
   });
 }
 
@@ -260,7 +259,7 @@ test("should join vertical ButtonGroups on the block axis at desktop width", asy
   expect(radii.lone[0]![0]).not.toBe("0px");
 });
 
-test("should keep component props and every action visible inside narrow desktop containers", async ({
+test("should keep component props and every action reachable inside narrow desktop containers", async ({
   page,
   render,
   root,
@@ -288,11 +287,14 @@ test("should keep component props and every action visible inside narrow desktop
       flushEmptyPadding: getComputedStyle(find("flush-empty")).paddingInlineStart,
       groupedLargePadding: padding("grouped-large"),
       referenceLargePadding: padding("reference-large"),
-      narrowOverflow: getComputedStyle(narrow).overflow,
+      narrowOverflow: getComputedStyle(narrow).overflowX,
       narrowButtons: [...narrow.querySelectorAll<HTMLElement>('[data-slot="button"]')].map(
         (button) => {
           const box = button.getBoundingClientRect();
-          return { left: box.left - narrowBox.left, right: narrowBox.right - box.right };
+          return {
+            left: box.left - narrowBox.left,
+            whole: button.scrollWidth <= button.clientWidth,
+          };
         },
       ),
       narrowResponsive: narrow.dataset.responsive,
@@ -309,11 +311,13 @@ test("should keep component props and every action visible inside narrow desktop
   expect(measured.hiddenEmptyDisplay).toBe("none");
   expect(measured.flushEmptyPadding).toBe("0px");
   expect(measured.groupedLargePadding).toBe(measured.referenceLargePadding);
-  expect(measured.narrowOverflow).toBe("visible");
+  // A group too narrow for its labels scrolls inside its own box; every action stays reachable
+  // and no label breaks inside a word.
+  expect(measured.narrowOverflow).toBe("auto");
   for (const button of measured.narrowButtons) {
     // WebKit lays out the -1px attached overlap on a 1/64px grid.
     expect(button.left).toBeGreaterThanOrEqual(-0.5);
-    expect(button.right).toBeGreaterThanOrEqual(-0.5);
+    expect(button.whole).toBe(true);
   }
   expect(measured.narrowResponsive).toBe("true");
   expect(measured.explicitResponsive).toBeUndefined();

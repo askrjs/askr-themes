@@ -2,6 +2,87 @@
 
 ## Unreleased
 
+## 0.5.0 - 2026-10-12
+
+### Breaking
+
+- Require Askr Core and UI `>=0.5.0 <0.6.0`. Upgrade the Askr packages together
+  and follow `docs/migration-0.5.0.md` for removed aliases and package paths.
+
+### Changed
+
+- Restore the clean New York default palette: neutral surfaces and chrome,
+  ink primary actions in light mode, and pale primary actions in dark mode.
+  Keep the accessible focus rings, disabled boundaries, distinct selection
+  fills, and later component layout repairs. Generated theme templates use
+  the same palette; token names and optional cat presets are unchanged.
+- Prepare the 0.5.0 public contract (2026-10-10): replace wildcard exports
+  with 199 supported component, CSS and template paths; remove Drawer and
+  Sonner aliases, UI accessibility metadata re-exports, the emitted private
+  SSR constraint name and the ambient global JSX compatibility declaration.
+  Import Toaster from `@askrjs/themes/toaster`; import scoped JSX types from
+  `@askrjs/askr/jsx-runtime`. See `docs/migration-0.5.0.md` for replacements
+  and `docs/0.5.0-public-api.md` for every name and path decision.
+- Correct capability metadata to describe the actual theme controls and
+  `withThemeStyles` imports and the finite CSS contract.
+- Qualify compatible development dependency patches (2026-10-10), including
+  the coupled Vite+ 0.3.3 toolchain, source-map-js 1.2.2 and tinypool 2.1.2.
+  Align Core, UI and Vite development dependencies with the 0.5 release line.
+- Render checkboxes and switches at 1.5x on coarse pointers and viewports up to
+  `30rem`, so their targets reach the 24px WCAG 2.5.8 minimum. Link-style
+  buttons keep a 24px minimum height there, and an icon-only navbar brand keeps
+  a full-size target.
+- Keep breadcrumb trails on one line. Ancestors truncate with an ellipsis and
+  the current page stays whole, up to three quarters of the trail.
+- Keep the focus ring on the zoomed checkbox and switch at the shared 3px width
+  and 2px gap, instead of the 4px ring and 3px gap that zoom produced.
+- Keep attached button groups, tabs, pills, and the `Tabs` list on one row with
+  whole labels. When the container is too narrow they scroll horizontally inside
+  their own box instead of wrapping onto extra rows or breaking a word. The
+  phone-width stacked column keeps wrapping labels inside its full-width buttons.
+  The focus ring on a tab, pill, or tab trigger is drawn inside the item so the
+  scrolling row cannot clip it.
+
+### Fixed
+
+- Discover generated SSR classes from actual tag attributes, ignoring comments,
+  script/style/textarea/title text and quoted examples. Use the same tag
+  boundaries to insert request styles into the real document head.
+- Keep item action labels whole on narrow screens by wrapping actions below the
+  content, including rows with multiple actions.
+- Space a fieldset legend from its first control using the default fieldset gap
+  token while preserving the legend's accessible group name.
+- Stop a wrapped breadcrumb stranding a separator at the end of a line.
+- Keep the spacing between an icon and its label in a breadcrumb link or page,
+  which the truncation layout had dropped, and cap only the item that holds the
+  current page rather than whichever item is last.
+
+### Documentation
+
+- Document that tabs, pills, and attached button groups scroll inside their own
+  box when too narrow, that attached groups stack on phones by default, the
+  breadcrumb truncation behaviour, the `zoom` requirement for touch-sized
+  controls, and the `data-nav-brand-label` hook for the navbar brand.
+
+### Tests
+
+- Add `audit-heuristics.spec.ts`, which measures the whole audit page at 320,
+  375, 768, and 1440px for mid-word breaks, undersized hit areas, dangling
+  breadcrumb separators, a truncated current page, text under 12px, and content
+  overflowing the viewport outside a scroll container. The same heuristics run
+  against the real components in `real-component-heuristics.spec.ts`, so a
+  green audit page cannot hide a gap between its hand-written markup and what
+  the components render.
+
+### Audit page
+
+- Give the command palette sample a search input, the input group sample a
+  labelled addon and placeholder, and the selection controls sample consistent
+  labelled rows. Replace the placeholder `Aa` theme button with an icon, mark
+  the navbar brand label with `data-nav-brand-label` so it truncates and shares
+  a row with the menu toggle, match the real `ButtonGroup`'s default
+  `data-responsive`, and tighten the aspect-ratio frame.
+
 ## 0.4.2 - 2026-10-01
 
 ### Fixed

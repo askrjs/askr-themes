@@ -152,7 +152,7 @@ function declarationDocumentation(source: string, component: string): string {
 }
 
 describe("package surface", () => {
-  it("should retain the renderer and UI baselines required by reactive visual guards", () => {
+  it("should require the coordinated 0.5 renderer, UI and Vite release line", () => {
     const pkg = JSON.parse(readFileSync(PACKAGE_JSON, "utf-8")) as {
       devDependencies?: Record<string, string>;
       peerDependencies?: Record<string, string>;
@@ -161,16 +161,17 @@ describe("package surface", () => {
       packages?: Record<string, { version?: string }>;
     };
 
-    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.4.0 <0.5.0");
-    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.4.0 <0.5.0");
-    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.4.0 <0.5.0");
-    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.4.0 <0.5.0");
+    expect(pkg.devDependencies?.["@askrjs/askr"]).toBe(">=0.5.0 <0.6.0");
+    expect(pkg.peerDependencies?.["@askrjs/askr"]).toBe(">=0.5.0 <0.6.0");
+    expect(pkg.devDependencies?.["@askrjs/ui"]).toBe(">=0.5.0 <0.6.0");
+    expect(pkg.peerDependencies?.["@askrjs/ui"]).toBe(">=0.5.0 <0.6.0");
 
-    // Guards against a half-updated lockfile: the declared ranges above can be
-    // bumped to 0.4.x while the resolved tree still pins 0.3.x, which fails
-    // `npm ci` long after the ranges look correct.
-    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toMatch(/^0\.4\./);
-    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toMatch(/^0\.4\./);
+    expect(pkg.devDependencies?.["@askrjs/vite"]).toBe(">=0.5.0 <0.6.0");
+
+    // Guard against ranges moving to 0.5 while the lock still pins 0.4.
+    expect(lock.packages?.["node_modules/@askrjs/askr"]?.version).toMatch(/^0\.5\./);
+    expect(lock.packages?.["node_modules/@askrjs/ui"]?.version).toMatch(/^0\.5\./);
+    expect(lock.packages?.["node_modules/@askrjs/vite"]?.version).toMatch(/^0\.5\./);
   });
 
   it("should expose the styled component catalog from the aggregate entrypoint", () => {
@@ -222,19 +223,20 @@ describe("package surface", () => {
       types: CSS_TYPE_TARGET,
       default: "./src/themes/default/styles/forms/label.css",
     });
-    expect(pkg.exports?.["./templates/*"]).toEqual({
+    expect(pkg.exports?.["./templates/theme/index.css"]).toEqual({
       types: CSS_TYPE_TARGET,
-      default: "./templates/*",
+      default: "./templates/theme/index.css",
     });
-    expect(pkg.exports?.["./*"]).toEqual({
-      types: "./dist/entries/*.d.ts",
-      import: "./dist/entries/*.js",
-    });
+    expect(Object.keys(pkg.exports ?? {})).toHaveLength(199);
+    expect(Object.keys(pkg.exports ?? {}).some((key) => key.includes("*"))).toBe(false);
     expect(pkg.exports?.["./chart"]).toBeUndefined();
     expect(pkg.exports?.["./charts"]).toBeUndefined();
 
     for (const subpath of THEME_COMPONENT_SUBPATHS) {
-      expect(pkg.exports?.[`./${subpath}`], subpath).toBeUndefined();
+      expect(pkg.exports?.[`./${subpath}`], subpath).toEqual({
+        types: `./dist/entries/${subpath}.d.ts`,
+        import: `./dist/entries/${subpath}.js`,
+      });
     }
 
     expect(

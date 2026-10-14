@@ -190,6 +190,13 @@
   text-underline-offset: 4px;
 }
 
+/* A link-style button has no padding, so give it the 24px minimum target on touch and phones. */
+@media (pointer: coarse), (max-width: 30rem) {
+  :where(.btn-link, [data-slot="button"][data-variant="link"]) {
+    min-height: 1.5rem;
+  }
+}
+
 :where(.btn-link:hover, [data-slot="button"][data-variant="link"]:hover) {
   background: transparent;
   border-color: transparent;

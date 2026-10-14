@@ -1,3 +1,4 @@
+import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { afterEach, beforeEach, bench, describe, expect, vi } from "vite-plus/test";
 
 import { state } from "@askrjs/askr";

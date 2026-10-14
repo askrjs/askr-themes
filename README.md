@@ -9,6 +9,10 @@ CSS tokens and a styled component catalog for Askr apps.
 `@askrjs/charts`. It owns the default theme and styled component catalog while
 behavior stays in `@askrjs/ui` and chart components stay in `@askrjs/charts`.
 
+The 0.5.0 release narrows component aliases and package paths. See
+the [migration guide](./docs/migration-0.5.0.md) and the complete
+[public API decisions](./docs/0.5.0-public-api.md).
+
 ## Install
 
 ```bash
@@ -105,7 +109,7 @@ export const staticConfig = {
 
 The wrapper also applies `context.cspNonce` to the emitted style registry and
 requires the request-local style registrations provided by `@askrjs/askr`
-`>=0.4.0 <0.5.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
+`>=0.5.0 <0.6.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
 diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 `document` callback.
 
@@ -121,8 +125,9 @@ diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 - `@askrjs/charts` for charts; chart components are intentionally not exported
   from `@askrjs/themes`.
 
-The default theme pairs a saturated blue accent with cool slate surfaces in
-light and dark mode. Override the semantic tokens to match your product:
+The default theme restores the clean New York baseline: neutral surfaces,
+ink primary actions in light mode, and pale primary actions on charcoal in
+dark mode. Override the semantic tokens to match your product:
 
 ```css
 :root {
@@ -132,9 +137,9 @@ light and dark mode. Override the semantic tokens to match your product:
 }
 ```
 
-The neutrals, hover, selected, and focus-ring tokens are also tinted to match
-the blue accent, and dark mode reads the `--ak-dark-color-*` tokens; override
-those alongside the primary scale for a full rebrand. See
+Surfaces, hover, selected, and focus-ring tokens stay neutral; status colors
+retain their semantic hues. Dark mode reads the `--ak-dark-color-*` tokens;
+override those alongside the primary scale for a full rebrand. See
 [THEMING.md](./THEMING.md#required-tokens) for the complete primary, hover,
 active, focus, and contrast contract.
 

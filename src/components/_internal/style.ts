@@ -6,7 +6,6 @@ const MAX_PROPERTY_CACHE = 256;
 const CSS_UNSAFE_RE = /[{}<>\\]/;
 const CSS_COMMENT_DELIMITER_RE = /\/\*|\*\//;
 const CSS_URI_SCHEME_RE = /(?:^|[\s(,])([a-z][a-z0-9+.-]*):/i;
-const CSS_FUNCTION_NAME_RE = /([a-z-][a-z0-9-]*)\s*\(/gi;
 const CSS_ALLOWED_FUNCTIONS = new Set([
   "var",
   "calc",
@@ -52,6 +51,38 @@ const CSS_ALLOWED_FUNCTIONS = new Set([
   "steps",
 ]);
 
+function isCssFunctionNameStart(code: number): boolean {
+  return code === 45 || (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+}
+
+function isCssFunctionNameCharacter(code: number): boolean {
+  return isCssFunctionNameStart(code) || (code >= 48 && code <= 57);
+}
+
+function hasDisallowedCssFunction(value: string): boolean {
+  let index = 0;
+  while (index < value.length) {
+    if (!isCssFunctionNameStart(value.charCodeAt(index))) {
+      index += 1;
+      continue;
+    }
+
+    const start = index;
+    index += 1;
+    while (index < value.length && isCssFunctionNameCharacter(value.charCodeAt(index))) {
+      index += 1;
+    }
+    const end = index;
+    while (index < value.length && value[index]!.trim() === "") index += 1;
+
+    if (value[index] === "(") {
+      if (!CSS_ALLOWED_FUNCTIONS.has(value.slice(start, end).toLowerCase())) return true;
+      index += 1;
+    }
+  }
+  return false;
+}
+
 function isSafeCssPropertyName(name: string): boolean {
   if (name.startsWith("--")) return /^--[a-zA-Z0-9_-]+$/.test(name);
   return /^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(name);
@@ -66,11 +97,7 @@ function isSafeCssValue(value: string): boolean {
     return false;
   }
 
-  for (const match of value.matchAll(CSS_FUNCTION_NAME_RE)) {
-    if (!CSS_ALLOWED_FUNCTIONS.has(match[1]!.toLowerCase())) return false;
-  }
-
-  return true;
+  return !hasDisallowedCssFunction(value);
 }
 
 function splitCssDeclarations(value: string): string[] {

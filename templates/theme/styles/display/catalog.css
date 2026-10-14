@@ -79,6 +79,30 @@
   list-style: none;
 }
 
+/* Keep separators on the same line. Items keep their natural width when the trail fits. When it
+   does not, ancestors truncate and the current page stays whole, so the page the reader is on is
+   always readable while the way back stays recognisable. */
+:where([data-slot="breadcrumb-list"]) {
+  flex-wrap: nowrap;
+  min-inline-size: 0;
+}
+
+:where([data-slot="breadcrumb-separator"]) {
+  flex: none;
+}
+
+:where([data-slot="breadcrumb-item"]) {
+  flex: 0 1 auto;
+}
+
+/* Only a current page longer than three quarters of the trail truncates; that cap also leaves
+   the ancestors room for their separators. The item is found by the page it holds, so a trailing
+   ellipsis or link-type last crumb is not mistaken for it. */
+:where([data-slot="breadcrumb-item"]:has(> [data-slot="breadcrumb-page"])) {
+  flex-shrink: 0;
+  max-inline-size: 75%;
+}
+
 :where(
   [data-slot="breadcrumb-item"],
   [data-slot="breadcrumb-separator"],
@@ -105,6 +129,24 @@
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
   text-decoration: none;
+}
+
+/* Block layout lets text-overflow apply to both ancestor and current-page labels. */
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"]) {
+  display: block;
+  min-inline-size: 0;
+  overflow: hidden;
+  line-height: var(--ak-density-control-height-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Block layout drops the flex gap, so an icon keeps its spacing from the label directly. */
+:where([data-slot="breadcrumb-link"], [data-slot="breadcrumb-page"])
+  > :where([data-slot="icon"], svg) {
+  display: inline-block;
+  margin-inline-end: var(--ak-space-xs);
+  vertical-align: middle;
 }
 
 :where(
@@ -334,6 +376,10 @@
   font-weight: var(--ak-font-weight-semibold);
 }
 
+:where([data-slot="field-set"] > [data-slot="field-legend"]) {
+  margin-block-end: var(--ak-space-md);
+}
+
 :where([data-slot="field-label"]) {
   display: inline-flex;
   align-items: center;
@@ -370,6 +416,7 @@
 
 :where([data-slot="item"]) {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--ak-space-md);
   min-inline-size: 0;
@@ -396,6 +443,7 @@
 
 :where([data-slot="item-content"]) {
   display: grid;
+  flex: 1 1 16rem;
   gap: var(--ak-space-2xs, 0.125rem);
   min-inline-size: 0;
 }
@@ -412,9 +460,17 @@
 
 :where([data-slot="item-actions"]) {
   display: inline-flex;
+  flex: none;
+  flex-wrap: wrap;
+  max-inline-size: 100%;
   align-items: center;
   gap: var(--ak-space-xs);
   margin-inline-start: auto;
+}
+
+:where([data-slot="item-actions"] > [data-slot="button"]) {
+  flex: none;
+  max-inline-size: 100%;
 }
 
 :where([data-slot="kbd"]) {
@@ -488,20 +544,33 @@
 
 :where([data-slot="tabs-list"]) {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
   gap: var(--ak-space-2xs, 0.125rem);
   padding: var(--ak-space-2xs, 0.125rem);
   border-radius: var(--ak-radius-md);
   background: var(--ak-color-surface-muted);
 }
 
+/* Triggers keep their label whole and size to it; the list scrolls when they do not fit. */
 :where([data-slot="tabs-trigger"]) {
+  flex: none;
+  overflow-wrap: normal;
+  white-space: nowrap;
   border: 1px solid transparent;
   border-radius: var(--ak-radius-sm);
   min-block-size: var(--ak-density-control-height-sm);
   padding-inline: var(--ak-density-control-padding-x-sm);
   color: var(--ak-color-text-muted);
   font-size: var(--ak-font-size-sm);
+}
+
+/* The trigger row scrolls, which clips anything painted outside its box, so the focus ring is drawn
+   inside the trigger with the same gap from its edge instead of outside it. */
+:where([data-slot="tabs-trigger"]):focus-visible {
+  outline-offset: calc(-1 * (var(--ak-focus-ring-width) + var(--ak-focus-ring-offset)));
 }
 
 :where([data-slot="tabs-trigger"]:hover) {

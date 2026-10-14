@@ -118,8 +118,9 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
 restrained enough for application chrome, and polished enough that downstream apps should not
 need to fix basic spacing or type rhythm.
-Saturated blue actions, cool slate surfaces, and subtle borders carry through its light
-and dark palettes.
+The clean New York baseline uses neutral surfaces and subtle borders, with ink primary
+actions in light mode and pale primary actions on charcoal in dark mode. Hover, selected,
+disabled, and focus states remain neutral; status colors retain their semantic hues.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
 component family in light and dark mode at desktop, tablet, and mobile widths.
@@ -200,6 +201,10 @@ giving up the canonical `data-slot` contract.
 
 Responsive rules:
 
+- Item actions retain their natural width. When an item is too narrow for its content and actions,
+  the actions wrap below the content; multiple actions wrap within the row without an inner scroller.
+- Keep `FieldLegend` as the first direct child of `FieldSet` to name the group. Its bottom margin
+  uses `--ak-space-md`, matching the default gap between the fieldset's remaining children.
 - Build mobile first. Base selectors must work on narrow screens; larger layouts are additive via `min-width` media queries.
 - `Block` is the only layout engine. Responsive layout props, including boolean `wrap`, use `base`, `sm`, `md`, `lg`, and `xl`; omitted `wrap` retains `nowrap`.
 - The default theme uses semantic breakpoints `sm`, `md`, `lg`, and `xl` for layout variables.
@@ -208,6 +213,21 @@ Responsive rules:
 - Navbar collapse is a semantic preset: put `NavBrand` first, use `collapseAt`
   for the single responsive pattern, and use `NavDropdown` for simple
   single-level menus.
+- Tabs and pills stay on one row and scroll horizontally inside their own box when their labels
+  outgrow the container. Each label stays whole and the page never scrolls sideways. The scrollbar is
+  the thin native one, so keyboard and pointer users can reach every tab.
+- Breadcrumbs stay on one line. When the trail is too wide the ancestors truncate with an ellipsis
+  and the current page stays whole, up to three quarters of the trail. Set `title` on a crumb whose
+  full text a reader may need.
+- An attached `ButtonGroup` stacks into a column on phones by default (`data-responsive`), where
+  labels wrap inside their full-width button. Otherwise every button sizes to its label, which never
+  breaks inside a word, and a group too narrow for its buttons scrolls horizontally inside its own box
+  instead of overflowing its container.
+- On coarse pointers and viewports up to `30rem`, checkboxes and switches render at 1.5x so their
+  targets reach 24px. This uses CSS `zoom` (Firefox 126+); older browsers keep the 16px size.
+- Mark the brand text with `data-nav-brand-label` so it truncates with an
+  ellipsis (and hides beside an icon on phones) instead of pushing the menu
+  toggle onto a second row.
 - Prefer token overrides first. Reach for component CSS overrides only when tokens are insufficient.
 - Keep selectors low-specificity so a custom theme can override a rule with one equally specific selector. `:where(...)` is preferred for the default theme baseline.
 - Broad layout slots like `main`, `sidebar`, and `navbar` are semantic Block presets, not independent layout engines.

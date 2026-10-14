@@ -26,7 +26,13 @@ if (result.length !== 1) {
 const packedFiles = new Set(result[0].files.map(({ path }) => normalize(path)));
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 
-for (const file of ["CHANGELOG.md", "README.md", "LICENSE"]) {
+for (const file of [
+  "CHANGELOG.md",
+  "README.md",
+  "LICENSE",
+  "docs/migration-0.5.0.md",
+  "docs/0.5.0-public-api.md",
+]) {
   if (!packedFiles.has(normalize(file))) {
     throw new Error(`Packed artifact is missing ${file}.`);
   }
@@ -43,12 +49,11 @@ for (const alias of ["Box", "Inline", "Shell", "ShellNav", "ShellMain", "LegacyL
   }
 }
 
-const componentExport = packageJson.exports["./*"];
 if (
-  componentExport?.import !== "./dist/entries/*.js" ||
-  componentExport?.types !== "./dist/entries/*.d.ts"
+  Object.keys(packageJson.exports).length !== 199 ||
+  Object.keys(packageJson.exports).some((key) => key.includes("*"))
 ) {
-  throw new Error("Expected component subpaths to use the dedicated entry pattern.");
+  throw new Error("Expected the reviewed 199 exact package export keys without wildcard exposure.");
 }
 
 const componentEntries = readdirSync("src/entries")
@@ -62,6 +67,13 @@ for (const layout of ["stack", "cluster", "center"]) {
 }
 
 for (const component of componentEntries) {
+  const exported = packageJson.exports[`./${component}`];
+  if (
+    exported?.import !== `./dist/entries/${component}.js` ||
+    exported?.types !== `./dist/entries/${component}.d.ts`
+  ) {
+    throw new Error(`Expected an exact independent package entry for ${component}.`);
+  }
   if (!packedFiles.has(normalize(`dist/entries/${component}.js`))) {
     throw new Error(`Packed artifact is missing dist/entries/${component}.js.`);
   }
@@ -92,8 +104,30 @@ for (const cssExport of ["foundations", "input", "label"]) {
   }
 }
 
-if (packageJson.exports["./default/styles/*"]?.default !== "./src/themes/default/styles/*") {
-  throw new Error("Expected all individual default component styles to be publicly addressable.");
+function visitFiles(directory, callback) {
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const file = join(directory, entry.name);
+    if (entry.isDirectory()) visitFiles(file, callback);
+    else callback(file.replaceAll("\\", "/"));
+  }
+}
+visitFiles("src/themes/default/styles", (file) => {
+  const key = `./default/styles/${file.slice("src/themes/default/styles/".length)}`;
+  if (packageJson.exports[key]?.default !== `./${file}` || !packedFiles.has(normalize(file))) {
+    throw new Error(`Supported granular style ${file} has no exact packed export.`);
+  }
+});
+visitFiles("templates", (file) => {
+  if (
+    packageJson.exports[`./${file}`]?.default !== `./${file}` ||
+    !packedFiles.has(normalize(file))
+  ) {
+    throw new Error(`Supported template ${file} has no exact packed export.`);
+  }
+});
+for (const key of ["./drawer", "./sonner", "./components/jsx-types"]) {
+  if (packageJson.exports[key] !== undefined)
+    throw new Error(`Retired path ${key} is still exported.`);
 }
 
 const inputCss = readFileSync("src/themes/default/styles/forms/input.css", "utf8");

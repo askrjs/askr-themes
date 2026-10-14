@@ -46,12 +46,8 @@ try {
     stdio: "pipe",
     shell: process.platform === "win32",
   });
-  // Preserve the global JSX.Element compatibility shim shipped in 0.4.1,
-  // while component signatures continue to use the scoped Askr JSX types.
-  // No other declaration may introduce a global JSX namespace.
+  // Themes declarations use the scoped Askr JSX namespace and must not add globals.
   const installedPackageRoot = join(consumerRoot, "node_modules/@askrjs/themes");
-  const legacyGlobalJsxDeclaration = "dist/components/jsx-types.d.ts";
-  let legacyGlobalJsxSeen = false;
   const globalJsxLeaks = [];
   const scanDeclarations = (directory) => {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
@@ -64,8 +60,7 @@ try {
           const packagePath = entryPath
             .slice(installedPackageRoot.length + 1)
             .replaceAll("\\", "/");
-          if (packagePath === legacyGlobalJsxDeclaration) legacyGlobalJsxSeen = true;
-          else globalJsxLeaks.push(packagePath);
+          globalJsxLeaks.push(packagePath);
         }
       }
     }
@@ -73,12 +68,7 @@ try {
   scanDeclarations(installedPackageRoot);
   if (globalJsxLeaks.length > 0) {
     throw new Error(
-      `Unexpected global JSX declarations outside the published compatibility shim:\n  ${globalJsxLeaks.join("\n  ")}`,
-    );
-  }
-  if (!legacyGlobalJsxSeen) {
-    throw new Error(
-      `Missing published JSX.Element compatibility shim: ${legacyGlobalJsxDeclaration}.`,
+      `Unexpected ambient JSX declarations in Themes:\n  ${globalJsxLeaks.join("\n  ")}`,
     );
   }
 
@@ -121,10 +111,7 @@ try {
       'import type { JSX as AskrJSX } from "@askrjs/askr/jsx-runtime";',
       "const scopedElement: AskrJSX.Element = <Block><Heading level={2}>Scoped</Heading></Block>;",
       'const scopedComponentResult: AskrJSX.Element = Block({ children: "scoped" });',
-      "const legacyElement: JSX.Element = scopedElement;",
-      'const legacyComponentResult: JSX.Element = Block({ children: "legacy" });',
-      "const scopedFromLegacy: AskrJSX.Element = legacyComponentResult;",
-      "void scopedElement; void scopedComponentResult; void legacyElement; void legacyComponentResult; void scopedFromLegacy;",
+      "void scopedElement; void scopedComponentResult;",
       "const fixture = <Block><span>strict consumer</span></Block>;",
       'const granular = <GranularPage><GranularPageHeader title="Status" /><GranularContainer><GranularSection><GranularStack gap="sm"><GranularCenter minHeight="sm"><GranularText>one</GranularText></GranularCenter><GranularCluster gap="xs"><GranularText>two</GranularText></GranularCluster><GranularGrid columns={2}><GranularBlock /><GranularBlock /></GranularGrid></GranularStack></GranularSection></GranularContainer></GranularPage>;',
       'const palette = <CommandPalette><CommandPaletteTrigger>Search</CommandPaletteTrigger><CommandPaletteContent title="Search docs"><CommandPaletteList><CommandPaletteLink href="/docs">Docs</CommandPaletteLink></CommandPaletteList></CommandPaletteContent></CommandPalette>;',
@@ -179,37 +166,61 @@ try {
         skipLibCheck: false,
         noEmit: true,
       },
-      include: ["index.tsx"],
+      include: ["index.tsx", "public-surface.fixture.tsx"],
     }),
   );
 
-  const typescriptCli = resolve(repositoryRoot, "node_modules/@typescript/native/bin/tsc");
-  execFileSync(process.execPath, [typescriptCli, "-p", join(consumerRoot, "tsconfig.json")], {
-    cwd: consumerRoot,
-    stdio: "inherit",
+  writeFileSync(
+    join(consumerRoot, "public-surface.fixture.tsx"),
+    readFileSync(join(repositoryRoot, "tests/types/public-surface.fixture.tsx")),
+  );
+  const compilers = ["typescript", "@typescript/native"].map((alias) => {
+    const compilerRoot = resolve(repositoryRoot, "node_modules", alias);
+    const manifest = JSON.parse(readFileSync(join(compilerRoot, "package.json"), "utf8"));
+    return { alias, cli: resolve(compilerRoot, Object.values(manifest.bin)[0]) };
   });
+  function compile(config) {
+    for (const compiler of compilers) {
+      const version = execFileSync(process.execPath, [compiler.cli, "--version"], {
+        encoding: "utf8",
+      }).trim();
+      console.log(`${compiler.alias}: ${version}`);
+      execFileSync(process.execPath, [compiler.cli, "-p", join(consumerRoot, config)], {
+        cwd: consumerRoot,
+        stdio: "inherit",
+      });
+    }
+  }
+  compile("tsconfig.json");
 
-  // Compile the components entry alone so another granular entry cannot
-  // accidentally supply its published global JSX.Element compatibility.
+  // Check the aggregate entry alone as well as the complete declaration graph.
   writeFileSync(
     join(consumerRoot, "jsx-compatibility.tsx"),
     [
       'import { Block } from "@askrjs/themes/components";',
       'import type { JSX as AskrJSX } from "@askrjs/askr/jsx-runtime";',
-      'const legacyResult: JSX.Element = Block({ children: "legacy" });',
-      "const scopedResult: AskrJSX.Element = legacyResult;",
-      "void legacyResult; void scopedResult;",
+      'const scopedResult: AskrJSX.Element = Block({ children: "scoped" });',
+      "// @ts-expect-error The Themes aggregate does not install an ambient JSX namespace.",
+      "type RetiredGlobal = JSX.Element;",
+      "void scopedResult;",
     ].join("\n"),
   );
   writeFileSync(
     join(consumerRoot, "jsx-compatibility.tsconfig.json"),
     JSON.stringify({ extends: "./tsconfig.json", include: ["jsx-compatibility.tsx"] }),
   );
-  execFileSync(
-    process.execPath,
-    [typescriptCli, "-p", join(consumerRoot, "jsx-compatibility.tsconfig.json")],
-    { cwd: consumerRoot, stdio: "inherit" },
-  );
+  compile("jsx-compatibility.tsconfig.json");
+
+  for (const file of ["public-surface.json", "installed-runtime.mjs"]) {
+    writeFileSync(
+      join(consumerRoot, file),
+      readFileSync(join(repositoryRoot, "tests/fixtures", file)),
+    );
+  }
+  execFileSync(process.execPath, [join(consumerRoot, "installed-runtime.mjs")], {
+    cwd: consumerRoot,
+    stdio: "inherit",
+  });
 
   writeFileSync(
     join(consumerRoot, "runtime.mjs"),

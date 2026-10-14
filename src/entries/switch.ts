@@ -1,1 +1,7 @@
-export * from "@askrjs/ui/switch";
+export {
+  Switch,
+  type SwitchAsChildProps,
+  type SwitchButtonProps,
+  type SwitchOwnProps,
+  type SwitchProps,
+} from "@askrjs/ui/switch";

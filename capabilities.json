@@ -6,8 +6,12 @@
       "intent": "default design tokens and CSS theme",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/default",
-      "exports": ["tokens.css", "foundations.css", "styles/*"],
-      "constraints": ["theme tokens are CSS custom properties", "CSS imports are side-effectful"],
+      "exports": [],
+      "constraints": [
+        "theme tokens are CSS custom properties",
+        "CSS imports are side-effectful",
+        "Only the enumerated CSS subpaths in package.json are public."
+      ],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
       "docsPath": "THEMING.md"
@@ -23,11 +27,24 @@
       "docsPath": "THEMING.md"
     },
     {
-      "intent": "theme runtime and SSR helpers",
+      "intent": "theme selection runtime",
       "package": "@askrjs/themes",
       "import": "@askrjs/themes/theme",
-      "exports": ["createTheme", "resolveTheme"],
+      "exports": ["ThemeScope", "ThemePicker", "ThemeToggle", "theme"],
       "constraints": ["theme selection must be deterministic during SSR"],
+      "stability": "stable",
+      "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
+      "docsPath": "THEMING.md"
+    },
+    {
+      "intent": "request-local generated theme styles for SSR and SSG",
+      "package": "@askrjs/themes",
+      "import": "@askrjs/themes/ssr",
+      "exports": ["withThemeStyles"],
+      "constraints": [
+        "Renderer arguments retain their caller-specific shape.",
+        "Generated classes require request-local registrations."
+      ],
       "stability": "stable",
       "docs": "https://github.com/askrjs/askr-themes/blob/main/THEMING.md",
       "docsPath": "THEMING.md"

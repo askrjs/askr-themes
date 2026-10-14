@@ -1,1 +1,15 @@
-export * from "@askrjs/ui/scroll-area";
+export {
+  ScrollArea,
+  type ScrollAreaAsChildProps,
+  ScrollAreaCorner,
+  type ScrollAreaCornerProps,
+  type ScrollAreaOwnProps,
+  type ScrollAreaProps,
+  ScrollAreaScrollbar,
+  type ScrollAreaScrollbarProps,
+  ScrollAreaThumb,
+  type ScrollAreaThumbProps,
+  ScrollAreaViewport,
+  type ScrollAreaViewportAsChildProps,
+  type ScrollAreaViewportProps,
+} from "@askrjs/ui/scroll-area";

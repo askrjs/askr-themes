@@ -139,6 +139,11 @@ describe("style helpers", () => {
     ).toBe("--ak-grid-columns-md:repeat(2, minmax(0, 1fr))");
   });
 
+  it("should preserve safe variable references with long hyphenated names", () => {
+    const value = `var(--${"-".repeat(50_000)}token)`;
+    expect(serializeCssDeclarations({ "--ak-long-value": value })).toBe(`--ak-long-value:${value}`);
+  });
+
   it("should preserve safe declarations adjacent to unsafe string declarations", () => {
     expect(
       serializeCssDeclarations({ color: "red", background: 'url("javascript:alert(1)")' }),
