@@ -11,6 +11,11 @@
 
 ### Changed
 
+- Restore the clean New York default palette: neutral surfaces and chrome,
+  ink primary actions in light mode, and pale primary actions in dark mode.
+  Keep the accessible focus rings, disabled boundaries, distinct selection
+  fills, and later component layout repairs. Generated theme templates use
+  the same palette; token names and optional cat presets are unchanged.
 - Prepare the 0.5.0 public contract (2026-10-10): replace wildcard exports
   with 199 supported component, CSS and template paths; remove Drawer and
   Sonner aliases, UI accessibility metadata re-exports, the emitted private

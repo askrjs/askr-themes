@@ -118,8 +118,9 @@ Rules: style only public data-\* hooks, never internal DOM, no deep selectors, n
 The default theme is optimized for quiet SaaS products: dense enough for repeated daily use,
 restrained enough for application chrome, and polished enough that downstream apps should not
 need to fix basic spacing or type rhythm.
-Saturated blue actions, cool slate surfaces, and subtle borders carry through its light
-and dark palettes.
+The clean New York baseline uses neutral surfaces and subtle borders, with ink primary
+actions in light mode and pale primary actions on charcoal in dark mode. Hover, selected,
+disabled, and focus states remain neutral; status colors retain their semantic hues.
 
 Use `visual-check.html` as the manual audit surface before shipping theme changes. Review every
 component family in light and dark mode at desktop, tablet, and mobile widths.
