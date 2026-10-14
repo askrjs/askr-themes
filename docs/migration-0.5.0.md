@@ -84,6 +84,6 @@ strings remain supported. Supply the corresponding CSS for your custom name.
 ThemeScope continues to coordinate the document or shadow host; explicit
 `data-theme` wrappers provide separate CSS islands.
 
-All Askr sibling versions and peer ranges are coordinated during final 0.5.0
-candidate preparation. This guide does not indicate that the release has been
-published.
+Themes 0.5.0 requires Askr Core and UI `>=0.5.0 <0.6.0`. Upgrade these
+packages together; the development harness also uses Vite from the 0.5 release
+line. This guide does not indicate that the release has been published.

@@ -9,7 +9,7 @@ CSS tokens and a styled component catalog for Askr apps.
 `@askrjs/charts`. It owns the default theme and styled component catalog while
 behavior stays in `@askrjs/ui` and chart components stay in `@askrjs/charts`.
 
-The forthcoming 0.5.0 release narrows component aliases and package paths. See
+The 0.5.0 release narrows component aliases and package paths. See
 the [migration guide](./docs/migration-0.5.0.md) and the complete
 [public API decisions](./docs/0.5.0-public-api.md).
 
@@ -109,7 +109,7 @@ export const staticConfig = {
 
 The wrapper also applies `context.cspNonce` to the emitted style registry and
 requires the request-local style registrations provided by `@askrjs/askr`
-`>=0.4.0 <0.5.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
+`>=0.5.0 <0.6.0` (see `peerDependencies`). It fails clearly if generated classes and their registered rules ever
 diverge instead of emitting unstyled markup. Use the same wrapper for an SSR
 `document` callback.
 
