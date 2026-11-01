@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Fixed
+
+- Reject unsupported `as`/`asChild` props on native catalog buttons and inputs,
+  and reject `as` on fixed-tag Sheet parts instead of silently ignoring or
+  forwarding those props.
+
+### Tests
+
+- Exercise real components from every public family, including overlays, in
+  the scoped theme propagation matrix.
+
 ## 0.5.0 - 2026-10-12
 
 ### Breaking

@@ -80,32 +80,37 @@ test.describe("scoped theme audit", () => {
         const TOKEN = "--ak-color-primary";
         const token = (element: Element): string =>
           getComputedStyle(element).getPropertyValue(TOKEN).trim();
+        const reference = document.createElement("div");
+        reference.dataset.theme = "ginger";
+        document.body.append(reference);
+        const expected = token(reference);
+        reference.remove();
 
-        const root = document.createElement("section");
-        root.dataset.theme = "light";
-        for (const selector of selectors) {
-          const slot = selector.match(/data-slot="([^"]+)"/u)?.[1];
-          const element = document.createElement("div");
-          element.dataset.slot = slot!;
-          root.append(element);
-        }
-        document.body.append(root);
-
-        root.dataset.theme = "ginger";
         return {
-          expected: token(root),
-          children: Array.from(root.children, (element) => ({
-            slot: (element as HTMLElement).dataset.slot,
-            token: token(element),
-          })),
+          expected,
+          children: selectors.map((selector) => {
+            const element = document.querySelector(selector) as HTMLElement | null;
+            if (!element) return { selector, found: false, light: "", ginger: "" };
+            element.dataset.theme = "light";
+            const light = token(element);
+            element.dataset.theme = "ginger";
+            return { selector, found: true, light, ginger: token(element) };
+          }),
         };
       },
       Object.values(THEME_FAMILY_AUDIT_SELECTORS) as string[],
     );
 
     expect(measured.expected).not.toBe("");
-    for (const { slot, token } of measured.children) {
-      expect({ slot, token }).toEqual({ slot, token: measured.expected });
+    for (const component of measured.children) {
+      expect(component.found, `missing real component for ${component.selector}`).toBe(true);
+      expect(component.light, `${component.selector} has no light theme token`).not.toBe("");
+      expect(component.ginger, `${component.selector} did not adopt the ginger token`).toBe(
+        measured.expected,
+      );
+      expect(component.light, `${component.selector} did not change themes`).not.toBe(
+        component.ginger,
+      );
     }
   });
 });

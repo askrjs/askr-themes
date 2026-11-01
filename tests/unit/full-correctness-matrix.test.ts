@@ -7,9 +7,7 @@ import { ROOT_DIR } from "./test-paths";
 describe("full visual correctness matrix", () => {
   it("should map every public theme family to a rendered audit selector", () => {
     const actual = readdirSync(join(ROOT_DIR, "src", "components"), { withFileTypes: true })
-      .filter(
-        (entry) => entry.isDirectory() && entry.name !== "_internal" && entry.name !== "overlays",
-      )
+      .filter((entry) => entry.isDirectory() && entry.name !== "_internal")
       .map((entry) => entry.name)
       .sort();
     expect(Object.keys(THEME_FAMILY_AUDIT_SELECTORS).sort()).toEqual(actual);
