@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.5.1 - 2026-11-01
+
+### Changed
+
+- Refresh the development toolchain to Vite+ 1.4 and Vitest 5, and update
+  Playwright, TypeScript 7, tsdown, jsdom, axe-core, and publint. Public
+  component APIs and generated theme output are unchanged.
+
 ## 0.5.0 - 2026-10-12
 
 ### Breaking
