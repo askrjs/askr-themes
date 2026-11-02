@@ -39,7 +39,9 @@ export function Block(props: BlockNativeProps | BlockAsChildProps) {
   };
   const as = asProp ?? DEFAULT_ELEMENT;
 
-  const { blockProps, rest: passthroughProps } = splitBlockLayoutProps(rest);
+  const { blockProps, rest: passthroughProps } = splitBlockLayoutProps<Record<string, unknown>>(
+    rest as unknown as Record<string, unknown>,
+  );
   const layoutStyle: Record<string, string | number> = {};
   applyBlockLayoutStyles(layoutStyle, blockProps);
 
@@ -49,12 +51,15 @@ export function Block(props: BlockNativeProps | BlockAsChildProps) {
       ? String((passthroughProps as Record<string, unknown>)["data-slot"])
       : "block";
 
-  const finalProps = mergeProps(passthroughProps, {
-    ref: layout.ref,
-    class: classes(classProp, className, layout.className),
-    "data-slot": slot,
-    "data-ak-layout": "true",
-  });
+  const finalProps = mergeProps<Record<string, unknown>, Record<string, unknown>>(
+    passthroughProps,
+    {
+      ref: layout.ref,
+      class: classes(classProp, className, layout.className),
+      "data-slot": slot,
+      "data-ak-layout": "true",
+    },
+  );
 
   if (asChild) {
     return <Slot asChild {...finalProps} children={children as JSX.Element} />;
