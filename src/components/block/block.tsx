@@ -39,8 +39,9 @@ export function Block(props: BlockNativeProps | BlockAsChildProps) {
   };
   const as = asProp ?? DEFAULT_ELEMENT;
 
-  const { blockProps, rest: passthroughProps } =
-    splitBlockLayoutProps<Record<string, unknown>>(rest as unknown as Record<string, unknown>);
+  const { blockProps, rest: passthroughProps } = splitBlockLayoutProps<Record<string, unknown>>(
+    rest as unknown as Record<string, unknown>,
+  );
   const layoutStyle: Record<string, string | number> = {};
   applyBlockLayoutStyles(layoutStyle, blockProps);
 
