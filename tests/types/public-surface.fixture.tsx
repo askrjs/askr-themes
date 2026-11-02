@@ -1883,6 +1883,85 @@ import { Toaster as CanonicalToaster } from "@askrjs/themes/toaster";
 import { Toaster as AggregateToaster } from "@askrjs/themes/components";
 import { withThemeStyles as PublicDocumentWrapper } from "@askrjs/themes/ssr";
 void [CanonicalToaster, AggregateToaster];
+
+import {
+  CalendarDay as NativeCalendarDay,
+  CalendarNextButton as NativeCalendarNextButton,
+  CalendarPreviousButton as NativeCalendarPreviousButton,
+  CarouselNext as NativeCarouselNext,
+  CarouselPrevious as NativeCarouselPrevious,
+  ComboboxInput as NativeComboboxInput,
+  CommandInput as NativeCommandInput,
+  DatePickerInput as NativeDatePickerInput,
+  NavigationMenuTrigger as NativeNavigationMenuTrigger,
+  SheetContent as NativeSheetContent,
+  SheetDescription as NativeSheetDescription,
+  SheetTitle as NativeSheetTitle,
+  TabsTrigger as NativeTabsTrigger,
+} from "@askrjs/themes/components";
+
+// These parts keep their native button semantics. Their shared catalog props must not accept an
+// `as` value that the implementation silently ignores.
+// @ts-expect-error Calendar buttons always render native buttons.
+const calendarPreviousAsLink = <NativeCalendarPreviousButton as="a" href="/previous" />;
+// @ts-expect-error Calendar buttons always render native buttons.
+const calendarNextAsLink = <NativeCalendarNextButton as="a" href="/next" />;
+// @ts-expect-error Calendar day controls always render native buttons.
+const calendarDayAsLink = <NativeCalendarDay as="a" href="/day" />;
+// @ts-expect-error Carousel controls always render native buttons.
+const carouselPreviousAsLink = <NativeCarouselPrevious as="a" href="/previous" />;
+// @ts-expect-error Carousel controls always render native buttons.
+const carouselNextAsLink = <NativeCarouselNext as="a" href="/next" />;
+// @ts-expect-error Navigation menu triggers always render native buttons.
+const navigationMenuTriggerAsLink = <NativeNavigationMenuTrigger as="a" href="/menu" />;
+// @ts-expect-error Tab triggers always render native buttons.
+const tabsTriggerAsLink = <NativeTabsTrigger as="a" href="/tab" />;
+// @ts-expect-error The combobox input always renders a native input.
+const comboboxInputAsTextArea = <NativeComboboxInput as="textarea" />;
+// @ts-expect-error The command input always renders a native input.
+const commandInputAsTextArea = <NativeCommandInput as="textarea" />;
+// @ts-expect-error The date picker always renders a native input.
+const datePickerInputAsTextArea = <NativeDatePickerInput as="textarea" />;
+// @ts-expect-error The combobox input does not support child adoption.
+const comboboxInputAsChild = <NativeComboboxInput asChild />;
+// @ts-expect-error The command input does not support child adoption.
+const commandInputAsChild = <NativeCommandInput asChild />;
+// @ts-expect-error The date picker input does not support child adoption.
+const datePickerInputAsChild = <NativeDatePickerInput asChild />;
+// @ts-expect-error Native input elements cannot render children.
+const comboboxInputWithChildren = <NativeComboboxInput>not valid</NativeComboboxInput>;
+// @ts-expect-error Native input elements cannot render children.
+const commandInputWithChildren = <NativeCommandInput>not valid</NativeCommandInput>;
+// @ts-expect-error Native input elements cannot render children.
+const datePickerInputWithChildren = <NativeDatePickerInput>not valid</NativeDatePickerInput>;
+// @ts-expect-error Sheet content preserves the dialog primitive's element semantics.
+const sheetContentAsDiv = <NativeSheetContent as="div" />;
+// @ts-expect-error Sheet titles preserve the dialog primitive's element semantics.
+const sheetTitleAsHeading = <NativeSheetTitle as="h1" />;
+// @ts-expect-error Sheet descriptions preserve the dialog primitive's element semantics.
+const sheetDescriptionAsParagraph = <NativeSheetDescription as="p" />;
+void [
+  calendarPreviousAsLink,
+  calendarNextAsLink,
+  calendarDayAsLink,
+  carouselPreviousAsLink,
+  carouselNextAsLink,
+  navigationMenuTriggerAsLink,
+  tabsTriggerAsLink,
+  comboboxInputAsTextArea,
+  commandInputAsTextArea,
+  datePickerInputAsTextArea,
+  comboboxInputAsChild,
+  commandInputAsChild,
+  datePickerInputAsChild,
+  comboboxInputWithChildren,
+  commandInputWithChildren,
+  datePickerInputWithChildren,
+  sheetContentAsDiv,
+  sheetTitleAsHeading,
+  sheetDescriptionAsParagraph,
+];
+
 const customRenderer = PublicDocumentWrapper(
   (args: {
     appHtml: string;
