@@ -217,8 +217,18 @@ describe("block-first components", () => {
   });
 
   it("should keep visual display primitives with one separator name", () => {
-    expect(Badge({ children: "new", variant: "secondary" })).toBeTruthy();
-    expect(Skeleton({})).toBeTruthy();
-    expect(Separator({ orientation: "vertical" })).toBeTruthy();
+    const badge = asElement(Badge({ children: "new", variant: "secondary" }));
+    expect(badge.type).toBe("span");
+    expect(badge.props["data-slot"]).toBe("badge");
+    expect(badge.props["data-variant"]).toBe("secondary");
+
+    const skeleton = asElement(Skeleton({}));
+    expect(skeleton.type).toBe("div");
+    expect(skeleton.props["data-slot"]).toBe("skeleton");
+
+    const separator = asElement(Separator({ orientation: "vertical" }));
+    expect(separator.type).toBe("div");
+    expect(separator.props["data-slot"]).toBe("separator");
+    expect(separator.props["data-orientation"]).toBe("vertical");
   });
 });

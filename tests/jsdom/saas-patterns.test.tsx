@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
+import { renderToStringSync } from "@askrjs/askr/ssr";
 
 import { Button } from "../../src/controls";
 import { Block, EmptyState } from "../../src/core";
@@ -43,7 +44,16 @@ describe("product SaaS composition patterns", () => {
       </div>
     );
 
-    expect(page).toBeTruthy();
+    const html = renderToStringSync(() => page);
+    expect(html).toContain("<h1>Acme Console</h1>");
+    expect(html).toContain("<button");
+    expect(html).toContain("New project");
+    expect(html).toContain("Overview");
+    expect(html).toContain("Customers");
+    expect(html).toContain("<h2>Good morning</h2>");
+    expect(html).toContain("Revenue");
+    expect(html).toContain("Activation");
+    expect(html).toContain("Retention");
   });
 
   it("should build settings and empty states from reusable pattern primitives", () => {
@@ -60,6 +70,10 @@ describe("product SaaS composition patterns", () => {
       ],
     });
 
-    expect(settings).toBeTruthy();
+    const html = renderToStringSync(() => settings);
+    expect(html).toContain("No destructive actions configured");
+    expect(html).toContain("Add safeguards before enabling irreversible actions.");
+    expect(html).toContain("<button");
+    expect(html).toContain("Review policies");
   });
 });

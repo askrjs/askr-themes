@@ -2,7 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { DEFAULT_THEME_STYLES_DIR, TEMPLATE_THEME_STYLES_DIR } from "./test-paths";
+import { DEFAULT_THEME_STYLES_DIR, ROOT_DIR, TEMPLATE_THEME_STYLES_DIR } from "./test-paths";
 
 const THEME_ROOTS = [DEFAULT_THEME_STYLES_DIR, TEMPLATE_THEME_STYLES_DIR] as const;
 
@@ -114,13 +114,10 @@ describe("daisy-like class aliases", () => {
   }
 
   it("should document raw class authoring examples in the alias contract", () => {
-    const examples = [
-      '<button class="btn btn-primary btn-sm">Save</button>',
-      '<section class="card"><h3>Usage</h3><div>Current workspace metrics.</div></section>',
-      '<input class="input" />',
-      '<span class="badge badge-success">Live</span>',
-    ];
-
-    expect(examples.every((example) => example.includes("class="))).toBe(true);
+    const docs = readFileSync(join(ROOT_DIR, "docs", "customization.md"), "utf8");
+    expect(docs).toContain('<button class="btn btn-primary btn-sm">Save</button>');
+    expect(docs).toContain('<section class="card">');
+    expect(docs).toContain("Current workspace metrics.");
+    expect(docs).toContain("Raw HTML example:");
   });
 });
