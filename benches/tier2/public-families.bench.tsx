@@ -1,5 +1,5 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
-import { bench, describe } from "vite-plus/test";
+import { test, describe } from "vite-plus/test";
 
 import {
   buildControlsFixture,
@@ -20,49 +20,65 @@ function renderBatch(builder: () => JSX.Element): void {
 }
 
 describe("tier2 public family render benches", () => {
-  bench("trivial Block render", () => {
-    for (let i = 0; i < BATCH; i += 1) consume(Block({ children: "Content" }));
+  test("trivial Block render", async ({ bench }) => {
+    await bench("trivial Block render", () => {
+      for (let i = 0; i < BATCH; i += 1) consume(Block({ children: "Content" }));
+    }).run();
   });
 
-  bench("responsive Block render", () => {
-    for (let i = 0; i < BATCH; i += 1) {
-      consume(
-        Block({
-          direction: { base: "column", lg: "row" },
-          gap: { base: "sm", lg: "xl" },
-          padding: { base: "sm", lg: "lg" },
-          width: "full",
-          children: "Content",
-        }),
-      );
-    }
+  test("responsive Block render", async ({ bench }) => {
+    await bench("responsive Block render", () => {
+      for (let i = 0; i < BATCH; i += 1) {
+        consume(
+          Block({
+            direction: { base: "column", lg: "row" },
+            gap: { base: "sm", lg: "xl" },
+            padding: { base: "sm", lg: "lg" },
+            width: "full",
+            children: "Content",
+          }),
+        );
+      }
+    }).run();
   });
 
-  bench("intent layouts over Block resolver", () => {
-    for (let i = 0; i < BATCH; i += 1) {
-      consume(Stack({ gap: "sm", children: "Flow" }));
-      consume(Cluster({ gap: "xs", children: "Actions" }));
-      consume(Center({ minHeight: "sm", children: "Loading" }));
-    }
+  test("intent layouts over Block resolver", async ({ bench }) => {
+    await bench("intent layouts over Block resolver", () => {
+      for (let i = 0; i < BATCH; i += 1) {
+        consume(Stack({ gap: "sm", children: "Flow" }));
+        consume(Cluster({ gap: "xs", children: "Actions" }));
+        consume(Center({ minHeight: "sm", children: "Loading" }));
+      }
+    }).run();
   });
 
-  bench("controls family render", () => {
-    renderBatch(buildControlsFixture);
+  test("controls family render", async ({ bench }) => {
+    await bench("controls family render", () => {
+      renderBatch(buildControlsFixture);
+    }).run();
   });
 
-  bench("status surface render", () => {
-    renderBatch(buildStatusSurfaceFixture);
+  test("status surface render", async ({ bench }) => {
+    await bench("status surface render", () => {
+      renderBatch(buildStatusSurfaceFixture);
+    }).run();
   });
 
-  bench("surfaces family render", () => {
-    renderBatch(buildSurfacesFixture);
+  test("surfaces family render", async ({ bench }) => {
+    await bench("surfaces family render", () => {
+      renderBatch(buildSurfacesFixture);
+    }).run();
   });
 
-  bench("core family render", () => {
-    renderBatch(buildCoreFixture);
+  test("core family render", async ({ bench }) => {
+    await bench("core family render", () => {
+      renderBatch(buildCoreFixture);
+    }).run();
   });
 
-  bench("navs family render", () => {
-    renderBatch(buildNavsFixture);
+  test("navs family render", async ({ bench }) => {
+    await bench("navs family render", () => {
+      renderBatch(buildNavsFixture);
+    }).run();
   });
 });

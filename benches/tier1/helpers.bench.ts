@@ -1,6 +1,6 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
 import { jsx, jsxs } from "@askrjs/askr/jsx-runtime";
-import { bench, describe } from "vite-plus/test";
+import { test, describe } from "vite-plus/test";
 
 import { consume } from "../_shared/sink";
 import { collectJsxElements, serializeForId } from "../../src/components/_internal/jsx";
@@ -144,60 +144,70 @@ const serializeTree = jsxs("section", {
 });
 
 describe("tier1 helper benches", () => {
-  bench("merge props", () => {
-    let result: unknown;
+  test("merge props", async ({ bench }) => {
+    await bench("merge props", () => {
+      let result: unknown;
 
-    for (let i = 0; i < WORK; i += 1) {
-      result = mergeProps(mergePropsInjected, mergePropsBase);
-    }
+      for (let i = 0; i < WORK; i += 1) {
+        result = mergeProps(mergePropsInjected, mergePropsBase);
+      }
 
-    consume(result);
+      consume(result);
+    }).run();
   });
 
-  bench("merge layout styles", () => {
-    let result: string | undefined;
+  test("merge layout styles", async ({ bench }) => {
+    await bench("merge layout styles", () => {
+      let result: string | undefined;
 
-    for (let i = 0; i < WORK; i += 1) {
-      result = mergeLayoutStyles(
-        layoutStyle,
-        i % 2 === 0 ? layoutObjectUserStyle : layoutStringUserStyle,
-      );
-    }
+      for (let i = 0; i < WORK; i += 1) {
+        result = mergeLayoutStyles(
+          layoutStyle,
+          i % 2 === 0 ? layoutObjectUserStyle : layoutStringUserStyle,
+        );
+      }
 
-    consume(result);
+      consume(result);
+    }).run();
   });
 
-  bench("merge css vars", () => {
-    let result: string | undefined;
+  test("merge css vars", async ({ bench }) => {
+    await bench("merge css vars", () => {
+      let result: string | undefined;
 
-    for (let i = 0; i < WORK; i += 1) {
-      result = mergeCssVar(
-        i % 2 === 0 ? cssVarObjectStyle : cssVarStringStyle,
-        "--ak-test",
-        "1rem",
-      );
-    }
+      for (let i = 0; i < WORK; i += 1) {
+        result = mergeCssVar(
+          i % 2 === 0 ? cssVarObjectStyle : cssVarStringStyle,
+          "--ak-test",
+          "1rem",
+        );
+      }
 
-    consume(result);
+      consume(result);
+    }).run();
   });
 
-  bench("collect jsx elements", () => {
-    let count = 0;
+  test("collect jsx elements", async ({ bench }) => {
+    await bench("collect jsx elements", () => {
+      let count = 0;
 
-    for (let i = 0; i < WORK; i += 1) {
-      count = collectJsxElements(jsxTree, (element) => typeof element.type === "string").length;
-    }
+      for (let i = 0; i < WORK; i += 1) {
+        count = collectJsxElements(jsxTree, (element) => typeof element.type === "string").length;
+      }
 
-    consume(count);
+      consume(count);
+    }).run();
   });
 
-  bench("serialize jsx ids", () => {
-    let result: string | undefined;
+  test("serialize jsx ids", async ({ bench }) => {
+    await bench("serialize jsx ids", () => {
+      let result: string | undefined;
 
-    for (let i = 0; i < WORK; i += 1) {
-      result = serializeForId(serializeTree);
-    }
+      for (let i = 0; i < WORK; i += 1) {
+        result = serializeForId(serializeTree);
+      }
 
-    consume(result);
+      consume(result);
+    }).run();
   });
 });

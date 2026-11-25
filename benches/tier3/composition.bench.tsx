@@ -1,5 +1,5 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
-import { afterAll, afterEach, beforeEach, bench, describe, expect } from "vite-plus/test";
+import { afterAll, afterEach, beforeEach, test, describe, expect } from "vite-plus/test";
 
 import { group, route, navigate } from "@askrjs/askr/router";
 
@@ -85,169 +85,179 @@ describe("tier3 stateful composition benches", () => {
       }
     });
 
-    bench("theme toggle cycle", async () => {
-      const scenario = await mountThemeControlScenario();
+    test("theme toggle cycle", async ({ bench }) => {
+      await bench("theme toggle cycle", async () => {
+        const scenario = await mountThemeControlScenario();
 
-      if (!scenario) {
-        return;
-      }
-
-      try {
-        const toggle = scenario?.container.querySelector(
-          '[data-theme-control="toggle"]',
-        ) as HTMLButtonElement | null;
-
-        if (!toggle) {
-          failThemeControlBench("theme toggle bench failed to mount the expected toggle");
+        if (!scenario) {
           return;
         }
 
-        toggle.click();
-        await settle();
+        try {
+          const toggle = scenario?.container.querySelector(
+            '[data-theme-control="toggle"]',
+          ) as HTMLButtonElement | null;
 
-        const toggleAfter = scenario?.container.querySelector(
-          '[data-theme-control="toggle"]',
-        ) as HTMLButtonElement | null;
+          if (!toggle) {
+            failThemeControlBench("theme toggle bench failed to mount the expected toggle");
+            return;
+          }
 
-        if (!toggleAfter) {
-          failThemeControlBench("theme toggle bench failed to retain the expected toggle");
-          return;
+          toggle.click();
+          await settle();
+
+          const toggleAfter = scenario?.container.querySelector(
+            '[data-theme-control="toggle"]',
+          ) as HTMLButtonElement | null;
+
+          if (!toggleAfter) {
+            failThemeControlBench("theme toggle bench failed to retain the expected toggle");
+            return;
+          }
+
+          if (toggleAfter.getAttribute("data-theme-choice") !== "dark") {
+            failThemeControlBench("theme toggle bench failed to update the toggle to dark");
+            return;
+          }
+          if (!assertThemeState("dark")) {
+            return;
+          }
+
+          toggleAfter.click();
+          await settle();
+
+          const toggleFinal = scenario?.container.querySelector(
+            '[data-theme-control="toggle"]',
+          ) as HTMLButtonElement | null;
+
+          if (!toggleFinal) {
+            failThemeControlBench("theme toggle bench failed to retain the expected toggle");
+            return;
+          }
+
+          if (toggleFinal.getAttribute("data-theme-choice") !== "light") {
+            failThemeControlBench("theme toggle bench failed to update the toggle to light");
+            return;
+          }
+          assertThemeState("light");
+        } finally {
+          await cleanupThemeControlScenario(scenario);
         }
-
-        if (toggleAfter.getAttribute("data-theme-choice") !== "dark") {
-          failThemeControlBench("theme toggle bench failed to update the toggle to dark");
-          return;
-        }
-        if (!assertThemeState("dark")) {
-          return;
-        }
-
-        toggleAfter.click();
-        await settle();
-
-        const toggleFinal = scenario?.container.querySelector(
-          '[data-theme-control="toggle"]',
-        ) as HTMLButtonElement | null;
-
-        if (!toggleFinal) {
-          failThemeControlBench("theme toggle bench failed to retain the expected toggle");
-          return;
-        }
-
-        if (toggleFinal.getAttribute("data-theme-choice") !== "light") {
-          failThemeControlBench("theme toggle bench failed to update the toggle to light");
-          return;
-        }
-        assertThemeState("light");
-      } finally {
-        await cleanupThemeControlScenario(scenario);
-      }
+      }).run();
     });
 
-    bench("theme picker cycle", async () => {
-      const scenario = await mountThemeControlScenario();
+    test("theme picker cycle", async ({ bench }) => {
+      await bench("theme picker cycle", async () => {
+        const scenario = await mountThemeControlScenario();
 
-      if (!scenario) {
-        return;
-      }
-
-      try {
-        const picker = scenario?.container.querySelector(
-          '[data-slot="theme-picker"]',
-        ) as HTMLSelectElement | null;
-
-        if (!picker) {
-          failThemeControlBench("theme picker bench failed to mount the expected picker");
+        if (!scenario) {
           return;
         }
 
-        picker.value = "dark";
-        picker.dispatchEvent(new Event("change", { bubbles: true }));
-        await settle();
+        try {
+          const picker = scenario?.container.querySelector(
+            '[data-slot="theme-picker"]',
+          ) as HTMLSelectElement | null;
 
-        const pickerAfter = scenario?.container.querySelector(
-          '[data-slot="theme-picker"]',
-        ) as HTMLSelectElement | null;
+          if (!picker) {
+            failThemeControlBench("theme picker bench failed to mount the expected picker");
+            return;
+          }
 
-        if (!pickerAfter) {
-          failThemeControlBench("theme picker bench failed to retain the expected picker");
-          return;
+          picker.value = "dark";
+          picker.dispatchEvent(new Event("change", { bubbles: true }));
+          await settle();
+
+          const pickerAfter = scenario?.container.querySelector(
+            '[data-slot="theme-picker"]',
+          ) as HTMLSelectElement | null;
+
+          if (!pickerAfter) {
+            failThemeControlBench("theme picker bench failed to retain the expected picker");
+            return;
+          }
+
+          if (pickerAfter.value !== "dark") {
+            failThemeControlBench("theme picker bench failed to update the picker to dark");
+            return;
+          }
+          if (!assertThemeState("dark")) {
+            return;
+          }
+
+          pickerAfter.value = "light";
+          pickerAfter.dispatchEvent(new Event("change", { bubbles: true }));
+          await settle();
+
+          const pickerFinal = scenario?.container.querySelector(
+            '[data-slot="theme-picker"]',
+          ) as HTMLSelectElement | null;
+
+          if (!pickerFinal) {
+            failThemeControlBench("theme picker bench failed to retain the expected picker");
+            return;
+          }
+
+          if (pickerFinal.value !== "light") {
+            failThemeControlBench("theme picker bench failed to update the picker to light");
+            return;
+          }
+          assertThemeState("light");
+        } finally {
+          await cleanupThemeControlScenario(scenario);
         }
-
-        if (pickerAfter.value !== "dark") {
-          failThemeControlBench("theme picker bench failed to update the picker to dark");
-          return;
-        }
-        if (!assertThemeState("dark")) {
-          return;
-        }
-
-        pickerAfter.value = "light";
-        pickerAfter.dispatchEvent(new Event("change", { bubbles: true }));
-        await settle();
-
-        const pickerFinal = scenario?.container.querySelector(
-          '[data-slot="theme-picker"]',
-        ) as HTMLSelectElement | null;
-
-        if (!pickerFinal) {
-          failThemeControlBench("theme picker bench failed to retain the expected picker");
-          return;
-        }
-
-        if (pickerFinal.value !== "light") {
-          failThemeControlBench("theme picker bench failed to update the picker to light");
-          return;
-        }
-        assertThemeState("light");
-      } finally {
-        await cleanupThemeControlScenario(scenario);
-      }
+      }).run();
     });
   });
 
   describe("navbar render", () => {
     const BATCH = 64;
 
-    bench("navbar render", () => {
-      let result: JSX.Element | undefined;
+    test("navbar render", async ({ bench }) => {
+      await bench("navbar render", () => {
+        let result: JSX.Element | undefined;
 
-      for (let i = 0; i < BATCH; i += 1) {
-        result = NavbarStaticLayout({
-          children: <div id="page">Docs home</div>,
-        });
-      }
+        for (let i = 0; i < BATCH; i += 1) {
+          result = NavbarStaticLayout({
+            children: <div id="page">Docs home</div>,
+          });
+        }
 
-      consume(result);
+        consume(result);
+      }).run();
     });
   });
 
   describe("structural presets", () => {
     const BATCH = 64;
 
-    bench("header render", () => {
-      let result: JSX.Element | undefined;
+    test("header render", async ({ bench }) => {
+      await bench("header render", () => {
+        let result: JSX.Element | undefined;
 
-      for (let i = 0; i < BATCH; i += 1) {
-        result = Header({
-          children: "Docs",
-          sticky: i % 2 === 0,
-        });
-      }
+        for (let i = 0; i < BATCH; i += 1) {
+          result = Header({
+            children: "Docs",
+            sticky: i % 2 === 0,
+          });
+        }
 
-      consume(result);
+        consume(result);
+      }).run();
     });
 
-    bench("sidebar render", () => {
-      let result: JSX.Element | undefined;
+    test("sidebar render", async ({ bench }) => {
+      await bench("sidebar render", () => {
+        let result: JSX.Element | undefined;
 
-      for (let i = 0; i < BATCH; i += 1) {
-        result = Sidebar({
-          children: <div>Docs</div>,
-        });
-      }
+        for (let i = 0; i < BATCH; i += 1) {
+          result = Sidebar({
+            children: <div>Docs</div>,
+          });
+        }
 
-      consume(result);
+        consume(result);
+      }).run();
     });
   });
 
@@ -274,13 +284,15 @@ describe("tier3 stateful composition benches", () => {
       viewport = undefined;
     });
 
-    bench("sidebar link cycle", async () => {
-      const link = scenario?.container.querySelector(
-        '[data-slot="nav-item"][href="/docs/components"]',
-      ) as HTMLAnchorElement | null;
+    test("sidebar link cycle", async ({ bench }) => {
+      await bench("sidebar link cycle", async () => {
+        const link = scenario?.container.querySelector(
+          '[data-slot="nav-item"][href="/docs/components"]',
+        ) as HTMLAnchorElement | null;
 
-      link?.click();
-      await settle();
+        link?.click();
+        await settle();
+      }).run();
     });
   });
 
@@ -305,12 +317,14 @@ describe("tier3 stateful composition benches", () => {
       scenario = undefined;
     });
 
-    bench("route transition cycle", async () => {
-      navigate("/docs/components");
-      await settle();
+    test("route transition cycle", async ({ bench }) => {
+      await bench("route transition cycle", async () => {
+        navigate("/docs/components");
+        await settle();
 
-      navigate("/docs");
-      await settle();
+        navigate("/docs");
+        await settle();
+      }).run();
     });
   });
 
@@ -332,20 +346,22 @@ describe("tier3 stateful composition benches", () => {
       );
     }
 
-    bench("core remount cycle", async () => {
-      const scenario = await mountScenario("/docs", () => {
-        group({ layout: RemountCoreLayout }, () => {
-          route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 8 }));
+    test("core remount cycle", async ({ bench }) => {
+      await bench("core remount cycle", async () => {
+        const scenario = await mountScenario("/docs", () => {
+          group({ layout: RemountCoreLayout }, () => {
+            route("/docs", () => buildRouteTransitionPage({ title: "Docs", rows: 8 }));
+          });
         });
-      });
 
-      try {
-        expect(scenario.container.querySelector('[data-slot="header"]')).not.toBeNull();
-        expect(scenario.container.querySelector('[data-slot="main"]')).not.toBeNull();
-      } finally {
-        scenario.cleanup();
-        await settle();
-      }
+        try {
+          expect(scenario.container.querySelector('[data-slot="header"]')).not.toBeNull();
+          expect(scenario.container.querySelector('[data-slot="main"]')).not.toBeNull();
+        } finally {
+          scenario.cleanup();
+          await settle();
+        }
+      }).run();
     });
   });
 });

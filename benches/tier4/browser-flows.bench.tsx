@@ -1,5 +1,5 @@
 import type { JSX } from "@askrjs/askr/jsx-runtime";
-import { afterEach, beforeEach, bench, describe, expect, vi } from "vite-plus/test";
+import { afterEach, beforeEach, test, describe, expect, vi } from "vite-plus/test";
 
 import { state } from "@askrjs/askr";
 import { group, navigate, route } from "@askrjs/askr/router";
@@ -122,52 +122,56 @@ function formatHeap(bytes: number): string {
 let memorySoakReported = false;
 
 describe("tier4 browser benches", () => {
-  bench("public family mount", async () => {
-    const scenario = await mountScenario("/families", () => {
-      route("/families", () => buildPublicFamilyPage());
-    });
+  test("public family mount", async ({ bench }) => {
+    await bench("public family mount", async () => {
+      const scenario = await mountScenario("/families", () => {
+        route("/families", () => buildPublicFamilyPage());
+      });
 
-    try {
-      void scenario.container.querySelectorAll('[data-slot="icon"]').length;
-      void scenario.container.querySelector('[data-slot="button-group"]');
-      void scenario.container.querySelector('[data-slot="tabs"]');
-      void scenario.container.querySelector('[data-slot="pills"]');
-      void scenario.container.querySelector('[data-slot="card"]');
-    } finally {
-      scenario.cleanup();
-    }
+      try {
+        void scenario.container.querySelectorAll('[data-slot="icon"]').length;
+        void scenario.container.querySelector('[data-slot="button-group"]');
+        void scenario.container.querySelector('[data-slot="tabs"]');
+        void scenario.container.querySelector('[data-slot="pills"]');
+        void scenario.container.querySelector('[data-slot="card"]');
+      } finally {
+        scenario.cleanup();
+      }
+    }).run();
   });
 
-  bench("table theme style read", async () => {
-    const scenario = await mountScenario("/table", () => {
-      route("/table", () => buildTablePage());
-    });
+  test("table theme style read", async ({ bench }) => {
+    await bench("table theme style read", async () => {
+      const scenario = await mountScenario("/table", () => {
+        route("/table", () => buildTablePage());
+      });
 
-    try {
-      const table = scenario.container.querySelector(
-        '[data-slot="table"]',
-      ) as HTMLTableElement | null;
-      const headerCell = scenario.container.querySelector(
-        '[data-slot="table-header-cell"]',
-      ) as HTMLTableCellElement | null;
-      const bodyCell = scenario.container.querySelector(
-        '[data-slot="table-cell"]',
-      ) as HTMLTableCellElement | null;
+      try {
+        const table = scenario.container.querySelector(
+          '[data-slot="table"]',
+        ) as HTMLTableElement | null;
+        const headerCell = scenario.container.querySelector(
+          '[data-slot="table-header-cell"]',
+        ) as HTMLTableCellElement | null;
+        const bodyCell = scenario.container.querySelector(
+          '[data-slot="table-cell"]',
+        ) as HTMLTableCellElement | null;
 
-      if (!table || !headerCell || !bodyCell) {
-        throw new Error("table theme bench failed to mount the expected table slots");
+        if (!table || !headerCell || !bodyCell) {
+          throw new Error("table theme bench failed to mount the expected table slots");
+        }
+
+        const tableStyle = getComputedStyle(table);
+        const bodyCellStyle = getComputedStyle(bodyCell);
+
+        void tableStyle.borderRadius;
+        void tableStyle.borderSpacing;
+        void bodyCellStyle.paddingInlineStart;
+        void headerCell.textContent;
+      } finally {
+        scenario.cleanup();
       }
-
-      const tableStyle = getComputedStyle(table);
-      const bodyCellStyle = getComputedStyle(bodyCell);
-
-      void tableStyle.borderRadius;
-      void tableStyle.borderSpacing;
-      void bodyCellStyle.paddingInlineStart;
-      void headerCell.textContent;
-    } finally {
-      scenario.cleanup();
-    }
+    }).run();
   });
 
   describe("nested theme invalidation", () => {
@@ -197,32 +201,34 @@ describe("tier4 browser benches", () => {
       document.documentElement.removeAttribute("data-theme-choice");
     });
 
-    bench("nested theme invalidation cycle", async () => {
-      const outerToggle = scenario?.container.querySelector(
-        '[data-bench="theme-header"] [data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
-      const innerToggle = scenario?.container.querySelector(
-        '[data-bench="nested-theme-header"] [data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
-      const nestedBody = scenario?.container.querySelector(
-        '[data-bench="nested-theme-body"]',
-      ) as HTMLElement | null;
+    test("nested theme invalidation cycle", async ({ bench }) => {
+      await bench("nested theme invalidation cycle", async () => {
+        const outerToggle = scenario?.container.querySelector(
+          '[data-bench="theme-header"] [data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
+        const innerToggle = scenario?.container.querySelector(
+          '[data-bench="nested-theme-header"] [data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
+        const nestedBody = scenario?.container.querySelector(
+          '[data-bench="nested-theme-body"]',
+        ) as HTMLElement | null;
 
-      if (!outerToggle || !innerToggle || !nestedBody) {
-        throw new Error("nested theme bench failed to mount the expected controls");
-      }
+        if (!outerToggle || !innerToggle || !nestedBody) {
+          throw new Error("nested theme bench failed to mount the expected controls");
+        }
 
-      outerToggle.click();
-      await settle();
-      void getComputedStyle(nestedBody).color;
+        outerToggle.click();
+        await settle();
+        void getComputedStyle(nestedBody).color;
 
-      innerToggle.click();
-      await settle();
-      void getComputedStyle(nestedBody).color;
+        innerToggle.click();
+        await settle();
+        void getComputedStyle(nestedBody).color;
 
-      outerToggle.click();
-      await settle();
-      void getComputedStyle(nestedBody).color;
+        outerToggle.click();
+        await settle();
+        void getComputedStyle(nestedBody).color;
+      }).run();
     });
   });
 
@@ -252,30 +258,32 @@ describe("tier4 browser benches", () => {
       document.documentElement.removeAttribute("data-theme-choice");
     });
 
-    bench("theme route persistence cycle", async () => {
-      const toggle = scenario?.container.querySelector(
-        '[data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
+    test("theme route persistence cycle", async ({ bench }) => {
+      await bench("theme route persistence cycle", async () => {
+        const toggle = scenario?.container.querySelector(
+          '[data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
 
-      if (!toggle) {
-        throw new Error("theme bench failed to mount the toggle control");
-      }
+        if (!toggle) {
+          throw new Error("theme bench failed to mount the toggle control");
+        }
 
-      toggle.click();
-      await settle();
+        toggle.click();
+        await settle();
 
-      navigate("/about");
-      await settle();
+        navigate("/about");
+        await settle();
 
-      navigate("/example");
-      await settle();
+        navigate("/example");
+        await settle();
 
-      const toggleAfter = scenario?.container.querySelector(
-        '[data-theme-control="toggle"]',
-      ) as HTMLButtonElement | null;
+        const toggleAfter = scenario?.container.querySelector(
+          '[data-theme-control="toggle"]',
+        ) as HTMLButtonElement | null;
 
-      toggleAfter?.click();
-      await settle();
+        toggleAfter?.click();
+        await settle();
+      }).run();
     });
   });
 
@@ -300,12 +308,14 @@ describe("tier4 browser benches", () => {
       scenario = undefined;
     });
 
-    bench("large route transition cycle", async () => {
-      navigate("/docs/components");
-      await settle();
+    test("large route transition cycle", async ({ bench }) => {
+      await bench("large route transition cycle", async () => {
+        navigate("/docs/components");
+        await settle();
 
-      navigate("/docs");
-      await settle();
+        navigate("/docs");
+        await settle();
+      }).run();
     });
   });
 
@@ -337,46 +347,48 @@ describe("tier4 browser benches", () => {
       warnSpy = undefined;
     });
 
-    bench("navbar responsive cycle", async () => {
-      viewport?.set(375);
-      window.dispatchEvent(new Event("resize"));
-      await settle();
+    test("navbar responsive cycle", async ({ bench }) => {
+      await bench("navbar responsive cycle", async () => {
+        viewport?.set(375);
+        window.dispatchEvent(new Event("resize"));
+        await settle();
 
-      const navbar = scenario?.container.querySelector(
-        '[data-slot="navbar"]',
-      ) as HTMLElement | null;
-      const content = scenario?.container.querySelector(
-        '[data-slot="navbar-content"]',
-      ) as HTMLElement | null;
-      const toggle = scenario?.container.querySelector(
-        '[data-slot="navbar-toggle"]',
-      ) as HTMLElement | null;
-      const collapse = scenario?.container.querySelector(
-        '[data-slot="navbar-collapse"]',
-      ) as HTMLDetailsElement | null;
+        const navbar = scenario?.container.querySelector(
+          '[data-slot="navbar"]',
+        ) as HTMLElement | null;
+        const content = scenario?.container.querySelector(
+          '[data-slot="navbar-content"]',
+        ) as HTMLElement | null;
+        const toggle = scenario?.container.querySelector(
+          '[data-slot="navbar-toggle"]',
+        ) as HTMLElement | null;
+        const collapse = scenario?.container.querySelector(
+          '[data-slot="navbar-collapse"]',
+        ) as HTMLDetailsElement | null;
 
-      if (!navbar || !content || !toggle || !collapse) {
-        throw new Error("navbar bench failed to mount the responsive chrome");
-      }
+        if (!navbar || !content || !toggle || !collapse) {
+          throw new Error("navbar bench failed to mount the responsive chrome");
+        }
 
-      void getComputedStyle(navbar).justifyContent;
-      void getComputedStyle(content).display;
+        void getComputedStyle(navbar).justifyContent;
+        void getComputedStyle(content).display;
 
-      toggle.click();
-      await settle();
+        toggle.click();
+        await settle();
 
-      if (!collapse.hasAttribute("open")) {
-        throw new Error("navbar bench failed to open the responsive content");
-      }
+        if (!collapse.hasAttribute("open")) {
+          throw new Error("navbar bench failed to open the responsive content");
+        }
 
-      void getComputedStyle(content).display;
+        void getComputedStyle(content).display;
 
-      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-      await settle();
+        window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+        await settle();
 
-      viewport?.set(1200);
-      window.dispatchEvent(new Event("resize"));
-      await settle();
+        viewport?.set(1200);
+        window.dispatchEvent(new Event("resize"));
+        await settle();
+      }).run();
     });
   });
 
@@ -399,26 +411,28 @@ describe("tier4 browser benches", () => {
       scenario = undefined;
     });
 
-    bench("sidebar navigation cycle", async () => {
-      const sidebar = scenario?.container.querySelector(
-        '[data-slot="sidebar"]',
-      ) as HTMLElement | null;
-      const main = scenario?.container.querySelector(
-        '[data-bench="sidebar-main"]',
-      ) as HTMLElement | null;
-      const link = scenario?.container.querySelector(
-        '[data-slot="nav-item"][href="/docs/components"]',
-      ) as HTMLAnchorElement | null;
+    test("sidebar navigation cycle", async ({ bench }) => {
+      await bench("sidebar navigation cycle", async () => {
+        const sidebar = scenario?.container.querySelector(
+          '[data-slot="sidebar"]',
+        ) as HTMLElement | null;
+        const main = scenario?.container.querySelector(
+          '[data-bench="sidebar-main"]',
+        ) as HTMLElement | null;
+        const link = scenario?.container.querySelector(
+          '[data-slot="nav-item"][href="/docs/components"]',
+        ) as HTMLAnchorElement | null;
 
-      if (!sidebar || !main || !link) {
-        throw new Error("sidebar bench failed to mount the expected structure");
-      }
+        if (!sidebar || !main || !link) {
+          throw new Error("sidebar bench failed to mount the expected structure");
+        }
 
-      void getComputedStyle(sidebar).width;
-      void getComputedStyle(main).display;
+        void getComputedStyle(sidebar).width;
+        void getComputedStyle(main).display;
 
-      link.click();
-      await settle();
+        link.click();
+        await settle();
+      }).run();
     });
   });
 
@@ -438,92 +452,96 @@ describe("tier4 browser benches", () => {
       scenario = undefined;
     });
 
-    bench("live table log append-evict cycle", async () => {
-      const append = scenario?.container.querySelector(
-        '[data-slot="log-append"]',
-      ) as HTMLButtonElement | null;
-      const table = scenario?.container.querySelector(
-        '[aria-label="Live log"]',
-      ) as HTMLTableElement | null;
-      const log = scenario?.container.querySelector(
-        '[data-slot="live-log"]',
-      ) as HTMLOListElement | null;
+    test("live table log append-evict cycle", async ({ bench }) => {
+      await bench("live table log append-evict cycle", async () => {
+        const append = scenario?.container.querySelector(
+          '[data-slot="log-append"]',
+        ) as HTMLButtonElement | null;
+        const table = scenario?.container.querySelector(
+          '[aria-label="Live log"]',
+        ) as HTMLTableElement | null;
+        const log = scenario?.container.querySelector(
+          '[data-slot="live-log"]',
+        ) as HTMLOListElement | null;
 
-      if (!append || !table || !log) {
-        throw new Error("live table bench failed to mount the expected log controls");
-      }
+        if (!append || !table || !log) {
+          throw new Error("live table bench failed to mount the expected log controls");
+        }
 
-      for (let i = 0; i < 4; i += 1) {
-        append.click();
-        await settle();
-        void table.querySelectorAll("tbody tr").length;
-        void log.querySelectorAll("li").length;
-      }
+        for (let i = 0; i < 4; i += 1) {
+          append.click();
+          await settle();
+          void table.querySelectorAll("tbody tr").length;
+          void log.querySelectorAll("li").length;
+        }
+      }).run();
     });
   });
 
   describe("long-session memory", () => {
     const MEMORY_SOAK_CYCLES = 8;
 
-    bench("chrome/theme memory soak", async () => {
-      const viewport = stubViewport(1200);
-      const retainedHeapSamples: number[] = [];
+    test("chrome/theme memory soak", async ({ bench }) => {
+      await bench("chrome/theme memory soak", async () => {
+        const viewport = stubViewport(1200);
+        const retainedHeapSamples: number[] = [];
 
-      try {
-        for (let cycle = 0; cycle < MEMORY_SOAK_CYCLES; cycle += 1) {
-          window.localStorage.removeItem("askr-theme-memory-soak");
-          document.documentElement.removeAttribute("data-theme");
-          document.documentElement.removeAttribute("data-theme-choice");
-
-          const scenario = await mountScenario("/docs", () => {
-            group({ layout: ThemeBenchLayout }, () => {
-              route("/docs", () =>
-                buildRouteTransitionPage({ title: `Docs ${cycle + 1}`, rows: 18 }),
-              );
-            });
-          });
-
-          try {
-            const themeHeader = scenario.container.querySelector(
-              '[data-bench="theme-header"]',
-            ) as HTMLElement | null;
-
-            if (!themeHeader) {
-              throw new Error("memory soak bench failed to mount the expected controls");
-            }
-          } finally {
-            scenario.cleanup();
+        try {
+          for (let cycle = 0; cycle < MEMORY_SOAK_CYCLES; cycle += 1) {
             window.localStorage.removeItem("askr-theme-memory-soak");
             document.documentElement.removeAttribute("data-theme");
             document.documentElement.removeAttribute("data-theme-choice");
-            await settle();
-          }
 
-          const heapUsed = readBrowserHeapUsed();
+            const scenario = await mountScenario("/docs", () => {
+              group({ layout: ThemeBenchLayout }, () => {
+                route("/docs", () =>
+                  buildRouteTransitionPage({ title: `Docs ${cycle + 1}`, rows: 18 }),
+                );
+              });
+            });
 
-          if (heapUsed !== null) {
-            retainedHeapSamples.push(heapUsed);
+            try {
+              const themeHeader = scenario.container.querySelector(
+                '[data-bench="theme-header"]',
+              ) as HTMLElement | null;
+
+              if (!themeHeader) {
+                throw new Error("memory soak bench failed to mount the expected controls");
+              }
+            } finally {
+              scenario.cleanup();
+              window.localStorage.removeItem("askr-theme-memory-soak");
+              document.documentElement.removeAttribute("data-theme");
+              document.documentElement.removeAttribute("data-theme-choice");
+              await settle();
+            }
+
+            const heapUsed = readBrowserHeapUsed();
+
+            if (heapUsed !== null) {
+              retainedHeapSamples.push(heapUsed);
+            }
           }
+        } finally {
+          viewport.restore();
         }
-      } finally {
-        viewport.restore();
-      }
 
-      if (retainedHeapSamples.length === 0) {
-        console.info("[memory soak] performance.memory unavailable");
-        return;
-      }
+        if (retainedHeapSamples.length === 0) {
+          console.info("[memory soak] performance.memory unavailable");
+          return;
+        }
 
-      const baseline = retainedHeapSamples[0];
-      const final = retainedHeapSamples[retainedHeapSamples.length - 1];
-      const peak = retainedHeapSamples.reduce((max, sample) => Math.max(max, sample), baseline);
+        const baseline = retainedHeapSamples[0];
+        const final = retainedHeapSamples[retainedHeapSamples.length - 1];
+        const peak = retainedHeapSamples.reduce((max, sample) => Math.max(max, sample), baseline);
 
-      if (!memorySoakReported) {
-        console.info(
-          `[memory soak] cycles=${MEMORY_SOAK_CYCLES} retained=${formatHeap(baseline)} -> ${formatHeap(final)} (delta ${formatHeap(final - baseline)}), peak=${formatHeap(peak)}`,
-        );
-        memorySoakReported = true;
-      }
+        if (!memorySoakReported) {
+          console.info(
+            `[memory soak] cycles=${MEMORY_SOAK_CYCLES} retained=${formatHeap(baseline)} -> ${formatHeap(final)} (delta ${formatHeap(final - baseline)}), peak=${formatHeap(peak)}`,
+          );
+          memorySoakReported = true;
+        }
+      }).run();
     });
   });
 });

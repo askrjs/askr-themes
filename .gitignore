@@ -60,3 +60,4 @@ playwright-report/
 blob-report/
 
 .claude/
+.vitest/
