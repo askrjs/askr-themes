@@ -48,8 +48,20 @@ describe("catalog and composition contracts", () => {
 describe("responsive, template, and CSS safety contracts", () => {
   it("should preserve layout invariants given each breakpoint when the default theme is generated", () => {
     const css = readFileSync(join(DEFAULT_THEME_STYLES_DIR, "layout/layout.css"), "utf8");
-    for (const breakpoint of ["40rem", "48rem", "64rem", "80rem"]) {
-      expect(css).toContain(`@media (min-width: ${breakpoint})`);
+    const expectedByBreakpoint = new Map([
+      ["40rem", "--ak-display-sm"],
+      ["48rem", "--ak-display-md"],
+      ["64rem", "--ak-display-lg"],
+      ["80rem", "--ak-display-xl"],
+    ]);
+    for (const [breakpoint, declaration] of expectedByBreakpoint) {
+      const start = css.indexOf(`@media (min-width: ${breakpoint})`);
+      const next = css.indexOf("@media (min-width:", start + 1);
+      const block = css.slice(start, next < 0 ? undefined : next);
+      expect(block, `responsive selector at ${breakpoint}`).toContain(
+        ':where([data-ak-layout="true"])',
+      );
+      expect(block, `responsive declaration at ${breakpoint}`).toContain(declaration);
     }
   });
 
