@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.2 - 2026-11-28
+
 ### Fixed
 
 - Reject unsupported `as`/`asChild` props on native catalog buttons and inputs,
